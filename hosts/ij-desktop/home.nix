@@ -1,4 +1,4 @@
-{ config, pkgs, lib, user, ... }:
+{ config, pkgs, lib, user, inputs, ... }:
 
 {
   imports = [
@@ -43,6 +43,7 @@
       yubikey-agent
       age-plugin-yubikey
       starship
+      inputs.opencode.packages.${pkgs.system}.default.out
     ];
   };
 

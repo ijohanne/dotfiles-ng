@@ -38,9 +38,14 @@
       url = "github:givensuman/fish-eza";
       flake = false;
     };
+
+    opencode = {
+      url = "github:anomalyco/opencode/v1.1.31";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, home-manager, nix-darwin, mac-app-util, nixvim, rust-overlay, flake-utils, ... } @ inputs:
+  outputs = { self, nixpkgs, home-manager, nix-darwin, mac-app-util, nixvim, rust-overlay, flake-utils, opencode, ... } @ inputs:
     let
       user = import ./lib/user.nix;
     in

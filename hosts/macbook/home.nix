@@ -1,4 +1,4 @@
-{ pkgs, lib, user, ... }:
+{ pkgs, lib, user, inputs, ... }:
 
 {
   imports = [
@@ -42,6 +42,7 @@
       age-plugin-yubikey
       starship
       dockutil
+      inputs.opencode.packages.${pkgs.system}.default.out
     ];
   };
 
