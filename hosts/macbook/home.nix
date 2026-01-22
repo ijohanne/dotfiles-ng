@@ -45,7 +45,7 @@
       inputs.opencode.packages.${pkgs.system}.default.out
       tealdeer
       procs
-      dog
+      doggo
     ];
   };
 
@@ -121,7 +121,7 @@
 
     git = {
       enable = true;
-      extraConfig = {
+      settings = {
         core.pager = "delta";
         interactive.diffFilter = "delta --color-only";
         merge.conflictstyle = "diff3";

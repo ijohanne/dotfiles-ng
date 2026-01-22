@@ -46,7 +46,7 @@
       inputs.opencode.packages.${pkgs.system}.default.out
       tealdeer
       procs
-      dog
+      doggo
     ];
   };
 
@@ -70,6 +70,9 @@
         export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket 2>/dev/null || echo "$HOME/.gnupg/S.gpg-agent.ssh")"
         abbr -a tldr tealdeer
         abbr -a ps procs
+        function dog
+            ${pkgs.doggo}/bin/dog $argv
+        end
         function dig
             dog $argv
         end
@@ -129,7 +132,7 @@
 
     git = {
       enable = true;
-      extraConfig = {
+      settings = {
         core.pager = "delta";
         interactive.diffFilter = "delta --color-only";
         merge.conflictstyle = "diff3";
