@@ -51,6 +51,12 @@
       function tls
           tmux list-sessions
       end
+
+      abbr -a tldr tealdeer
+      abbr -a ps procs
+      function dig
+          dog $argv
+      end
     '';
   };
 }
