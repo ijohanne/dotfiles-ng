@@ -43,9 +43,14 @@
       url = "github:anomalyco/opencode/v1.1.31";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, home-manager, nix-darwin, mac-app-util, nixvim, rust-overlay, flake-utils, opencode, ... } @ inputs:
+  outputs = { self, nixpkgs, home-manager, nix-darwin, mac-app-util, nixvim, rust-overlay, flake-utils, opencode, disko, ... } @ inputs:
     let
       user = import ./lib/user.nix;
     in
@@ -55,6 +60,8 @@
           system = "x86_64-linux";
           specialArgs = { inherit inputs self user; };
           modules = [
+            disko.nixosModules.disko
+            ./hosts/ij-desktop/disko.nix
             ./hosts/ij-desktop/configuration.nix
             home-manager.nixosModules.home-manager
             {
@@ -62,7 +69,10 @@
               home-manager.useUserPackages = true;
               home-manager.extraSpecialArgs = { inherit user inputs; };
               home-manager.users.${user.username} = {
-                imports = [ ./hosts/ij-desktop/home.nix ];
+                imports = [
+                  ./hosts/ij-desktop/home.nix
+                  inputs.nixvim.homeModules.nixvim
+                ];
               };
             }
           ];
@@ -96,9 +106,6 @@
       };
 
       checks = {
-        x86_64-linux = {
-          nixos = self.nixosConfigurations.ij-desktop.config.system.build.toplevel;
-        };
         aarch64-darwin = {
           darwin = self.darwinConfigurations.macbook.system;
         };

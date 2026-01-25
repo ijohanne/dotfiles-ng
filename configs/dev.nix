@@ -5,6 +5,7 @@ let
   commonDevPackages = with pkgs; [
     nixd
     lua-language-server
+    marksman
     bat
     bottom
     dust
@@ -72,7 +73,7 @@ let
     { mode = "n"; key = "<leader>w"; action = ":w<CR>"; options = { desc = "Save file"; }; }
     { mode = "i"; key = "<C-Space>"; action = ":lua require('cmp').complete()<CR>"; options = { desc = "Trigger completion"; }; }
     { mode = "i"; key = "<C-e>"; action = ":lua require('cmp').abort()<CR>"; options = { desc = "Abort completion"; }; }
-    { mode = "i"; key = "<CR>"; action = ":lua require('cmp').confirm({ select = true })<CR>"; options = { desc = "Confirm selection"; }; }
+    #{ mode = "i"; key = "<CR>"; action = ":lua require('cmp').confirm({ select = true })<CR>"; options = { desc = "Confirm selection"; }; }
     { mode = "i"; key = "<C-n>"; action = ":lua require('cmp').select_next_item()<CR>"; options = { desc = "Next item"; }; }
     { mode = "i"; key = "<C-p>"; action = ":lua require('cmp').select_prev_item()<CR>"; options = { desc = "Previous item"; }; }
   ];
@@ -99,9 +100,11 @@ let
           vim.lsp.config("nixd", { capabilities = capabilities })
           vim.lsp.config("rust_analyzer", { capabilities = capabilities })
           vim.lsp.config("lua_ls", { capabilities = capabilities })
+          vim.lsp.config("marksman", { capabilities = capabilities })
           vim.lsp.enable("nixd")
           vim.lsp.enable("rust_analyzer")
           vim.lsp.enable("lua_ls")
+          vim.lsp.enable("marksman")
 
           require("crates").setup()
 
@@ -134,7 +137,6 @@ let
               { name = "buffer" },
               { name = "path" },
             }),
-            autocomplete = true,
           })
 
           cmp.setup.cmdline({ "/", "?" }, {
@@ -237,19 +239,7 @@ in
 
        treesitter = {
         enable = true;
-        nix = {
-          enable = true;
-          package = pkgs.tree-sitter-nix;
-        };
-        rust = {
-          enable = true;
-          package = pkgs.rust-bin.stable.latest.rust-analyzer;
-        };
-        lua = {
-          enable = true;
-          package = pkgs.tree-sitter-lua;
-        };
-        ensureInstalled = [ "nix" "rust" "lua" "vim" "vimdoc" "bash" "json" "toml" ];
+        ensureInstalled = [ "nix" "rust" "lua" "vim" "vimdoc" "bash" "json" "toml" "markdown" ];
         indent = true;
       };
 
@@ -287,10 +277,14 @@ in
   };
 
   systemd.user.services.lorri = lib.mkIf (pkgs.stdenv.isLinux && isDeveloper) {
-    description = "Lorri Nix shell env daemon";
-    wantedBy = [ "default.target" ];
-    after = [ "nix-daemon.socket" ];
-    serviceConfig = {
+    Unit = {
+      Description = "Lorri Nix shell env daemon";
+      After = [ "nix-daemon.socket" ];
+    };
+    Install = {
+      WantedBy = [ "default.target" ];
+    };
+    Service = {
       ExecStart = "${pkgs.lorri}/bin/lorri daemon";
       Restart = "on-failure";
     };

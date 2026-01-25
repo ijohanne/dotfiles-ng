@@ -48,8 +48,95 @@ When `developer = false`:
 sudo nixos-rebuild switch --flake .#ij-desktop
 
 # macOS
-sudo darwin-rebuild switch --flake .#macbook
+darwin-rebuild switch --flake .#macbook
 ```
+
+## Linux Desktop Setup
+
+The Linux desktop uses disko for declarative disk partitioning with LUKS encryption.
+
+### Disk Layout
+
+- `/boot` — 512MB EFI System Partition (FAT32)
+- LUKS encrypted partition containing LVM:
+  - `swap` — 8GB swap with hibernation support
+  - `root` — Remaining space as ext4
+
+### Installation
+
+1. Boot NixOS installer
+
+2. Edit `hosts/ij-desktop/disko.nix` if your disk is not `/dev/nvme0n1`
+
+3. Partition and format the disk:
+   ```bash
+   sudo nix --experimental-features "nix-command flakes" run github:nix-community/disko -- --mode disko ./hosts/ij-desktop/disko.nix
+   ```
+
+4. Mount the partitions (disko does this, but verify):
+   ```bash
+   mount | grep /mnt
+   ```
+
+5. Install NixOS:
+   ```bash
+   sudo nixos-install --flake .#ij-desktop
+   ```
+
+6. Set the LUKS password when prompted during first boot
+
+7. After installation, rebuild with:
+   ```bash
+   sudo nixos-rebuild switch --flake .#ij-desktop
+   ```
+
+## macOS Setup
+
+### Prerequisites
+
+1. Install Nix:
+   ```bash
+   curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+   ```
+
+2. Enable flakes (if not using Determinate installer):
+   ```bash
+   mkdir -p ~/.config/nix
+   echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
+   ```
+
+### Installation
+
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/yourusername/dotfiles.git ~/dotfiles
+   cd ~/dotfiles
+   ```
+
+2. Edit `lib/user.nix` with your details:
+   ```nix
+   {
+     username = "your-username";
+     email = "your@email.com";
+     name = "Your Name";
+     developer = true;
+   }
+   ```
+
+3. Bootstrap nix-darwin (first time only):
+   ```bash
+   nix run nix-darwin -- switch --flake .#macbook
+   ```
+
+4. After bootstrap, use darwin-rebuild:
+   ```bash
+   darwin-rebuild switch --flake .#macbook
+   ```
+
+### Post-Installation
+
+- Restart your terminal to load fish shell
+- Touch ID for sudo is enabled automatically
 
 ## Terminal Tools
 
