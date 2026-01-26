@@ -20,6 +20,8 @@
     max-jobs = lib.mkDefault 64;
     substituters = [ "https://ijohanne.cachix.org" ];
     trusted-public-keys = [ "ijohanne.cachix.org-1:oDy0m6h+CimPEcaUPaTZpEyVk6FVFpYPAXrrA9L5i9M=" ];
+    # Allow __noChroot derivations (needed for screeny-frontend which uses bun)
+    sandbox = "relaxed";
   };
 
   nix.gc = {
