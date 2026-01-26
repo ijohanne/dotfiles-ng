@@ -228,7 +228,7 @@ in
 
       keymaps = if isDeveloper then lspKeymaps else nonLspKeymaps;
 
-      settings = {
+      opts = {
         relativenumber = true;
         number = true;
         mouse = "a";
