@@ -102,12 +102,13 @@
   sops = {
     defaultSopsFile = ../../secrets/pakhet.yaml;
     age = {
+      # Use SSH ed25519 host key to derive age key for decryption
       sshKeyPaths = [
         "/etc/ssh/ssh_host_ed25519_key"
-        "/etc/ssh/ssh_host_rsa_key"
       ];
-      keyFile = "/root/.config/sops/age/keys.txt";
-      generateKey = false;
+      # Don't require a separate age keyfile - derive from SSH key only
+      keyFile = "/var/lib/sops-nix/key.txt";
+      generateKey = true;
     };
   };
 }
