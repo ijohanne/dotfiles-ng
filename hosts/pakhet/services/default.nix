@@ -10,6 +10,7 @@
     ./backup.nix
     ./estepona.nix
     ./kubernetes.nix
+    ./screeny.nix
   ];
 
   # TODO: Add secret cloudflare_api_key to secrets/pakhet.yaml
@@ -27,5 +28,19 @@
     mode = "0400";
     owner = "root";
     group = "root";
+  };
+
+  # TODO: Add secret screeny_jwt_secret to secrets/pakhet.yaml
+  sops.secrets.screeny_jwt_secret = {
+    mode = "0400";
+    owner = "screeny";
+    group = "screeny";
+  };
+
+  # TODO: Add secret screeny_admin_password to secrets/pakhet.yaml
+  sops.secrets.screeny_admin_password = {
+    mode = "0400";
+    owner = "screeny";
+    group = "screeny";
   };
 }

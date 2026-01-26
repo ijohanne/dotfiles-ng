@@ -62,9 +62,14 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    screeny = {
+      url = "github:ijohanne/screeny";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
+    };
   };
 
-  outputs = { self, nixpkgs, home-manager, nix-darwin, mac-app-util, nixvim, rust-overlay, flake-utils, opencode, disko, sops-nix, nixpkgs-stable, home-manager-stable, ... } @ inputs:
+  outputs = { self, nixpkgs, home-manager, nix-darwin, mac-app-util, nixvim, rust-overlay, flake-utils, opencode, disko, sops-nix, nixpkgs-stable, home-manager-stable, screeny, ... } @ inputs:
     let
       user = import ./lib/user.nix;
     in
@@ -98,6 +103,7 @@
           specialArgs = { inherit inputs self user; };
           modules = [
             sops-nix.nixosModules.sops
+            screeny.nixosModules.default
             ./hosts/pakhet/configuration.nix
             home-manager-stable.nixosModules.home-manager
             {
