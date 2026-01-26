@@ -6,9 +6,18 @@
       url = "github:NixOS/nixpkgs/nixos-unstable";
     };
 
+    nixpkgs-stable = {
+      url = "github:NixOS/nixpkgs/nixos-24.11";
+    };
+
     home-manager = {
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    home-manager-stable = {
+      url = "github:nix-community/home-manager/release-24.11";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 
     nix-darwin = {
@@ -48,9 +57,14 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, home-manager, nix-darwin, mac-app-util, nixvim, rust-overlay, flake-utils, opencode, disko, ... } @ inputs:
+  outputs = { self, nixpkgs, home-manager, nix-darwin, mac-app-util, nixvim, rust-overlay, flake-utils, opencode, disko, sops-nix, nixpkgs-stable, home-manager-stable, ... } @ inputs:
     let
       user = import ./lib/user.nix;
     in
@@ -61,6 +75,7 @@
           specialArgs = { inherit inputs self user; };
           modules = [
             disko.nixosModules.disko
+            sops-nix.nixosModules.sops
             ./hosts/ij-desktop/disko.nix
             ./hosts/ij-desktop/configuration.nix
             home-manager.nixosModules.home-manager
@@ -77,6 +92,26 @@
             }
           ];
         };
+
+        pakhet = nixpkgs-stable.lib.nixosSystem {
+          system = "x86_64-linux";
+          specialArgs = { inherit inputs self user; };
+          modules = [
+            sops-nix.nixosModules.sops
+            ./hosts/pakhet/configuration.nix
+            home-manager-stable.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.extraSpecialArgs = { inherit user inputs; };
+              home-manager.users.${user.username} = {
+                imports = [
+                  ./hosts/pakhet/home.nix
+                ];
+              };
+            }
+          ];
+        };
       };
 
       darwinConfigurations = {
@@ -85,6 +120,7 @@
           specialArgs = { inherit inputs self user; };
           modules = [
             mac-app-util.darwinModules.default
+            sops-nix.darwinModules.sops
             ./hosts/macbook/configuration.nix
             ./hosts/macbook/software.nix
             home-manager.darwinModules.home-manager

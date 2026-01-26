@@ -47,6 +47,8 @@ let
     grug-far-nvim
     fzf-vim
     fzfWrapper
+    flutter-tools-nvim
+    plenary-nvim
   ];
 
   nonLspPlugins = with pkgs.vimPlugins; [
@@ -64,6 +66,9 @@ let
     { mode = "n"; key = "gd"; action = ":lua vim.lsp.buf.definition()<CR>"; options = { desc = "Go to definition"; }; }
     { mode = "n"; key = "gr"; action = ":lua vim.lsp.buf.references()<CR>"; options = { desc = "Show references"; }; }
     { mode = "n"; key = "K"; action = ":lua vim.lsp.buf.hover()<CR>"; options = { desc = "Show hover"; }; }
+    { mode = "n"; key = "gl"; action = ":lua vim.diagnostic.open_float()<CR>"; options = { desc = "Show diagnostic"; }; }
+    { mode = "n"; key = "[d"; action = ":lua vim.diagnostic.goto_prev()<CR>"; options = { desc = "Previous diagnostic"; }; }
+    { mode = "n"; key = "]d"; action = ":lua vim.diagnostic.goto_next()<CR>"; options = { desc = "Next diagnostic"; }; }
     { mode = "n"; key = "<leader>ca"; action = ":lua vim.lsp.buf.code_action()<CR>"; options = { desc = "Code action"; }; }
     { mode = "n"; key = "<leader>ff"; action = ":require('telescope.builtin').find_files()<CR>"; options = { desc = "Find files"; }; }
     { mode = "n"; key = "<leader>fg"; action = ":require('telescope.builtin').live_grep()<CR>"; options = { desc = "Live grep"; }; }
@@ -107,6 +112,19 @@ let
           vim.lsp.enable("marksman")
 
           require("crates").setup()
+
+          require("flutter-tools").setup({
+            lsp = {
+              capabilities = capabilities,
+              settings = {
+                showTodos = true,
+                completeFunctionCalls = true,
+                enableSnippets = true,
+              },
+            },
+            widget_guides = { enabled = true },
+            closing_tags = { enabled = true },
+          })
 
           local cmp = require("cmp")
 
@@ -239,7 +257,7 @@ in
 
        treesitter = {
         enable = true;
-        ensureInstalled = [ "nix" "rust" "lua" "vim" "vimdoc" "bash" "json" "toml" "markdown" ];
+        ensureInstalled = [ "nix" "rust" "lua" "vim" "vimdoc" "bash" "json" "toml" "markdown" "dart" ];
         indent = true;
       };
 

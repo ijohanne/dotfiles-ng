@@ -4,6 +4,7 @@
   imports = [
     ../../configs
     ../../configs/dev.nix
+    ../../configs/flutter.nix
   ];
 
   home = {

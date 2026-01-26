@@ -17,6 +17,7 @@
           nvim $argv
       end
       set -g fish_greeting ""
+      set -gx SOPS_AGE_KEY_FILE "$HOME/.config/sops/age/keys.txt"
       set -p PATH $HOME/.nix-profile/bin
       set -p PATH /etc/profiles/per-user/ij/bin
       set -p PATH /run/current-system/sw/bin

@@ -45,7 +45,7 @@ User settings are defined in `lib/user.nix`. Key settings include:
 - `developer` - when true, enables LSP for neovim, lorri daemon, and dev language servers
 
 ### Special Features
-- **Secrets**: Uses agenix for encrypted secrets in `systems/*/secrets/`
+- **Secrets**: Uses sops-nix with age encryption. Secrets are stored in `secrets/secrets.yaml` and configured via `.sops.yaml`. The age key is expected at `~/.config/sops/age/keys.txt`
 - **Neovim**: Always use NixNeovim for all plugins and settings to be configured
 - **Catppuccin**: Theme consistency across tools (tmux, neovim, lazygit) using Mocha flavor with blue accent (#89b4fa)
 - **CLI Tools**: Uses home-manager programs module when available, otherwise adds to home.packages

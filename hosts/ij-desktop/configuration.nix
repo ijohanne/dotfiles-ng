@@ -1,7 +1,9 @@
 { inputs, config, pkgs, user, ... }:
 
 {
-  imports = [];
+  imports = [
+    ../../configs/secrets.nix
+  ];
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -44,7 +46,10 @@
     shell = pkgs.fish;
   };
 
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs.config = {
+    allowUnfree = true;
+    android_sdk.accept_license = true;
+  };
 
   nixpkgs.overlays = [
     inputs.rust-overlay.overlays.default

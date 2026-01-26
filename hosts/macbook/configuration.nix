@@ -1,6 +1,10 @@
 { inputs, config, pkgs, lib, user, ... }:
 
 {
+  imports = [
+    ../../configs/secrets.nix
+  ];
+
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" ];
   };
@@ -24,7 +28,10 @@
     ignoreShellProgramCheck = true;
   };
 
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs.config = {
+    allowUnfree = true;
+    android_sdk.accept_license = true;
+  };
 
   nixpkgs.overlays = [
     inputs.rust-overlay.overlays.default

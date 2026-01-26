@@ -224,3 +224,92 @@ dig <domain>       # DNS lookup (dog)
   - `C-a -` — Split vertical
   - `C-a e/f` — Previous/next window
   - `C-a E/F` — Swap windows
+
+## Secrets Management
+
+Secrets are managed using [sops-nix](https://github.com/Mic92/sops-nix) with age encryption.
+
+### Key Locations
+
+sops-nix tries these keys in order:
+1. `/etc/ssh/ssh_host_ed25519_key` — SSH host key (preferred)
+2. `/etc/ssh/ssh_host_rsa_key` — SSH host key (fallback)
+3. `~/.config/sops/age/keys.txt` — Personal age key
+
+### Setup
+
+1. Generate a personal age key (if not using SSH host keys):
+   ```bash
+   mkdir -p ~/.config/sops/age
+   age-keygen -o ~/.config/sops/age/keys.txt
+   ```
+
+2. Get your public key:
+   ```bash
+   # From age key
+   age-keygen -y ~/.config/sops/age/keys.txt
+
+   # From SSH host key
+   ssh-to-age -i /etc/ssh/ssh_host_ed25519_key.pub
+   ```
+
+3. Add the public key to `.sops.yaml`:
+   ```yaml
+   keys:
+     - &mykey age1...your-public-key...
+   
+   creation_rules:
+     - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
+       key_groups:
+         - age:
+             - *mykey
+   ```
+
+### Usage
+
+```bash
+# Edit secrets (opens in $EDITOR)
+sops secrets/secrets.yaml
+
+# View decrypted secrets
+sops -d secrets/secrets.yaml
+
+# Encrypt an existing file
+sops -e -i secrets/secrets.yaml
+```
+
+### Adding New Secrets
+
+1. Edit the secrets file:
+   ```bash
+   sops secrets/secrets.yaml
+   ```
+
+2. Add your secret:
+   ```yaml
+   my_api_key: supersecretvalue
+   ```
+
+3. Reference in nix config (`configs/secrets.nix`):
+   ```nix
+   sops.secrets.my_api_key = {};
+   ```
+
+4. Use the secret path in your configuration:
+   ```nix
+   # The decrypted secret is available at:
+   # config.sops.secrets.my_api_key.path
+   # Which resolves to: /run/secrets/my_api_key
+   ```
+
+### Adding a New Host
+
+When adding a new machine, add its public key to `.sops.yaml` and re-encrypt:
+
+```bash
+# Get the new host's key
+ssh-to-age -i /etc/ssh/ssh_host_ed25519_key.pub
+
+# Add to .sops.yaml, then rotate keys
+sops updatekeys secrets/secrets.yaml
+```
