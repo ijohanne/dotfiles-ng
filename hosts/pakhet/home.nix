@@ -91,9 +91,6 @@
         function dig
             dog $argv
         end
-        function deploy-pakhet
-            sudo nix-shell -I nixpkgs=channel:nixos-unstable -p nix --run 'nixos-rebuild switch --flake github:ijohanne/dotfiles-ng#pakhet --option sandbox relaxed --refresh'
-        end
         ${pkgs.direnv}/bin/direnv hook fish | source
       '';
     };

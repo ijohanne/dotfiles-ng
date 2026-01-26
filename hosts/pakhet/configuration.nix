@@ -41,6 +41,9 @@
     git
     sops
     age
+    (writeShellScriptBin "deploy-pakhet" ''
+      exec sudo nixos-rebuild switch --flake github:ijohanne/dotfiles-ng#pakhet --refresh
+    '')
   ];
 
   services.openssh = {
