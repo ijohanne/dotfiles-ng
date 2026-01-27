@@ -4,30 +4,35 @@ Nix-based dotfiles for managing macOS and Linux configurations.
 
 ## Table of Contents
 
-- [Hosts](#hosts)
-- [Structure](#structure)
-- [User Settings](#user-settings)
+- [Overview](#overview)
+  - [Hosts](#hosts)
+  - [Structure](#structure)
+  - [User Settings](#user-settings)
 - [Quick Start](#quick-start)
-- [macOS Setup](#macos-setup)
-- [Linux Desktop Setup](#linux-desktop-setup)
-- [Raspberry Pi 4 Image](#raspberry-pi-4-image)
-- [Terminal Tools](#terminal-tools)
-- [Tmux](#tmux)
-- [Secrets Management](#secrets-management)
+- [Installation](#installation)
+  - [macOS Setup](#macos-setup)
+  - [Linux Desktop Setup](#linux-desktop-setup)
+  - [Raspberry Pi 4 Image](#raspberry-pi-4-image)
+- [Reference](#reference)
+  - [Terminal Tools](#terminal-tools)
+  - [Tmux](#tmux)
+  - [Secrets Management](#secrets-management)
 
-## Hosts
+## Overview
+
+### Hosts
 
 - **macbook** — macOS (aarch64-darwin)
 - **ij-desktop** — Linux (x86_64-linux)
 - **rpi4-image** — Raspberry Pi 4 SD card image (aarch64-linux)
 
-## Structure
+### Structure
 
 - `hosts/` — Host-specific configurations
 - `configs/` — Shared configurations for various programs
 - `lib/` — Shared library definitions
 
-## User Settings
+### User Settings
 
 User settings are defined in `lib/user.nix`:
 
@@ -40,7 +45,7 @@ User settings are defined in `lib/user.nix`:
 }
 ```
 
-### Developer Setting
+#### Developer Setting
 
 When `developer = true`:
 - Neovim LSP is enabled (nixd, rust-analyzer, lua_ls)
@@ -65,9 +70,11 @@ darwin-rebuild switch --flake .#macbook
 sudo nixos-rebuild switch --flake .#ij-desktop
 ```
 
-## macOS Setup
+## Installation
 
-### Prerequisites
+### macOS Setup
+
+#### Prerequisites
 
 1. Install Nix:
    ```bash
@@ -80,7 +87,7 @@ sudo nixos-rebuild switch --flake .#ij-desktop
    echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
    ```
 
-### Installation
+#### Installation Steps
 
 1. Clone this repository:
    ```bash
@@ -108,12 +115,12 @@ sudo nixos-rebuild switch --flake .#ij-desktop
    darwin-rebuild switch --flake .#macbook
    ```
 
-### Post-Installation
+#### Post-Installation
 
 - Restart your terminal to load fish shell
 - Touch ID for sudo is enabled automatically
 
-### Remote Builder Setup
+#### Remote Builder
 
 The macbook is configured to use pakhet (10.255.101.200) as a remote builder for x86_64-linux and aarch64-linux builds.
 
@@ -127,18 +134,18 @@ This will:
 1. Add pakhet's SSH host key to root's known_hosts
 2. Test the connection to verify everything works
 
-## Linux Desktop Setup
+### Linux Desktop Setup
 
 The Linux desktop uses disko for declarative disk partitioning with LUKS encryption.
 
-### Disk Layout
+#### Disk Layout
 
 - `/boot` — 512MB EFI System Partition (FAT32)
 - LUKS encrypted partition containing LVM:
   - `swap` — 8GB swap with hibernation support
   - `root` — Remaining space as ext4
 
-### Installation
+#### Installation Steps
 
 1. Boot NixOS installer
 
@@ -166,7 +173,7 @@ The Linux desktop uses disko for declarative disk partitioning with LUKS encrypt
    sudo nixos-rebuild switch --flake .#ij-desktop
    ```
 
-## Raspberry Pi 4 Image
+### Raspberry Pi 4 Image
 
 Build an SD card image for Raspberry Pi 4:
 
@@ -182,9 +189,11 @@ sudo dd if=result/sd-image/*.img of=/dev/sdX bs=4M status=progress
 
 The image includes SSH enabled with authorized keys from `lib/user.nix`.
 
-## Terminal Tools
+## Reference
 
-### Zoxide — Smart cd
+### Terminal Tools
+
+#### Zoxide — Smart cd
 
 Intelligent directory jumping that learns your most frequently used directories.
 
@@ -194,7 +203,7 @@ zoxide query          # Show frecent directories
 cd ~/code             # Also works with regular cd (aliased via --cmd cd)
 ```
 
-### Lazygit — Git TUI
+#### Lazygit — Git TUI
 
 Feature-rich git terminal UI with Catppuccin Mocha theme.
 
@@ -209,7 +218,7 @@ lazygit              # Open git TUI
 - `r` - rebase
 - `m` - merge
 
-### Delta — Git Diff Viewer
+#### Delta — Git Diff Viewer
 
 Syntax-highlighting pager for git diffs.
 
@@ -218,7 +227,7 @@ git diff             # Automatic when configured as git pager
 git log -p           # View diffs in log
 ```
 
-### Tealdeer — Quick Command Help
+#### Tealdeer — Quick Command Help
 
 Community-driven command cheatsheets.
 
@@ -228,7 +237,7 @@ tldr --list          # List all available commands
 tldr --update        # Update cache
 ```
 
-### Procs — Modern ps Replacement
+#### Procs — Modern ps Replacement
 
 Colorful process viewer with better formatting.
 
@@ -239,7 +248,7 @@ procs nginx          # Search by name
 ps | procs           # Pipe from ps
 ```
 
-### Dog — DNS Client
+#### Dog — DNS Client
 
 Modern DNS client with JSON output and DoH/DoT support.
 
@@ -250,7 +259,7 @@ dog example.com --json       # JSON output
 dog --reverse 8.8.8.8        # Reverse DNS
 ```
 
-### Fish Shell Abbreviations
+#### Fish Shell Abbreviations
 
 ```bash
 tldr <command>     # Quick help (tealdeer)
@@ -258,7 +267,7 @@ ps                 # Modern process viewer (procs)
 dig <domain>       # DNS lookup (dog)
 ```
 
-## Tmux
+### Tmux
 
 - **Prefix:** `C-a` (instead of default `C-b`)
 - **Keybindings:**
@@ -269,18 +278,18 @@ dig <domain>       # DNS lookup (dog)
   - `C-a e/f` — Previous/next window
   - `C-a E/F` — Swap windows
 
-## Secrets Management
+### Secrets Management
 
 Secrets are managed using [sops-nix](https://github.com/Mic92/sops-nix) with age encryption.
 
-### Key Locations
+#### Key Locations
 
 sops-nix tries these keys in order:
 1. `/etc/ssh/ssh_host_ed25519_key` — SSH host key (preferred)
 2. `/etc/ssh/ssh_host_rsa_key` — SSH host key (fallback)
 3. `~/.config/sops/age/keys.txt` — Personal age key
 
-### Setup
+#### Setup
 
 1. Generate a personal age key (if not using SSH host keys):
    ```bash
@@ -309,7 +318,7 @@ sops-nix tries these keys in order:
              - *mykey
    ```
 
-### Usage
+#### Usage
 
 ```bash
 # Edit secrets (opens in $EDITOR)
@@ -322,7 +331,7 @@ sops -d secrets/secrets.yaml
 sops -e -i secrets/secrets.yaml
 ```
 
-### Adding New Secrets
+#### Adding New Secrets
 
 1. Edit the secrets file:
    ```bash
@@ -346,7 +355,7 @@ sops -e -i secrets/secrets.yaml
    # Which resolves to: /run/secrets/my_api_key
    ```
 
-### Adding a New Host
+#### Adding a New Host
 
 When adding a new machine, add its public key to `.sops.yaml` and re-encrypt:
 
