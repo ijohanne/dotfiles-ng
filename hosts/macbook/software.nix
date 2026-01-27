@@ -9,7 +9,7 @@
 
     systemPackages = with pkgs; [
       fish
-      kitty
+      ghostty-bin
     ];
   };
 

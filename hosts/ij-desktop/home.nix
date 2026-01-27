@@ -13,7 +13,7 @@
     homeDirectory = "/home/${user.username}";
 
     packages = with pkgs; [
-      kitty
+      nerd-fonts.jetbrains-mono
       zip
       unzip
       tmux
@@ -129,6 +129,25 @@
 
     delta = {
       enable = true;
+    };
+
+    ghostty = {
+      enable = true;
+      enableFishIntegration = true;
+      settings = {
+        font-family = "JetBrainsMono Nerd Font";
+        font-size = 14;
+        theme = "Catppuccin Mocha";
+      };
+    };
+
+    kitty = {
+      enable = true;
+      font = {
+        name = "JetBrainsMono Nerd Font";
+        package = pkgs.nerd-fonts.jetbrains-mono;
+        size = 14;
+      };
     };
 
     git = {

@@ -41,6 +41,130 @@
 
   services.lorri.enable = true;
 
+  system.keyboard = {
+    enableKeyMapping = true;
+    remapCapsLockToControl = true;
+  };
+
+  system.defaults = {
+    NSGlobalDomain = {
+      AppleShowAllExtensions = true;
+      AppleInterfaceStyle = "Dark";
+      ApplePressAndHoldEnabled = false;
+      KeyRepeat = 2;
+      InitialKeyRepeat = 15;
+      "com.apple.mouse.tapBehavior" = 1;
+      "com.apple.sound.beep.volume" = 0.0;
+      "com.apple.sound.beep.feedback" = 0;
+      "com.apple.swipescrolldirection" = false;
+    };
+
+    dock = {
+      autohide = false;
+      autohide-delay = 0.0;
+      autohide-time-modifier = 0.2;
+      expose-animation-duration = 0.2;
+      tilesize = 48;
+      launchanim = true;
+      static-only = false;
+      show-recents = false;
+      show-process-indicators = true;
+      orientation = "bottom";
+      mru-spaces = false;
+      minimize-to-application = true;
+      wvous-bl-corner = 4;
+      wvous-br-corner = 14;
+      wvous-tl-corner = 5;
+      wvous-tr-corner = 12;
+    };
+
+    finder = {
+      AppleShowAllExtensions = true;
+      FXEnableExtensionChangeWarning = false;
+      FXPreferredViewStyle = "Nlsv";
+      NewWindowTarget = "Other";
+      NewWindowTargetPath = "file:///Users/${user.username}/Downloads/";
+      QuitMenuItem = true;
+      ShowPathbar = true;
+      ShowStatusBar = true;
+      _FXShowPosixPathInTitle = false;
+    };
+
+    trackpad = {
+      Clicking = true;
+      TrackpadRightClick = true;
+      TrackpadThreeFingerDrag = true;
+    };
+
+    loginwindow = {
+      GuestEnabled = false;
+      DisableConsoleAccess = true;
+    };
+
+    spaces.spans-displays = true;
+
+    menuExtraClock = {
+      Show24Hour = true;
+      ShowSeconds = false;
+      ShowAMPM = true;
+      ShowDate = 0;
+    };
+
+    CustomUserPreferences = {
+      "com.apple.symbolichotkeys" = {
+        AppleSymbolicHotKeys = {
+          # Disable Ctrl+Space for "Select the previous input source"
+          "60" = { enabled = false; };
+          # Disable Ctrl+Option+Space for "Select next source in Input menu"
+          "61" = { enabled = false; };
+        };
+      };
+      NSGlobalDomain = {
+        WebKitDeveloperExtras = true;
+      };
+      "com.apple.finder" = {
+        ShowExternalHardDrivesOnDesktop = false;
+        ShowHardDrivesOnDesktop = false;
+        ShowMountedServersOnDesktop = false;
+        ShowRemovableMediaOnDesktop = false;
+        ShowRecentTags = false;
+        _FXSortFoldersFirst = true;
+        FXDefaultSearchScope = "SCcf";
+      };
+      "com.apple.desktopservices" = {
+        DSDontWriteNetworkStores = true;
+        DSDontWriteUSBStores = true;
+      };
+      "com.apple.screensaver" = {
+        askForPassword = 1;
+        askForPasswordDelay = 0;
+      };
+      "com.apple.screencapture" = {
+        location = "~/Downloads";
+        type = "png";
+      };
+      "com.apple.AdLib" = {
+        allowApplePersonalizedAdvertising = false;
+      };
+      "com.apple.print.PrintingPrefs" = {
+        "Quit When Finished" = true;
+      };
+      "com.apple.SoftwareUpdate" = {
+        AutomaticCheckEnabled = true;
+        ScheduleFrequency = 1;
+        AutomaticDownload = 1;
+        CriticalUpdateInstall = 1;
+      };
+      "com.apple.TimeMachine".DoNotOfferNewDisksForBackup = true;
+      "com.apple.ImageCapture".disableHotPlug = true;
+      "com.apple.commerce".AutoUpdate = true;
+      "com.apple.WindowManager" = {
+        HideDesktop = true;
+        StandardHideDesktopIcons = true;
+      };
+    };
+  };
+
   system.activationScripts.postActivation.text = ''
     chsh -s /run/current-system/sw/bin/fish ${user.username}
 
