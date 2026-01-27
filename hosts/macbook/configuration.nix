@@ -8,11 +8,28 @@
 
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" ];
+    builders-use-substitutes = true;
+    trusted-users = [ "root" "@admin" user.username ];
   };
 
   nix.gc = {
     automatic = true;
   };
+
+  nix.distributedBuilds = true;
+
+  nix.buildMachines = [
+    {
+      hostName = "10.255.101.200";
+      systems = [ "x86_64-linux" "aarch64-linux" ];
+      protocol = "ssh-ng";
+      sshUser = "root";
+      sshKey = "/etc/nix/builder_ed25519";
+      maxJobs = 64;
+      speedFactor = 2;
+      supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
+    }
+  ];
 
   ids.gids.nixbld = 30000;
 
@@ -24,6 +41,15 @@
     home = "/Users/${user.username}";
     packages = with pkgs; [
       git
+      (writeShellScriptBin "setup-remote-builder" ''
+        echo "Setting up SSH known host for remote builder (pakhet)..."
+        sudo ssh-keyscan -t ed25519 10.255.101.200 | sudo tee -a /var/root/.ssh/known_hosts
+        echo ""
+        echo "Testing connection to remote builder..."
+        sudo ssh -i /etc/nix/builder_ed25519 root@10.255.101.200 "echo 'Connection successful!'"
+        echo ""
+        echo "Remote builder setup complete."
+      '')
     ];
     shell = pkgs.fish;
     ignoreShellProgramCheck = true;

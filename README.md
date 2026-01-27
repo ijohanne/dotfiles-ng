@@ -138,6 +138,20 @@ The Linux desktop uses disko for declarative disk partitioning with LUKS encrypt
 - Restart your terminal to load fish shell
 - Touch ID for sudo is enabled automatically
 
+### Remote Builder Setup
+
+The macbook is configured to use pakhet (10.255.101.200) as a remote builder for x86_64-linux and aarch64-linux builds.
+
+After deploying the configuration, run the setup script to add the remote builder's SSH host key:
+
+```bash
+setup-remote-builder
+```
+
+This will:
+1. Add pakhet's SSH host key to root's known_hosts
+2. Test the connection to verify everything works
+
 ## Terminal Tools
 
 ### Zoxide — Smart cd

@@ -17,6 +17,11 @@ in
     };
 
     secrets.cloudflare_unixpimps_net_api_key = {};
+    secrets.nix_remote_builder_ssh_key = lib.mkIf pkgs.stdenv.isDarwin {
+      path = "/etc/nix/builder_ed25519";
+      mode = "0600";
+      owner = "root";
+    };
   };
 
   environment.systemPackages = with pkgs; [
