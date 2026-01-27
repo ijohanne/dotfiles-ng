@@ -6,10 +6,10 @@
     interactiveShellInit = ''
       function nix_rebuild_switch
           set -l oldpwd (pwd)
-          cd $HOME/dotfiles && sudo darwin-rebuild switch --flake .#macbook
-          cd $oldpwd
+          builtin cd $HOME/git/private/dotfiles && sudo darwin-rebuild switch --flake .#macbook
+          builtin cd $oldpwd
       end
-      abbr -a nix-rebuild-switch nix_rebuild_switch
+
       function vim
           nvim $argv
       end

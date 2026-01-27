@@ -30,10 +30,12 @@
       "slack"
       "libreoffice"
       "discord"
-      "docker"
+      "docker-desktop"
+      "proton-mail"
     ];
 
     masApps = {
+      "WhatsApp" = 310633997;
     };
   };
 }

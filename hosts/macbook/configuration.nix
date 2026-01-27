@@ -3,6 +3,7 @@
 {
   imports = [
     ../../configs/secrets.nix
+    ../../configs/darwin/dock
   ];
 
   nix.settings = {
@@ -173,4 +174,21 @@
       gpgconf --launch gpg-agent 2>/dev/null || true
     fi
   '';
+
+  local.dock = {
+    enable = true;
+    username = user.username;
+    entries = [
+      { path = "${pkgs.ghostty-bin}/Applications/Ghostty.app"; }
+      { path = "/Applications/Safari.app"; }
+      { path = "/Applications/Google Chrome.app"; }
+      { path = "/Applications/Slack.app"; }
+      { path = "/Applications/Discord.app"; }
+      { path = "/System/Applications/Messages.app"; }
+      { path = "/Applications/WhatsApp.app"; }
+      { path = "/System/Applications/FaceTime.app"; }
+      { path = "/Applications/Proton Mail.app"; }
+      { path = "/System/Applications/Music.app"; }
+    ];
+  };
 }
