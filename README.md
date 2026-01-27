@@ -7,11 +7,11 @@ Nix-based dotfiles for managing macOS and Linux configurations.
 - [Hosts](#hosts)
 - [Structure](#structure)
 - [User Settings](#user-settings)
-- [Usage](#usage)
-- [Linux Desktop Setup](#linux-desktop-setup)
+- [Quick Start](#quick-start)
 - [macOS Setup](#macos-setup)
+- [Linux Desktop Setup](#linux-desktop-setup)
+- [Raspberry Pi 4 Image](#raspberry-pi-4-image)
 - [Terminal Tools](#terminal-tools)
-- [Fish Shell Abbreviations](#fish-shell-abbreviations)
 - [Tmux](#tmux)
 - [Secrets Management](#secrets-management)
 
@@ -55,59 +55,15 @@ When `developer = false`:
 - No LSP keybindings
 - No lorri daemon
 
-## Usage
+## Quick Start
 
 ```bash
-# Linux (NixOS)
-sudo nixos-rebuild switch --flake .#ij-desktop
-
 # macOS
 darwin-rebuild switch --flake .#macbook
 
-# Raspberry Pi 4 SD card image
-nix build .#images.rpi4
-# Then write to SD card:
-# sudo dd if=result/sd-image/*.img of=/dev/sdX bs=4M status=progress
+# Linux (NixOS)
+sudo nixos-rebuild switch --flake .#ij-desktop
 ```
-
-## Linux Desktop Setup
-
-The Linux desktop uses disko for declarative disk partitioning with LUKS encryption.
-
-### Disk Layout
-
-- `/boot` — 512MB EFI System Partition (FAT32)
-- LUKS encrypted partition containing LVM:
-  - `swap` — 8GB swap with hibernation support
-  - `root` — Remaining space as ext4
-
-### Installation
-
-1. Boot NixOS installer
-
-2. Edit `hosts/ij-desktop/disko.nix` if your disk is not `/dev/nvme0n1`
-
-3. Partition and format the disk:
-   ```bash
-   sudo nix --experimental-features "nix-command flakes" run github:nix-community/disko -- --mode disko ./hosts/ij-desktop/disko.nix
-   ```
-
-4. Mount the partitions (disko does this, but verify):
-   ```bash
-   mount | grep /mnt
-   ```
-
-5. Install NixOS:
-   ```bash
-   sudo nixos-install --flake .#ij-desktop
-   ```
-
-6. Set the LUKS password when prompted during first boot
-
-7. After installation, rebuild with:
-   ```bash
-   sudo nixos-rebuild switch --flake .#ij-desktop
-   ```
 
 ## macOS Setup
 
@@ -170,6 +126,61 @@ setup-remote-builder
 This will:
 1. Add pakhet's SSH host key to root's known_hosts
 2. Test the connection to verify everything works
+
+## Linux Desktop Setup
+
+The Linux desktop uses disko for declarative disk partitioning with LUKS encryption.
+
+### Disk Layout
+
+- `/boot` — 512MB EFI System Partition (FAT32)
+- LUKS encrypted partition containing LVM:
+  - `swap` — 8GB swap with hibernation support
+  - `root` — Remaining space as ext4
+
+### Installation
+
+1. Boot NixOS installer
+
+2. Edit `hosts/ij-desktop/disko.nix` if your disk is not `/dev/nvme0n1`
+
+3. Partition and format the disk:
+   ```bash
+   sudo nix --experimental-features "nix-command flakes" run github:nix-community/disko -- --mode disko ./hosts/ij-desktop/disko.nix
+   ```
+
+4. Mount the partitions (disko does this, but verify):
+   ```bash
+   mount | grep /mnt
+   ```
+
+5. Install NixOS:
+   ```bash
+   sudo nixos-install --flake .#ij-desktop
+   ```
+
+6. Set the LUKS password when prompted during first boot
+
+7. After installation, rebuild with:
+   ```bash
+   sudo nixos-rebuild switch --flake .#ij-desktop
+   ```
+
+## Raspberry Pi 4 Image
+
+Build an SD card image for Raspberry Pi 4:
+
+```bash
+nix build .#images.rpi4
+```
+
+Write to SD card:
+
+```bash
+sudo dd if=result/sd-image/*.img of=/dev/sdX bs=4M status=progress
+```
+
+The image includes SSH enabled with authorized keys from `lib/user.nix`.
 
 ## Terminal Tools
 
@@ -239,7 +250,7 @@ dog example.com --json       # JSON output
 dog --reverse 8.8.8.8        # Reverse DNS
 ```
 
-## Fish Shell Abbreviations
+### Fish Shell Abbreviations
 
 ```bash
 tldr <command>     # Quick help (tealdeer)
