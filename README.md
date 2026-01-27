@@ -2,6 +2,19 @@
 
 Nix-based dotfiles for managing macOS and Linux configurations.
 
+## Table of Contents
+
+- [Hosts](#hosts)
+- [Structure](#structure)
+- [User Settings](#user-settings)
+- [Usage](#usage)
+- [Linux Desktop Setup](#linux-desktop-setup)
+- [macOS Setup](#macos-setup)
+- [Terminal Tools](#terminal-tools)
+- [Fish Shell Abbreviations](#fish-shell-abbreviations)
+- [Tmux](#tmux)
+- [Secrets Management](#secrets-management)
+
 ## Hosts
 
 - **macbook** — macOS (aarch64-darwin)
