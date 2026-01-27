@@ -107,8 +107,10 @@
 
     finder = {
       AppleShowAllExtensions = true;
+      AppleShowAllFiles = true;
       FXEnableExtensionChangeWarning = false;
       FXPreferredViewStyle = "Nlsv";
+      FXRemoveOldTrashItems = true;
       NewWindowTarget = "Other";
       NewWindowTargetPath = "file:///Users/${user.username}/Downloads/";
       QuitMenuItem = true;
@@ -135,6 +137,13 @@
       ShowSeconds = false;
       ShowAMPM = true;
       ShowDate = 0;
+    };
+
+    screencapture = {
+      location = "~/Downloads";
+      type = "png";
+      disable-shadow = true;
+      show-thumbnail = false;
     };
 
     CustomUserPreferences = {
@@ -166,10 +175,7 @@
         askForPassword = 1;
         askForPasswordDelay = 0;
       };
-      "com.apple.screencapture" = {
-        location = "~/Downloads";
-        type = "png";
-      };
+
       "com.apple.AdLib" = {
         allowApplePersonalizedAdvertising = false;
       };
@@ -193,6 +199,11 @@
   };
 
   system.activationScripts.postActivation.text = ''
+    echo ""
+    echo "NOTE: If this is a fresh install, enable Proton Pass Safari extension:"
+    echo "      Safari > Settings > Extensions > Enable 'Proton Pass'"
+    echo ""
+
     chsh -s /run/current-system/sw/bin/fish ${user.username}
 
     # Start gpg-agent if not running

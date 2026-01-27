@@ -10,6 +10,7 @@
     escapeTime = 10;
 
     plugins = with pkgs.tmuxPlugins; [
+      better-mouse-mode
       catppuccin
       sensible
       vim-tmux-navigator
@@ -44,6 +45,7 @@
 
       bind a last-window
 
+      set -g status-position top
       set -g status-interval 5
       set -g status-left-length 100
       set -g status-right-length 100
@@ -66,6 +68,9 @@
 
       set -g @catppuccin_flavor "mocha"
       set -g @catppuccin_window_status_style "rounded"
+      set -g @catppuccin_window_default_text " #W"
+      set -g @catppuccin_window_current_text " #W"
+      set -g @catppuccin_window_number_position "left"
       set -g @catppuccin_pane_border_status "off"
       set -g @catppuccin_pane_active_border_style "fg=#{thm_peach}"
       set -g @catppuccin_pane_border_style "fg=#{thm_surface2}"
@@ -75,6 +80,9 @@
 
       set -g @prefix_highlight_show_copy_mode "on"
       set -g @prefix_highlight_copy_mode_attr "fg=white,bg=blue"
+
+      set -g @scroll-without-changing-pane "on"
+      set -g @emulate-scroll-for-no-mouse-alternate-buffer "on"
 
       set -g pane-base-index 1
     '';

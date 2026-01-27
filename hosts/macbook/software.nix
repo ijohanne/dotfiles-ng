@@ -31,7 +31,10 @@
       "libreoffice"
       "discord"
       "docker-desktop"
+      "proton-drive"
       "proton-mail"
+      "proton-pass"
+      "protonvpn"
     ];
 
     masApps = {
