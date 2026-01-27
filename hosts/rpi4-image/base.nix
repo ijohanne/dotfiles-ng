@@ -5,10 +5,8 @@
     "${modulesPath}/installer/sd-card/sd-image-aarch64.nix"
   ];
 
-  system.stateVersion = "25.05";
-
   networking = {
-    hostName = "rpi4";
+    hostName = lib.mkDefault "rpi4";
     useDHCP = true;
     wireless.enable = false;
   };
@@ -26,6 +24,10 @@
     htop
     git
   ];
+
+  environment.shellAliases = {
+    rebuild = "sudo nixos-rebuild switch --flake github:ijohanne/dotfiles-ng";
+  };
 
   services.openssh = {
     enable = true;

@@ -24,7 +24,8 @@ Nix-based dotfiles for managing macOS and Linux configurations.
 
 - **macbook** — macOS (aarch64-darwin)
 - **ij-desktop** — Linux (x86_64-linux)
-- **rpi4-image** — Raspberry Pi 4 SD card image (aarch64-linux)
+- **rpi4-stable** — Raspberry Pi 4 SD card image (aarch64-linux, nixos-25.05)
+- **rpi4-unstable** — Raspberry Pi 4 SD card image (aarch64-linux, nixos-unstable)
 
 ### Structure
 
@@ -175,19 +176,75 @@ The Linux desktop uses disko for declarative disk partitioning with LUKS encrypt
 
 ### Raspberry Pi 4 Image
 
-Build an SD card image for Raspberry Pi 4:
+The RPi4 images are templates for bootstrapping new NixOS hosts on Raspberry Pi 4. Two variants are available:
+
+- **rpi4-stable** — Uses nixos-25.05 (recommended for production)
+- **rpi4-unstable** — Uses nixos-unstable (latest features)
+
+#### Building the Image
 
 ```bash
-nix build .#images.rpi4
+# Stable (recommended)
+nix build .#images.rpi4-stable
+
+# Unstable
+nix build .#images.rpi4-unstable
 ```
 
-Write to SD card:
+#### Writing to SD Card
 
 ```bash
 sudo dd if=result/sd-image/*.img of=/dev/sdX bs=4M status=progress
 ```
 
-The image includes SSH enabled with authorized keys from `lib/user.nix`.
+#### First Boot
+
+The image includes:
+- SSH enabled with authorized keys from `lib/user.nix`
+- Flakes enabled
+- A `rebuild` alias for easy updates
+
+After booting, you can update the system directly from this repository:
+
+```bash
+rebuild#rpi4-stable
+# or
+rebuild#rpi4-unstable
+```
+
+#### Creating a New Host from Template
+
+To use this as a starting point for a new dedicated host:
+
+1. Copy the template to a new host directory:
+   ```bash
+   cp -r hosts/rpi4-image/stable hosts/my-new-rpi
+   ```
+
+2. Edit `hosts/my-new-rpi/configuration.nix`:
+   ```nix
+   networking.hostName = lib.mkForce "my-new-rpi";
+   ```
+
+3. Add the new host to `flake.nix`:
+   ```nix
+   nixosConfigurations = {
+     my-new-rpi = nixpkgs-stable.lib.nixosSystem {
+       system = "aarch64-linux";
+       specialArgs = { inherit inputs self user; };
+       modules = [
+         ./hosts/my-new-rpi/configuration.nix
+       ];
+     };
+   };
+   ```
+
+4. Customize the configuration as needed (add packages, services, etc.)
+
+5. After first boot, switch to the new configuration:
+   ```bash
+   sudo nixos-rebuild switch --flake github:yourusername/dotfiles#my-new-rpi
+   ```
 
 ## Reference
 

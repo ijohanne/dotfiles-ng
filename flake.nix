@@ -119,17 +119,26 @@
           ];
         };
 
-        rpi4-image = nixpkgs-stable.lib.nixosSystem {
+        rpi4-stable = nixpkgs-stable.lib.nixosSystem {
           system = "aarch64-linux";
           specialArgs = { inherit inputs self user; };
           modules = [
-            ./hosts/rpi4-image/configuration.nix
+            ./hosts/rpi4-image/stable/configuration.nix
+          ];
+        };
+
+        rpi4-unstable = nixpkgs.lib.nixosSystem {
+          system = "aarch64-linux";
+          specialArgs = { inherit inputs self user; };
+          modules = [
+            ./hosts/rpi4-image/unstable/configuration.nix
           ];
         };
       };
 
       images = {
-        rpi4 = self.nixosConfigurations.rpi4-image.config.system.build.sdImage;
+        rpi4-stable = self.nixosConfigurations.rpi4-stable.config.system.build.sdImage;
+        rpi4-unstable = self.nixosConfigurations.rpi4-unstable.config.system.build.sdImage;
       };
 
       darwinConfigurations = {
