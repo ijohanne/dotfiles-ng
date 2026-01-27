@@ -1,5 +1,7 @@
 # dotfiles
 
+[![CI](https://github.com/ijohanne/dotfiles-ng/actions/workflows/ci.yml/badge.svg)](https://github.com/ijohanne/dotfiles-ng/actions/workflows/ci.yml)
+
 Nix-based dotfiles for managing macOS and Linux configurations.
 
 ## Table of Contents
