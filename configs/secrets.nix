@@ -4,14 +4,11 @@ let
   homeDir = if pkgs.stdenv.isDarwin then "/Users/${user.username}" else "/home/${user.username}";
   hostname = config.networking.hostName;
   
-  secretsFile = {
-    "macbook" = ../secrets/macbook.yaml;
-    "ij-desktop" = ../secrets/macbook.yaml;
-  }.${hostname} or ../secrets/macbook.yaml;
+  hasSecrets = hostname == "macbook";
 in
 {
-  sops = {
-    defaultSopsFile = secretsFile;
+  sops = lib.mkIf hasSecrets {
+    defaultSopsFile = ../secrets/macbook.yaml;
 
     age = {
       sshKeyPaths = [
@@ -21,14 +18,12 @@ in
       generateKey = false;
     };
 
-    secrets = lib.mkMerge [
-      (lib.mkIf (hostname == "macbook") {
-        cloudflare_unixpimps_net_api_key = {};
-        nix_remote_builder_ssh_key = {
-          mode = "0600";
-        };
-      })
-    ];
+    secrets = {
+      cloudflare_unixpimps_net_api_key = {};
+      nix_remote_builder_ssh_key = {
+        mode = "0600";
+      };
+    };
   };
 
   environment.systemPackages = with pkgs; [
