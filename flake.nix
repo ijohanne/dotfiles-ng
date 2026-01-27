@@ -118,6 +118,18 @@
             }
           ];
         };
+
+        rpi4-image = nixpkgs-stable.lib.nixosSystem {
+          system = "aarch64-linux";
+          specialArgs = { inherit inputs self user; };
+          modules = [
+            ./hosts/rpi4-image/configuration.nix
+          ];
+        };
+      };
+
+      images = {
+        rpi4 = self.nixosConfigurations.rpi4-image.config.system.build.sdImage;
       };
 
       darwinConfigurations = {

@@ -6,6 +6,7 @@ Nix-based dotfiles for managing macOS and Linux configurations.
 
 - **macbook** — macOS (aarch64-darwin)
 - **ij-desktop** — Linux (x86_64-linux)
+- **rpi4-image** — Raspberry Pi 4 SD card image (aarch64-linux)
 
 ## Structure
 
@@ -49,6 +50,11 @@ sudo nixos-rebuild switch --flake .#ij-desktop
 
 # macOS
 darwin-rebuild switch --flake .#macbook
+
+# Raspberry Pi 4 SD card image
+nix build .#images.rpi4
+# Then write to SD card:
+# sudo dd if=result/sd-image/*.img of=/dev/sdX bs=4M status=progress
 ```
 
 ## Linux Desktop Setup
