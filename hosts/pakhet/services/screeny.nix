@@ -16,6 +16,7 @@
       enableACME = true;
       forceSSL = true;
       frontendPort = 3001;  # Avoid conflict with Gitea on port 3000
+      disableGraphiQL = true;
     };
   };
 }
