@@ -371,6 +371,16 @@ Configured via NixVim with Catppuccin theme. When `developer = true`, includes L
 
 Secrets are managed using [sops-nix](https://github.com/Mic92/sops-nix) with age encryption.
 
+#### File Structure
+
+Secrets are organized per-host for isolation:
+
+- `secrets/macbook.yaml` — macbook-only secrets
+- `secrets/pakhet.yaml` — pakhet-only secrets
+- `secrets/shared.yaml` — secrets accessible by all hosts (if needed)
+
+Each file is encrypted with only the keys that need access, configured in `.sops.yaml`.
+
 #### Key Locations
 
 sops-nix tries these keys in order:
@@ -401,7 +411,7 @@ sops-nix tries these keys in order:
      - &mykey age1...your-public-key...
    
    creation_rules:
-     - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
+     - path_regex: secrets/myhost\.(yaml|json|env|ini)$
        key_groups:
          - age:
              - *mykey
@@ -410,21 +420,20 @@ sops-nix tries these keys in order:
 #### Usage
 
 ```bash
-# Edit secrets (opens in $EDITOR)
-sops secrets/secrets.yaml
+# Edit host-specific secrets
+sops secrets/macbook.yaml
+sops secrets/pakhet.yaml
 
 # View decrypted secrets
-sops -d secrets/secrets.yaml
-
-# Encrypt an existing file
-sops -e -i secrets/secrets.yaml
+sops -d secrets/macbook.yaml
 ```
 
 #### Adding New Secrets
 
-1. Edit the secrets file:
+1. Edit the appropriate secrets file:
    ```bash
-   sops secrets/secrets.yaml
+   sops secrets/macbook.yaml  # for macbook
+   sops secrets/pakhet.yaml   # for pakhet
    ```
 
 2. Add your secret:
@@ -432,8 +441,12 @@ sops -e -i secrets/secrets.yaml
    my_api_key: supersecretvalue
    ```
 
-3. Reference in nix config (`configs/secrets.nix`):
+3. Reference in nix config:
    ```nix
+   # In configs/secrets.nix (for macbook/ij-desktop)
+   sops.secrets.my_api_key = {};
+   
+   # Or in host-specific config (for pakhet)
    sops.secrets.my_api_key = {};
    ```
 
@@ -446,12 +459,25 @@ sops -e -i secrets/secrets.yaml
 
 #### Adding a New Host
 
-When adding a new machine, add its public key to `.sops.yaml` and re-encrypt:
+1. Get the new host's public key:
+   ```bash
+   ssh-to-age -i /etc/ssh/ssh_host_ed25519_key.pub
+   ```
 
-```bash
-# Get the new host's key
-ssh-to-age -i /etc/ssh/ssh_host_ed25519_key.pub
+2. Add to `.sops.yaml`:
+   ```yaml
+   keys:
+     - &newhost age1...public-key...
+   
+   creation_rules:
+     - path_regex: secrets/newhost\.(yaml|json|env|ini)$
+       key_groups:
+         - age:
+             - *ij
+             - *newhost
+   ```
 
-# Add to .sops.yaml, then rotate keys
-sops updatekeys secrets/secrets.yaml
-```
+3. Create the secrets file:
+   ```bash
+   sops secrets/newhost.yaml
+   ```

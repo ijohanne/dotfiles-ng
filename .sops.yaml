@@ -1,6 +1,7 @@
 keys:
   - &ij age1vc68fqwnlflkcz7vnpv43azqr50dtpcztxrlaudsux7y6qyj8ysqcyugwg
   - &pakhet age1wwxaaahz6gp8f8t44m2kyqr2h4zwgn85fqjuls0rqypm958r342qtxhvq0
+  - &macbook age1vc68fqwnlflkcz7vnpv43azqr50dtpcztxrlaudsux7y6qyj8ysqcyugwg
 
 creation_rules:
   - path_regex: secrets/pakhet\.(yaml|json|env|ini)$
@@ -9,7 +10,15 @@ creation_rules:
           - *ij
           - *pakhet
 
-  - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
+  - path_regex: secrets/macbook\.(yaml|json|env|ini)$
     key_groups:
       - age:
           - *ij
+          - *macbook
+
+  - path_regex: secrets/shared\.(yaml|json|env|ini)$
+    key_groups:
+      - age:
+          - *ij
+          - *pakhet
+          - *macbook
