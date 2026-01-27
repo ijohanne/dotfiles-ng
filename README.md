@@ -15,6 +15,7 @@ Nix-based dotfiles for managing macOS and Linux configurations.
   - [Raspberry Pi 4 Image](#raspberry-pi-4-image)
 - [Reference](#reference)
   - [Terminal Tools](#terminal-tools)
+  - [Neovim](#neovim)
   - [Tmux](#tmux)
   - [Secrets Management](#secrets-management)
 
@@ -323,6 +324,37 @@ tldr <command>     # Quick help (tealdeer)
 ps                 # Modern process viewer (procs)
 dig <domain>       # DNS lookup (dog)
 ```
+
+### Neovim
+
+Configured via NixVim with Catppuccin theme. When `developer = true`, includes LSP support for Nix, Rust, Lua, and Markdown.
+
+#### General
+
+- **Leader:** `Space`
+- `<leader>w` — Save file
+- `<leader>q` — Close buffer
+- `<leader>ff` — Find files (Telescope)
+- `<leader>fg` — Live grep (Telescope)
+- `<leader>fb` — Find buffers (Telescope)
+- `<leader>gs` — Git status (Telescope)
+
+#### LSP (developer mode)
+
+- `gd` — Go to definition
+- `gr` — Show references
+- `K` — Hover documentation
+- `gl` — Show diagnostic
+- `[d` / `]d` — Previous/next diagnostic
+- `<leader>ca` — Code action
+
+#### Completion (developer mode)
+
+- `<Tab>` / `<S-Tab>` — Next/previous item
+- `<CR>` — Confirm selection
+- `<C-Space>` — Trigger completion
+- `<C-e>` — Abort completion
+- `<C-b>` / `<C-f>` — Scroll docs
 
 ### Tmux
 
