@@ -43,4 +43,11 @@
     owner = "screeny";
     group = "screeny";
   };
+
+  # Telegram bot token for Screeny
+  sops.secrets.screeny_telegram_bot_token = {
+    mode = "0400";
+    owner = "screeny";
+    group = "screeny";
+  };
 }
