@@ -19,7 +19,6 @@ in
     };
 
     secrets = {
-      cloudflare_unixpimps_net_api_key = {};
       nix_remote_builder_ssh_key = {
         mode = "0600";
       };
