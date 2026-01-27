@@ -199,6 +199,14 @@
     if [ -z "$GPG_AGENT_INFO" ]; then
       gpgconf --launch gpg-agent 2>/dev/null || true
     fi
+
+    # Copy remote builder SSH key to /etc/nix for nix-daemon access
+    if [ -f /run/secrets/nix_remote_builder_ssh_key ]; then
+      rm -f /etc/nix/builder_ed25519
+      cat /run/secrets/nix_remote_builder_ssh_key > /etc/nix/builder_ed25519
+      chmod 600 /etc/nix/builder_ed25519
+      chown root:wheel /etc/nix/builder_ed25519
+    fi
   '';
 
   local.dock = {
