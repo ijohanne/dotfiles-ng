@@ -49,7 +49,7 @@
     };
 
     opencode = {
-      url = "github:anomalyco/opencode/v1.1.36";
+      url = "github:anomalyco/opencode/v1.1.39";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -67,9 +67,14 @@
       url = "github:ijohanne/screeny";
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
+
+    claude-code-nix = {
+      url = "github:sadjow/claude-code-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, home-manager, nix-darwin, mac-app-util, nixvim, rust-overlay, flake-utils, opencode, disko, sops-nix, nixpkgs-stable, home-manager-stable, screeny, ... } @ inputs:
+  outputs = { self, nixpkgs, home-manager, nix-darwin, mac-app-util, nixvim, rust-overlay, flake-utils, opencode, disko, sops-nix, nixpkgs-stable, home-manager-stable, screeny, claude-code-nix, ... } @ inputs:
     let
       user = import ./lib/user.nix;
     in
