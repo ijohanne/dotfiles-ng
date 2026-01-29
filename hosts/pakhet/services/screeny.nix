@@ -20,6 +20,12 @@
       adminPasswordFile = config.sops.secrets.screeny_admin_password.path;
       geoipDatabasePath = "/var/lib/screeny/GeoLite2-Country.mmdb";
 
+      # PostgreSQL database configuration
+      database = {
+        type = "postgresql";
+        createLocally = true;
+      };
+
       # Telegram bot integration
       telegram = {
         enable = true;

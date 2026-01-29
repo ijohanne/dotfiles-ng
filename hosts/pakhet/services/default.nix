@@ -4,6 +4,7 @@
   imports = [
     ./nginx.nix
     ./mariadb.nix
+    ./postgresql.nix
     ./gitea.nix
     ./geoip-updater.nix
     ./pastebin.nix
