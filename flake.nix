@@ -109,6 +109,7 @@
           modules = [
             sops-nix.nixosModules.sops
             screeny.nixosModules.default
+            { nixpkgs.overlays = [ screeny.overlays.default ]; }
             ./hosts/pakhet/configuration.nix
             home-manager-stable.nixosModules.home-manager
             {
