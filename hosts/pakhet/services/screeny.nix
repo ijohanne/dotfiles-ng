@@ -21,10 +21,7 @@
       geoipDatabasePath = "/var/lib/screeny/GeoLite2-Country.mmdb";
 
       # PostgreSQL database configuration
-      database = {
-        type = "postgresql";
-        createLocally = true;
-      };
+      databaseType = "postgres";
 
       # Telegram bot integration
       telegram = {
