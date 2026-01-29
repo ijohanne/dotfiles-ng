@@ -5,6 +5,8 @@
     backend = {
       enable = true;
       package = inputs.screeny.packages.x86_64-linux.screeny-backend;
+      host = "0.0.0.0";
+      port = 3002;
       jwtSecretFile = config.sops.secrets.screeny_jwt_secret.path;
       adminPasswordFile = config.sops.secrets.screeny_admin_password.path;
 
