@@ -13,15 +13,12 @@
   services.screeny = {
     backend = {
       enable = true;
-      package = inputs.screeny.packages.x86_64-linux.screeny-backend;
+      package = inputs.screeny.packages.x86_64-linux.screeny-backend-postgres;
       host = "0.0.0.0";
       port = 3002;
       jwtSecretFile = config.sops.secrets.screeny_jwt_secret.path;
       adminPasswordFile = config.sops.secrets.screeny_admin_password.path;
       geoipDatabasePath = "/var/lib/screeny/GeoLite2-Country.mmdb";
-
-      # PostgreSQL database configuration
-      databaseType = "postgres";
 
       # Telegram bot integration
       telegram = {
