@@ -64,7 +64,7 @@
     };
 
     screeny = {
-      url = "github:ijohanne/screeny/feat/postgresql-support";
+      url = "github:ijohanne/screeny";
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 

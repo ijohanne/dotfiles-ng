@@ -516,16 +516,15 @@
         "rust-overlay": "rust-overlay_2"
       },
       "locked": {
-        "lastModified": 1769736772,
-        "narHash": "sha256-1/ecka9amLNTvJsZX5Dkbb6CN/ZqC49fJdU00tc+dfs=",
+        "lastModified": 1769738072,
+        "narHash": "sha256-VhKH4R1qtdEScbtdsDNr9jU4lCofRBIF2WpGjxjEQDs=",
         "owner": "ijohanne",
         "repo": "screeny",
-        "rev": "3f3695cb096290c2c32a22047c553c4c1218a57d",
+        "rev": "32f2b06212bb07f56fc82a13fc806c9df07a0ff3",
         "type": "github"
       },
       "original": {
         "owner": "ijohanne",
-        "ref": "feat/postgresql-support",
         "repo": "screeny",
         "type": "github"
       }
