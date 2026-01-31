@@ -64,7 +64,7 @@
     };
 
     screeny = {
-      url = "github:ijohanne/screeny";
+      url = "github:ijohanne/screeny/feat/graphql-subscriptions";
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 
