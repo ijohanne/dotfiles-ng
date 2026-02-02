@@ -44,6 +44,7 @@
       vim
     ];
     shell = pkgs.fish;
+    openssh.authorizedKeys.keys = user.sshKeys;
   };
 
   nixpkgs.config = {

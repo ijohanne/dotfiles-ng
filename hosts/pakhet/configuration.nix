@@ -98,9 +98,7 @@
     group = "adm";
     isNormalUser = true;
     shell = pkgs.fish;
-    openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKeFunHfY3vS2izkp7fMHk2bXuaalNijYcctAF2NGc1T"
-    ];
+    openssh.authorizedKeys.keys = user.sshKeys;
   };
 
   sops = {

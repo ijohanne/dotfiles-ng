@@ -23,9 +23,12 @@
     };
 
     taps = [
+      "steipete/tap"
     ];
 
     casks = [
+      "steipete/tap/codexbar"
+      "steipete/tap/repobar"
       "google-chrome"
       "slack"
       "libreoffice"

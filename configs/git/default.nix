@@ -1,6 +1,10 @@
 { config, pkgs, user, ... }:
 
 {
+  programs.gh = {
+    enable = true;
+  };
+
   programs.git = {
     enable = true;
     settings = {

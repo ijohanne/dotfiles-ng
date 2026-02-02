@@ -68,6 +68,15 @@
 
   services.lorri.enable = true;
 
+  services.openssh = {
+    enable = true;
+    extraConfig = ''
+      PasswordAuthentication no
+      KbdInteractiveAuthentication no
+      PermitRootLogin no
+    '';
+  };
+
   system.keyboard = {
     enableKeyMapping = true;
     remapCapsLockToControl = true;
