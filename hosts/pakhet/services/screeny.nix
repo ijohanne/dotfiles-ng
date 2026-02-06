@@ -34,6 +34,11 @@
       licenseKeyFile = config.sops.templates."screeny-maxmind-env".path;
     };
 
+    backup = {
+      enable = true;
+      schedule = "daily";
+    };
+
     nginx = {
       enable = true;
       package = inputs.screeny.packages.x86_64-linux.screeny-frontend;
