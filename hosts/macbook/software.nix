@@ -31,6 +31,7 @@
       "steipete/tap/repobar"
       "google-chrome"
       "slack"
+      "mattermost"
       "libreoffice"
       "discord"
       "docker-desktop"

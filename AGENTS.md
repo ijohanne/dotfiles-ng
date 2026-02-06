@@ -49,6 +49,7 @@ User settings are defined in `lib/user.nix`. Key settings include:
 - **Neovim**: Always use NixNeovim for all plugins and settings to be configured
 - **Catppuccin**: Theme consistency across tools (tmux, neovim, lazygit) using Mocha flavor with blue accent (#89b4fa)
 - **CLI Tools**: Uses home-manager programs module when available, otherwise adds to home.packages
+- **Packages**: Prefer nixpkgs over Homebrew casks for Darwin when the nix package builds successfully on Darwin. Fall back to Homebrew casks only when the nix package doesn't build or isn't available for Darwin
 
 ## Development Tips
 - Use 'nix store prefetch-file' to check hashes instead of 'nix-prefetch-url'

@@ -20,6 +20,7 @@
       vscode
       google-chrome
       spotify
+      mattermost-desktop
       sqlite
       ripgrep
       openssl

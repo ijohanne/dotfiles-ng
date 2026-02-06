@@ -60,6 +60,9 @@ in
           )
           cfg.entries;
       dockSetupScript = pkgs.writeShellScript "dock-setup" ''
+        killall Dock
+        while ! pgrep -xq "Dock"; do sleep 0.1; done
+        sleep 1
         echo >&2 "Resetting Dock."
         ${dockutil}/bin/dockutil --no-restart --remove all ${plist}
         ${createEntries}

@@ -238,6 +238,7 @@
       { path = "/Applications/Safari.app"; }
       { path = "/Applications/Google Chrome.app"; }
       { path = "/Applications/Slack.app"; }
+      { path = "/Applications/Mattermost.app"; }
       { path = "/Applications/Discord.app"; }
       { path = "/System/Applications/Messages.app"; }
       { path = "/Applications/WhatsApp.app"; }
