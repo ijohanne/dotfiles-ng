@@ -21,6 +21,11 @@
     startAt = "daily";
   };
 
+  systemd.services.borgbackup-job-mysql = {
+    after = [ "mysql-backup.service" ];
+    wants = [ "mysql-backup.service" ];
+  };
+
   systemd.services.borgbackup-job-screeny = {
     after = [ "screeny-backup.service" ];
     wants = [ "screeny-backup.service" ];
