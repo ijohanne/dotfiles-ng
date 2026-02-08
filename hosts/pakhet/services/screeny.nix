@@ -50,6 +50,33 @@
       };
     };
 
+    # K131-GoD clan — new instance, empty database
+    instances.k131-god = {
+      domain = "screeny-god.unixpimps.net";
+
+      backend = {
+        host = "0.0.0.0";
+        port = 3004;
+        databaseType = "postgres";
+        # postgres.database defaults to "screeny_k131_god"
+        jwtSecretFile = config.sops.secrets.screeny_k131_god_jwt_secret.path;
+        adminPasswordFile = config.sops.secrets.screeny_k131_god_admin_password.path;
+      };
+
+      frontendPort = 3003;
+
+      nginx = {
+        enableACME = true;
+        forceSSL = true;
+        disableGraphiQL = true;
+      };
+
+      backup = {
+        enable = true;
+        schedule = "daily";
+      };
+    };
+
     geoip = {
       enable = true;
       licenseKeyFile = config.sops.templates."screeny-maxmind-env".path;

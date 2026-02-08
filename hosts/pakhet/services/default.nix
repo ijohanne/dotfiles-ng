@@ -53,4 +53,17 @@
     owner = "screeny";
     group = "screeny";
   };
+
+  # Screeny k131-god secrets
+  sops.secrets.screeny_k131_god_jwt_secret = {
+    mode = "0400";
+    owner = "screeny";
+    group = "screeny";
+  };
+
+  sops.secrets.screeny_k131_god_admin_password = {
+    mode = "0400";
+    owner = "screeny";
+    group = "screeny";
+  };
 }
