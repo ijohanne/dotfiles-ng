@@ -54,5 +54,5 @@
     '';
   };
 
-  networking.firewall.allowedTCPPorts = [ 80 443 3002 ];
+  networking.firewall.allowedTCPPorts = [ 80 443 3002 3004 ];
 }
