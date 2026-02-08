@@ -15,6 +15,7 @@
 
     instances.k111-agw = {
       domain = "screeny.unixpimps.net";
+      clanType = "main";
 
       backend = {
         host = "0.0.0.0";
@@ -48,6 +49,7 @@
 
     instances.k131-god = {
       domain = "screeny-god.unixpimps.net";
+      clanType = "main";
 
       backend = {
         host = "0.0.0.0";
@@ -69,6 +71,11 @@
         enable = true;
         schedule = "daily";
       };
+    };
+
+    microEvents = {
+      enable = true;
+      package = inputs.screeny.packages.x86_64-linux.screeny-backend-sqlite;
     };
 
     geoip = {
