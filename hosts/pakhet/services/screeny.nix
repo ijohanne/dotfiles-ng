@@ -13,7 +13,6 @@
   services.screeny = {
     frontendPackage = inputs.screeny.packages.x86_64-linux.screeny-frontend;
 
-    # Existing clan — migrated from flat config
     instances.k111-agw = {
       domain = "screeny.unixpimps.net";
 
@@ -21,9 +20,6 @@
         host = "0.0.0.0";
         port = 3002;
         databaseType = "postgres";
-        # postgres.database defaults to "screeny_k111_agw"
-        # NOTE: Requires one-time DB rename on deploy:
-        #   sudo -u postgres psql -c "ALTER DATABASE screeny RENAME TO screeny_k111_agw;"
         jwtSecretFile = config.sops.secrets.screeny_k111_agw_jwt_secret.path;
         adminPasswordFile = config.sops.secrets.screeny_k111_agw_admin_password.path;
         geoipDatabasePath = "/var/lib/screeny/GeoLite2-Country.mmdb";
@@ -50,7 +46,6 @@
       };
     };
 
-    # K131-GoD clan — new instance, empty database
     instances.k131-god = {
       domain = "screeny-god.unixpimps.net";
 
@@ -58,7 +53,6 @@
         host = "0.0.0.0";
         port = 3004;
         databaseType = "postgres";
-        # postgres.database defaults to "screeny_k131_god"
         jwtSecretFile = config.sops.secrets.screeny_k131_god_jwt_secret.path;
         adminPasswordFile = config.sops.secrets.screeny_k131_god_admin_password.path;
       };
