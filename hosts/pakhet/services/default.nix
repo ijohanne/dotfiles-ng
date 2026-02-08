@@ -31,22 +31,24 @@
     group = "root";
   };
 
-  # TODO: Add secret screeny_jwt_secret to secrets/pakhet.yaml
-  sops.secrets.screeny_jwt_secret = {
+  # Screeny k111-agw secrets (renamed from screeny_*)
+  # NOTE: Rename keys in secrets/pakhet.yaml:
+  #   screeny_jwt_secret -> screeny_k111_agw_jwt_secret
+  #   screeny_admin_password -> screeny_k111_agw_admin_password
+  #   screeny_telegram_bot_token -> screeny_k111_agw_telegram_bot_token
+  sops.secrets.screeny_k111_agw_jwt_secret = {
     mode = "0400";
     owner = "screeny";
     group = "screeny";
   };
 
-  # TODO: Add secret screeny_admin_password to secrets/pakhet.yaml
-  sops.secrets.screeny_admin_password = {
+  sops.secrets.screeny_k111_agw_admin_password = {
     mode = "0400";
     owner = "screeny";
     group = "screeny";
   };
 
-  # Telegram bot token for Screeny
-  sops.secrets.screeny_telegram_bot_token = {
+  sops.secrets.screeny_k111_agw_telegram_bot_token = {
     mode = "0400";
     owner = "screeny";
     group = "screeny";
