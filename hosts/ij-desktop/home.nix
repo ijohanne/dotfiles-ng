@@ -50,6 +50,7 @@
       tealdeer
       procs
       doggo
+      notion-app-enhanced
     ];
   };
 

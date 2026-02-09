@@ -53,6 +53,10 @@
           tmux list-sessions
       end
 
+      function claude-unsafe
+          claude --dangerously-skip-permissions $argv
+      end
+
       abbr -a tldr tealdeer
       abbr -a ps procs
     '';

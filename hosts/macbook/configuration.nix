@@ -237,6 +237,7 @@
       { path = "${pkgs.ghostty-bin}/Applications/Ghostty.app"; }
       { path = "/Applications/Safari.app"; }
       { path = "/Applications/Google Chrome.app"; }
+      { path = "/Applications/Notion.app"; }
       { path = "/Applications/Slack.app"; }
       { path = "/Applications/Mattermost.app"; }
       { path = "/Applications/Discord.app"; }
