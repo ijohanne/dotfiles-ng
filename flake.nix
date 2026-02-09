@@ -64,7 +64,7 @@
     };
 
     screeny = {
-      url = "github:ijohanne/screeny";
+      url = "github:ijohanne/screeny/fix/tbhub-bun2nix";
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 
