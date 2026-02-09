@@ -82,5 +82,11 @@
       enable = true;
       licenseKeyFile = config.sops.templates."screeny-maxmind-env".path;
     };
+
+    tbhub = {
+      enable = true;
+      package = inputs.screeny.packages.x86_64-linux.tbhub;
+      domain = "tb.unixpimps.net";
+    };
   };
 }
