@@ -665,16 +665,15 @@
         "rust-overlay": "rust-overlay_2"
       },
       "locked": {
-        "lastModified": 1770684416,
+        "lastModified": 1770686194,
         "narHash": "sha256-GduF2onrxQzRv6oi23H9cJ1lk0QcSdq11hCpjrXvnp4=",
         "owner": "ijohanne",
         "repo": "screeny",
-        "rev": "0529def3dd02fa9392e845b12ab454ebe03a78d1",
+        "rev": "187f343b7ee696efed08ee221eb3069b3ddd7576",
         "type": "github"
       },
       "original": {
         "owner": "ijohanne",
-        "ref": "fix/tbhub-bun2nix",
         "repo": "screeny",
         "type": "github"
       }
