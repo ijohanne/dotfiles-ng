@@ -68,24 +68,34 @@
     group = "screeny";
   };
 
-  # Mercy secrets (DynamicUser = true, so root-owned is fine)
+  # Mercy secrets
   sops.secrets.mercy_auth_token = {
     mode = "0400";
+    owner = "mercy";
+    group = "mercy";
   };
 
   sops.secrets.mercy_tb_email = {
     mode = "0400";
+    owner = "mercy";
+    group = "mercy";
   };
 
   sops.secrets.mercy_tb_password = {
     mode = "0400";
+    owner = "mercy";
+    group = "mercy";
   };
 
   sops.secrets.mercy_admin_name = {
     mode = "0400";
+    owner = "mercy";
+    group = "mercy";
   };
 
   sops.secrets.mercy_admin_password = {
     mode = "0400";
+    owner = "mercy";
+    group = "mercy";
   };
 }
