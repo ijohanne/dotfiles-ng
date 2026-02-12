@@ -14,5 +14,6 @@
     adminUserFile = config.sops.secrets.mercy_admin_name.path;
     adminPasswordFile = config.sops.secrets.mercy_admin_password.path;
     sessionSecretFile = config.sops.secrets.mercy_auth_token.path;
+    maxDetectTasks = 4;
   };
 }
