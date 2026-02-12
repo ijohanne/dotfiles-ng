@@ -68,13 +68,18 @@
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 
+    mercy = {
+      url = "github:ijohanne/mercy";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
+    };
+
     claude-code-nix = {
       url = "github:sadjow/claude-code-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, nix-darwin, mac-app-util, nixvim, rust-overlay, flake-utils, opencode, disko, sops-nix, nixpkgs-stable, home-manager-stable, screeny, claude-code-nix, ... } @ inputs:
+  outputs = { self, nixpkgs, home-manager, nix-darwin, mac-app-util, nixvim, rust-overlay, flake-utils, opencode, disko, sops-nix, nixpkgs-stable, home-manager-stable, screeny, mercy, claude-code-nix, ... } @ inputs:
     let
       user = import ./lib/user.nix;
     in
@@ -109,6 +114,7 @@
           modules = [
             sops-nix.nixosModules.sops
             screeny.nixosModules.default
+            mercy.nixosModules.default
             { nixpkgs.overlays = [ screeny.overlays.default ]; }
             ./hosts/pakhet/configuration.nix
             home-manager-stable.nixosModules.home-manager
