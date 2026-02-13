@@ -5,7 +5,7 @@
     enable = true;
     backendPackage = inputs.mercy.packages.x86_64-linux.mercy-backend;
     frontendPackage = inputs.mercy.packages.x86_64-linux.mercy-frontend;
-    kingdoms = "109,110,112,113,114";
+    kingdoms = "20,24,27,28,29";
     scanPattern = "known";
     domain = "mercy.unixpimps.net";
     frontendPort = 3005;
