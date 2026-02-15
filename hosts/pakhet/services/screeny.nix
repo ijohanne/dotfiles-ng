@@ -47,6 +47,33 @@
       };
     };
 
+    instances.k111-test = {
+      domain = "screeny-test.unixpimps.net";
+      clanType = "main";
+
+      backend = {
+        host = "0.0.0.0";
+        port = 3006;
+        databaseType = "postgres";
+        jwtSecretFile = config.sops.secrets.screeny_k111_test_jwt_secret.path;
+        adminPasswordFile = config.sops.secrets.screeny_k111_test_admin_password.path;
+        questionnairesEnabled = true;
+      };
+
+      frontendPort = 3005;
+
+      nginx = {
+        enableACME = true;
+        forceSSL = true;
+        disableGraphiQL = true;
+      };
+
+      backup = {
+        enable = true;
+        schedule = "daily";
+      };
+    };
+
     instances.k131-god = {
       domain = "screeny-god.unixpimps.net";
       clanType = "main";
