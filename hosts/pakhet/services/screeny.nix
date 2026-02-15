@@ -60,7 +60,7 @@
         questionnairesEnabled = true;
       };
 
-      frontendPort = 3005;
+      frontendPort = 3007;
 
       nginx = {
         enableACME = true;
