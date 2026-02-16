@@ -906,11 +906,11 @@
         "rust-overlay": "rust-overlay_3"
       },
       "locked": {
-        "lastModified": 1771258602,
-        "narHash": "sha256-6shmJoT/5IAmMlnNXC9onTN2cYApbyJXN/45LB19lUU=",
+        "lastModified": 1771259043,
+        "narHash": "sha256-/KtNxKnRnVBXFrbcbR54oGoIi/d6EmguwY4ae7BpvMo=",
         "owner": "ijohanne",
         "repo": "screeny",
-        "rev": "c8a8e3e4353d1ba64d85084472a207117484b404",
+        "rev": "eba9b810b74d9e907174d764b30ab13c47d9bed9",
         "type": "github"
       },
       "original": {
