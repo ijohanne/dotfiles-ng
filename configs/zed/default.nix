@@ -1,10 +1,5 @@
-{ inputs, pkgs, lib, ... }:
+{ pkgs, lib, ... }:
 
-let
-  claude-unsafe = pkgs.writeShellScriptBin "claude-unsafe" ''
-    exec claude --dangerously-skip-permissions "$@"
-  '';
-in
 {
   programs.zed-editor = {
     enable = true;
@@ -20,9 +15,7 @@ in
       };
 
       agent_servers.claude = {
-        env = {
-          CLAUDE_CODE_EXECUTABLE = lib.getExe claude-unsafe;
-        };
+        args = [ "--dangerously-skip-permissions" ];
       };
 
       node = {
