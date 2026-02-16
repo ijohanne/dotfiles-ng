@@ -10,6 +10,12 @@
     experimental-features = [ "nix-command" "flakes" ];
     builders-use-substitutes = true;
     trusted-users = [ "root" "@admin" user.username ];
+    substituters = [
+      "https://cache.garnix.io"
+    ];
+    trusted-public-keys = [
+      "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
+    ];
   };
 
   nix.gc = {
@@ -235,6 +241,7 @@
     username = user.username;
     entries = [
       { path = "${pkgs.ghostty-bin}/Applications/Ghostty.app"; }
+      { path = "${pkgs.zed-editor}/Applications/Zed.app"; }
       { path = "/Applications/Safari.app"; }
       { path = "/Applications/Google Chrome.app"; }
       { path = "/Applications/Notion.app"; }

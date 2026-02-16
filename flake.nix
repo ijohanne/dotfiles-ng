@@ -77,9 +77,14 @@
       url = "github:sadjow/claude-code-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    beads = {
+      url = "github:steveyegge/beads/v0.49.5";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, home-manager, nix-darwin, mac-app-util, nixvim, rust-overlay, flake-utils, opencode, disko, sops-nix, nixpkgs-stable, home-manager-stable, screeny, mercy, claude-code-nix, ... } @ inputs:
+  outputs = { self, nixpkgs, home-manager, nix-darwin, mac-app-util, nixvim, rust-overlay, flake-utils, opencode, disko, sops-nix, nixpkgs-stable, home-manager-stable, screeny, mercy, claude-code-nix, beads, ... } @ inputs:
     let
       user = import ./lib/user.nix;
     in

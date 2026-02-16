@@ -47,6 +47,7 @@
       tealdeer
       procs
       doggo
+      inputs.beads.packages.${pkgs.system}.default
     ];
   };
 

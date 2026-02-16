@@ -119,6 +119,18 @@ sudo nixos-rebuild switch --flake .#ij-desktop
    darwin-rebuild switch --flake .#macbook
    ```
 
+#### First Run
+
+On a fresh setup, pass the Zed binary cache substituters to avoid building Zed from source:
+
+```bash
+darwin-rebuild switch --flake .#macbook \
+  --option extra-substituters "https://zed.cachix.org https://cache.garnix.io" \
+  --option extra-trusted-public-keys "zed.cachix.org-1:/pHQ6dpMsAZk2DiP4WCL0p9YDNKWj2Q5FL20bNmw1cU= cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
+```
+
+After this first rebuild, the substituters are persisted in `nix.settings` and subsequent rebuilds will use the cache automatically.
+
 #### Post-Installation
 
 - Restart your terminal to load fish shell

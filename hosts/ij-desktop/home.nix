@@ -51,6 +51,7 @@
       procs
       doggo
       notion-app-enhanced
+      inputs.beads.packages.${pkgs.system}.default
     ];
   };
 

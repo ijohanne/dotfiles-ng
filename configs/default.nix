@@ -4,5 +4,6 @@
     ./tmux
     ./fish
     ./bash
+    ./zed
   ];
 }
