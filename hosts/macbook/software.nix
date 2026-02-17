@@ -40,6 +40,7 @@
       "proton-pass"
       "protonvpn"
       "notion"
+      "vibetunnel"
     ];
 
     masApps = {
