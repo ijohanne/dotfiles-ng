@@ -49,7 +49,7 @@
     };
 
     opencode = {
-      url = "github:anomalyco/opencode/v1.1.39";
+      url = "github:anomalyco/opencode/v1.2.6";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -74,7 +74,7 @@
     };
 
     claude-code-nix = {
-      url = "github:sadjow/claude-code-nix";
+      url = "github:sadjow/claude-code-nix/v2.1.44";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
