@@ -25,6 +25,9 @@
         adminPasswordFile = config.sops.secrets.screeny_k111_agw_admin_password.path;
         geoipDatabasePath = "/var/lib/screeny/GeoLite2-Country.mmdb";
 
+        layoutsEnabled = true;
+        layoutCalculatorVersions = [ "V2" ];
+
         telegram = {
           enable = true;
           botTokenFile = config.sops.secrets.screeny_k111_agw_telegram_bot_token.path;
