@@ -58,6 +58,7 @@
         jwtSecretFile = config.sops.secrets.screeny_k111_test_jwt_secret.path;
         adminPasswordFile = config.sops.secrets.screeny_k111_test_admin_password.path;
         questionnairesEnabled = true;
+        layoutsEnabled = true;
       };
 
       frontendPort = 3007;
