@@ -8,6 +8,13 @@
       metricsAddress = "0.0.0.0";
       metricsPort = 9090;
       noAuth = true;
+
+      nginx = {
+        enable = true;
+        domain = "cctax.grpc.unixpimps.net";
+        port = 80;
+        acme = false;
+      };
     };
   };
 }
