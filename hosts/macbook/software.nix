@@ -23,12 +23,17 @@
     };
 
     taps = [
+      "assimelha/tap"
+      "dicklesworthstone/tap"
       "steipete/tap"
     ];
 
+    brews = [
+      "assimelha/tap/bdui"
+      "dicklesworthstone/tap/bv"
+    ];
+
     casks = [
-      "steipete/tap/codexbar"
-      "steipete/tap/repobar"
       "google-chrome"
       "slack"
       "mattermost"
@@ -45,6 +50,7 @@
 
     masApps = {
       "WhatsApp" = 310633997;
+      "Xcode" = 497799835;
     };
   };
 }
