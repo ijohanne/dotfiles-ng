@@ -1,4 +1,4 @@
-{ ... }:
+{ config, ... }:
 
 {
   services.grpc-proxier = {
@@ -7,7 +7,11 @@
       upstreamAddress = "10.255.101.245:20000";
       metricsAddress = "0.0.0.0";
       metricsPort = 9090;
-      noAuth = true;
+
+      users.admin = {
+        allowedCalls = [ "*" ];
+        passwordHashFile = config.sops.secrets.grpc_proxier_cctax_admin_password.path;
+      };
 
       nginx = {
         enable = true;

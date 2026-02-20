@@ -82,6 +82,13 @@
     group = "screeny";
   };
 
+  # gRPC proxier secrets
+  sops.secrets.grpc_proxier_cctax_admin_password = {
+    mode = "0400";
+    owner = "grpc-proxier";
+    group = "grpc-proxier";
+  };
+
   # Mercy secrets
   sops.secrets.mercy_auth_token = {
     mode = "0400";
