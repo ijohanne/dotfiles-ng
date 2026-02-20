@@ -13,6 +13,7 @@
     ./kubernetes.nix
     ./screeny.nix
     ./mercy.nix
+    ./grpc-proxier.nix
   ];
 
   # TODO: Add secret cloudflare_api_key to secrets/pakhet.yaml
