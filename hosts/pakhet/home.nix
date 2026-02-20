@@ -281,7 +281,7 @@
 
         # FZF
         fzf-vim
-        fzfWrapper
+        fzf-wrapper
       ];
 
       extraLuaConfig = ''

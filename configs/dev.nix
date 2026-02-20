@@ -46,7 +46,7 @@ let
     telescope-nvim
     grug-far-nvim
     fzf-vim
-    fzfWrapper
+    fzf-wrapper
     flutter-tools-nvim
     plenary-nvim
   ];
@@ -59,7 +59,7 @@ let
     telescope-nvim
     grug-far-nvim
     fzf-vim
-    fzfWrapper
+    fzf-wrapper
   ];
 
   lspKeymaps = [
