@@ -10,7 +10,7 @@
 
       users.admin = {
         allowedCalls = [ "*" ];
-        passwordHashFile = config.sops.secrets.grpc_proxier_cctax_admin_password.path;
+        passwordFile = config.sops.secrets.grpc_proxier_cctax_admin_password.path;
       };
 
       nginx = {

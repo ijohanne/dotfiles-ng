@@ -555,11 +555,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1771586073,
-        "narHash": "sha256-U3+SFjazVI+oQNMfYiC5uPHKEyLobmloLBjsfKiH1q0=",
+        "lastModified": 1771592650,
+        "narHash": "sha256-78Hpw0BR/m3/zZbVR6zaNeOVXEREQ25sSVrL4YjfSww=",
         "owner": "ijohanne",
         "repo": "grpc-proxier",
-        "rev": "774e4704d84d1d659d4918e3e2099862e5289967",
+        "rev": "4a705f444c13b2d99ee7e95c461006389ad5f46b",
         "type": "github"
       },
       "original": {
