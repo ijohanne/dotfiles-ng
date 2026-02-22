@@ -73,7 +73,7 @@
       "inputs": {
         "flake-parts": "flake-parts_5",
         "import-tree": "import-tree_3",
-        "nixpkgs": "nixpkgs_8",
+        "nixpkgs": "nixpkgs_9",
         "systems": "systems_12",
         "treefmt-nix": "treefmt-nix_5"
       },
@@ -1082,6 +1082,22 @@
     },
     "nixpkgs_8": {
       "locked": {
+        "lastModified": 1771574726,
+        "narHash": "sha256-D1PA3xQv/s4W3lnR9yJFSld8UOLr0a/cBWMQMXS+1Qg=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "c217913993d6c6f6805c3b1a3bda5e639adfde6d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-25.11",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_9": {
+      "locked": {
         "lastModified": 1764950072,
         "narHash": "sha256-BmPWzogsG2GsXZtlT+MTcAWeDK5hkbGRZTeZNW42fwA=",
         "owner": "NixOS",
@@ -1144,18 +1160,16 @@
         "bun2nix": "bun2nix_2",
         "flake-utils": "flake-utils_7",
         "git-hooks": "git-hooks_3",
-        "nixpkgs": [
-          "nixpkgs-stable"
-        ],
+        "nixpkgs": "nixpkgs_8",
         "nixpkgs-bun": "nixpkgs-bun",
         "rust-overlay": "rust-overlay_3"
       },
       "locked": {
-        "lastModified": 1771718904,
-        "narHash": "sha256-ZchgTDcJqhMjGMjFKNVrRGYfrgXvhSX8jYQR96EfWRk=",
+        "lastModified": 1771719126,
+        "narHash": "sha256-LOYeH58TgSrjwx024vwdh5mj4UN3xeSaI+MXuXiIt0M=",
         "owner": "ijohanne",
         "repo": "pdf-detective",
-        "rev": "e76e0735e12427fbc78580e43e2aacb3eef690e2",
+        "rev": "e037a448dc7ea97478dc35a77dbc44cef5b99434",
         "type": "github"
       },
       "original": {
