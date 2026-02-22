@@ -80,7 +80,6 @@
 
     pdf-detective = {
       url = "github:ijohanne/pdf-detective";
-      inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 
     claude-code-nix = {
