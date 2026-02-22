@@ -1165,11 +1165,11 @@
         "rust-overlay": "rust-overlay_3"
       },
       "locked": {
-        "lastModified": 1771721414,
-        "narHash": "sha256-gjJKvKtilFbIv7tnrTsGSErbwXw7tSE05BVLawRLOOo=",
+        "lastModified": 1771721940,
+        "narHash": "sha256-3anjSiFA+4o5Zbk8LoAce3B3BmFuAhYdB6Lo+fyshbY=",
         "owner": "ijohanne",
         "repo": "pdf-detective",
-        "rev": "abf1b2c40edec661be47a90b24d8e514e449295e",
+        "rev": "8f76b62f3d7c958d42b20af02e18f2fd02257947",
         "type": "github"
       },
       "original": {
