@@ -78,6 +78,11 @@
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 
+    pdf-detective = {
+      url = "github:ijohanne/pdf-detective";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
+    };
+
     claude-code-nix = {
       url = "github:sadjow/claude-code-nix/v2.1.50";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -89,7 +94,29 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, nix-darwin, mac-app-util, nixvim, rust-overlay, flake-utils, opencode, disko, sops-nix, nixpkgs-stable, home-manager-stable, screeny, mercy, grpc-proxier, claude-code-nix, beads, ... } @ inputs:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      home-manager,
+      nix-darwin,
+      mac-app-util,
+      nixvim,
+      rust-overlay,
+      flake-utils,
+      opencode,
+      disko,
+      sops-nix,
+      nixpkgs-stable,
+      home-manager-stable,
+      screeny,
+      mercy,
+      grpc-proxier,
+      pdf-detective,
+      claude-code-nix,
+      beads,
+      ...
+    }@inputs:
     let
       user = import ./lib/user.nix;
     in
@@ -126,7 +153,13 @@
             screeny.nixosModules.default
             mercy.nixosModules.default
             grpc-proxier.nixosModules.default
-            { nixpkgs.overlays = [ screeny.overlays.default grpc-proxier.overlays.default ]; }
+            pdf-detective.nixosModules.default
+            {
+              nixpkgs.overlays = [
+                screeny.overlays.default
+                grpc-proxier.overlays.default
+              ];
+            }
             ./hosts/pakhet/configuration.nix
             home-manager-stable.nixosModules.home-manager
             {

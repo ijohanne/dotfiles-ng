@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
   imports = [
@@ -14,10 +19,11 @@
     ./screeny.nix
     ./mercy.nix
     ./grpc-proxier.nix
+    ./pdf-detective.nix
   ];
 
   # TODO: Add secret cloudflare_api_key to secrets/pakhet.yaml
-  sops.secrets.cloudflare_api_key = {};
+  sops.secrets.cloudflare_api_key = { };
 
   # TODO: Add secret maxmind_api_key to secrets/pakhet.yaml
   sops.secrets.maxmind_api_key = {
