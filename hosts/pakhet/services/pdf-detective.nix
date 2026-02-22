@@ -21,8 +21,8 @@
 
     nginx = {
       enable = true;
-      domain = "pdf-checker.eu";
-      aliases = [ "www.pdf-checker.eu" ];
+      domain = "pdfdetective.eu";
+      aliases = [ "www.pdfdetective.eu" ];
       enableACME = true;
     };
   };
