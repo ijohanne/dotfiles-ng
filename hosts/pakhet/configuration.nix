@@ -24,6 +24,11 @@
     sandbox = "relaxed";
   };
 
+  security.pam.loginLimits = [
+    { domain = "*"; type = "soft"; item = "nofile"; value = "8192"; }
+    { domain = "*"; type = "hard"; item = "nofile"; value = "1048576"; }
+  ];
+
   nix.gc = {
     automatic = true;
     dates = "weekly";
