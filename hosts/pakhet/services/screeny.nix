@@ -25,6 +25,7 @@
         adminPasswordFile = config.sops.secrets.screeny_k111_agw_admin_password.path;
         geoipDatabasePath = "/var/lib/screeny/GeoLite2-Country.mmdb";
 
+        questionnairesEnabled = true;
         layoutsEnabled = true;
         layoutCalculatorVersions = [ "V2" ];
 
