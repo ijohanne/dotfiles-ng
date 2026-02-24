@@ -22,6 +22,7 @@ in
       nix_remote_builder_ssh_key = {
         mode = "0600";
       };
+      nix_builder_access_tokens = { };
     };
   };
 

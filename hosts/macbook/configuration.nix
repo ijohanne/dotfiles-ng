@@ -234,6 +234,17 @@
       chmod 600 /etc/nix/builder_ed25519
       chown root:wheel /etc/nix/builder_ed25519
     fi
+
+    # Copy GitHub access token to user nix config for private flake inputs
+    if [ -f /run/secrets/nix_builder_access_tokens ]; then
+      USER_NIX_DIR="/Users/${user.username}/.config/nix"
+      mkdir -p "$USER_NIX_DIR"
+      cp /run/secrets/nix_builder_access_tokens "$USER_NIX_DIR/access-tokens.conf"
+      chmod 600 "$USER_NIX_DIR/access-tokens.conf"
+      chown ${user.username}:staff "$USER_NIX_DIR/access-tokens.conf"
+      grep -q '!include' "$USER_NIX_DIR/nix.conf" 2>/dev/null || echo '!include access-tokens.conf' >> "$USER_NIX_DIR/nix.conf"
+      chown ${user.username}:staff "$USER_NIX_DIR/nix.conf"
+    fi
   '';
 
   local.dock = {
