@@ -22,6 +22,8 @@
     ./pdf-detective.nix
   ];
 
+  sops.secrets.nix_builder_access_tokens = { };
+
   # TODO: Add secret cloudflare_api_key to secrets/pakhet.yaml
   sops.secrets.cloudflare_api_key = { };
 

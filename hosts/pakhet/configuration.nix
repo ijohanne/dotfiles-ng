@@ -24,6 +24,10 @@
     sandbox = "relaxed";
   };
 
+  nix.extraOptions = ''
+    !include ${config.sops.secrets.nix_builder_access_tokens.path}
+  '';
+
   security.pam.loginLimits = [
     { domain = "*"; type = "soft"; item = "nofile"; value = "8192"; }
     { domain = "*"; type = "hard"; item = "nofile"; value = "1048576"; }
