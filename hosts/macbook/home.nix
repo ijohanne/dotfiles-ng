@@ -23,7 +23,6 @@
       difftastic
       nushell
       atuin
-      mpv
       python3
       jq
       yq
