@@ -41,7 +41,7 @@
       yubikey-agent
       age-plugin-yubikey
       starship
-      inputs.opencode.packages.${pkgs.system}.default.out
+      #inputs.opencode.packages.${pkgs.system}.default.out
       inputs.claude-code-nix.packages.${pkgs.system}.claude-code
       tealdeer
       procs
