@@ -1,0 +1,52 @@
+{ network, ... }:
+
+{
+  services.unbound = {
+    enable = true;
+    resolveLocalQueries = false;
+    enableRootTrustAnchor = true;
+    settings = {
+      server = {
+        interface = [ "0.0.0.0" "127.0.0.1" ];
+        access-control = [ "10.0.0.0/8 allow" "127.0.0.0/8 allow" ];
+        root-hints = builtins.fetchurl {
+          url = "https://www.internic.net/domain/named.root";
+          sha256 = "sha256-Q95IIxPzsL2swJvFqA1u/Ux/R8u984uguzgLXz5gAag=";
+        };
+        do-tcp = "yes";
+        do-udp = "yes";
+        hide-identity = "yes";
+        hide-version = "yes";
+        harden-glue = "yes";
+        harden-dnssec-stripped = "yes";
+        qname-minimisation = "yes";
+        use-caps-for-id = "yes";
+        edns-buffer-size = 1232;
+        cache-min-ttl = 0;
+        cache-max-ttl = 14400;
+        prefetch = "yes";
+        serve-expired = "yes";
+        serve-expired-ttl = "7200";
+        num-threads = 8;
+        msg-cache-slabs = 8;
+        rrset-cache-slabs = 8;
+        infra-cache-slabs = 8;
+        key-cache-slabs = 8;
+        rrset-cache-size = "256m";
+        rrset-roundrobin = "yes";
+        msg-cache-size = "128m";
+        so-rcvbuf = "1m";
+        so-reuseport = "yes";
+        statistics-interval = 0;
+        extended-statistics = "yes";
+        statistics-cumulative = "yes";
+        local-zone = network.reverseZones;
+        local-data = network.forwardDns ++ network.reverseDns;
+      };
+      remote-control = {
+        control-enable = true;
+        control-use-cert = "no";
+      };
+    };
+  };
+}

@@ -1,10 +1,12 @@
+{ network, ... }:
+
 { config, ... }:
 
 {
   services.grpc-proxier = {
     instances.node-cctax = {
       listenPort = 4001;
-      upstreamAddress = "10.255.101.245:20000";
+      upstreamAddress = "${network.hosts.cctax-node.ip}:20000";
       metricsAddress = "0.0.0.0";
       metricsPort = 9090;
 

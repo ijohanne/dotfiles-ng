@@ -1,3 +1,5 @@
+{ network, ... }:
+
 {
   config,
   pkgs,
@@ -14,11 +16,11 @@
     ./geoip-updater.nix
     ./pastebin.nix
     ./backup.nix
-    ./estepona.nix
+    (import ./estepona.nix { inherit network; })
     ./kubernetes.nix
     ./screeny.nix
     ./mercy.nix
-    ./grpc-proxier.nix
+    (import ./grpc-proxier.nix { inherit network; })
     ./pdf-detective.nix
   ];
 

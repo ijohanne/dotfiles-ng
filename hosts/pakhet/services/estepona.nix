@@ -1,41 +1,41 @@
-{ ... }:
+{ network, ... }:
 
 {
   services.nginx = {
-    virtualHosts."printcam.est.unixpimps.net" = {
+    virtualHosts."printcam.${network.domain}" = {
       forceSSL = true;
       enableACME = true;
       acmeRoot = null;
       locations."/" = {
-        proxyPass = "http://10.255.101.244/webcam/?action=stream";
+        proxyPass = "http://${network.hosts.sobek-wired.ip}/webcam/?action=stream";
       };
     };
 
-    virtualHosts."obico.est.unixpimps.net" = {
+    virtualHosts."obico.${network.domain}" = {
       forceSSL = true;
       enableACME = true;
       acmeRoot = null;
       locations."/" = {
-        proxyPass = "http://10.255.101.91:3334/";
+        proxyPass = "http://${network.hosts.obico.ip}:3334/";
         proxyWebsockets = true;
       };
     };
 
-    virtualHosts."grafana.est.unixpimps.net" = {
+    virtualHosts."grafana.${network.domain}" = {
       forceSSL = true;
       enableACME = true;
       acmeRoot = null;
       locations."/" = {
-        proxyPass = "http://10.255.254.254:2342";
+        proxyPass = "http://${network.hosts.goose.ips.mgnt}:2342";
       };
     };
 
-    virtualHosts."cctax-couch.est.unixpimps.net" = {
+    virtualHosts."cctax-couch.${network.domain}" = {
       forceSSL = true;
       enableACME = true;
       acmeRoot = null;
       locations."/" = {
-        proxyPass = "http://10.255.101.209:5984/";
+        proxyPass = "http://${network.hosts.cctax-couch.ip}:5984/";
         proxyWebsockets = true;
         extraConfig = ''
           client_max_body_size 4G;

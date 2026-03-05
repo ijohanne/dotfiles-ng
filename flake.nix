@@ -7,7 +7,7 @@
     };
 
     nixpkgs-stable = {
-      url = "github:NixOS/nixpkgs/nixos-25.05";
+      url = "github:NixOS/nixpkgs/nixos-25.11";
     };
 
     home-manager = {
@@ -16,7 +16,7 @@
     };
 
     home-manager-stable = {
-      url = "github:nix-community/home-manager/release-25.05";
+      url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 
@@ -91,6 +91,10 @@
       url = "github:steveyegge/beads/v0.49.5";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    ijohanne-nur = {
+      url = "github:ijohanne/nur-packages";
+    };
   };
 
   outputs =
@@ -114,6 +118,7 @@
       pdf-detective,
       claude-code-nix,
       beads,
+      ijohanne-nur,
       ...
     }@inputs:
     let
@@ -161,7 +166,7 @@
             }
             ./hosts/pakhet/configuration.nix
             home-manager-stable.nixosModules.home-manager
-            {
+            ({ config, pkgs, ... }: {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.extraSpecialArgs = { inherit user inputs; };
@@ -170,7 +175,53 @@
                   ./hosts/pakhet/home.nix
                 ];
               };
+              home-manager.users.mj = {
+                imports = [ ./configs/users/mj.nix ];
+                home.packages = [
+                  (pkgs.writeShellScriptBin "nixos-rebuild" ''
+                    cd ~/git/dotfiles-ng && git add -A && sudo nixos-rebuild switch --flake .#${config.networking.hostName}
+                  '')
+                ];
+              };
+            })
+          ];
+        };
+
+        goose = nixpkgs-stable.lib.nixosSystem {
+          system = "x86_64-linux";
+          specialArgs = { inherit inputs self user; };
+          modules = [
+            sops-nix.nixosModules.sops
+            ijohanne-nur.nixosModules.multicast-relay
+            #ijohanne-nur.nixosModules.prometheus-hue-exporter
+            #ijohanne-nur.nixosModules.prometheus-nftables-exporter
+            #ijohanne-nur.nixosModules.prometheus-netatmo-exporter
+            #ijohanne-nur.nixosModules.prometheus-teamspeak3-exporter
+            {
+              nixpkgs.overlays = [
+                ijohanne-nur.overlays.default
+              ];
             }
+            ./hosts/goose/configuration.nix
+            home-manager-stable.nixosModules.home-manager
+            ({ config, pkgs, ... }: {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.extraSpecialArgs = { inherit user inputs; };
+              home-manager.users.${user.username} = {
+                imports = [
+                  ./hosts/goose/home.nix
+                ];
+              };
+              home-manager.users.mj = {
+                imports = [ ./configs/users/mj.nix ];
+                home.packages = [
+                  (pkgs.writeShellScriptBin "nixos-rebuild" ''
+                    cd ~/git/dotfiles-ng && git add -A && sudo nixos-rebuild switch --flake .#${config.networking.hostName}
+                  '')
+                ];
+              };
+            })
           ];
         };
 
@@ -228,5 +279,28 @@
           darwin = self.darwinConfigurations.macbook.system;
         };
       };
-    };
+    }
+    // flake-utils.lib.eachDefaultSystem (system:
+      let
+        pkgs = nixpkgs.legacyPackages.${system};
+        bd = beads.packages.${system}.default;
+        bd-init = pkgs.writeShellScriptBin "bd-init" ''
+          set -euo pipefail
+          ${bd}/bin/bd init --branch beads-sync "$@"
+          rm -f AGENTS.md
+        '';
+      in
+      {
+        devShells.default = pkgs.mkShell {
+          packages = with pkgs; [
+            nixpkgs-fmt
+            sops
+            age
+            nix-output-monitor
+            bd
+            bd-init
+          ];
+        };
+      }
+    );
 }

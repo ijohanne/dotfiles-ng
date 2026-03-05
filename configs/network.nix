@@ -1,0 +1,134 @@
+{ lib }:
+let
+  domain = "est.unixpimps.net";
+
+  hosts = {
+    # --- Gateway (goose) ---
+    goose = rec {
+      ips = {
+        wifi   = "10.255.100.254";
+        wired  = "10.255.101.254";
+        guest  = "10.255.150.254";
+        camera = "10.255.200.254";
+        mgnt   = "10.255.254.254";
+      };
+      ip = ips.mgnt;
+      dns = [ "r0" ];
+    };
+    goose-ipmi = { ip = "10.255.254.210"; dns = [ "r0.ipmi" ]; };
+
+    # --- Servers ---
+    pakhet        = { ip = "10.255.101.200"; mac = "58:9c:fc:0e:56:98"; };
+    fatty         = { ip = "10.255.101.243"; mac = "a8:a1:59:3e:da:ef"; };
+    sobek-wired   = { ip = "10.255.101.244"; mac = "dc:a6:32:08:7c:32"; dns = [ "sobek" ]; };
+    chronos-wired = { ip = "10.255.101.202"; mac = "dc:a6:32:34:1e:6d"; dns = [ "chronos" ]; };
+    hapi          = { ip = "10.255.101.242"; mac = "b8:27:eb:ff:f8:5f"; };
+    cctax-couch   = { ip = "10.255.101.209"; mac = "58:9c:fc:04:29:b3"; };
+    cctax-node    = { ip = "10.255.101.245"; };
+    obico         = { ip = "10.255.101.91"; };
+    amon          = { ip = "10.255.101.241"; mac = "dc:a6:32:60:1c:82"; };
+
+    # --- Infrastructure ---
+    cloudkey      = { ip = "10.255.254.240"; mac = "d0:21:f9:64:97:b3"; dns = [ "cloudkey" ]; };
+    fatty-ipmi    = { ip = "10.255.254.211"; mac = "04:42:1a:1c:6c:c1"; dns = [ "fatty.ipmi" ]; };
+    unvr          = { ip = "10.255.200.253"; mac = "e4:38:83:74:5d:a1"; };
+
+    # --- Wireless devices ---
+    chronos       = { ip = "10.255.100.202"; mac = "dc:a6:32:34:1e:6e"; dns = [ "chronos-wifi" ]; };
+    sobek         = { ip = "10.255.100.203"; mac = "dc:a6:32:08:7c:33"; dns = [ "sobek-wifi" ]; };
+    ij-laptop     = { ip = "10.255.100.201"; mac = "c8:e2:65:2d:7e:8b"; };
+    canon-printserver = { ip = "10.255.100.204"; mac = "dc:a6:32:34:02:6f"; };
+    dyson-office  = { ip = "10.255.100.205"; mac = "c8:ff:77:27:b3:f1"; };
+    dyson-livingroom = { ip = "10.255.100.206"; mac = "c8:ff:77:67:34:b5"; };
+    dyson-ian     = { ip = "10.255.100.207"; mac = "c8:ff:77:67:34:7f"; };
+
+    # --- Printers ---
+    brother-hallway = { ip = "10.255.101.230"; mac = "b4:22:00:8c:a4:a4"; dns = [ "brother-hallway" ]; };
+    label-hallway   = { ip = "10.255.100.237"; mac = "ac:50:de:0a:d4:5c"; dns = [ "label-hallway" ]; };
+    canon-hallway   = { ip = "10.255.100.236"; mac = "6c:3c:7c:13:0c:cc"; dns = [ "canon-hallway" ]; };
+
+    # --- Smart home ---
+    main-bridge          = { ip = "10.255.101.240"; mac = "00:17:88:a7:27:9c"; };
+    office-ian-plug      = { ip = "10.255.100.231"; mac = "6c:5a:b0:2e:79:70"; };
+    office-martin-plug   = { ip = "10.255.100.232"; mac = "54:af:97:1d:72:c4"; };
+    livingroom-heater-plug = { ip = "10.255.100.233"; mac = "54:af:97:1d:63:6c"; };
+    terrace-laundry-plug = { ip = "10.255.100.234"; mac = "54:af:97:1d:55:e6"; };
+    terrace-fridge-plug  = { ip = "10.255.100.235"; mac = "54:af:97:1d:59:d8"; };
+
+    # --- Cameras ---
+    camera-entrance          = { ip = "10.255.100.220"; mac = "e8:ca:c8:bf:08:17"; };
+    camera-terrace-indoor    = { ip = "10.255.100.221"; mac = "e8:ca:c8:7a:83:71"; };
+    camera-kitchen           = { ip = "10.255.100.222"; mac = "5c:c3:36:39:7f:c9"; };
+    camera-terrace-outdoor-00 = { ip = "10.255.101.220"; mac = "ec:71:db:68:f9:2e"; };
+    camera-terrace-outdoor-01 = { ip = "10.255.101.221"; mac = "ec:71:db:94:da:da"; };
+    camera-terrace-outdoor-02 = { ip = "10.255.101.222"; mac = "ec:71:db:02:52:4a"; };
+
+    # --- Movistar STB ---
+    livingroom-movistar-stb = { ip = "10.255.101.201"; mac = "e8:b2:fe:06:a1:28"; };
+
+    # --- Kubernetes ---
+    k8s-master-00 = { ip = "10.255.101.234"; mac = "d8:43:ae:1a:1a:5c"; };
+    k8s-worker-00 = { ip = "10.255.101.235"; mac = "d8:43:ae:18:b3:bd"; };
+    k8s-worker-01 = { ip = "10.255.101.236"; mac = "d8:43:ae:18:b3:c5"; };
+    k8s-worker-02 = { ip = "10.255.101.237"; mac = "d8:43:ae:18:b3:6d"; };
+  };
+
+  # Extra DNS aliases (different domain or pointing to existing host IPs)
+  extraDns = [
+    { name = "app-backend.local";   ip = hosts.ij-laptop.ip; }
+    { name = "app-frontend.local";  ip = hosts.ij-laptop.ip; }
+    { name = "www.app-frontend.local"; ip = hosts.ij-laptop.ip; }
+    { name = "k8s-master.local";    ip = hosts.k8s-master-00.ip; }
+    { name = "k8s-master-00.local"; ip = hosts.k8s-master-00.ip; }
+    { name = "k8s-worker-00.local"; ip = hosts.k8s-worker-00.ip; }
+    { name = "k8s-worker-01.local"; ip = hosts.k8s-worker-01.ip; }
+    { name = "k8s-worker-02.local"; ip = hosts.k8s-worker-02.ip; }
+  ];
+
+  # --- Helper functions ---
+
+  # host's DNS names: uses `dns` attr if present, otherwise [ attrName ]
+  hostDnsNames = name: host:
+    if host ? dns then host.dns else [ name ];
+
+  # Qualify a DNS name: if it already contains a dot, use as-is; otherwise append domain
+  qualify = n:
+    if lib.hasInfix "." n then "${n}.${domain}"
+    else "${n}.${domain}";
+
+  # Forward DNS: A records for unbound local-data
+  forwardDns = lib.flatten (lib.mapAttrsToList (name: host:
+    let names = hostDnsNames name host;
+    in map (n: ''"${qualify n}. IN A ${host.ip}"'') names
+  ) hosts)
+  ++ map (e: ''"${e.name}. IN A ${e.ip}"'') extraDns;
+
+  # Reverse DNS: PTR records for unbound local-data
+  reverseDns = lib.mapAttrsToList (name: host:
+    let
+      dnsName = builtins.head (hostDnsNames name host);
+      fqdn = qualify dnsName;
+      parts = lib.splitString "." host.ip;
+      rev = lib.concatStringsSep "." (lib.reverseList parts);
+    in ''"${rev}.in-addr.arpa. IN PTR ${fqdn}."''
+  ) hosts;
+
+  # Reverse zones needed for unbound
+  reverseZones = lib.unique (lib.mapAttrsToList (_: host:
+    let
+      parts = lib.splitString "." host.ip;
+      rev3 = lib.concatStringsSep "." (lib.reverseList (lib.take 3 parts));
+    in ''"${rev3}.in-addr.arpa." static''
+  ) hosts);
+
+  # DHCP reservations: only hosts with `mac`
+  dhcpReservations = lib.mapAttrsToList (name: host: {
+    hostname = name;
+    hw-address = host.mac;
+    ip-address = host.ip;
+  }) (lib.filterAttrs (_: host: host ? mac) hosts);
+
+in {
+  inherit domain hosts extraDns;
+  inherit forwardDns reverseDns reverseZones dhcpReservations;
+}

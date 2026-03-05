@@ -10,6 +10,7 @@ Nix-based dotfiles for managing macOS and Linux configurations.
   - [Hosts](#hosts)
   - [Structure](#structure)
   - [User Settings](#user-settings)
+- [Network](NETWORK.md)
 - [Quick Start](#quick-start)
 - [Installation](#installation)
   - [macOS Setup](#macos-setup)
@@ -27,6 +28,8 @@ Nix-based dotfiles for managing macOS and Linux configurations.
 
 - **macbook** — macOS (aarch64-darwin)
 - **ij-desktop** — Linux (x86_64-linux)
+- **goose** — NixOS router/firewall (x86_64-linux)
+- **pakhet** — NixOS application server (x86_64-linux)
 - **rpi4-stable** — Raspberry Pi 4 SD card image (aarch64-linux, nixos-25.05)
 - **rpi4-unstable** — Raspberry Pi 4 SD card image (aarch64-linux, nixos-unstable)
 
@@ -72,6 +75,12 @@ darwin-rebuild switch --flake .#macbook
 
 # Linux (NixOS)
 sudo nixos-rebuild switch --flake .#ij-desktop
+
+# goose (router)
+sudo nixos-rebuild switch --flake .#goose
+
+# pakhet (application server)
+sudo nixos-rebuild switch --flake .#pakhet
 ```
 
 ## Installation
