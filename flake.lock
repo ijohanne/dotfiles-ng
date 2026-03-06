@@ -1499,11 +1499,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1772812252,
-        "narHash": "sha256-FS0I0G+kxQUcMY3oqPDYk1kKbD+yfwHlIpoaAytuz/Y=",
-        "rev": "d96464b39ccfe7f13d7e91c48fec3d8ce9d77e62",
+        "lastModified": 1772813361,
+        "narHash": "sha256-KIfTQHW0VC6Putqy66AI1RhIeSLY3FKS7OGhCVA1HEE=",
+        "rev": "dbfc136d81cfcc7770339ae65bd04dec4d838dd6",
         "type": "tarball",
-        "url": "https://git.unixpimps.net/api/v1/repos/ijohanne/opsplaza-artifacts/archive/d96464b39ccfe7f13d7e91c48fec3d8ce9d77e62.tar.gz"
+        "url": "https://git.unixpimps.net/api/v1/repos/ijohanne/opsplaza-artifacts/archive/dbfc136d81cfcc7770339ae65bd04dec4d838dd6.tar.gz"
       },
       "original": {
         "type": "tarball",
