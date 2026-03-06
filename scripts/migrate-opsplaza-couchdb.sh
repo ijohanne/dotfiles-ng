@@ -13,7 +13,9 @@ curl -sL "https://raw.githubusercontent.com/danielebailo/couchdb-dump/master/cou
   -o "${COUCHDB_DUMP_DIR}/couchdb-dump.sh"
 
 cleanup() {
-  kill "$SSH_SOURCE_PID" "$SSH_TARGET_PID" 2>/dev/null || true
+  # Kill SSH tunnels by finding them via port
+  lsof -ti ":${SOURCE_LOCAL_PORT}" 2>/dev/null | xargs kill 2>/dev/null || true
+  lsof -ti ":${TARGET_LOCAL_PORT}" 2>/dev/null | xargs kill 2>/dev/null || true
   rm -f "$DUMP_FILE"
   rm -rf "$COUCHDB_DUMP_DIR"
 }
@@ -21,13 +23,16 @@ trap cleanup EXIT
 
 echo "Opening SSH tunnel to source: ${SOURCE_HOST}..."
 ssh -fNL "${SOURCE_LOCAL_PORT}:127.0.0.1:5984" "$SOURCE_HOST"
-SSH_SOURCE_PID=$!
 
 echo "Opening SSH tunnel to target: ${TARGET_HOST}..."
 ssh -fNL "${TARGET_LOCAL_PORT}:127.0.0.1:5984" "$TARGET_HOST"
-SSH_TARGET_PID=$!
 
 sleep 2
+
+echo "Verifying tunnels..."
+curl -sf "http://127.0.0.1:${SOURCE_LOCAL_PORT}/" > /dev/null || { echo "ERROR: Cannot reach source CouchDB"; exit 1; }
+curl -sf "http://127.0.0.1:${TARGET_LOCAL_PORT}/" > /dev/null || { echo "ERROR: Cannot reach target CouchDB"; exit 1; }
+echo "Both tunnels active."
 
 echo "Dumping themailer database from source..."
 bash "${COUCHDB_DUMP_DIR}/couchdb-dump.sh" \
