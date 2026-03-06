@@ -24,7 +24,7 @@ All gateway IPs belong to **goose** (the router). They are defined in `network.h
 
 ## Physical Topology
 
-Site: **Huerta Nueva 8 5A** — domain `est.es.unixpimps.net`
+Site: **Estepona, Spain** — domain `est.es.unixpimps.net`
 
 ```
                          ISP (Movistar PPPoE)
