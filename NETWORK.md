@@ -47,7 +47,7 @@ Site: **Estepona, Spain** — domain `est.es.unixpimps.net`
     │             goose (r0) - NixOS router             │
     │             10.255.254.254 (mgnt)                 │
     └─────────────────────────┬─────────────────────────┘
-                              │ LACP bond (2x25G SFP28)
+                              │ LACP bond (2x25G SFP28 DAC)
                               │
     ┌─────────────────────────┴─────────────────────────┐
     │       sw10 - USW Pro Aggregation (32-port)        │
@@ -82,7 +82,7 @@ All SFP+ links are 10G single-mode fiber.
 ```
 Link                     Ports (on each side)           Type
 ──────────────────────────────────────────────────────────────────
-goose r0  ↔ sw10         sw10: 31-32                    2x25G SFP28
+goose r0  ↔ sw10         sw10: 31-32                    2x25G SFP28 DAC
 sw10      ↔ sw1          sw10: 13-14  │ sw1: 25-26      2x10G SFP+ SM
 sw10      ↔ sw7          sw10: 15-18  │ sw7: 5-8        4x10G SFP+ SM
 sw10      ↔ sw0          sw10: 19-20  │ sw0: 9-10       2x10G SFP+ SM
@@ -90,7 +90,7 @@ sw10      ↔ sw4          sw10: 21-22  │ sw4: 9-10       2x10G SFP+ SM
 sw10      ↔ sw11         sw10: 23-24  │ sw11: 9-10      2x10G SFP+ SM
 sw10      ↔ sw2          sw10: 25-26  │ sw2: 9-10       2x10G SFP+ SM
 sw10      ↔ sw8          sw10: 27-28  │ sw8: 9-10       2x10G SFP+ SM
-sw10      ↔ fatty        sw10: 29-30                    2x25G SFP28
+sw10      ↔ fatty        sw10: 29-30                    2x25G SFP28 DAC
 sw7       ↔ sw9          sw7: 1-2     │ sw9: 9-10       2x10G SFP+ SM
 sw1       ↔ sw5          sw1: 5       │ sw5: 1          1x1G PoE copper
 sw1       ↔ sw6          sw1: 6       │ sw6: 1          1x1G PoE copper
