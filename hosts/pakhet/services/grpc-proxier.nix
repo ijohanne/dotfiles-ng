@@ -16,7 +16,6 @@
       };
 
       nginx = {
-        enable = true;
         domain = "cctax.grpc.unixpimps.net";
         acme = true;
       };

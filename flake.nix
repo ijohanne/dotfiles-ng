@@ -195,7 +195,6 @@
             {
               nixpkgs.overlays = [
                 screeny.overlays.default
-                grpc-proxier.overlays.default
               ];
             }
             ./hosts/pakhet/configuration.nix
