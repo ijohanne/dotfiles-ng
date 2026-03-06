@@ -37,7 +37,7 @@ Site: **Estepona, Spain** — domain `est.es.unixpimps.net`
                               │ LACP bond (2x25G SFP28)
                               │
     ┌─────────────────────────┴─────────────────────────┐
-    │       sw10 - Pro Max Aggregation (32-port)        │
+    │       sw10 - USW Pro Aggregation (32-port)        │
     │       10.255.254.159   ac:8b:a9:67:bf:90          │
     │                                                   │
     │  Core aggregation - all trunks terminate here.    │
@@ -48,7 +48,7 @@ Site: **Estepona, Spain** — domain `est.es.unixpimps.net`
         ┌───────┬───────┬───┴───┬───────┬───────┬───────┐
         │       │       │       │       │       │       │
       sw1     sw7     sw4     sw0    sw11     sw2     sw8
-     24PoE    Agg    8PoE   8PoE   8PoE    8PoE    8PoE
+    Ent24    Agg   Ent8   Ent8   Ent8    Ent8   Pro8
      .167     .1      .170   .171   .174    .169    .166
       │       │       │       │
   p5  ├─sw5 p1└─sw9 p8└─sw3 p1└─sw12
@@ -124,21 +124,21 @@ ap3    U6 Enterprise      .254.44         Uplink via sw0 port 8 (living room)
 ## Switch Inventory
 
 ```
-Name   Model                    IP              MAC                 PoE    Location / Role
-───────────────────────────────────────────────────────────────────────────────────────────────
-sw10   Pro Max Aggregation      .254.159        ac:8b:a9:67:bf:90   —      Core aggregation
-sw1    Switch Pro 24 PoE        .254.167        d0:21:f9:8d:c6:9c   PoE+   Office / server rack
-sw7    USW Aggregation           .254.1          78:45:58:6a:93:78   —      WAN demarcation (other floor)
-sw0    Switch Lite 8 PoE        .254.171        d0:21:f9:c0:42:8b   PoE    Living room
-sw4    Switch Lite 8 PoE        .254.170        78:45:58:db:fc:86   PoE    Terrace / outdoor
-sw11   Switch Lite 8 PoE        .254.174        78:45:58:db:fc:53   PoE    Bedroom media
-sw2    Switch Lite 8 PoE        .254.169        78:45:58:dc:05:56   PoE    Spare / expansion
-sw8    Lite 8 PoE               .254.166        9c:05:d6:6d:e4:3b   PoE    Kitchen area
-sw9    Lite 8 PoE               .254.4          9c:05:d6:6d:d8:e9   PoE    Living room cameras
-sw12   Pro Max Mini 8 PoE       .254.157        9c:05:d6:ba:08:f5   PoE    Kitchen hallway
-sw3    Flex Mini 5 PoE          .254.10         d0:21:f9:4b:1b:d9   PoE    Terrace cameras
-sw5    Flex Mini                .254.15         78:45:58:f8:3f:0d   —      Office desk
-sw6    Flex Mini                .254.16         78:45:58:f8:3f:16   —      Guest / office
+Name   Model                   IP        MAC                 PoE   Location / Role
+──────────────────────────────────────────────────────────────────────────────────────────
+sw10   USW Pro Aggregation     .254.159  ac:8b:a9:67:bf:90   --    Core aggregation
+sw1    USW Enterprise 24 PoE   .254.167  d0:21:f9:8d:c6:9c   PoE+  Office / server rack
+sw7    USW Aggregation         .254.1    78:45:58:6a:93:78   --    WAN demarcation (other floor)
+sw0    USW Enterprise 8 PoE    .254.171  d0:21:f9:c0:42:8b   PoE   Living room
+sw4    USW Enterprise 8 PoE    .254.170  78:45:58:db:fc:86   PoE   Terrace / outdoor
+sw11   USW Enterprise 8 PoE    .254.174  78:45:58:db:fc:53   PoE   Bedroom media
+sw2    USW Enterprise 8 PoE    .254.169  78:45:58:dc:05:56   PoE   Spare / expansion
+sw8    USW Pro 8 PoE           .254.166  9c:05:d6:6d:e4:3b   PoE   Kitchen area
+sw9    USW Pro 8 PoE           .254.4    9c:05:d6:6d:d8:e9   PoE   Living room cameras
+sw12   USW Ultra 60W           .254.157  9c:05:d6:ba:08:f5   PoE   Kitchen hallway
+sw3    USW Flex                .254.10   d0:21:f9:4b:1b:d9   PoE   Terrace cameras
+sw5    USW Flex Mini           .254.15   78:45:58:f8:3f:0d   --    Office desk
+sw6    USW Flex Mini           .254.16   78:45:58:f8:3f:16   --    Guest / office
 ```
 
 ## Notable Wired Clients (from port labels)
