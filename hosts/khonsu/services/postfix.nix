@@ -27,7 +27,7 @@ in
     description = "Generate Cyrus SASL database for Postfix";
     wantedBy = [ "multi-user.target" ];
     before = [ "postfix.service" ];
-    after = [ "sops-nix.service" ];
+    after = [ "network.target" ];
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
