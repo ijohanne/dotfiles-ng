@@ -3,6 +3,7 @@ keys:
   - &pakhet age1wwxaaahz6gp8f8t44m2kyqr2h4zwgn85fqjuls0rqypm958r342qtxhvq0
   - &macbook age1vc68fqwnlflkcz7vnpv43azqr50dtpcztxrlaudsux7y6qyj8ysqcyugwg
   - &goose age1w3txsuslrkv7m8jak3lqkwyu6624p55ewrjyprwzdzwxpfgjkvxsh9y0dz
+  - &khonsu age1ywkaa4lcgrpl5w803q268k46jkwhk8zzfqc9nza299e8ytk5l4dqg8nd28
 
 creation_rules:
   - path_regex: secrets/goose\.(yaml|json|env|ini)$
@@ -10,6 +11,12 @@ creation_rules:
       - age:
           - *ij
           - *goose
+
+  - path_regex: secrets/khonsu\.(yaml|json|env|ini)$
+    key_groups:
+      - age:
+          - *ij
+          - *khonsu
 
   - path_regex: secrets/pakhet\.(yaml|json|env|ini)$
     key_groups:

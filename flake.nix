@@ -232,6 +232,26 @@
           ];
         };
 
+        khonsu = nixpkgs-stable.lib.nixosSystem {
+          system = "x86_64-linux";
+          specialArgs = { inherit inputs self user; };
+          modules = [
+            disko.nixosModules.disko
+            sops-nix.nixosModules.sops
+            ./hosts/khonsu/disko.nix
+            ./hosts/khonsu/configuration.nix
+            home-manager-stable.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.extraSpecialArgs = { inherit user inputs; };
+              home-manager.users.${user.username} = {
+                imports = [ ./hosts/khonsu/home.nix ];
+              };
+            }
+          ];
+        };
+
         rpi4-stable = nixpkgs-stable.lib.nixosSystem {
           system = "aarch64-linux";
           specialArgs = { inherit inputs self user; };

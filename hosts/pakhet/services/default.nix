@@ -122,6 +122,31 @@
     group = "mercy";
   };
 
+  # Mail relay SASL credentials
+  sops.secrets.relay_sasl_password = { };
+  sops.templates."sasl_relay_passwd" = {
+    content = "[khonsu.unixpimps.net]:2525 relay:${config.sops.placeholder.relay_sasl_password}";
+    owner = "root";
+    group = "root";
+    mode = "0600";
+  };
+
+  # Postmap the relay password file
+  systemd.services.postfix-relay-postmap = {
+    description = "Generate postmap hash for relay SASL password";
+    wantedBy = [ "multi-user.target" ];
+    before = [ "postfix.service" ];
+    after = [ "sops-nix.service" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+    };
+    path = [ config.services.postfix.package ];
+    script = ''
+      postmap /run/secrets-rendered/sasl_relay_passwd
+    '';
+  };
+
   # Mail server secrets (hashed passwords)
   sops.secrets.mail_hashed_password_ij = { };
   sops.secrets.mail_hashed_password_brother_hallway = { };
