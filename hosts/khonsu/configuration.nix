@@ -38,9 +38,7 @@
 
   boot.loader.grub = {
     enable = true;
-    efiSupport = true;
-    efiInstallAsRemovable = true;
-    device = "nodev";
+    device = "/dev/vda";
   };
 
   environment.systemPackages = with pkgs; [
