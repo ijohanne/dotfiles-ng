@@ -1505,11 +1505,11 @@
         "rev": "d96464b39ccfe7f13d7e91c48fec3d8ce9d77e62",
         "revCount": 1,
         "type": "git",
-        "url": "ssh://git@git.unixpimps.net/ijohanne/opsplaza-artifacts"
+        "url": "https://git.unixpimps.net/ijohanne/opsplaza-artifacts"
       },
       "original": {
         "type": "git",
-        "url": "ssh://git@git.unixpimps.net/ijohanne/opsplaza-artifacts"
+        "url": "https://git.unixpimps.net/ijohanne/opsplaza-artifacts"
       }
     },
     "pdf-detective": {

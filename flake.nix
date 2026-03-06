@@ -112,7 +112,7 @@
     };
 
     opsplaza = {
-      url = "git+ssh://git@git.unixpimps.net/ijohanne/opsplaza-artifacts";
+      url = "git+https://git.unixpimps.net/ijohanne/opsplaza-artifacts";
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
   };
