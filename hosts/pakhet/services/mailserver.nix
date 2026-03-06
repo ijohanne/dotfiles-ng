@@ -35,14 +35,6 @@
       "perlpimp.net"
       "unixpimps.net"
       "nordic-t.me"
-      "allporn.dk"
-      "brugervenlig.dk"
-      "depri.dk"
-      "outerspace.dk"
-      "perlpimp.dk"
-      "syslogic.dk"
-      "unixpimp.dk"
-      "ddfrbr.com"
       "martin8412.dk"
     ];
     virusScanning = true;
@@ -52,11 +44,6 @@
         aliases = [
           "ij@shouldidrink.today"
           "ij@unixpimps.net"
-          "ij@syslogic.dk"
-          "ij@perlpimp.dk"
-          "ij@outerspace.dk"
-          "ij@ddfrbr.com"
-          "sniffy@ddfrbr.com"
         ];
       };
       "brother-hallway@unixpimps.net" = {
@@ -84,7 +71,6 @@
       };
     };
     forwards = {
-      "hello@ddfrbr.com" = [ "ij@ddfrbr.com" ];
       "sysops@unixpimps.net" = [ "ij@unixpimps.net" "mj@unixpimps.net" ];
       "hostmaster@unixpimps.net" = [ "ij@unixpimps.net" "mj@unixpimps.net" ];
       "tech@nordic-t.me" = [ "ij@nordic-t.me" "mj@nordic-t.me" ];
