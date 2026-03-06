@@ -43,26 +43,28 @@ Uses **sops-nix** (not agenix). Secrets are in `secrets/` encrypted per-host. To
 
 ## Deployment
 
-### Local hosts (macbook, ij-desktop, goose, pakhet)
+### Local hosts (macbook, ij-desktop)
 
 ```bash
 # Darwin
 darwin-rebuild switch --flake .#macbook
 
 # NixOS
-sudo nixos-rebuild switch --flake .#<hostname>
+sudo nixos-rebuild switch --flake .#ij-desktop
 ```
 
-### VPS hosts (khosu)
+### Remote hosts (goose, pakhet, khosu)
 
-VPS hosts pull the flake directly from GitHub. Changes **must be pushed first**.
+These hosts pull the flake from GitHub via `deploy-<hostname>` wrappers. Changes **must be pushed first**.
 
 ```bash
 git push
-ssh khosu.unixpimps.net deploy-khosu
+ssh r0.est.unixpimps.net deploy-goose        # goose (router)
+ssh pakhet.est.unixpimps.net deploy-pakhet    # pakhet (server)
+ssh khosu.unixpimps.net deploy-khosu          # khosu (VPS)
 ```
 
-The `deploy-<hostname>` wrapper runs `nixos-rebuild switch --flake github:ijohanne/dotfiles-ng#<hostname> --refresh`.
+The `deploy-<hostname>` wrapper runs `nixos-rebuild switch --flake github:ijohanne/dotfiles-ng#<hostname> --refresh`. See @NETWORK.md for IPs.
 
 ### Test builds (without activating)
 
