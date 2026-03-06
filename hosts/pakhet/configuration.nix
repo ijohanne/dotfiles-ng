@@ -24,7 +24,17 @@ in
 
   nix.extraOptions = ''
     !include ${config.sops.secrets.nix_builder_access_tokens.path}
+    netrc-file = ${config.sops.templates."nix-netrc".path}
   '';
+
+  sops.templates."nix-netrc" = {
+    content = ''
+      machine git.unixpimps.net
+      login ijohanne
+      password ${config.sops.placeholder.gitea_access_token}
+    '';
+    mode = "0400";
+  };
 
   environment.systemPackages = with pkgs; [
     (writeShellScriptBin "deploy-pakhet" ''
