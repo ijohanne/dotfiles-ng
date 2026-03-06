@@ -316,6 +316,15 @@
           ${bd}/bin/bd init --branch beads-sync "$@"
           rm -f AGENTS.md
         '';
+        ssh-to-age-remote = pkgs.writeShellScriptBin "ssh-to-age-remote" ''
+          set -euo pipefail
+          if [ $# -ne 1 ]; then
+            echo "Usage: ssh-to-age-remote <user@host>" >&2
+            exit 1
+          fi
+          ${pkgs.openssh}/bin/ssh-keyscan "$1" 2>/dev/null \
+            | ${pkgs.ssh-to-age}/bin/ssh-to-age 2>/dev/null
+        '';
       in
       {
         devShells.default = pkgs.mkShell {
@@ -326,6 +335,7 @@
             nix-output-monitor
             bd
             bd-init
+            ssh-to-age-remote
           ];
         };
       }

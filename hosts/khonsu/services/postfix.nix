@@ -16,7 +16,7 @@ in
   security.acme = {
     acceptTerms = true;
     defaults.email = "ij@unixpimps.net";
-    certs."khonsu.unixpimps.net" = {
+    certs."khosu.unixpimps.net" = {
       listenHTTP = ":80";
       group = "postfix";
     };
@@ -36,7 +36,7 @@ in
     script = ''
       mkdir -p /etc/sasl2
       PASSWORD=$(cat ${config.sops.secrets.relay_sasl_password.path})
-      echo "$PASSWORD" | saslpasswd2 -c -p -f /etc/sasl2/sasldb2 -u khonsu.unixpimps.net relay
+      echo "$PASSWORD" | saslpasswd2 -c -p -f /etc/sasl2/sasldb2 -u khosu.unixpimps.net relay
       chown postfix:postfix /etc/sasl2/sasldb2
       chmod 0600 /etc/sasl2/sasldb2
 
@@ -56,12 +56,12 @@ in
 
     settings.main = {
       smtpd_tls_chain_files = [
-        "/var/lib/acme/khonsu.unixpimps.net/key.pem"
-        "/var/lib/acme/khonsu.unixpimps.net/fullchain.pem"
+        "/var/lib/acme/khosu.unixpimps.net/key.pem"
+        "/var/lib/acme/khosu.unixpimps.net/fullchain.pem"
       ];
-      myhostname = "khonsu.unixpimps.net";
+      myhostname = "khosu.unixpimps.net";
       mydomain = "unixpimps.net";
-      myorigin = "khonsu.unixpimps.net";
+      myorigin = "khosu.unixpimps.net";
       mydestination = "";
       mynetworks = [ "127.0.0.0/8" "[::1]/128" ];
 

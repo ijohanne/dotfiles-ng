@@ -486,9 +486,9 @@ sops -d secrets/macbook.yaml
 
 #### Adding a New Host
 
-1. Get the new host's public key:
+1. Get the new host's age key (from inside the devshell):
    ```bash
-   ssh-to-age -i /etc/ssh/ssh_host_ed25519_key.pub
+   ssh-to-age-remote root@<host-ip>
    ```
 
 2. Add to `.sops.yaml`:

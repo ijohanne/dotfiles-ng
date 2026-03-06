@@ -125,7 +125,7 @@
   # Mail relay SASL credentials
   sops.secrets.relay_sasl_password = { };
   sops.templates."sasl_relay_passwd" = {
-    content = "[khonsu.unixpimps.net]:2525 relay:${config.sops.placeholder.relay_sasl_password}";
+    content = "[khosu.unixpimps.net]:2525 relay:${config.sops.placeholder.relay_sasl_password}";
     owner = "root";
     group = "root";
     mode = "0600";
