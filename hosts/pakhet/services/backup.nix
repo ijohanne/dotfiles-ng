@@ -31,19 +31,18 @@
     wants = [ "screeny-backup.service" ];
   };
 
-  # TODO: uncomment after opsplaza is enabled
-  # services.borgbackup.jobs.opsplaza = {
-  #   paths = "/var/backup/opsplaza";
-  #   encryption.mode = "none";
-  #   environment.BORG_RSH = "ssh -i ${config.sops.secrets.backup_ssh_key.path}";
-  #   environment.BORG_REMOTE_PATH = "/usr/local/bin/borg1/borg1";
-  #   repo = "zh3691@zh3691.rsync.net:backups/opsplaza";
-  #   compression = "auto,zstd";
-  #   startAt = "daily";
-  # };
+  services.borgbackup.jobs.opsplaza = {
+    paths = "/var/backup/opsplaza";
+    encryption.mode = "none";
+    environment.BORG_RSH = "ssh -i ${config.sops.secrets.backup_ssh_key.path}";
+    environment.BORG_REMOTE_PATH = "/usr/local/bin/borg1/borg1";
+    repo = "zh3691@zh3691.rsync.net:backups/opsplaza";
+    compression = "auto,zstd";
+    startAt = "daily";
+  };
 
-  # systemd.services.borgbackup-job-opsplaza = {
-  #   after = [ "opsplaza-couchdb-backup.service" ];
-  #   wants = [ "opsplaza-couchdb-backup.service" ];
-  # };
+  systemd.services.borgbackup-job-opsplaza = {
+    after = [ "opsplaza-couchdb-backup.service" ];
+    wants = [ "opsplaza-couchdb-backup.service" ];
+  };
 }

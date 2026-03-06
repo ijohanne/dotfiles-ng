@@ -1492,6 +1492,26 @@
         "type": "github"
       }
     },
+    "opsplaza": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs-stable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1772812252,
+        "narHash": "sha256-FS0I0G+kxQUcMY3oqPDYk1kKbD+yfwHlIpoaAytuz/Y=",
+        "ref": "refs/heads/master",
+        "rev": "d96464b39ccfe7f13d7e91c48fec3d8ce9d77e62",
+        "revCount": 1,
+        "type": "git",
+        "url": "ssh://git@git.unixpimps.net/ijohanne/opsplaza-artifacts"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@git.unixpimps.net/ijohanne/opsplaza-artifacts"
+      }
+    },
     "pdf-detective": {
       "inputs": {
         "bun2nix": "bun2nix_2",
@@ -1554,6 +1574,7 @@
         "nixpkgs-stable": "nixpkgs-stable",
         "nixvim": "nixvim",
         "opencode": "opencode",
+        "opsplaza": "opsplaza",
         "pdf-detective": "pdf-detective",
         "rust-overlay": "rust-overlay_5",
         "screeny": "screeny",

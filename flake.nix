@@ -111,11 +111,10 @@
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 
-    # TODO: uncomment after deploy-macbook and deploy-pakhet pick up new tokens + git-lfs
-    # opsplaza = {
-    #   url = "git+ssh://git@git.unixpimps.net/ijohanne/opsplaza-artifacts";
-    #   inputs.nixpkgs.follows = "nixpkgs-stable";
-    # };
+    opsplaza = {
+      url = "git+ssh://git@git.unixpimps.net/ijohanne/opsplaza-artifacts";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
+    };
   };
 
   outputs =
@@ -143,7 +142,7 @@
       nixos-mailserver,
       shouldidrinktoday,
       unixpimpsnet,
-      # opsplaza,
+      opsplaza,
       ...
     }@inputs:
     let
