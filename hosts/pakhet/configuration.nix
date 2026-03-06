@@ -15,6 +15,9 @@ in
   networking = {
     hostName = "pakhet";
     useDHCP = true;
+    hosts = {
+      "127.0.0.1" = [ "git.unixpimps.net" ];
+    };
   };
 
   time.timeZone = "Europe/Madrid";
