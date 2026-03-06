@@ -1,5 +1,18 @@
 # Network Architecture
 
+- [Overview](#overview)
+- [VLANs & Subnets](#vlans--subnets)
+- [Physical Topology](#physical-topology)
+  - [Trunk Links](#trunk-links-lacp-aggregates)
+  - [WAN Path](#wan-path)
+- [Wireless](#wireless)
+  - [Access Points](#access-points)
+- [Switch Inventory](#switch-inventory)
+  - [Cameras](#cameras-vlan-200)
+- [How configs/network.nix Works](#how-configsnetworknix-works)
+- [DNS Resolution](#dns-resolution)
+- [Adding a New Host](#adding-a-new-host)
+
 ## Overview
 
 All network hosts, IPs, and MACs are defined in a single registry at `configs/network.nix`. DNS records, DHCP reservations, and cross-host IP references are derived from this registry.
@@ -139,35 +152,6 @@ sw12   USW Ultra 60W           .254.157  9c:05:d6:ba:08:f5   PoE   Hallway, prin
 sw3    USW Flex                .254.10   d0:21:f9:4b:1b:d9   PoE   Outdoor terrace, access
 sw5    USW Flex Mini           .254.15   78:45:58:f8:3f:0d   --    Ian's desk, office, access
 sw6    USW Flex Mini           .254.16   78:45:58:f8:3f:16   --    Martin's desk, office, access
-```
-
-## Notable Wired Clients (from port labels)
-
-```
-Device               Switch  Port  VLAN       Notes
-────────────────────────────────────────────────────────────────
-Cloud Key            sw1     1     MGNT       UniFi controller, PoE
-PiKVM3               sw1     3     MGNT       KVM-over-IP
-IPMI fatty           sw1     7     MGNT       Server IPMI
-IPMI r0              sw1     10    MGNT       Router IPMI
-KVM switch           sw1     9     MGNT       Physical KVM, PoE
-IJ (workstation)     sw10    1     WIRED      10G
-MKJ (workstation)    sw10    2     WIRED      10G
-fatty (server)       sw10    29-30 WIRED      2x25G LACP
-sobek                sw1     13    WIRED      PoE
-hapi                 sw1     14    WIRED      PoE
-Prusa MK4            sw1     12    WIRED      3D printer, PoE
-chronos              sw4     3     WIRED      PoE
-Gardena              sw4     2     WIRED      Smart irrigation, PoE
-nvr-00-00            sw10    12    CAMERA     NVR
-PlayStation 5        sw0     4     WIRED
-Movistar STB         sw0     5     STB (252)
-AppleTV (living)     sw0     6     WIRED
-AppleTV (bedroom)    sw11    7     WIRED
-Sonos Amp            sw1     11    WIRED      Office
-Sonos Beam           sw0     2     WIRED      Living room
-Sonos Sub            sw0     3     WIRED      Living room
-Sonos Terrace        sw4     1     WIRED      PoE
 ```
 
 ### Cameras (VLAN 200)
