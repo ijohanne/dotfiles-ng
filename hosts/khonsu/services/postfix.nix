@@ -49,6 +49,8 @@ in
     '';
   };
 
+  systemd.services.postfix.serviceConfig.Environment = "SASL_CONF_PATH=/etc/sasl2";
+
   services.postfix = {
     enable = true;
 
