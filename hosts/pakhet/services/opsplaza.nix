@@ -33,8 +33,10 @@ in
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStart = "${pkgs.podman}/bin/podman network create opsplaza-br || true";
     };
+    script = ''
+      ${pkgs.podman}/bin/podman network create opsplaza-br || true
+    '';
   };
 
   virtualisation.oci-containers.containers = {
