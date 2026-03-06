@@ -95,6 +95,11 @@
     ijohanne-nur = {
       url = "github:ijohanne/nur-packages";
     };
+
+    nixos-mailserver = {
+      url = "github:simple-nixos-mailserver/nixos-mailserver";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
+    };
   };
 
   outputs =
@@ -119,6 +124,7 @@
       claude-code-nix,
       beads,
       ijohanne-nur,
+      nixos-mailserver,
       ...
     }@inputs:
     let
@@ -154,6 +160,7 @@
           specialArgs = { inherit inputs self user; };
           modules = [
             sops-nix.nixosModules.sops
+            nixos-mailserver.nixosModules.default
             screeny.nixosModules.default
             mercy.nixosModules.default
             grpc-proxier.nixosModules.default

@@ -22,6 +22,7 @@
     ./mercy.nix
     (import ./grpc-proxier.nix { inherit network; })
     ./pdf-detective.nix
+    ./mailserver.nix
   ];
 
   sops.secrets.nix_builder_access_tokens = { };
@@ -120,4 +121,12 @@
     owner = "mercy";
     group = "mercy";
   };
+
+  # Mail server secrets (hashed passwords)
+  sops.secrets.mail_hashed_password_ij = { };
+  sops.secrets.mail_hashed_password_brother_hallway = { };
+  sops.secrets.mail_hashed_password_mj = { };
+  sops.secrets.mail_hashed_password_no_reply = { };
+  sops.secrets.mail_hashed_password_themailer = { };
+  sops.secrets.mail_hashed_password_alertmanager = { };
 }
