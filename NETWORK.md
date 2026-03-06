@@ -52,14 +52,14 @@ Site: **Estepona, Spain** — domain `est.es.unixpimps.net`
      .167     .1      .170   .171   .174    .169    .166
       │       │       │       │
   p5  ├─sw5 p1└─sw9 p8└─sw3 p1└─sw12
-  p6  │ .15     .4      .10     .157
-      └─sw6
+      │ .15     .4      .10     .157
+  p6  └─sw6
          .16
 
     fatty --- sw10 ports 29-30 (2x25G LACP)
                FreeBSD 14.7 server
                bhyve VMs: pakhet, thoth, horus,
-                           cctax-node, cctax-couch
+                          cctax-node, cctax-couch
 ```
 
 ### Trunk Links (LACP Aggregates)
