@@ -92,9 +92,9 @@ sw10      ↔ sw2          sw10: 25-26  │ sw2: 9-10       2x10G SFP+ SM
 sw10      ↔ sw8          sw10: 27-28  │ sw8: 9-10       2x10G SFP+ SM
 sw10      ↔ fatty        sw10: 29-30                    2x25G SFP28 DAC
 sw7       ↔ sw9          sw7: 1-2     │ sw9: 9-10       2x10G SFP+ SM
-sw1       ↔ sw5          sw1: 5       │ sw5: 1          1x1G PoE copper
-sw1       ↔ sw6          sw1: 6       │ sw6: 1          1x1G PoE copper
-sw4       ↔ sw3          sw4: 8       │ sw3: 1          1x1G PoE copper
+sw1       ↔ sw5          sw1: 5       │ sw5: 1          1x1G PoE+ copper
+sw1       ↔ sw6          sw1: 6       │ sw6: 1          1x1G PoE+ copper
+sw4       ↔ sw3          sw4: 8       │ sw3: 1          1x1G PoE+ copper
 sw0       ↔ sw12         sw0: 1       │ sw12: 8         1x1G copper
 ```
 
@@ -141,19 +141,19 @@ ap3    U6 Enterprise   .254.44   Living room, uplink sw0 p8
 ```
 Name   Model                   IP        MAC                 PoE   Location / Role
 ──────────────────────────────────────────────────────────────────────────────────────────
-sw10   USW Pro Aggregation     .254.159  ac:8b:a9:67:bf:90   --    Rack, core switch
-sw1    USW Enterprise 24 PoE   .254.167  d0:21:f9:8d:c6:9c   PoE+  Rack, access
-sw7    USW Aggregation         .254.1    78:45:58:6a:93:78   --    Entrance, access/WAN ingest
-sw0    USW Enterprise 8 PoE    .254.171  d0:21:f9:c0:42:8b   PoE   Living room (TV area), access
-sw4    USW Enterprise 8 PoE    .254.170  78:45:58:db:fc:86   PoE   Indoor terrace, access
-sw11   USW Enterprise 8 PoE    .254.174  78:45:58:db:fc:53   PoE   Ian's room, access
-sw2    USW Enterprise 8 PoE    .254.169  78:45:58:dc:05:56   PoE   Martin's room, access
-sw8    USW Pro 8 PoE           .254.166  9c:05:d6:6d:e4:3b   PoE   Kitchen, access
-sw9    USW Pro 8 PoE           .254.4    9c:05:d6:6d:d8:e9   PoE   Living room (behind couch), access
-sw12   USW Ultra 60W           .254.157  9c:05:d6:ba:08:f5   PoE   Hallway, printer, access
-sw3    USW Flex                .254.10   d0:21:f9:4b:1b:d9   PoE   Outdoor terrace, access
-sw5    USW Flex Mini           .254.15   78:45:58:f8:3f:0d   --    Ian's desk, office, access
-sw6    USW Flex Mini           .254.16   78:45:58:f8:3f:16   --    Martin's desk, office, access
+sw10   USW Pro Aggregation     .254.159  ac:8b:a9:67:bf:90   --      Rack, core switch
+sw1    USW Enterprise 24 PoE   .254.167  d0:21:f9:8d:c6:9c   PoE+    Rack, access
+sw7    USW Aggregation         .254.1    78:45:58:6a:93:78   --      Entrance, access/WAN ingest
+sw0    USW Enterprise 8 PoE    .254.171  d0:21:f9:c0:42:8b   PoE+    Living room (TV area), access
+sw4    USW Enterprise 8 PoE    .254.170  78:45:58:db:fc:86   PoE+    Indoor terrace, access
+sw11   USW Enterprise 8 PoE    .254.174  78:45:58:db:fc:53   PoE+    Ian's room, access
+sw2    USW Enterprise 8 PoE    .254.169  78:45:58:dc:05:56   PoE+    Martin's room, access
+sw8    USW Pro 8 PoE           .254.166  9c:05:d6:6d:e4:3b   PoE+/++ Kitchen, access
+sw9    USW Pro 8 PoE           .254.4    9c:05:d6:6d:d8:e9   PoE+/++ Living room (behind couch), access
+sw12   USW Ultra 60W           .254.157  9c:05:d6:ba:08:f5   PoE+    Hallway, printer, access
+sw3    USW Flex                .254.10   d0:21:f9:4b:1b:d9   PoE     Outdoor terrace, access
+sw5    USW Flex Mini           .254.15   78:45:58:f8:3f:0d   --      Ian's desk, office, access
+sw6    USW Flex Mini           .254.16   78:45:58:f8:3f:16   --      Martin's desk, office, access
 ```
 
 ### Cameras (VLAN 200)
