@@ -110,6 +110,12 @@
       url = "github:ijohanne/unixpimpsnet";
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
+
+    # TODO: uncomment after opsplaza-artifacts is pushed to Gitea
+    # opsplaza = {
+    #   url = "git+https://git.unixpimps.net/ijohanne/opsplaza-artifacts";
+    #   inputs.nixpkgs.follows = "nixpkgs-stable";
+    # };
   };
 
   outputs =
@@ -137,6 +143,7 @@
       nixos-mailserver,
       shouldidrinktoday,
       unixpimpsnet,
+      # opsplaza,
       ...
     }@inputs:
     let
@@ -339,6 +346,11 @@
           ${pkgs.openssh}/bin/ssh-keyscan "$1" 2>/dev/null \
             | ${pkgs.ssh-to-age}/bin/ssh-to-age 2>/dev/null
         '';
+        migrate-opsplaza-couchdb = pkgs.writeShellApplication {
+          name = "migrate-opsplaza-couchdb";
+          runtimeInputs = with pkgs; [ openssh curl bash gnused file gawk coreutils ];
+          text = builtins.readFile ./scripts/migrate-opsplaza-couchdb.sh;
+        };
       in
       {
         devShells.default = pkgs.mkShell {
@@ -350,6 +362,7 @@
             bd
             bd-init
             ssh-to-age-remote
+            migrate-opsplaza-couchdb
           ];
         };
       }

@@ -56,7 +56,12 @@
     forceSSL = true;
     enableACME = true;
     acmeRoot = null;
-    locations."/".proxyPass = "http://127.0.0.1:3000/";
+    locations."/" = {
+      proxyPass = "http://127.0.0.1:3000/";
+      extraConfig = ''
+        client_max_body_size 200M;
+      '';
+    };
   };
 
   users.users.git = {

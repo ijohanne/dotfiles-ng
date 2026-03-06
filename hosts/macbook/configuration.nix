@@ -47,6 +47,7 @@
     home = "/Users/${user.username}";
     packages = with pkgs; [
       git
+      git-lfs
       (writeShellScriptBin "setup-remote-builder" ''
         echo "Setting up SSH known host for remote builder (pakhet)..."
         sudo ssh-keyscan -t ed25519 10.255.101.200 | sudo tee -a /var/root/.ssh/known_hosts
