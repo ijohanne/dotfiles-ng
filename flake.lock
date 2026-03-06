@@ -2124,11 +2124,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1772805101,
-        "narHash": "sha256-y6evbSuCopxUO0Omvz1VMgIaqerD9ThnOL6UyvIUrcM=",
+        "lastModified": 1772805851,
+        "narHash": "sha256-I/F9egyZGSWTtNj34YRkQG+y3GiwBgP34TSkCFcdASM=",
         "owner": "ijohanne",
         "repo": "unixpimpsnet",
-        "rev": "5f846bfb8c06b3d8961339770a282aa388ccf6d0",
+        "rev": "0acca452e5c4799b16708fca2b42a87f9ff5f027",
         "type": "github"
       },
       "original": {
