@@ -7,7 +7,7 @@ let
     owner = "danielebailo";
     repo = "couchdb-dump";
     rev = "master";
-    sha256 = "sha256-lW3bFpfNjRbXPXBq0BFkYOWFg3miIEQoLEhSuH6pLhM=";
+    sha256 = "sha256-nL1ZYUEl9tSic0KyteB9RfGUjUY3qKZsDURBBaZ+6XA=";
   };
 in
 {
