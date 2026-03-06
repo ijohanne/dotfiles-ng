@@ -31,16 +31,16 @@ Site: **Estepona, Spain** — domain `est.es.unixpimps.net`
                               │ VLAN 253
                               │
     ┌─────────────────────────┴─────────────────────────┐
-    │              goose (r0) - NixOS router              │
-    │              10.255.254.254 (mgnt)                 │
+    │             goose (r0) - NixOS router             │
+    │             10.255.254.254 (mgnt)                 │
     └─────────────────────────┬─────────────────────────┘
-                              │ LACP bond (2×25G SFP28)
+                              │ LACP bond (2x25G SFP28)
                               │
     ┌─────────────────────────┴─────────────────────────┐
-    │        sw10 - Pro Max Aggregation (32-port)        │
-    │        10.255.254.159   ac:8b:a9:67:bf:90         │
+    │       sw10 - Pro Max Aggregation (32-port)        │
+    │       10.255.254.159   ac:8b:a9:67:bf:90          │
     │                                                   │
-    │  Core aggregation - all trunks terminate here.     │
+    │  Core aggregation - all trunks terminate here.    │
     │  10G SFP+ uplinks to every distribution switch.   │
     └───────────────────────┬───────────────────────────┘
                             │
@@ -51,12 +51,12 @@ Site: **Estepona, Spain** — domain `est.es.unixpimps.net`
      24PoE   Ultra8   8PoE   8PoE   8PoE    8PoE    8PoE
      .167     .1      .170   .171   .174    .169    .166
       │       │       │       │
-  p5 ├─sw5  p1└─sw9 p8└─sw3 p1└─sw12
-  p6 │  .15     .4      .10     .157
-     └─sw6
-        .16
+  p5  ├─sw5 p1└─sw9 p8└─sw3 p1└─sw12
+  p6  │ .15     .4      .10     .157
+      └─sw6
+         .16
 
-    fatty ─── sw10 ports 29-30 (2×25G LACP)
+    fatty --- sw10 ports 29-30 (2x25G LACP)
                FreeBSD 14.7 server
                bhyve VMs: pakhet, thoth, horus,
                            cctax-node, cctax-couch
@@ -67,20 +67,20 @@ Site: **Estepona, Spain** — domain `est.es.unixpimps.net`
 ```
 Link                     Ports (on each side)           Type
 ──────────────────────────────────────────────────────────────
-goose r0  ↔ sw10         sw10: 31-32                    2×25G SFP28
-sw10      ↔ sw1          sw10: 13-14  │ sw1: 25-26      2×SFP+
-sw10      ↔ sw7          sw10: 15-18  │ sw7: 5-8        4×SFP+
-sw10      ↔ sw0          sw10: 19-20  │ sw0: 9-10       2×SFP+
-sw10      ↔ sw4          sw10: 21-22  │ sw4: 9-10       2×SFP+
-sw10      ↔ sw11         sw10: 23-24  │ sw11: 9-10      2×SFP+
-sw10      ↔ sw2          sw10: 25-26  │ sw2: 9-10       2×SFP+
-sw10      ↔ sw8          sw10: 27-28  │ sw8: 9-10       2×SFP+
-sw10      ↔ fatty        sw10: 29-30                    2×25G SFP28
-sw7       ↔ sw9          sw7: 1-2     │ sw9: 9-10       2×SFP+
-sw1       ↔ sw5          sw1: 5       │ sw5: 1          1×PoE
-sw1       ↔ sw6          sw1: 6       │ sw6: 1          1×PoE
-sw4       ↔ sw3          sw4: 8       │ sw3: 1          1×PoE
-sw0       ↔ sw12         sw0: 1       │ sw12: 8         1×
+goose r0  ↔ sw10         sw10: 31-32                    2x25G SFP28
+sw10      ↔ sw1          sw10: 13-14  │ sw1: 25-26      2xSFP+
+sw10      ↔ sw7          sw10: 15-18  │ sw7: 5-8        4xSFP+
+sw10      ↔ sw0          sw10: 19-20  │ sw0: 9-10       2xSFP+
+sw10      ↔ sw4          sw10: 21-22  │ sw4: 9-10       2xSFP+
+sw10      ↔ sw11         sw10: 23-24  │ sw11: 9-10      2xSFP+
+sw10      ↔ sw2          sw10: 25-26  │ sw2: 9-10       2xSFP+
+sw10      ↔ sw8          sw10: 27-28  │ sw8: 9-10       2xSFP+
+sw10      ↔ fatty        sw10: 29-30                    2x25G SFP28
+sw7       ↔ sw9          sw7: 1-2     │ sw9: 9-10       2xSFP+
+sw1       ↔ sw5          sw1: 5       │ sw5: 1          1xPoE
+sw1       ↔ sw6          sw1: 6       │ sw6: 1          1xPoE
+sw4       ↔ sw3          sw4: 8       │ sw3: 1          1xPoE
+sw0       ↔ sw12         sw0: 1       │ sw12: 8         1x
 ```
 
 ### WAN Path
@@ -144,7 +144,7 @@ IPMI r0              sw1     10    MGNT       Router IPMI
 KVM switch           sw1     9     MGNT       Physical KVM, PoE
 IJ (workstation)     sw10    1     WIRED      10G
 MKJ (workstation)    sw10    2     WIRED      10G
-fatty (server)       sw10    29-30 WIRED      2×25G LACP
+fatty (server)       sw10    29-30 WIRED      2x25G LACP
 sobek                sw1     13    WIRED      PoE
 hapi                 sw1     14    WIRED      PoE
 Prusa MK4            sw1     12    WIRED      3D printer, PoE
