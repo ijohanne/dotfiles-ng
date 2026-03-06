@@ -32,33 +32,26 @@
     fqdn = "pakhet.est.unixpimps.net";
     domains = [
       "shouldidrink.today"
-      "perlpimp.net"
       "unixpimps.net"
       "nordic-t.me"
-      "martin8412.dk"
     ];
     virusScanning = true;
     loginAccounts = {
-      "ij@perlpimp.net" = {
+      "ij@unixpimps.net" = {
         hashedPasswordFile = config.sops.secrets.mail_hashed_password_ij.path;
         aliases = [
           "ij@shouldidrink.today"
-          "ij@unixpimps.net"
         ];
       };
       "brother-hallway@unixpimps.net" = {
         hashedPasswordFile = config.sops.secrets.mail_hashed_password_brother_hallway.path;
-      };
-      "martin@martin8412.dk" = {
-        hashedPasswordFile = config.sops.secrets.mail_hashed_password_mj.path;
-        aliases = [ "mj@nordic-t.me" "mj@unixpimps.net" ];
-        catchAll = [ "martin8412.dk" ];
       };
       "ij@nordic-t.me" = {
         hashedPasswordFile = config.sops.secrets.mail_hashed_password_ij.path;
       };
       "mj@nordic-t.me" = {
         hashedPasswordFile = config.sops.secrets.mail_hashed_password_mj.path;
+        aliases = [ "mj@unixpimps.net" ];
       };
       "no-reply@unixpimps.net" = {
         hashedPasswordFile = config.sops.secrets.mail_hashed_password_no_reply.path;
