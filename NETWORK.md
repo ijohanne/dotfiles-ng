@@ -131,7 +131,7 @@ UNIXPIMPSNET_GUEST   all         150     WPA2-PSK
 Name   Model           WiFi  Bands           IP        Location
 ──────────────────────────────────────────────────────────────────────────
 ap0    U6 Pro          6     2.4G + 5G       .254.20   Ian's room, sw11 p1
-ap1    U6 Pro          6     2.4G + 5G       .254.19   Rack, sw1 p2
+ap1    U6 Pro          6     2.4G + 5G       .254.19   Office, sw1 p2
 ap2    U7 Outdoor      7     2.4G + 5G + 6G  .254.165  Terrace, sw4 p5
 ap3    U6 Enterprise   6E    2.4G + 5G + 6G  .254.44   Living room, sw0 p8
 ```
