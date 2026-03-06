@@ -1558,7 +1558,8 @@
         "rust-overlay": "rust-overlay_5",
         "screeny": "screeny",
         "shouldidrinktoday": "shouldidrinktoday",
-        "sops-nix": "sops-nix"
+        "sops-nix": "sops-nix",
+        "unixpimpsnet": "unixpimpsnet"
       }
     },
     "rust-overlay": {
@@ -2113,6 +2114,26 @@
         "owner": "hikhvar",
         "repo": "ts3exporter",
         "rev": "a38c91b397a67f3675af4985ecd2f8c0e5354a7c",
+        "type": "github"
+      }
+    },
+    "unixpimpsnet": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs-stable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1772805101,
+        "narHash": "sha256-y6evbSuCopxUO0Omvz1VMgIaqerD9ThnOL6UyvIUrcM=",
+        "owner": "ijohanne",
+        "repo": "unixpimpsnet",
+        "rev": "5f846bfb8c06b3d8961339770a282aa388ccf6d0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ijohanne",
+        "repo": "unixpimpsnet",
         "type": "github"
       }
     }
