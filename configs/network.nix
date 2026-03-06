@@ -24,7 +24,7 @@ let
     chronos-wired = { ip = "10.255.101.202"; mac = "dc:a6:32:34:1e:6d"; dns = [ "chronos" ]; };
     hapi          = { ip = "10.255.101.242"; mac = "b8:27:eb:ff:f8:5f"; };
     cctax-couch   = { ip = "10.255.101.209"; mac = "58:9c:fc:04:29:b3"; };
-    cctax-node    = { ip = "10.255.101.245"; };
+    cctax-node    = { ip = "10.255.101.245"; mac = "58:9c:fc:03:64:32"; };
     obico         = { ip = "10.255.101.91"; };
     amon          = { ip = "10.255.101.241"; mac = "dc:a6:32:60:1c:82"; };
 
