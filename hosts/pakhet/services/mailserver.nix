@@ -28,7 +28,7 @@
   services.postfix.settings.main = {
     relayhost = [ "[khosu.unixpimps.net]:2525" ];
     smtp_sasl_auth_enable = "yes";
-    smtp_sasl_password_maps = "hash:/run/secrets-rendered/sasl_relay_passwd";
+    smtp_sasl_password_maps = "texthash:/run/secrets-rendered/sasl_relay_passwd";
     smtp_sasl_security_options = "noanonymous";
   };
 
