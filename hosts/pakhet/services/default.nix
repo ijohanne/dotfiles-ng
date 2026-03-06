@@ -25,12 +25,12 @@
     ./shouldidrinktoday.nix
     ./unixpimpsnet.nix
     ./mailserver.nix
-    # ./opsplaza.nix
+    ./opsplaza.nix
   ];
 
   sops.secrets.nix_builder_access_tokens = { };
   sops.secrets.cloudflare_api_key = { };
-  # sops.secrets.opsplaza_smtp_pass = { };
+  sops.secrets.opsplaza_smtp_pass = { };
   sops.secrets.gitea_access_token = { };
 
   sops.secrets.maxmind_api_key = {
