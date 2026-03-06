@@ -129,7 +129,13 @@ let
     ip-address = host.ip;
   }) (lib.filterAttrs (_: host: host ? mac) hosts);
 
+  mailDomains = [
+    "shouldidrink.today"
+    "unixpimps.net"
+    "nordic-t.me"
+  ];
+
 in {
-  inherit domain hosts extraDns;
+  inherit domain hosts extraDns mailDomains;
   inherit forwardDns reverseDns reverseZones dhcpReservations;
 }

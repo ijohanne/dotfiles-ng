@@ -1,11 +1,8 @@
 { config, pkgs, lib, ... }:
 
 let
-  relayDomains = [
-    "shouldidrink.today"
-    "unixpimps.net"
-    "nordic-t.me"
-  ];
+  network = import ../../../configs/network.nix { inherit lib; };
+  relayDomains = network.mailDomains;
 
   # Deliver inbound mail to pakhet via WireGuard tunnel
   transportMap = lib.concatStringsSep "\n" (

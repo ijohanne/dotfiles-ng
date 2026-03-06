@@ -1,5 +1,8 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
+let
+  network = import ../../../configs/network.nix { inherit lib; };
+in
 {
   services.roundcube = {
     enable = true;
@@ -41,11 +44,7 @@
     enableImap = true;
     enableManageSieve = true;
     fqdn = "pakhet.est.unixpimps.net";
-    domains = [
-      "shouldidrink.today"
-      "unixpimps.net"
-      "nordic-t.me"
-    ];
+    domains = network.mailDomains;
     virusScanning = true;
     loginAccounts = {
       "ij@unixpimps.net" = {
