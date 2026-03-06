@@ -113,12 +113,12 @@ UNIXPIMPSNET_GUEST   all         150     WPA2-PSK
 ### Access Points
 
 ```
-Name   Model              IP              Location
-─────────────────────────────────────────────────────────
-ap0    U6 Pro        .254.20         Uplink via sw11
-ap1    U6 Pro        .254.19         Uplink via sw1 port 2
-ap2    U7 Outdoor         .254.165        Uplink via sw4 port 5 (terrace)
-ap3    U6 Enterprise      .254.44         Uplink via sw0 port 8 (living room)
+Name   Model           IP        Location
+────────────────────────────────────────────────────────────
+ap0    U6 Pro          .254.20   Ian's room, uplink sw11 p1
+ap1    U6 Pro          .254.19   Rack, uplink sw1 p2
+ap2    U7 Outdoor      .254.165  Outdoor terrace, uplink sw4 p5
+ap3    U6 Enterprise   .254.44   Living room, uplink sw0 p8
 ```
 
 ## Switch Inventory
