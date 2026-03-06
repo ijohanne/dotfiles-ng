@@ -112,7 +112,7 @@
     };
 
     opsplaza = {
-      url = "git+https://git.unixpimps.net/ijohanne/opsplaza-artifacts";
+      url = "tarball+https://git.unixpimps.net/ijohanne/opsplaza-artifacts/archive/master.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
   };
