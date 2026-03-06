@@ -61,8 +61,8 @@ Site: **Estepona, Spain** — domain `est.es.unixpimps.net`
         ┌───────┬───────┬───┴───┬───────┬───────┬───────┐
         │       │       │       │       │       │       │
       sw1     sw7     sw4     sw0    sw11     sw2     sw8
-    Ent24    Agg   Ent8   Ent8   Ent8    Ent8   Pro8
-     .167     .1      .170   .171   .174    .169    .166
+      Ent24   Agg     Ent8    Ent8   Ent8     Ent8    Pro8
+      .167    .1      .170    .171   .174     .169    .166
       │       │       │       │
   p5  ├─sw5 p1└─sw9 p8└─sw3 p1└─sw12
       │ .15     .4      .10     .157
