@@ -34,6 +34,7 @@ curl -sf "http://127.0.0.1:${SOURCE_LOCAL_PORT}/" > /dev/null || { echo "ERROR: 
 curl -sf "http://127.0.0.1:${TARGET_LOCAL_PORT}/" > /dev/null || { echo "ERROR: Cannot reach target CouchDB"; exit 1; }
 echo "Both tunnels active."
 
+rm -f "$DUMP_FILE"
 echo "Dumping themailer database from source..."
 bash "${COUCHDB_DUMP_DIR}/couchdb-dump.sh" \
   -b -H 127.0.0.1 -P "$SOURCE_LOCAL_PORT" -d themailer -f "$DUMP_FILE"
