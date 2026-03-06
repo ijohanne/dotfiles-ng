@@ -36,10 +36,7 @@
 
   time.timeZone = "Europe/Madrid";
 
-  boot.loader.grub = {
-    enable = true;
-    device = "/dev/vda";
-  };
+  # GRUB device is set automatically by disko via the EF02 partition
 
   environment.systemPackages = with pkgs; [
     (writeShellScriptBin "deploy-khonsu" ''
