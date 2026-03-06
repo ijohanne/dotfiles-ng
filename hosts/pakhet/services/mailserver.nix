@@ -13,9 +13,8 @@
     ];
     extraConfig = ''
       $config['imap_host'] = 'localhost:143';
-      $config['smtp_server'] = 'localhost:25';
-      $config['smtp_user'] = null;
-      $config['smtp_pass'] = null;
+      $config['smtp_host'] = 'localhost:25';
+      $config['smtp_auth_type'] = null;
     '';
   };
 
