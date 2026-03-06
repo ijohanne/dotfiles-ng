@@ -12,7 +12,7 @@
       "show_additional_headers"
     ];
     extraConfig = ''
-      $config['imap_host'] = 'ssl://localhost:993';
+      $config['imap_host'] = 'ssl://${config.mailserver.fqdn}:993';
       $config['smtp_server'] = 'tls://${config.mailserver.fqdn}';
     '';
   };
