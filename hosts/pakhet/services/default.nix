@@ -25,13 +25,11 @@
     ./shouldidrinktoday.nix
     ./unixpimpsnet.nix
     ./mailserver.nix
-    # TODO: uncomment after opsplaza-artifacts is pushed to Gitea
     # ./opsplaza.nix
   ];
 
   sops.secrets.nix_builder_access_tokens = { };
   sops.secrets.cloudflare_api_key = { };
-  # TODO: uncomment after opsplaza-artifacts is pushed to Gitea
   # sops.secrets.opsplaza_smtp_pass = { };
 
   sops.secrets.maxmind_api_key = {

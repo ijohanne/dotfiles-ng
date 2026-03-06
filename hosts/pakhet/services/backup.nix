@@ -31,7 +31,7 @@
     wants = [ "screeny-backup.service" ];
   };
 
-  # TODO: uncomment after opsplaza-artifacts is pushed to Gitea
+  # TODO: uncomment after opsplaza is enabled
   # services.borgbackup.jobs.opsplaza = {
   #   paths = "/var/backup/opsplaza";
   #   encryption.mode = "none";

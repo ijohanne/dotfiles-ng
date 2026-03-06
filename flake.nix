@@ -111,9 +111,9 @@
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 
-    # TODO: uncomment after opsplaza-artifacts is pushed to Gitea
+    # TODO: uncomment after deploy-macbook and deploy-pakhet pick up new tokens + git-lfs
     # opsplaza = {
-    #   url = "git+https://git.unixpimps.net/ijohanne/opsplaza-artifacts";
+    #   url = "git+ssh://git@git.unixpimps.net/ijohanne/opsplaza-artifacts";
     #   inputs.nixpkgs.follows = "nixpkgs-stable";
     # };
   };
