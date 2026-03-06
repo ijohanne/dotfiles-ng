@@ -23,6 +23,7 @@
     (import ./grpc-proxier.nix { inherit network; })
     ./pdf-detective.nix
     ./shouldidrinktoday.nix
+    ./unixpimpsnet.nix
     ./mailserver.nix
   ];
 

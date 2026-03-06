@@ -105,6 +105,11 @@
       url = "github:ijohanne/shouldidrinktoday";
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
+
+    unixpimpsnet = {
+      url = "github:ijohanne/unixpimpsnet";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
+    };
   };
 
   outputs =
@@ -131,6 +136,7 @@
       ijohanne-nur,
       nixos-mailserver,
       shouldidrinktoday,
+      unixpimpsnet,
       ...
     }@inputs:
     let
@@ -172,6 +178,7 @@
             grpc-proxier.nixosModules.default
             pdf-detective.nixosModules.default
             shouldidrinktoday.nixosModules.default
+            unixpimpsnet.nixosModules.default
             {
               nixpkgs.overlays = [
                 screeny.overlays.default
