@@ -232,21 +232,21 @@
           ];
         };
 
-        khonsu = nixpkgs-stable.lib.nixosSystem {
+        khosu = nixpkgs-stable.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = { inherit inputs self user; };
           modules = [
             disko.nixosModules.disko
             sops-nix.nixosModules.sops
-            ./hosts/khonsu/disko.nix
-            ./hosts/khonsu/configuration.nix
+            ./hosts/khosu/disko.nix
+            ./hosts/khosu/configuration.nix
             home-manager-stable.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.extraSpecialArgs = { inherit user inputs; };
               home-manager.users.${user.username} = {
-                imports = [ ./hosts/khonsu/home.nix ];
+                imports = [ ./hosts/khosu/home.nix ];
               };
             }
           ];

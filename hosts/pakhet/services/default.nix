@@ -122,15 +122,6 @@
     group = "mercy";
   };
 
-  # Mail relay SASL credentials
-  sops.secrets.relay_sasl_password = { };
-  sops.templates."sasl_relay_passwd" = {
-    content = "[khosu.unixpimps.net]:2525 relay:${config.sops.placeholder.relay_sasl_password}";
-    owner = "root";
-    group = "root";
-    mode = "0600";
-  };
-
   # Mail server secrets (hashed passwords)
   sops.secrets.mail_hashed_password_ij = { };
   sops.secrets.mail_hashed_password_brother_hallway = { };

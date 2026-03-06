@@ -10,7 +10,7 @@
   system.stateVersion = "25.11";
 
   networking = {
-    hostName = "khonsu";
+    hostName = "khosu";
     useDHCP = false;
 
     interfaces.ens3 = {
@@ -41,13 +41,13 @@
   # GRUB device is set automatically by disko via the EF02 partition
 
   environment.systemPackages = with pkgs; [
-    (writeShellScriptBin "deploy-khonsu" ''
-      exec sudo nixos-rebuild switch --flake github:ijohanne/dotfiles-ng#khonsu --refresh
+    (writeShellScriptBin "deploy-khosu" ''
+      exec sudo nixos-rebuild switch --flake github:ijohanne/dotfiles-ng#khosu --refresh
     '')
   ];
 
   sops = {
-    defaultSopsFile = ../../secrets/khonsu.yaml;
+    defaultSopsFile = ../../secrets/khosu.yaml;
     age = {
       sshKeyPaths = [
         "/etc/ssh/ssh_host_ed25519_key"

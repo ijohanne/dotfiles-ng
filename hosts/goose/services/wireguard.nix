@@ -30,6 +30,11 @@
           publicKey = "/O5FtOl5bYFlpM7T/oQNOpMh4sXlkQLypHoOlSmud1I=";
           allowedIPs = [ "10.100.0.7/32" ];
         }
+        {
+          # khosu (mail relay VPS)
+          publicKey = "5Z+G9RwfwJXFFy9E/nFg6eRi416G+J3eWwptkxXXZzY=";
+          allowedIPs = [ "10.100.0.8/32" ];
+        }
       ];
     };
   };

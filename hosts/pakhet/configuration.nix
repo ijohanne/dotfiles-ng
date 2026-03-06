@@ -15,7 +15,6 @@ in
   networking = {
     hostName = "pakhet";
     useDHCP = true;
-    extraHosts = "127.0.0.1 pakhet.est.unixpimps.net";
   };
 
   time.timeZone = "Europe/Madrid";

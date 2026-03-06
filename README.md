@@ -29,7 +29,7 @@ Nix-based dotfiles for managing macOS and Linux configurations.
 - **macbook** — macOS (aarch64-darwin)
 - **ij-desktop** — Linux (x86_64-linux)
 - **goose** — NixOS router/firewall (x86_64-linux)
-- **khonsu** — NixOS mail relay VPS on netcup (x86_64-linux)
+- **khosu** — NixOS mail relay VPS on netcup (x86_64-linux)
 - **pakhet** — NixOS application server (x86_64-linux)
 - **rpi4-stable** — Raspberry Pi 4 SD card image (aarch64-linux, nixos-25.05)
 - **rpi4-unstable** — Raspberry Pi 4 SD card image (aarch64-linux, nixos-unstable)
@@ -83,8 +83,8 @@ sudo nixos-rebuild switch --flake .#goose
 # pakhet (application server)
 sudo nixos-rebuild switch --flake .#pakhet
 
-# khonsu (mail relay VPS)
-sudo nixos-rebuild switch --flake .#khonsu
+# khosu (mail relay VPS)
+sudo nixos-rebuild switch --flake .#khosu
 ```
 
 ## Installation

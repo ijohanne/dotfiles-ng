@@ -7,8 +7,9 @@ let
     "nordic-t.me"
   ];
 
+  # Deliver inbound mail to pakhet via WireGuard tunnel
   transportMap = lib.concatStringsSep "\n" (
-    map (d: "${d} smtp:[pakhet.est.unixpimps.net]:2525") relayDomains
+    map (d: "${d} smtp:[10.255.101.200]:25") relayDomains
   );
 in
 {
@@ -21,35 +22,6 @@ in
       group = "postfix";
     };
   };
-
-  # Generate sasldb2 from sops secret
-  systemd.services.postfix-sasldb = {
-    description = "Generate Cyrus SASL database for Postfix";
-    wantedBy = [ "multi-user.target" ];
-    before = [ "postfix.service" ];
-    after = [ "network.target" ];
-    serviceConfig = {
-      Type = "oneshot";
-      RemainAfterExit = true;
-    };
-    path = [ pkgs.cyrus_sasl ];
-    script = ''
-      mkdir -p /etc/sasl2
-      PASSWORD=$(cat ${config.sops.secrets.relay_sasl_password.path})
-      echo "$PASSWORD" | saslpasswd2 -c -p -f /etc/sasl2/sasldb2 -u khosu.unixpimps.net relay
-      chown postfix:postfix /etc/sasl2/sasldb2
-      chmod 0600 /etc/sasl2/sasldb2
-
-      cat > /etc/sasl2/smtpd.conf << EOF
-      pwcheck_method: auxprop
-      auxprop_plugin: sasldb
-      mech_list: PLAIN LOGIN CRAM-MD5
-      sasldb_path: /etc/sasl2/sasldb2
-      EOF
-    '';
-  };
-
-  systemd.services.postfix.serviceConfig.Environment = "SASL_CONF_PATH=/etc/sasl2";
 
   services.postfix = {
     enable = true;
@@ -81,24 +53,19 @@ in
 
       # Anti-spam on port 25
       smtpd_helo_required = "yes";
-      smtpd_recipient_restrictions = "permit_sasl_authenticated, reject_unauth_destination";
+      smtpd_recipient_restrictions = "permit_mynetworks, reject_unauth_destination";
       smtpd_helo_restrictions = "permit_mynetworks, reject_invalid_helo_hostname, reject_non_fqdn_helo_hostname";
-
-      # SASL (configured per-service in masterConfig)
-      smtpd_sasl_type = "cyrus";
-      smtpd_sasl_path = "smtpd";
     };
 
     settings.master = {
-      # Port 2525: authenticated relay submission from pakhet
+      # Port 2525: relay submission from pakhet (restricted to internal networks via WireGuard)
       "2525" = {
         type = "inet";
         private = false;
         command = "smtpd";
         args = [
-          "-o" "smtpd_sasl_auth_enable=yes"
-          "-o" "smtpd_sasl_security_options=noanonymous"
-          "-o" "smtpd_recipient_restrictions=permit_sasl_authenticated,reject"
+          "-o" "mynetworks=10.100.0.0/24,10.255.0.0/16"
+          "-o" "smtpd_recipient_restrictions=permit_mynetworks,reject"
           "-o" "smtpd_tls_security_level=may"
         ];
       };
