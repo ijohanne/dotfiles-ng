@@ -1,4 +1,6 @@
-{ ... }:
+{ network, ... }:
+
+{ config, ... }:
 
 {
   services.nginx.virtualHosts."k8s.unixpimps.net" = {
@@ -7,7 +9,7 @@
     acmeRoot = null;
     serverAliases = [ "*.k8s.unixpimps.net" ];
     locations."/" = {
-      proxyPass = "https://10.255.240.1/";
+      proxyPass = "https://${network.hosts.k8s-api.ip}/";
       proxyWebsockets = true;
     };
     extraConfig = ''

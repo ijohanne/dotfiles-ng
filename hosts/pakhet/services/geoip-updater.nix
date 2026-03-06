@@ -4,6 +4,12 @@ let
   databaseDir = "/var/lib/geoip-databases";
   interval = "weekly";
 
+  geoip-setup = pkgs.writeShellScript "geoip-setup" ''
+    mkdir -p "${databaseDir}"
+    chmod 755 "${databaseDir}"
+    chown geoip:srv "${databaseDir}"
+  '';
+
   geoip-updater = pkgs.writeScriptBin "geoip-updater" ''
     #!${pkgs.runtimeShell}
     skipExisting=0
@@ -52,15 +58,10 @@ in
     description = "GeoIP Updater";
     after = [ "network-online.target" "nss-lookup.target" ];
     wants = [ "network-online.target" ];
-    preStart = ''
-      mkdir -p "${databaseDir}"
-      chmod 755 "${databaseDir}"
-      chown geoip:srv "${databaseDir}"
-    '';
     serviceConfig = {
+      ExecStartPre = "+${geoip-setup}";
       ExecStart = "${geoip-updater}/bin/geoip-updater";
       User = "geoip";
-      PermissionsStartOnly = true;
     };
   };
 
@@ -70,15 +71,10 @@ in
     wants = [ "network-online.target" ];
     wantedBy = [ "multi-user.target" ];
     conflicts = [ "geoip-updater.service" ];
-    preStart = ''
-      mkdir -p "${databaseDir}"
-      chmod 755 "${databaseDir}"
-      chown geoip:srv "${databaseDir}"
-    '';
     serviceConfig = {
+      ExecStartPre = "+${geoip-setup}";
       ExecStart = "${geoip-updater}/bin/geoip-updater --skip-existing";
       User = "geoip";
-      PermissionsStartOnly = true;
       RemainAfterExit = true;
     };
   };

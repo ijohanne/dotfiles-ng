@@ -1,6 +1,7 @@
 { config, pkgs, ... }:
 
 {
+  services.mysql.ensureDatabases = [ "gitunixpimpsnet" ];
   services.mysql.ensureUsers = [
     {
       name = "git";

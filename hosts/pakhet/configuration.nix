@@ -19,8 +19,6 @@ in
 
   time.timeZone = "Europe/Madrid";
 
-  nix.settings.sandbox = "relaxed";
-
   nix.extraOptions = ''
     !include ${config.sops.secrets.nix_builder_access_tokens.path}
   '';

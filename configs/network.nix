@@ -71,6 +71,7 @@ let
     k8s-worker-00 = { ip = "10.255.101.235"; mac = "d8:43:ae:18:b3:bd"; };
     k8s-worker-01 = { ip = "10.255.101.236"; mac = "d8:43:ae:18:b3:c5"; };
     k8s-worker-02 = { ip = "10.255.101.237"; mac = "d8:43:ae:18:b3:6d"; };
+    k8s-api       = { ip = "10.255.240.1"; };  # k8s API service ClusterIP
   };
 
   # Extra DNS aliases (different domain or pointing to existing host IPs)
