@@ -95,7 +95,7 @@ sw7       ↔ sw9          sw7: 1-2     │ sw9: 9-10       2x10G SFP+ SM
 sw1       ↔ sw5          sw1: 5       │ sw5: 1          1xPoE copper
 sw1       ↔ sw6          sw1: 6       │ sw6: 1          1xPoE copper
 sw4       ↔ sw3          sw4: 8       │ sw3: 1          1xPoE copper
-sw0       ↔ sw12         sw0: 1       │ sw12: 8         1x copper
+sw0       ↔ sw12         sw0: 1       │ sw12: 8         1x1G copper
 ```
 
 ### WAN Path
