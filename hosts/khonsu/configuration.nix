@@ -3,6 +3,7 @@
 {
   imports = [
     ../../configs/server.nix
+    ./hardware-configuration.nix
     ./services
   ];
 
