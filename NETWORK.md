@@ -31,16 +31,16 @@ Site: **Huerta Nueva 8 5A** — domain `est.es.unixpimps.net`
                               │ VLAN 253
                               │
     ┌─────────────────────────┴─────────────────────────┐
-    │              goose (r0) — NixOS router             │
+    │              goose (r0) - NixOS router              │
     │              10.255.254.254 (mgnt)                 │
     └─────────────────────────┬─────────────────────────┘
                               │ LACP bond (2×25G SFP28)
                               │
     ┌─────────────────────────┴─────────────────────────┐
-    │        sw10 — Pro Max Aggregation (32-port)       │
+    │        sw10 - Pro Max Aggregation (32-port)        │
     │        10.255.254.159   ac:8b:a9:67:bf:90         │
     │                                                   │
-    │  Core aggregation — all trunks terminate here.    │
+    │  Core aggregation - all trunks terminate here.     │
     │  10G SFP+ uplinks to every distribution switch.   │
     └───────────────────────┬───────────────────────────┘
                             │
