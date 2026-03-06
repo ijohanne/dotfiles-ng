@@ -345,9 +345,10 @@
           ${pkgs.openssh}/bin/ssh-keyscan "$1" 2>/dev/null \
             | ${pkgs.ssh-to-age}/bin/ssh-to-age 2>/dev/null
         '';
+        gsed-compat = pkgs.writeShellScriptBin "gsed" ''exec ${pkgs.gnused}/bin/sed "$@"'';
         migrate-opsplaza-couchdb = pkgs.writeShellApplication {
           name = "migrate-opsplaza-couchdb";
-          runtimeInputs = with pkgs; [ openssh curl bash gnused file gawk coreutils ];
+          runtimeInputs = with pkgs; [ openssh curl bash gnused gsed-compat file gawk coreutils lsof ];
           text = builtins.readFile ./scripts/migrate-opsplaza-couchdb.sh;
         };
       in
