@@ -48,7 +48,7 @@ Site: **Estepona, Spain** — domain `est.es.unixpimps.net`
         ┌───────┬───────┬───┴───┬───────┬───────┬───────┐
         │       │       │       │       │       │       │
       sw1     sw7     sw4     sw0    sw11     sw2     sw8
-     24PoE   Ultra8   8PoE   8PoE   8PoE    8PoE    8PoE
+     24PoE    Agg    8PoE   8PoE   8PoE    8PoE    8PoE
      .167     .1      .170   .171   .174    .169    .166
       │       │       │       │
   p5  ├─sw5 p1└─sw9 p8└─sw3 p1└─sw12
@@ -85,9 +85,18 @@ sw0       ↔ sw12         sw0: 1       │ sw12: 8         1x
 
 ### WAN Path
 
+The Movistar router (in passthrough mode) is on a different floor.
+It connects to sw7 port 4, which tags it on VLAN 253. That VLAN is
+trunked through sw7 -> sw10 -> goose alongside all other VLANs,
+so goose can speak PPPoE directly to the Movistar router.
+
 ```
-Movistar ONT ──── sw7 port 4 (VLAN 253) ──── goose (PPPoE)
-                  sw7 port 4 also carries VLAN 252 (STB)
+Movistar router ---- sw7 port 4 (VLAN 253 + 252)
+  (passthrough)         │
+                        │ trunk (4xSFP+)
+                        │
+                      sw10 ---- goose (PPPoE on VLAN 253)
+                                       (STB on VLAN 252)
 ```
 
 ## Wireless
@@ -119,7 +128,7 @@ Name   Model                    IP              MAC                 PoE    Locat
 ───────────────────────────────────────────────────────────────────────────────────────────────
 sw10   Pro Max Aggregation      .254.159        ac:8b:a9:67:bf:90   —      Core aggregation
 sw1    Switch Pro 24 PoE        .254.167        d0:21:f9:8d:c6:9c   PoE+   Office / server rack
-sw7    Ultra 8                  .254.1          78:45:58:6a:93:78   —      WAN demarcation
+sw7    USW Aggregation           .254.1          78:45:58:6a:93:78   —      WAN demarcation (other floor)
 sw0    Switch Lite 8 PoE        .254.171        d0:21:f9:c0:42:8b   PoE    Living room
 sw4    Switch Lite 8 PoE        .254.170        78:45:58:db:fc:86   PoE    Terrace / outdoor
 sw11   Switch Lite 8 PoE        .254.174        78:45:58:db:fc:53   PoE    Bedroom media
