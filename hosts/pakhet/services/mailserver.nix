@@ -12,8 +12,8 @@
       "show_additional_headers"
     ];
     extraConfig = ''
-      $config['imap_host'] = 'ssl://${config.mailserver.fqdn}:993';
-      $config['smtp_server'] = 'tls://${config.mailserver.fqdn}';
+      $config['imap_host'] = 'localhost:143';
+      $config['smtp_server'] = 'localhost:25';
     '';
   };
 
@@ -29,6 +29,8 @@
     enable = true;
     enablePop3 = true;
     enablePop3Ssl = true;
+    enableImapSsl = true;
+    enableImap = true;
     enableManageSieve = true;
     fqdn = "pakhet.est.unixpimps.net";
     domains = [
