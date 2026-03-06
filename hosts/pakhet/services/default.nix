@@ -30,8 +30,35 @@
 
   sops.secrets.nix_builder_access_tokens = { };
   sops.secrets.cloudflare_api_key = { };
+  services.opsplaza.enable = false;
+
   sops.secrets.opsplaza_smtp_pass = { };
   sops.secrets.gitea_access_token = { };
+
+  sops.templates."themailer-smtp-credentials" = {
+    content = "themailer@unixpimps.net:${config.sops.placeholder.opsplaza_smtp_pass}";
+    mode = "0400";
+    owner = "themailer-wrapper";
+    group = "themailer-wrapper";
+  };
+
+  sops.secrets.themailer_wrapper_customer_id = {
+    mode = "0400";
+    owner = "themailer-wrapper";
+    group = "themailer-wrapper";
+  };
+
+  services.themailer-wrapper = {
+    enable = true;
+    customerIdFile = config.sops.secrets.themailer_wrapper_customer_id.path;
+    baseUrl = "https://themailer.opsplaza.com";
+    smtpHost = "127.0.0.1";
+    smtpPort = 587;
+    smtpCredentialsFile = config.sops.templates."themailer-smtp-credentials".path;
+    listenPort = 12002;
+    domain = "themailer.opsplaza.com";
+    acme = true;
+  };
 
   sops.secrets.maxmind_api_key = {
     mode = "0770";

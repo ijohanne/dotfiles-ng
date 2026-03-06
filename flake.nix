@@ -115,6 +115,11 @@
       url = "tarball+https://git.unixpimps.net/ijohanne/opsplaza-artifacts/archive/master.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
+
+    themailer-wrapper = {
+      url = "github:ijohanne/themailer-wrapper";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
+    };
   };
 
   outputs =
@@ -143,6 +148,7 @@
       shouldidrinktoday,
       unixpimpsnet,
       opsplaza,
+      themailer-wrapper,
       ...
     }@inputs:
     let
@@ -185,6 +191,7 @@
             pdf-detective.nixosModules.default
             shouldidrinktoday.nixosModules.default
             unixpimpsnet.nixosModules.default
+            themailer-wrapper.nixosModules.default
             {
               nixpkgs.overlays = [
                 screeny.overlays.default
