@@ -98,6 +98,9 @@ in
     acmeRoot = null;
     locations."/" = {
       proxyPass = "http://127.0.0.1:12001";
+      extraConfig = ''
+        proxy_set_header Host themailer.ragetech.dk;
+      '';
     };
   };
 
