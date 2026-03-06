@@ -1,8 +1,6 @@
 { config, pkgs, ... }:
 
 {
-  security.acme.certs."pakhet.est.unixpimps.net" = { };
-
   services.roundcube = {
     enable = true;
     hostName = "webmail.est.unixpimps.net";
@@ -96,8 +94,7 @@
       "donation@nordic-t.me" = [ "ij@nordic-t.me" ];
       "paypal@nordic-t.me" = [ "ij@nordic-t.me" ];
     };
-    stateVersion = 3;
-    x509.useACMEHost = "pakhet.est.unixpimps.net";
+    certificateScheme = "acme-nginx";
     borgbackup = {
       enable = true;
       repoLocation = "/var/borgbackup/mail";
