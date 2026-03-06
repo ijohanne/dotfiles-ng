@@ -12,9 +12,10 @@
       "show_additional_headers"
     ];
     extraConfig = ''
-      $config['imap_host'] = 'localhost:143';
-      $config['smtp_host'] = 'localhost:25';
-      $config['smtp_auth_type'] = null;
+      $config['imap_host'] = "ssl://${config.mailserver.fqdn}";
+      $config['smtp_host'] = "ssl://${config.mailserver.fqdn}";
+      $config['smtp_user'] = "%u";
+      $config['smtp_pass'] = "%p";
     '';
   };
 
