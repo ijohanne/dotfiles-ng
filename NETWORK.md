@@ -77,23 +77,25 @@ Site: **Estepona, Spain** — domain `est.es.unixpimps.net`
 
 ### Trunk Links (LACP Aggregates)
 
+All SFP+ links are 10G single-mode fiber.
+
 ```
 Link                     Ports (on each side)           Type
-──────────────────────────────────────────────────────────────
+──────────────────────────────────────────────────────────────────
 goose r0  ↔ sw10         sw10: 31-32                    2x25G SFP28
-sw10      ↔ sw1          sw10: 13-14  │ sw1: 25-26      2xSFP+
-sw10      ↔ sw7          sw10: 15-18  │ sw7: 5-8        4xSFP+
-sw10      ↔ sw0          sw10: 19-20  │ sw0: 9-10       2xSFP+
-sw10      ↔ sw4          sw10: 21-22  │ sw4: 9-10       2xSFP+
-sw10      ↔ sw11         sw10: 23-24  │ sw11: 9-10      2xSFP+
-sw10      ↔ sw2          sw10: 25-26  │ sw2: 9-10       2xSFP+
-sw10      ↔ sw8          sw10: 27-28  │ sw8: 9-10       2xSFP+
+sw10      ↔ sw1          sw10: 13-14  │ sw1: 25-26      2x10G SFP+ SM
+sw10      ↔ sw7          sw10: 15-18  │ sw7: 5-8        4x10G SFP+ SM
+sw10      ↔ sw0          sw10: 19-20  │ sw0: 9-10       2x10G SFP+ SM
+sw10      ↔ sw4          sw10: 21-22  │ sw4: 9-10       2x10G SFP+ SM
+sw10      ↔ sw11         sw10: 23-24  │ sw11: 9-10      2x10G SFP+ SM
+sw10      ↔ sw2          sw10: 25-26  │ sw2: 9-10       2x10G SFP+ SM
+sw10      ↔ sw8          sw10: 27-28  │ sw8: 9-10       2x10G SFP+ SM
 sw10      ↔ fatty        sw10: 29-30                    2x25G SFP28
-sw7       ↔ sw9          sw7: 1-2     │ sw9: 9-10       2xSFP+
-sw1       ↔ sw5          sw1: 5       │ sw5: 1          1xPoE
-sw1       ↔ sw6          sw1: 6       │ sw6: 1          1xPoE
-sw4       ↔ sw3          sw4: 8       │ sw3: 1          1xPoE
-sw0       ↔ sw12         sw0: 1       │ sw12: 8         1x
+sw7       ↔ sw9          sw7: 1-2     │ sw9: 9-10       2x10G SFP+ SM
+sw1       ↔ sw5          sw1: 5       │ sw5: 1          1xPoE copper
+sw1       ↔ sw6          sw1: 6       │ sw6: 1          1xPoE copper
+sw4       ↔ sw3          sw4: 8       │ sw3: 1          1xPoE copper
+sw0       ↔ sw12         sw0: 1       │ sw12: 8         1x copper
 ```
 
 ### WAN Path
