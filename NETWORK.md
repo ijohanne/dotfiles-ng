@@ -115,8 +115,8 @@ UNIXPIMPSNET_GUEST   all         150     WPA2-PSK
 ```
 Name   Model              IP              Location
 ─────────────────────────────────────────────────────────
-ap0    U6 Mesh Pro        .254.20         Uplink via sw11
-ap1    U6 Mesh Pro        .254.19         Uplink via sw1 port 2
+ap0    U6 Pro        .254.20         Uplink via sw11
+ap1    U6 Pro        .254.19         Uplink via sw1 port 2
 ap2    U7 Outdoor         .254.165        Uplink via sw4 port 5 (terrace)
 ap3    U6 Enterprise      .254.44         Uplink via sw0 port 8 (living room)
 ```
