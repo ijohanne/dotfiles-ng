@@ -94,6 +94,7 @@
       "donation@nordic-t.me" = [ "ij@nordic-t.me" ];
       "paypal@nordic-t.me" = [ "ij@nordic-t.me" ];
     };
+    stateVersion = 3;
     certificateScheme = "acme-nginx";
     borgbackup = {
       enable = true;
