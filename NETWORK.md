@@ -27,56 +27,39 @@ All gateway IPs belong to **goose** (the router). They are defined in `network.h
 Site: **Huerta Nueva 8 5A** — domain `est.es.unixpimps.net`
 
 ```
-                          ISP (Movistar PPPoE)
+                         ISP (Movistar PPPoE)
                               │ VLAN 253
                               │
-     ┌────────────────────────┴────────────────────────────┐
-     │              goose (r0) — NixOS router              │
-     │              10.255.254.254 (mgnt)                  │
-     └────────────────────────┬────────────────────────────┘
+    ┌─────────────────────────┴─────────────────────────┐
+    │              goose (r0) — NixOS router             │
+    │              10.255.254.254 (mgnt)                 │
+    └─────────────────────────┬─────────────────────────┘
                               │ LACP bond (2×25G SFP28)
                               │
-     ┌────────────────────────┴────────────────────────────┐
-     │        sw10 — Pro Max Aggregation (32-port)         │
-     │        10.255.254.159   ac:8b:a9:67:bf:90           │
-     │                                                     │
-     │  Core aggregation switch — all trunks terminate     │
-     │  here. 10G SFP+ uplinks to every distribution sw.   │
-     └──┬──────┬──────┬──────┬──────┬──────┬──────┬────────┘
-        │      │      │      │      │      │      │
-        │      │      │      │      │      │      └─── fatty (2×25G LACP)
-        │      │      │      │      │      │            FreeBSD 14.7 server
-        │      │      │      │      │      │            bhyve VMs:
-        │      │      │      │      │      │              pakhet, thoth, horus
-        │      │      │      │      │      │              cctax-node, cctax-couch
-        │      │      │      │      │      │
-   ┌────┴─┐ ┌─┴────┐ │  ┌───┴──┐ ┌┴────┐ │
-   │ sw1  │ │ sw7  │ │  │ sw0  │ │sw11 │ │
-   │24PoE │ │Ultra8│ │  │8 PoE │ │8PoE │ │
-   │.167  │ │.1    │ │  │.171  │ │.174 │ │
-   └──┬───┘ └──┬───┘ │  └──┬───┘ └──┬──┘ │
-      │        │     │     │        │     │
-      │        │  ┌──┴──┐  │        │  ┌──┴──┐  ┌──────┐
-      │        │  │sw4  │  │        │  │sw2  │  │sw8   │
-      │        │  │8PoE │  │        │  │8PoE │  │8PoE  │
-      │        │  │.170 │  │        │  │.169 │  │.166  │
-      │        │  └──┬──┘  │        │  └─────┘  └──────┘
-      │        │     │     │        │
-   ┌──┴──┐ ┌──┴──┐  │  ┌──┴──┐    │
-   │sw5  │ │sw9  │  │  │sw12 │    │
-   │Mini │ │8PoE │  │  │Mini │    │
-   │.15  │ │.4   │  │  │8PoE │    │
-   └─────┘ └─────┘  │  │.157 │    │
-                     │  └─────┘    │
-                  ┌──┴──┐         │
-   ┌──────┐      │sw3  │         │
-   │sw6   │      │Flex │         │
-   │Mini  │      │5PoE │         │
-   │.16   │      │.10  │         │
-   └──────┘      └─────┘         │
-                                  │
-                           (sw13 — not in UniFi,
-                            mentioned on sw0 port 1)
+    ┌─────────────────────────┴─────────────────────────┐
+    │        sw10 — Pro Max Aggregation (32-port)       │
+    │        10.255.254.159   ac:8b:a9:67:bf:90         │
+    │                                                   │
+    │  Core aggregation — all trunks terminate here.    │
+    │  10G SFP+ uplinks to every distribution switch.   │
+    └───────────────────────┬───────────────────────────┘
+                            │
+      p13-14  p15-18  p21-22  p19-20  p23-24  p25-26  p27-28
+        ┌───────┬───────┬───┴───┬───────┬───────┬───────┐
+        │       │       │       │       │       │       │
+      sw1     sw7     sw4     sw0    sw11     sw2     sw8
+     24PoE   Ultra8   8PoE   8PoE   8PoE    8PoE    8PoE
+     .167     .1      .170   .171   .174    .169    .166
+      │       │       │       │
+  p5 ├─sw5  p1└─sw9 p8└─sw3 p1└─sw12
+  p6 │  .15     .4      .10     .157
+     └─sw6
+        .16
+
+    fatty ─── sw10 ports 29-30 (2×25G LACP)
+               FreeBSD 14.7 server
+               bhyve VMs: pakhet, thoth, horus,
+                           cctax-node, cctax-couch
 ```
 
 ### Trunk Links (LACP Aggregates)
