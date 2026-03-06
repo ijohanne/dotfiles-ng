@@ -100,6 +100,11 @@
       url = "gitlab:simple-nixos-mailserver/nixos-mailserver/nixos-25.11";
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
+
+    shouldidrinktoday = {
+      url = "github:ijohanne/shouldidrinktoday";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
+    };
   };
 
   outputs =
@@ -125,6 +130,7 @@
       beads,
       ijohanne-nur,
       nixos-mailserver,
+      shouldidrinktoday,
       ...
     }@inputs:
     let
@@ -165,6 +171,7 @@
             mercy.nixosModules.default
             grpc-proxier.nixosModules.default
             pdf-detective.nixosModules.default
+            shouldidrinktoday.nixosModules.default
             {
               nixpkgs.overlays = [
                 screeny.overlays.default
