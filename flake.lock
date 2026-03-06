@@ -1557,6 +1557,7 @@
         "pdf-detective": "pdf-detective",
         "rust-overlay": "rust-overlay_5",
         "screeny": "screeny",
+        "shouldidrinktoday": "shouldidrinktoday",
         "sops-nix": "sops-nix"
       }
     },
@@ -1743,6 +1744,26 @@
         "owner": "MarianArlt",
         "repo": "sddm-sugar-dark",
         "rev": "9fc363cc3f6b3f70df948c88cbe26989386ee20d",
+        "type": "github"
+      }
+    },
+    "shouldidrinktoday": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs-stable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1772803880,
+        "narHash": "sha256-CzKXGM0BBdASbBAZy+jR+yiB6Ny67IQshcSKXEBPHBk=",
+        "owner": "ijohanne",
+        "repo": "shouldidrinktoday",
+        "rev": "8bb0a1619f7e6c42d534f3f5a156da192431b4a2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ijohanne",
+        "repo": "shouldidrinktoday",
         "type": "github"
       }
     },
