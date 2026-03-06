@@ -7,12 +7,8 @@
     enableRootTrustAnchor = true;
     settings = {
       server = {
-        interface = [ "0.0.0.0" "127.0.0.1" ];
+        interface = [ "0.0.0.0" ];
         access-control = [ "10.0.0.0/8 allow" "127.0.0.0/8 allow" ];
-        root-hints = builtins.fetchurl {
-          url = "https://www.internic.net/domain/named.root";
-          sha256 = "sha256-Q95IIxPzsL2swJvFqA1u/Ux/R8u984uguzgLXz5gAag=";
-        };
         do-tcp = "yes";
         do-udp = "yes";
         hide-identity = "yes";

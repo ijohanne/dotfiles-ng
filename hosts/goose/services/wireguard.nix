@@ -3,7 +3,7 @@
     wg0 = {
       ips = [ "10.100.0.1/24" ];
       listenPort = 51820;
-      privateKeyFile = "/etc/wireguard/private";
+      privateKeyFile = "/run/secrets/wireguard_private_key";
 
       peers = [
         {

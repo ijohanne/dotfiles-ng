@@ -21,21 +21,16 @@ let
         exit 1
       fi
 
-      user="admin"
-      password="Password1"
-
-      ip="10.255.254.65"
+      source /run/secrets-rendered/sms-env
 
       message="$1"
 
-      target_number="0034690341707"
-
-      url="http://$ip/cgi-bin/sms_send"
+      url="http://$SMS_IP/cgi-bin/sms_send"
 
       curl --get \
-        --data-urlencode "username=$user" \
-        --data-urlencode "password=$password" \
-        --data-urlencode "number=$target_number" \
+        --data-urlencode "username=$SMS_USER" \
+        --data-urlencode "password=$SMS_PASSWORD" \
+        --data-urlencode "number=$SMS_TARGET_NUMBER" \
         --data-urlencode "text=$message" \
         "$url"
     '';

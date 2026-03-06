@@ -1,3 +1,5 @@
+{ network, ... }:
+
 { pkgs, ... }:
 
 {
@@ -6,7 +8,7 @@
     package = pkgs.bird2;
     config = ''
       define OWNAS = 65000;
-      define OWNIP = 10.255.254.254;
+      define OWNIP = ${network.hosts.goose.ips.mgnt};
 
       router id OWNIP;
 
@@ -41,10 +43,10 @@
         };
       };
 
-      protocol bgp k8s_0 from K8S { neighbor 10.255.101.234 as 65001; };
-      protocol bgp k8s_1 from K8S { neighbor 10.255.101.235 as 65001; };
-      protocol bgp k8s_2 from K8S { neighbor 10.255.101.236 as 65001; };
-      protocol bgp k8s_3 from K8S { neighbor 10.255.101.237 as 65001; };
+      protocol bgp k8s_0 from K8S { neighbor ${network.hosts.k8s-master-00.ip} as 65001; };
+      protocol bgp k8s_1 from K8S { neighbor ${network.hosts.k8s-worker-00.ip} as 65001; };
+      protocol bgp k8s_2 from K8S { neighbor ${network.hosts.k8s-worker-01.ip} as 65001; };
+      protocol bgp k8s_3 from K8S { neighbor ${network.hosts.k8s-worker-02.ip} as 65001; };
     '';
   };
 }

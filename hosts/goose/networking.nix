@@ -5,7 +5,7 @@
     "net.ipv4.conf.all.forwarding" = true;
     "net.ipv6.conf.all.forwarding" = true;
     "net.ipv6.conf.all.accept_ra" = 0;
-    "net.ipv6.conf.all.autoconf" = 1;
+    "net.ipv6.conf.all.autoconf" = 0;
     "net.ipv6.conf.all.use_tempaddr" = 0;
     "net.ipv4.tcp_congestion_control" = "bbr";
     "net.netfilter.nf_conntrack_helper" = 1;
@@ -20,7 +20,7 @@
   };
 
   networking = {
-    nameservers = [ "8.8.8.8" "8.8.4.4" ];
+    nameservers = [ "127.0.0.1" "8.8.8.8" ];
     dhcpcd.persistent = true;
     vlans = {
       wifi = {

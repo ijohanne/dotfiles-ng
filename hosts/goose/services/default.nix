@@ -1,12 +1,14 @@
 { interfaces, network, ... }:
 
+{ config, ... }:
+
 {
   imports = [
     (import ./dns.nix { inherit network; })
     (import ./firewall.nix { inherit interfaces network; })
     ./avahi.nix
     (import ./igmpproxy.nix { inherit interfaces; })
-    ./bird.nix
+    (import ./bird.nix { inherit network; })
     (import ./kea.nix { inherit network; })
     ./wireguard.nix
     ./multicast-relay.nix
@@ -25,4 +27,18 @@
   sops.secrets.tplink_username = {};
   sops.secrets.tplink_password = {};
   sops.secrets.smtp_pass_brother = {};
+  sops.secrets.sms_user = {};
+  sops.secrets.sms_password = {};
+  sops.secrets.sms_ip = {};
+  sops.secrets.sms_target_number = {};
+  sops.secrets.wireguard_private_key = {};
+
+  sops.templates."sms-env" = {
+    content = ''
+      SMS_USER=${config.sops.placeholder.sms_user}
+      SMS_PASSWORD=${config.sops.placeholder.sms_password}
+      SMS_IP=${config.sops.placeholder.sms_ip}
+      SMS_TARGET_NUMBER=${config.sops.placeholder.sms_target_number}
+    '';
+  };
 }

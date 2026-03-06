@@ -84,7 +84,7 @@
               oifname "ppp0" masquerade
               oifname "${interfaces.external}" masquerade
               oifname "mobile" masquerade
-              oifname { "wifi", "wired", "camera", "mgmt" }
+              oifname { "wifi", "wired", "camera", "mgnt" }
             }
         }
       '';
