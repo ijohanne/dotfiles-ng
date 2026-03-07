@@ -1700,11 +1700,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1772904969,
-        "narHash": "sha256-DXCNWN3Qr8dbwx/NmnfexBQm8HegCdkoSFApKQtc+UY=",
+        "lastModified": 1772906073,
+        "narHash": "sha256-Ixy0EjWRRkQGfBkWUagbGQsTpnQuV8Crl73NE4rxi8Q=",
         "owner": "ijohanne",
         "repo": "perlpimpnet",
-        "rev": "9c5572d5f96b608deb4593549a55ff66bf939a3d",
+        "rev": "f1e64bce222117608a84552fb60b95b23e6471dd",
         "type": "github"
       },
       "original": {
