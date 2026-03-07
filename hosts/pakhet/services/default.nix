@@ -27,6 +27,7 @@
     ./mailserver.nix
     ./opsplaza.nix
     ./plausible.nix
+    ./perlpimpnet.nix
   ];
 
   sops.secrets.nix_builder_access_tokens = { };

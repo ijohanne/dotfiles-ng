@@ -120,6 +120,11 @@
       url = "github:ijohanne/themailer-wrapper";
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
+
+    perlpimpnet = {
+      url = "github:ijohanne/perlpimpnet";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
+    };
   };
 
   outputs =
@@ -149,6 +154,7 @@
       unixpimpsnet,
       opsplaza,
       themailer-wrapper,
+      perlpimpnet,
       ...
     }@inputs:
     let
@@ -192,6 +198,7 @@
             shouldidrinktoday.nixosModules.default
             unixpimpsnet.nixosModules.default
             themailer-wrapper.nixosModules.default
+            perlpimpnet.nixosModules.default
             {
               nixpkgs.overlays = [
                 screeny.overlays.default
