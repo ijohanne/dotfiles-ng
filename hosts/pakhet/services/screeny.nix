@@ -45,6 +45,8 @@
         disableGraphiQL = true;
       };
 
+      analytics.plausible.enable = true;
+
       backup = {
         enable = true;
         schedule = "daily";
@@ -119,6 +121,7 @@
       enable = true;
       package = inputs.screeny.packages.x86_64-linux.tbhub;
       domain = "tb.unixpimps.net";
+      analytics.plausible.enable = true;
     };
   };
 }
