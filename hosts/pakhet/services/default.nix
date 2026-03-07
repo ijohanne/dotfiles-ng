@@ -26,6 +26,7 @@
     ./unixpimpsnet.nix
     ./mailserver.nix
     ./opsplaza.nix
+    ./plausible.nix
   ];
 
   sops.secrets.nix_builder_access_tokens = { };
@@ -153,6 +154,9 @@
     owner = "mercy";
     group = "mercy";
   };
+
+  # Plausible secrets
+  sops.secrets.plausible_secret_key_base = { };
 
   # Mail server secrets (hashed passwords)
   sops.secrets.mail_hashed_password_ij = { };
