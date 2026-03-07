@@ -25,5 +25,7 @@
       aliases = [ "www.pdfdetective.eu" ];
       enableACME = true;
     };
+
+    analytics.plausible.enable = true;
   };
 }
