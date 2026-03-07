@@ -1875,11 +1875,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1772803880,
-        "narHash": "sha256-CzKXGM0BBdASbBAZy+jR+yiB6Ny67IQshcSKXEBPHBk=",
+        "lastModified": 1772877569,
+        "narHash": "sha256-bMxQwFH6Qohef5dUnwMUkNPHSjyeLHI+Fnslw31JSmY=",
         "owner": "ijohanne",
         "repo": "shouldidrinktoday",
-        "rev": "8bb0a1619f7e6c42d534f3f5a156da192431b4a2",
+        "rev": "e17c29b74ebb9fd03646e48e7d84ab93c72cd600",
         "type": "github"
       },
       "original": {

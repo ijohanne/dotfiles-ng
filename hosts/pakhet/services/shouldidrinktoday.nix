@@ -4,5 +4,6 @@
     domain = "shouldidrink.today";
     acme = true;
     extraDomains = [ "www.shouldidrink.today" ];
+    analytics.plausible.enable = true;
   };
 }
