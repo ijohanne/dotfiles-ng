@@ -12,9 +12,8 @@ let
   sms = pkgs.writeShellApplication {
     name = "sms";
     runtimeInputs = with pkgs; [ bash curl ];
+    excludeShellChecks = [ "SC1091" ];
     text = ''
-      #!/usr/bin/env bash
-
       if [[ $# -ne 1 ]];
       then
         echo "Need text message as argument"
