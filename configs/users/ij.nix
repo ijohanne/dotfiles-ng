@@ -80,7 +80,9 @@
         lt = "eza --tree -L 2";
       };
       interactiveShellInit = ''
-        export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket 2>/dev/null || echo "$HOME/.gnupg/S.gpg-agent.ssh")"
+        if not set -q SSH_CONNECTION; or not set -q SSH_AUTH_SOCK
+            export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket 2>/dev/null || echo "$HOME/.gnupg/S.gpg-agent.ssh")"
+        end
         abbr -a tldr tealdeer
         abbr -a ps procs
         function dog
