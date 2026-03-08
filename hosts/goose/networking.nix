@@ -47,10 +47,18 @@
         id = 253;
         interface = "${interfaces.internal}";
       };
+      stb = {
+        id = 252;
+        interface = "${interfaces.internal}";
+      };
       mobile = {
         id = 1000;
         interface = "${interfaces.internal}";
       };
+    };
+
+    bridges."${interfaces.external}" = {
+      interfaces = [ "wan" "stb" ];
     };
 
     bonds."${interfaces.internal}" = {

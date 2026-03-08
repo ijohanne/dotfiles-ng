@@ -4,7 +4,7 @@ let
   network = import ../../configs/network.nix { inherit lib; };
 
   interfaces = {
-    external = "wan";
+    external = "br-wan";
     internal = "uplink";
     uplinks = [ "enp5s0f0np0" "enp5s0f1np1" ];
   };
