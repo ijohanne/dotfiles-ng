@@ -64,7 +64,7 @@ ssh pakhet.est.unixpimps.net deploy-pakhet    # pakhet (server)
 ssh khosu.unixpimps.net deploy-khosu          # khosu (VPS)
 ```
 
-The `deploy-<hostname>` wrapper runs `nixos-rebuild switch --flake github:ijohanne/dotfiles-ng#<hostname> --refresh`. See @NETWORK.md for IPs.
+The `deploy-<hostname>` wrapper checks for a local checkout under any user's `~/git/dotfiles-ng`, runs `git add -A` and builds from it if found, otherwise fetches from GitHub. See @NETWORK.md for IPs.
 
 ### Test builds (without activating)
 

@@ -38,11 +38,13 @@ in
 
   environment.systemPackages = with pkgs; [
     (writeShellScriptBin "deploy-pakhet" ''
-      if [ -d "$HOME/git/dotfiles-ng" ]; then
-        exec sudo nixos-rebuild switch --flake "$HOME/git/dotfiles-ng#pakhet"
-      else
-        exec sudo nixos-rebuild switch --flake github:ijohanne/dotfiles-ng#pakhet --refresh
-      fi
+      for dir in /home/*/git/dotfiles-ng /root/git/dotfiles-ng; do
+        if [ -d "$dir/.git" ]; then
+          git -C "$dir" add -A
+          exec sudo nixos-rebuild switch --flake "$dir#pakhet"
+        fi
+      done
+      exec sudo nixos-rebuild switch --flake github:ijohanne/dotfiles-ng#pakhet --refresh
     '')
   ];
 

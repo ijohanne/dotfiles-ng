@@ -42,11 +42,13 @@
 
   environment.systemPackages = with pkgs; [
     (writeShellScriptBin "deploy-khosu" ''
-      if [ -d "$HOME/git/dotfiles-ng" ]; then
-        exec sudo nixos-rebuild switch --flake "$HOME/git/dotfiles-ng#khosu"
-      else
-        exec sudo nixos-rebuild switch --flake github:ijohanne/dotfiles-ng#khosu --refresh
-      fi
+      for dir in /home/*/git/dotfiles-ng /root/git/dotfiles-ng; do
+        if [ -d "$dir/.git" ]; then
+          git -C "$dir" add -A
+          exec sudo nixos-rebuild switch --flake "$dir#khosu"
+        fi
+      done
+      exec sudo nixos-rebuild switch --flake github:ijohanne/dotfiles-ng#khosu --refresh
     '')
   ];
 
