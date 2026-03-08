@@ -129,7 +129,7 @@
           }
           {
             code = 119;
-            data = "${network.domain}, local";
+            data = "local, ${network.domain}, unixpimps.net";
             name = "domain-search";
             space = "dhcp4";
           }
