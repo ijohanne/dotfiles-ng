@@ -20,6 +20,7 @@ Nix-based dotfiles for managing macOS and Linux configurations.
   - [Pakhet (Application Server)](#pakhet-application-server)
   - [bhyve VM Images](#bhyve-vm-images)
   - [Raspberry Pi 4 Image](#raspberry-pi-4-image)
+  - [RTSP Dev VM](#rtsp-dev-vm)
 - [Reference](#reference)
   - [Terminal Tools](#terminal-tools)
   - [Neovim](#neovim)
@@ -464,6 +465,114 @@ To use this as a starting point for a new dedicated host:
    ```bash
    sudo nixos-rebuild switch --flake github:yourusername/dotfiles#my-new-rpi
    ```
+
+### RTSP Dev VM
+
+A QEMU virtual machine for developing and debugging the `nf_conntrack_rtsp` / `nf_nat_rtsp` kernel modules. Runs natively on Apple Silicon (aarch64-linux) — no emulation overhead.
+
+The RTSP conntrack helper is used on goose to handle Movistar IPTV VOD (Video on Demand) traffic. Live channels use multicast via igmpproxy, but VOD is unicast — the STB (`10.255.101.201` on the wired VLAN) communicates via RTSP (port 554) to set up on-demand streams. The conntrack helper parses RTSP SETUP requests and creates expectations for the dynamically negotiated RTP/RTCP ports, allowing NAT to work correctly for the media streams. The out-of-tree kernel module (`hosts/goose/pkgs/rtsp-linux.nix`) is old and may need fixes for newer kernels — this VM provides a safe environment to iterate.
+
+#### Building and Running
+
+```bash
+nix build .#images.rtsp-dev-vm
+result/bin/run-rtsp-dev-vm
+```
+
+The VM starts with QEMU and includes:
+- Latest Linux kernel with `nf_conntrack_rtsp` and `nf_nat_rtsp` loaded
+- nftables with a basic NAT + RTSP conntrack helper ruleset
+- `conntrack-tools`, `tcpreplay`, `tcpdump`, `wireshark-cli` (tshark)
+- Kernel dev headers for in-VM module rebuilds
+- `net.netfilter.nf_conntrack_helper = 1` and IP forwarding enabled
+
+SSH into the VM once booted (QEMU forwards port 2222 by default):
+
+```bash
+ssh -p 2222 ij@localhost
+```
+
+#### Capturing RTSP Traffic on Goose
+
+The Movistar STB uses RTSP on port 554 for VOD playback. Traffic flows through the `wan` VLAN (253) and gets DNATed to the STB on the `wired` VLAN (101).
+
+To capture a full VOD session with associated RTP streams:
+
+```bash
+# On goose — capture all STB traffic (RTSP control + RTP media)
+sudo tcpdump -i wired -w /tmp/rtsp-capture.pcap \
+  host 10.255.101.201 and '(port 554 or udp portrange 1024-65535)'
+
+# Or capture just RTSP control traffic
+sudo tcpdump -i wired -w /tmp/rtsp-control.pcap \
+  host 10.255.101.201 and port 554
+
+# Monitor conntrack expectations in real-time while capturing
+sudo conntrack -E expect
+```
+
+Start a VOD playback on the STB to generate RTSP SETUP/PLAY/TEARDOWN traffic, then stop the capture.
+
+#### Replaying in the VM
+
+1. Copy the pcap to the VM:
+   ```bash
+   scp -P 2222 /tmp/rtsp-capture.pcap ij@localhost:/tmp/
+   ```
+
+2. In the VM, inspect the capture:
+   ```bash
+   # View RTSP sessions
+   tshark -r /tmp/rtsp-capture.pcap -Y rtsp
+
+   # View conntrack helper assignments
+   tshark -r /tmp/rtsp-capture.pcap -Y 'tcp.port == 554' -V | grep -A5 SETUP
+   ```
+
+3. Replay through the network stack:
+   ```bash
+   # Replay at original speed
+   sudo tcpreplay -i eth0 /tmp/rtsp-capture.pcap
+
+   # Replay slower for debugging
+   sudo tcpreplay -i eth0 --multiplier=0.5 /tmp/rtsp-capture.pcap
+   ```
+
+4. Monitor conntrack state during replay:
+   ```bash
+   # Watch expectations being created
+   sudo conntrack -E expect
+
+   # List all tracked connections
+   sudo conntrack -L
+
+   # Filter for RTSP-related entries
+   sudo conntrack -L -p tcp --dport 554
+   ```
+
+#### Iterating on the Kernel Module
+
+The RTSP module source is from [maru-sama/rtsp-linux](https://github.com/maru-sama/rtsp-linux) with patches in `hosts/goose/pkgs/rtsp-linux.patch`. To iterate:
+
+1. Clone the source in the VM:
+   ```bash
+   git clone https://github.com/maru-sama/rtsp-linux.git
+   cd rtsp-linux
+   ```
+
+2. Make changes, build against the running kernel:
+   ```bash
+   make -C /run/booted-system/kernel-modules/lib/modules/$(uname -r)/build M=$(pwd) modules
+   ```
+
+3. Reload the modules:
+   ```bash
+   sudo modprobe -r nf_nat_rtsp nf_conntrack_rtsp
+   sudo insmod ./nf_conntrack_rtsp.ko
+   sudo insmod ./nf_nat_rtsp.ko
+   ```
+
+4. Replay traffic and verify behavior.
 
 ## Reference
 
