@@ -42,9 +42,9 @@
             chain forward {
               meta oiftype ppp tcp flags syn tcp option maxseg size set 1452
               type filter hook forward priority filter; policy drop;
-              # ACS (80.58.63.218) — previously blocked because the STB rejected the TLS cert.
-              # Temporarily allowing to test if firmware update resolved the cert issue.
-              # ip saddr ${network.hosts.livingroom-movistar-stb.ip} ip daddr 80.58.63.218 reject with icmp host-unreachable
+              # ACS (80.58.63.218) returns a TLS cert the STB rejects, causing a fatal boot failure.
+              # When ACS is unreachable the STB skips it and boots via Movistar internal services.
+              ip saddr ${network.hosts.livingroom-movistar-stb.ip} ip daddr 80.58.63.218 reject with icmp host-unreachable
               iifname { "guest", "wifi", "wired", "camera", "mgnt", "${interfaces.external}", "wg0" } oifname {
                 "ppp0", "${interfaces.external}", "mobile"
               } counter accept
