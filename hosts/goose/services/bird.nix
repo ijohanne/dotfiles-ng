@@ -20,12 +20,20 @@
         ipv4 {
           import none;
           export filter {
-            if source = RTS_STATIC then reject;
+            if source = RTS_STATIC && !( net ~ [172.16.0.0/12+, 10.0.0.0/8+] ) then reject;
             krt_prefsrc = OWNIP;
             accept;
           };
         };
         persist;
+      }
+
+      protocol static movistar_static {
+        ipv4;
+        route 172.26.0.0/17 via 192.168.1.1%'${interfaces.external}';
+        route 172.23.0.0/17 via 192.168.1.1%'${interfaces.external}';
+        route 10.31.255.128/27 via 192.168.1.1%'${interfaces.external}';
+        route 10.93.18.0/24 via 192.168.1.1%'${interfaces.external}';
       }
 
       template bgp K8S {
