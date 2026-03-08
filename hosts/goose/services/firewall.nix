@@ -44,7 +44,7 @@
               type filter hook forward priority filter; policy drop;
               # ACS (80.58.63.218) returns a TLS cert the STB rejects, causing a fatal boot failure.
               # When ACS is unreachable the STB skips it and boots via Movistar internal services.
-              ip saddr ${network.hosts.livingroom-movistar-stb.ip} ip daddr 80.58.63.218 reject
+              ip saddr ${network.hosts.livingroom-movistar-stb.ip} ip daddr 80.58.63.218 reject with icmp host-unreachable
               iifname { "guest", "wifi", "wired", "camera", "mgnt", "${interfaces.external}", "wg0" } oifname {
                 "ppp0", "${interfaces.external}", "mobile"
               } counter accept
