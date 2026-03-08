@@ -18,6 +18,7 @@ Nix-based dotfiles for managing macOS and Linux configurations.
   - [Khosu (VPS)](#khosu-vps)
   - [Goose (Router)](#goose-router)
   - [Pakhet (Application Server)](#pakhet-application-server)
+  - [bhyve VM Images](#bhyve-vm-images)
   - [Raspberry Pi 4 Image](#raspberry-pi-4-image)
 - [Reference](#reference)
   - [Terminal Tools](#terminal-tools)
@@ -34,6 +35,8 @@ Nix-based dotfiles for managing macOS and Linux configurations.
 - **goose** — NixOS router/firewall (x86_64-linux)
 - **khosu** — NixOS mail relay VPS on netcup (x86_64-linux)
 - **pakhet** — NixOS application server (x86_64-linux)
+- **bhyve-image** — Minimal bhyve VM image (x86_64-linux)
+- **bhyve-image-server** — bhyve VM image with server users and home-manager (x86_64-linux)
 - **rpi4-stable** — Raspberry Pi 4 SD card image (aarch64-linux, nixos-25.05)
 - **rpi4-unstable** — Raspberry Pi 4 SD card image (aarch64-linux, nixos-unstable)
 
@@ -313,6 +316,82 @@ Pakhet is a bhyve VM running on fatty (FreeBSD host). It uses GRUB with a simple
    ```bash
    deploy-pakhet
    ```
+
+### bhyve VM Images
+
+Pre-built raw disk images for FreeBSD bhyve virtual machines. Two variants are available:
+
+- **bhyve** — Minimal base image (vim, htop, git, SSH with authorized keys for root)
+- **bhyve-server** — Full server image with ij + mj users, home-manager configs, fish/zsh, dev tools, sops-nix
+
+Both images use GPT with a BIOS boot partition and ext4 root. The root partition and filesystem automatically expand to fill the virtual disk on first boot.
+
+#### Building the Images
+
+```bash
+# Minimal base image
+nix build .#images.bhyve
+
+# Server image with users and home-manager
+nix build .#images.bhyve-server
+```
+
+The output is a raw disk image at `result/main.raw`.
+
+#### Creating a bhyve VM
+
+On the FreeBSD host (fatty):
+
+1. Copy the image and create the VM disk:
+   ```bash
+   # Create a ZFS volume for the VM (adjust size as needed)
+   zfs create -V 20G zroot/vms/my-vm
+
+   # Write the image to the volume
+   dd if=main.raw of=/dev/zvol/zroot/vms/my-vm bs=1M
+
+   # Or copy the raw image directly if using file-backed storage
+   cp main.raw /vms/my-vm.img
+   truncate -s 20G /vms/my-vm.img
+   ```
+
+2. Create a `vm-bhyve` configuration (e.g., `/vms/my-vm/my-vm.conf`):
+   ```
+   loader="grub"
+   cpu=2
+   memory=2G
+   disk0_type="virtio-blk"
+   disk0_name="disk0"
+   network0_type="virtio-net"
+   network0_switch="public"
+   grub_run_partition="gpt2"
+   ```
+
+3. Start the VM:
+   ```bash
+   vm start my-vm
+   ```
+
+4. SSH into the VM once it boots:
+   ```bash
+   ssh root@<vm-ip>
+   # or (server image)
+   ssh ij@<vm-ip>
+   ```
+
+#### First Boot
+
+The root partition automatically grows to fill the disk. No manual intervention needed.
+
+After boot, set the hostname and switch to a dedicated flake configuration:
+
+```bash
+# Set hostname
+sudo hostnamectl set-hostname my-vm
+
+# Switch to a host-specific config (if one exists in the flake)
+sudo nixos-rebuild switch --flake github:ijohanne/dotfiles-ng#my-vm
+```
 
 ### Raspberry Pi 4 Image
 

@@ -276,6 +276,39 @@
           ];
         };
 
+        bhyve-image = nixpkgs-stable.lib.nixosSystem {
+          system = "x86_64-linux";
+          specialArgs = { inherit inputs self user; };
+          modules = [
+            disko.nixosModules.disko
+            ./hosts/bhyve-image/disko.nix
+            ./hosts/bhyve-image/configuration.nix
+          ];
+        };
+
+        bhyve-image-server = nixpkgs-stable.lib.nixosSystem {
+          system = "x86_64-linux";
+          specialArgs = { inherit inputs self user; };
+          modules = [
+            disko.nixosModules.disko
+            sops-nix.nixosModules.sops
+            ./hosts/bhyve-image/disko.nix
+            ./hosts/bhyve-image/configuration-server.nix
+            home-manager-stable.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.extraSpecialArgs = { inherit user inputs; };
+              home-manager.users.${user.username} = {
+                imports = [ ./configs/users/ij.nix ];
+              };
+              home-manager.users.mj = {
+                imports = [ ./configs/users/mj.nix ];
+              };
+            }
+          ];
+        };
+
         rpi4-stable = nixpkgs-stable.lib.nixosSystem {
           system = "aarch64-linux";
           specialArgs = { inherit inputs self user; };
@@ -296,6 +329,8 @@
       images = {
         rpi4-stable = self.nixosConfigurations.rpi4-stable.config.system.build.sdImage;
         rpi4-unstable = self.nixosConfigurations.rpi4-unstable.config.system.build.sdImage;
+        bhyve = self.nixosConfigurations.bhyve-image.config.system.build.diskoImages;
+        bhyve-server = self.nixosConfigurations.bhyve-image-server.config.system.build.diskoImages;
       };
 
       darwinConfigurations = {
