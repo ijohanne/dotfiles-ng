@@ -1,18 +1,12 @@
 { lib, config, modulesPath, pkgs, ... }:
 
-let
-  rtsp-linux = pkgs.callPackage ./pkgs/rtsp-linux.nix {
-    kernel = config.boot.kernelPackages.kernel;
-  };
-in
-
 {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" ];
-  boot.kernelModules = [ "kvm-amd" "tcp_bbr" "it87" "nf_conntrack_rtsp" "nf_nat_rtsp" ];
+  boot.kernelModules = [ "kvm-amd" "tcp_bbr" "it87" ];
   boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -37,7 +31,6 @@ in
 
   boot.extraModulePackages = [
     config.boot.kernelPackages.it87
-    rtsp-linux
   ];
 
   systemd.settings.Manager = {

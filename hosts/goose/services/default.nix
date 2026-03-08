@@ -8,7 +8,7 @@
     (import ./firewall.nix { inherit interfaces network; })
     ./avahi.nix
     (import ./igmpproxy.nix { inherit interfaces; })
-    (import ./bird.nix { inherit network; })
+    (import ./bird.nix { inherit interfaces network; })
     (import ./kea.nix { inherit network; })
     ./wireguard.nix
     ./multicast-relay.nix
