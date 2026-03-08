@@ -15,6 +15,9 @@ Nix-based dotfiles for managing macOS and Linux configurations.
 - [Installation](#installation)
   - [macOS Setup](#macos-setup)
   - [Linux Desktop Setup](#linux-desktop-setup)
+  - [Khosu (VPS)](#khosu-vps)
+  - [Goose (Router)](#goose-router)
+  - [Pakhet (Application Server)](#pakhet-application-server)
   - [Raspberry Pi 4 Image](#raspberry-pi-4-image)
 - [Reference](#reference)
   - [Terminal Tools](#terminal-tools)
@@ -200,6 +203,115 @@ The Linux desktop uses disko for declarative disk partitioning with LUKS encrypt
 7. After installation, rebuild with:
    ```bash
    sudo nixos-rebuild switch --flake .#ij-desktop
+   ```
+
+### Khosu (VPS)
+
+Khosu is a netcup VPS using disko for disk partitioning. It can be installed from scratch using [nixos-anywhere](https://github.com/nix-community/nixos-anywhere).
+
+#### Prerequisites
+
+- A netcup VPS with rescue/KVM console access
+- Boot the VPS into a NixOS installer ISO or any Linux with SSH and root access
+- Ensure you can SSH as root to the VPS IP (`159.195.24.170`)
+
+#### Installation
+
+1. From your local machine (macbook or any host with nix and flakes):
+   ```bash
+   nix run github:nix-community/nixos-anywhere -- --flake .#khosu root@159.195.24.170
+   ```
+
+   This will:
+   - Partition the disk using `hosts/khosu/disko.nix` (GPT with BIOS boot + ext4 root on `/dev/vda`)
+   - Install NixOS with the khosu configuration
+   - Set up GRUB bootloader
+
+2. After installation completes, the VPS will reboot. SSH in and deploy:
+   ```bash
+   ssh khosu.unixpimps.net deploy-khosu
+   ```
+
+#### Disk Layout
+
+Defined in `hosts/khosu/disko.nix`:
+- 1MB BIOS boot partition (EF02, for GRUB on GPT)
+- Remaining space as ext4 root
+
+### Goose (Router)
+
+Goose is a physical x86_64 AMD machine acting as the network router/gateway. It uses systemd-boot with a btrfs root on NVMe.
+
+#### Prerequisites
+
+- Physical access or IPMI/KVM to the machine
+- Boot a NixOS installer USB
+
+#### Installation
+
+1. Boot the NixOS installer
+
+2. Partition the disk manually (goose does not use disko):
+   ```bash
+   # Create GPT partition table on /dev/nvme0n1
+   parted /dev/nvme0n1 -- mklabel gpt
+   parted /dev/nvme0n1 -- mkpart ESP fat32 1MiB 512MiB
+   parted /dev/nvme0n1 -- set 1 esp on
+   parted /dev/nvme0n1 -- mkpart primary 512MiB 100%
+
+   # Format
+   mkfs.fat -F 32 /dev/nvme0n1p1
+   mkfs.btrfs /dev/nvme0n1p2
+   mount /dev/nvme0n1p2 /mnt
+   btrfs subvolume create /mnt/nixos
+   umount /mnt
+
+   # Mount for install
+   mount -o subvol=nixos /dev/nvme0n1p2 /mnt
+   mkdir -p /mnt/boot
+   mount /dev/nvme0n1p1 /mnt/boot
+   ```
+
+3. Install NixOS:
+   ```bash
+   nixos-install --flake github:ijohanne/dotfiles-ng#goose
+   ```
+
+4. Reboot and verify network connectivity. After boot, subsequent updates use:
+   ```bash
+   deploy-goose
+   ```
+
+### Pakhet (Application Server)
+
+Pakhet is a bhyve VM running on fatty (FreeBSD host). It uses GRUB with a simple ext4 root on `/dev/sda`.
+
+#### Prerequisites
+
+- Create a bhyve VM on fatty with a virtual disk and network interface
+- Boot a NixOS installer ISO in the VM
+
+#### Installation
+
+1. Boot the NixOS installer in the bhyve VM
+
+2. Partition the disk manually (pakhet does not use disko):
+   ```bash
+   parted /dev/sda -- mklabel msdos
+   parted /dev/sda -- mkpart primary ext4 1MiB 100%
+
+   mkfs.ext4 /dev/sda1
+   mount /dev/sda1 /mnt
+   ```
+
+3. Install NixOS:
+   ```bash
+   nixos-install --flake github:ijohanne/dotfiles-ng#pakhet
+   ```
+
+4. Reboot. After boot, subsequent updates use:
+   ```bash
+   deploy-pakhet
    ```
 
 ### Raspberry Pi 4 Image
