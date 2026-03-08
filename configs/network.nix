@@ -13,7 +13,7 @@ let
         mgnt   = "10.255.254.254";
       };
       ip = ips.mgnt;
-      dns = [ "r0" ];
+      dns = [ "r0" "goose" ];
     };
     goose-ipmi = { ip = "10.255.254.210"; dns = [ "r0.ipmi" ]; };
 
