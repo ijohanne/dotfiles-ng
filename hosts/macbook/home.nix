@@ -77,6 +77,14 @@ EOF
   };
 
   programs = {
+    ssh = {
+      enable = true;
+      forwardAgent = true;
+      extraConfig = ''
+        PubkeyAuthentication unbound
+      '';
+    };
+
     fish = {
       enable = true;
       interactiveShellInit = ''
