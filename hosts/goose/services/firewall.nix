@@ -42,6 +42,7 @@
             chain forward {
               meta oiftype ppp tcp flags syn tcp option maxseg size set 1452
               type filter hook forward priority filter; policy drop;
+              ip saddr ${network.hosts.livingroom-movistar-stb.ip} ip daddr 80.58.63.218 reject
               iifname { "guest", "wifi", "wired", "camera", "mgnt", "${interfaces.external}", "wg0" } oifname {
                 "ppp0", "${interfaces.external}", "mobile"
               } counter accept
