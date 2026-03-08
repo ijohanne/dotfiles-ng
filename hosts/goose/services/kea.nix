@@ -350,4 +350,9 @@
   systemd.services.kea = {
     requires = [ "guest-netdev.service" "mgnt-netdev.service" "wifi-netdev.service" "wired-netdev.service" "camera-netdev.service" ];
   };
+
+  systemd.services.kea-dhcp4-server = {
+    bindsTo = [ "network-addresses-wired.service" "network-addresses-wifi.service" ];
+    after = [ "network-addresses-wired.service" "network-addresses-wifi.service" ];
+  };
 }
