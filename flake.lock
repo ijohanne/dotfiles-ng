@@ -136,16 +136,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1772004028,
-        "narHash": "sha256-7QXUHhbXDtU1mUQsYHv3n+5E+R9ANMLk3DOTYlqpo5w=",
+        "lastModified": 1772841898,
+        "narHash": "sha256-+5WdD9bo2XZIajeO5JPXCUyPotE9DFY9DL38OHYEy1s=",
         "owner": "sadjow",
         "repo": "claude-code-nix",
-        "rev": "3581d10a998ee9854c0433edf8bcc13bd52a1d08",
+        "rev": "635219a8ebb214a37e92220a0f292568cfb01da8",
         "type": "github"
       },
       "original": {
         "owner": "sadjow",
-        "ref": "v2.1.56",
+        "ref": "v2.1.71",
         "repo": "claude-code-nix",
         "type": "github"
       }
@@ -1700,11 +1700,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1772907478,
-        "narHash": "sha256-x3u6wAai0Uo9fXor/4Rw4r3ybIpuWl6YWk20jG0OFZw=",
+        "lastModified": 1772961008,
+        "narHash": "sha256-fHnNUrlkAJs3kcW1hzvvXmeobb5mflOZ34snnj86Bvc=",
         "owner": "ijohanne",
         "repo": "perlpimpnet",
-        "rev": "89bc3879f18d4cd181c2b2bec723623d795b15be",
+        "rev": "9a2e2ea2a9f1bbbda97c6b69e149a95234906e59",
         "type": "github"
       },
       "original": {
