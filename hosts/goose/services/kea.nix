@@ -46,13 +46,6 @@
                 name = "deco240";
                 space = "dhcp4";
               }
-              {
-                code = 125;
-                data = "00000DE9210406303039303936050C4338423432324446433632300609525446383131355657";
-                name = "vivso-suboptions";
-                csv-format = false;
-                space = "dhcp4";
-              }
             ];
             test = "substring(option[60].hex,1,3) == 'IAL'";
           }
