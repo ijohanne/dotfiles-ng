@@ -66,34 +66,10 @@
 
     interfaces = {
       "${interfaces.external}" = {
-        ipv4 = {
-          addresses = [{
-            address = "192.168.1.2";
-            prefixLength = 24;
-          }];
-          routes = [
-            {
-              address = "172.26.0.0";
-              prefixLength = 17;
-              via = "192.168.1.1";
-            }
-            {
-              address = "172.23.0.0";
-              prefixLength = 17;
-              via = "192.168.1.1";
-            }
-            {
-              address = "10.31.255.128";
-              prefixLength = 27;
-              via = "192.168.1.1";
-            }
-            {
-              address = "10.93.18.0";
-              prefixLength = 24;
-              via = "192.168.1.1";
-            }
-          ];
-        };
+        ipv4.addresses = [{
+          address = "192.168.1.2";
+          prefixLength = 24;
+        }];
       };
       wifi = {
         ipv4.addresses = [{
@@ -171,6 +147,23 @@
         /run/current-system/sw/bin/systemctl restart prometheus-smokeping-exporter.service
         /run/current-system/sw/bin/systemctl start cloudflare-dyndns.service
       '';
+    };
+  };
+
+  systemd.services.movistar-routes = {
+    description = "Movistar static routes via wan";
+    after = [ "network-addresses-${interfaces.external}.service" ];
+    requires = [ "network-addresses-${interfaces.external}.service" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      ExecStart = let ip = "/run/current-system/sw/bin/ip"; in [
+        "${ip} route replace 172.26.0.0/17 via 192.168.1.1 dev ${interfaces.external}"
+        "${ip} route replace 172.23.0.0/17 via 192.168.1.1 dev ${interfaces.external}"
+        "${ip} route replace 10.31.255.128/27 via 192.168.1.1 dev ${interfaces.external}"
+        "${ip} route replace 10.93.18.0/24 via 192.168.1.1 dev ${interfaces.external}"
+      ];
     };
   };
 
