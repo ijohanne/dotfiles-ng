@@ -100,7 +100,11 @@ in
     sms
     test_connection
     (writeShellScriptBin "deploy-goose" ''
-      exec sudo nixos-rebuild switch --flake github:ijohanne/dotfiles-ng#goose --refresh
+      if [ -d "$HOME/git/dotfiles-ng" ]; then
+        exec sudo nixos-rebuild switch --flake "$HOME/git/dotfiles-ng#goose"
+      else
+        exec sudo nixos-rebuild switch --flake github:ijohanne/dotfiles-ng#goose --refresh
+      fi
     '')
   ];
 

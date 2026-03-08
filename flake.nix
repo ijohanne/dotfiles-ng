@@ -217,11 +217,6 @@
               };
               home-manager.users.mj = {
                 imports = [ ./configs/users/mj.nix ];
-                home.packages = [
-                  (pkgs.writeShellScriptBin "nixos-rebuild" ''
-                    cd ~/git/dotfiles-ng && git add -A && sudo nixos-rebuild switch --flake .#${config.networking.hostName}
-                  '')
-                ];
               };
             })
           ];
@@ -256,11 +251,6 @@
               };
               home-manager.users.mj = {
                 imports = [ ./configs/users/mj.nix ];
-                home.packages = [
-                  (pkgs.writeShellScriptBin "nixos-rebuild" ''
-                    cd ~/git/dotfiles-ng && git add -A && sudo nixos-rebuild switch --flake .#${config.networking.hostName}
-                  '')
-                ];
               };
             })
           ];
