@@ -49,7 +49,7 @@
               {
                 code = 125;
                 data = "00000DE9210406303039303936050C4338423432324446433632300609525446383131355657";
-                name = "movistar-vivso";
+                name = "vivso-suboptions";
                 csv-format = false;
                 space = "dhcp4";
               }
@@ -142,12 +142,6 @@
           }
         ];
         option-def = [
-          {
-            code = 125;
-            name = "movistar-vivso";
-            space = "dhcp4";
-            type = "binary";
-          }
           {
             code = 240;
             name = "deco240";
