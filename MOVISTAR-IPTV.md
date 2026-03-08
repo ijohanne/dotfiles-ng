@@ -92,6 +92,30 @@ The STB also requests options 170, 241, 242, 243 — these are not served by eit
 
 STB joins channel multicast groups and data flows at ~12Mbps through goose to wired, but video doesn't display. STB eventually gives up on IGMP entirely. The wired interface has 1.1M TX drops when multicast is active (noqueue qdisc), but changing to fq_codel breaks DHCP. Root cause unresolved.
 
+### Known Issue: STB Boots on VLAN 253 But Not VLAN 101
+
+When the STB's switch port is moved to VLAN 253 (br-wan bridge, L2 with Movistar router), the STB boots and provisions successfully via the Movistar router's DHCP. VOD fails (no internet access from that VLAN). When moved back to VLAN 101 (wired, served by kea), it fails to boot/provision.
+
+This confirms the STB hardware and firmware are functional — the issue is in how kea serves the STB on VLAN 101 vs how the Movistar router serves it on VLAN 253.
+
+### Next Debugging Steps
+
+When resuming IPTV debugging:
+
+1. **Compare DHCP responses byte-for-byte**: Capture the Movistar router's DHCP offer (on VLAN 252/253 bridge) and kea's offer (on VLAN 101) side by side. Look for any option the Movistar router sends that kea doesn't, beyond option 125 and option 240.
+
+2. **Check if STB remembers state between VLANs**: The STB may cache provisioning data from the Movistar router and then reject kea's different response. Try: power cycle STB for 5+ minutes before moving back to VLAN 101.
+
+3. **Test with static STB config**: During boot (5th dot blinking), press the remote's "user" button. Manually set OPCH to `239.0.2.30:22222` and DNS to `172.26.23.3`. This bypasses DHCP option 240 entirely and isolates whether the issue is DHCP or multicast/routing.
+
+4. **Inspect kea DHCP logs**: `journalctl -u kea-dhcp4-server -f` while STB boots on VLAN 101. Verify the STB sends REQUEST (not just Discover→Offer loop). Check if the STB's vendor class or client-id has changed after booting on VLAN 253.
+
+5. **Test multicast independently**: While STB is on VLAN 101, use `tcpdump -i wired 'udp and dst net 239.0.0.0/8'` to verify multicast traffic reaches the wired interface. Also check `igmpproxy` logs for join/leave activity.
+
+6. **TX drops on wired**: Monitor `ip -s link show wired` during multicast — if TX drops are still accumulating, investigate setting a proper qdisc on the VLAN sub-interface only (not the parent bond) or increasing the TX ring buffer.
+
+7. **NAT/masquerade for STB traffic**: Verify that STB unicast traffic to 172.26.x.x is being masqueraded to 192.168.1.2 on br-wan. Without masquerade, the Movistar router won't know how to route replies back to 10.255.101.x. Check with `conntrack -L | grep 172.26`.
+
 ## VOD (Video on Demand)
 
 VOD uses DASH streaming (no longer RTSP). The flow:
