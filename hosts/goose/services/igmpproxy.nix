@@ -4,7 +4,6 @@
 
 let
   confFile = pkgs.writeText "igmpproxy.conf" ''
-    quickleave
     phyint ${interfaces.external} upstream ratelimit 0 threshold 1
       altnet 172.26.0.0/17
       altnet 172.23.0.0/17
