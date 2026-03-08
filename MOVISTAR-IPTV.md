@@ -61,9 +61,16 @@ These are set by `movistar-routes.service` at boot and restored by the PPP `ip-u
 
 The `MovistarTV` client class matches `[IAL]` vendor class and provides:
 - **Option 6** (DNS): 172.26.23.3 (Movistar internal DNS)
-- **Option 240**: `:::::239.0.2.10:22222:v6.0:239.0.2.30:22222` (multicast discovery config)
+- **Option 240**: `:::::239.0.2.29:22222` (multicast discovery config — matches Movistar router)
+- **Option 125** (V-I Vendor-Specific): Broadband Forum (enterprise 3561) gateway info from the Movistar router (OUI, serial, product class)
 
-The STB also requests options 125, 170, 241, 242, 243 — these are not currently served.
+The Movistar router's actual DHCP response (captured via br-wan bridge) sends:
+- Option 240: `:::::239.0.2.29:22222` (21 bytes, multicast group 239.0.2.29)
+- Option 125: GatewayManufacturerOUI=009096, GatewaySerialNumber=C8B422DFC620, GatewayProductClass=RTF8115VW
+- DNS: 172.26.23.3 (twice)
+- Lease: 12h, IP: 192.168.1.200
+
+The STB also requests options 170, 241, 242, 243 — these are not served by either the Movistar router or kea.
 
 ## Multicast / Live TV
 
