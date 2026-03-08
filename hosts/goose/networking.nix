@@ -88,8 +88,8 @@
               via = "192.168.1.1";
             }
             {
-              address = "10.128.0.0";
-              prefixLength = 9;
+              address = "10.93.18.0";
+              prefixLength = 24;
               via = "192.168.1.1";
             }
           ];
@@ -166,7 +166,7 @@
         /run/current-system/sw/bin/ip route replace 172.26.0.0/17 via 192.168.1.1 dev ${interfaces.external}
         /run/current-system/sw/bin/ip route replace 172.23.0.0/17 via 192.168.1.1 dev ${interfaces.external}
         /run/current-system/sw/bin/ip route replace 10.31.255.128/27 via 192.168.1.1 dev ${interfaces.external}
-        /run/current-system/sw/bin/ip route replace 10.128.0.0/9 via 192.168.1.1 dev ${interfaces.external}
+        /run/current-system/sw/bin/ip route replace 10.93.18.0/24 via 192.168.1.1 dev ${interfaces.external}
         /run/current-system/sw/bin/systemctl restart unbound.service
         /run/current-system/sw/bin/systemctl restart prometheus-smokeping-exporter.service
         /run/current-system/sw/bin/systemctl start cloudflare-dyndns.service
