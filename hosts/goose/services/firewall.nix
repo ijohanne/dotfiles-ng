@@ -51,7 +51,6 @@
               } oifname { "guest", "wifi", "wired", "camera", "mgnt", "${interfaces.external}", "wg0"
               } ct state established,related counter accept
 
-              ip protocol { tcp, udp } flow offload @fastnat
               iifname { "wifi", "wired", "camera", "mgnt", "${interfaces.external}", "wg0" } oifname {
                 "wifi", "wired", "camera", "mgnt", "${interfaces.external}", "wg0" } counter accept
 
