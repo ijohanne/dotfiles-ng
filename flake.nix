@@ -247,6 +247,7 @@
             ({ config, pkgs, ... }: {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
+              home-manager.backupFileExtension = "bak";
               home-manager.extraSpecialArgs = { inherit user inputs; };
               home-manager.users.${user.username} = {
                 imports = [

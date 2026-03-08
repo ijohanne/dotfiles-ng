@@ -42,7 +42,6 @@
             chain forward {
               meta oiftype ppp tcp flags syn tcp option maxseg size set 1452
               type filter hook forward priority filter; policy drop;
-              ip protocol { tcp , udp } flow offload @fastnat;
               iifname { "guest", "wifi", "wired", "camera", "mgnt", "${interfaces.external}", "wg0" } oifname {
                 "ppp0", "${interfaces.external}", "mobile"
               } counter accept
@@ -52,6 +51,7 @@
               } oifname { "guest", "wifi", "wired", "camera", "mgnt", "${interfaces.external}", "wg0"
               } ct state established,related counter accept
 
+              ip protocol { tcp, udp } flow offload @fastnat
               iifname { "wifi", "wired", "camera", "mgnt", "${interfaces.external}", "wg0" } oifname {
                 "wifi", "wired", "camera", "mgnt", "${interfaces.external}", "wg0" } counter accept
 
@@ -63,7 +63,7 @@
 
             flowtable fastnat {
               hook ingress priority filter
-              devices = { wifi, wired, camera, mgnt, ${interfaces.external} }
+              devices = { wifi, wired, camera, mgnt }
             }
         }
 
