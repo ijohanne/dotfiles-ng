@@ -21,6 +21,7 @@ in
 
             chain input {
               type filter hook input priority filter; policy drop;
+              ct state invalid counter drop
               ip saddr 10.0.0.0/8 tcp dport 53 accept;
               ip saddr 10.0.0.0/8 udp dport 53 accept;
               ip saddr 10.0.0.0/8 ip protocol icmp accept
@@ -61,6 +62,7 @@ in
             chain forward {
               meta oiftype ppp tcp flags syn tcp option maxseg size set 1452
               type filter hook forward priority filter; policy drop;
+              ct state invalid counter drop
               # ACS (80.58.63.218) returns a TLS cert the STB rejects, causing a fatal boot failure.
               # When ACS is unreachable the STB skips it and boots via Movistar internal services.
               ip saddr ${network.hosts.livingroom-movistar-stb.ip} ip daddr 80.58.63.218 reject with icmp host-unreachable
