@@ -18,13 +18,26 @@ let
     goose-ipmi = { ip = "10.255.254.210"; dns = [ "r0.ipmi" ]; };
 
     # --- Servers ---
-    pakhet        = { ip = "10.255.101.200"; mac = "58:9c:fc:0e:56:98"; };
+    pakhet        = { ip = "10.255.101.200"; mac = "58:9c:fc:0e:56:98"; dnat = [
+      { proto = "tcp"; port = 25; }
+      { proto = "tcp"; port = 80; }
+      { proto = "tcp"; port = 443; }
+      { proto = "tcp"; port = 465; }
+      { proto = "tcp"; port = 587; }
+      { proto = "tcp"; port = 993; }
+      { proto = "tcp"; port = 995; }
+      { proto = "tcp"; port = 2525; }
+      { proto = "tcp"; port = 4190; }
+    ]; };
     fatty         = { ip = "10.255.101.243"; mac = "a8:a1:59:3e:da:ef"; };
     sobek-wired   = { ip = "10.255.101.244"; mac = "dc:a6:32:08:7c:32"; dns = [ "sobek" ]; };
     chronos-wired = { ip = "10.255.101.202"; mac = "dc:a6:32:34:1e:6d"; dns = [ "chronos" ]; };
     hapi          = { ip = "10.255.101.242"; mac = "b8:27:eb:ff:f8:5f"; };
     cctax-couch   = { ip = "10.255.101.209"; mac = "58:9c:fc:04:29:b3"; };
-    cctax-node    = { ip = "10.255.101.245"; mac = "58:9c:fc:03:64:32"; };
+    cctax-node    = { ip = "10.255.101.245"; mac = "58:9c:fc:03:64:32"; dnat = [
+      { proto = "tcp"; port = 8888; }
+      { proto = "tcp"; port = 20000; }
+    ]; };
     obico         = { ip = "10.255.101.91"; };
     amon          = { ip = "10.255.101.241"; mac = "dc:a6:32:60:1c:82"; };
 
@@ -134,6 +147,41 @@ let
     ip-address = host.ip;
   }) (lib.filterAttrs (_: host: host ? mac) hosts);
 
+  # DNAT rule generation from host registry
+  hostsWithDnat = lib.filterAttrs (_: host: host ? dnat && host.dnat != []) hosts;
+
+  mkDnatRules = { extIfaces, oif ? "wired" }:
+    let
+      hostRules = lib.mapAttrsToList (_: host:
+        let
+          byProto = lib.groupBy (r: r.proto) host.dnat;
+        in lib.concatLists (lib.mapAttrsToList (proto: rules:
+          let
+            batch = lib.filter (r: !(r ? toPort)) rules;
+            remap = lib.filter (r: r ? toPort) rules;
+            portSet = ports:
+              "{ ${lib.concatMapStringsSep ", " (p: toString p) ports} }";
+            batchPorts = map (r: r.port) batch;
+          in
+          (lib.optionals (batch != []) [{
+            forward = "meta iifname ${extIfaces} meta oif \"${oif}\" ip daddr ${host.ip} ${proto} dport ${portSet batchPorts} ct state new accept";
+            prerouting = "meta iifname ${extIfaces} ${proto} dport ${portSet batchPorts} dnat ${host.ip};";
+            preroutingLocal = "${proto} dport ${portSet batchPorts} fib daddr type local dnat ip to ${host.ip};";
+          }])
+          ++ map (r: {
+            forward = "meta iifname ${extIfaces} meta oif \"${oif}\" ip daddr ${host.ip} ${proto} dport ${toString r.port} ct state new accept";
+            prerouting = "meta iifname ${extIfaces} ${proto} dport ${toString r.port} dnat ${host.ip}:${toString r.toPort};";
+            preroutingLocal = "${proto} dport ${toString r.port} fib daddr type local dnat ip to ${host.ip}:${toString r.toPort};";
+          }) remap
+        ) byProto)
+      ) hostsWithDnat;
+      allRules = lib.flatten hostRules;
+    in {
+      forward = lib.concatMapStringsSep "\n" (r: r.forward) allRules;
+      prerouting = lib.concatMapStringsSep "\n" (r: r.prerouting) allRules;
+      preroutingLocal = lib.concatMapStringsSep "\n" (r: r.preroutingLocal) allRules;
+    };
+
   mailDomains = [
     "shouldidrink.today"
     "unixpimps.net"
@@ -141,6 +189,6 @@ let
   ];
 
 in {
-  inherit domain hosts extraDns mailDomains;
+  inherit domain hosts extraDns mailDomains mkDnatRules;
   inherit forwardDns reverseDns reverseZones dhcpReservations;
 }
