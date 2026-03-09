@@ -69,5 +69,8 @@ in
     };
   };
 
-  networking.firewall.allowedTCPPorts = [ 25 80 2525 ];
+  networking.firewall = {
+    allowedTCPPorts = [ 25 80 ];
+    trustedInterfaces = [ "wg0" ];
+  };
 }
