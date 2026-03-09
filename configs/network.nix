@@ -39,14 +39,14 @@ let
       { proto = "tcp"; port = 2525; }
       { proto = "tcp"; port = 4190; }
     ]; };
-    fatty         = { ip = "10.255.101.243"; mac = "a8:a1:59:3e:da:ef"; };
-    sobek-wired   = { ip = "10.255.101.244"; mac = "dc:a6:32:08:7c:32"; dns = [ "sobek" ]; };
-    chronos-wired = { ip = "10.255.101.202"; mac = "dc:a6:32:34:1e:6d"; dns = [ "chronos" ]; };
-    hapi          = { ip = "10.255.101.242"; mac = "b8:27:eb:ff:f8:5f"; };
-    cctax-couch   = { ip = "10.255.101.209"; mac = "58:9c:fc:04:29:b3"; };
-    cctax-node    = { ip = "10.255.101.245"; mac = "58:9c:fc:03:64:32"; };
+    fatty         = { ip = "10.255.101.243"; ip6 = "${ulaPrefix}:101::243"; mac = "a8:a1:59:3e:da:ef"; };
+    sobek-wired   = { ip = "10.255.101.244"; ip6 = "${ulaPrefix}:101::244"; mac = "dc:a6:32:08:7c:32"; dns = [ "sobek" ]; };
+    chronos-wired = { ip = "10.255.101.202"; ip6 = "${ulaPrefix}:101::202"; mac = "dc:a6:32:34:1e:6d"; dns = [ "chronos" ]; };
+    hapi          = { ip = "10.255.101.242"; ip6 = "${ulaPrefix}:101::242"; mac = "b8:27:eb:ff:f8:5f"; };
+    cctax-couch   = { ip = "10.255.101.209"; ip6 = "${ulaPrefix}:101::209"; mac = "58:9c:fc:04:29:b3"; };
+    cctax-node    = { ip = "10.255.101.245"; ip6 = "${ulaPrefix}:101::245"; mac = "58:9c:fc:03:64:32"; };
     obico         = { ip = "10.255.101.91"; };
-    amon          = { ip = "10.255.101.241"; mac = "dc:a6:32:60:1c:82"; };
+    amon          = { ip = "10.255.101.241"; ip6 = "${ulaPrefix}:101::241"; mac = "dc:a6:32:60:1c:82"; };
 
     # --- Infrastructure ---
     cloudkey      = { ip = "10.255.254.240"; mac = "d0:21:f9:64:97:b3"; dns = [ "cloudkey" ]; };
@@ -91,10 +91,10 @@ let
     livingroom-movistar-stb = { ip = "10.255.101.201"; mac = "e8:b2:fe:06:a1:28"; };
 
     # --- Kubernetes ---
-    k8s-master-00 = { ip = "10.255.101.234"; mac = "d8:43:ae:1a:1a:5c"; };
-    k8s-worker-00 = { ip = "10.255.101.235"; mac = "d8:43:ae:18:b3:bd"; };
-    k8s-worker-01 = { ip = "10.255.101.236"; mac = "d8:43:ae:18:b3:c5"; };
-    k8s-worker-02 = { ip = "10.255.101.237"; mac = "d8:43:ae:18:b3:6d"; };
+    k8s-master-00 = { ip = "10.255.101.234"; ip6 = "${ulaPrefix}:101::234"; mac = "d8:43:ae:1a:1a:5c"; };
+    k8s-worker-00 = { ip = "10.255.101.235"; ip6 = "${ulaPrefix}:101::235"; mac = "d8:43:ae:18:b3:bd"; };
+    k8s-worker-01 = { ip = "10.255.101.236"; ip6 = "${ulaPrefix}:101::236"; mac = "d8:43:ae:18:b3:c5"; };
+    k8s-worker-02 = { ip = "10.255.101.237"; ip6 = "${ulaPrefix}:101::237"; mac = "d8:43:ae:18:b3:6d"; };
     k8s-api       = { ip = "10.255.240.1"; };  # k8s API service ClusterIP
   };
 
