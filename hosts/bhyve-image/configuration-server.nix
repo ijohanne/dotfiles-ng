@@ -15,11 +15,6 @@
 
   time.timeZone = "Europe/Madrid";
 
-  boot.loader.grub = {
-    enable = true;
-    device = "/dev/sda";
-  };
-
   boot.growPartition = true;
 
   systemd.services.grow-root = {

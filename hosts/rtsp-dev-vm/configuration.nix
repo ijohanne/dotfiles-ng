@@ -65,10 +65,12 @@ in
     "net.ipv4.ip_forward" = 1;
   };
 
-  boot.loader.grub = {
-    enable = true;
+  fileSystems."/" = {
     device = "/dev/vda";
+    fsType = "ext4";
   };
+
+  boot.loader.grub.device = "/dev/vda";
 
   time.timeZone = "Europe/Madrid";
 

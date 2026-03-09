@@ -1650,24 +1650,6 @@
         "type": "github"
       }
     },
-    "opsplaza": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs-stable"
-        ]
-      },
-      "locked": {
-        "lastModified": 1772821878,
-        "narHash": "sha256-Otv0PC2ngsLoZQ6IEMTi4crdLdQ62wdoaq1+tT7Bzqo=",
-        "rev": "50e9a5d668d0d7d0150788b89f7b5aa96b7f3225",
-        "type": "tarball",
-        "url": "https://git.unixpimps.net/api/v1/repos/ijohanne/opsplaza-artifacts/archive/50e9a5d668d0d7d0150788b89f7b5aa96b7f3225.tar.gz"
-      },
-      "original": {
-        "type": "tarball",
-        "url": "https://git.unixpimps.net/ijohanne/opsplaza-artifacts/archive/master.tar.gz"
-      }
-    },
     "pdf-detective": {
       "inputs": {
         "bun2nix": "bun2nix_2",
@@ -1752,7 +1734,6 @@
         "nixpkgs-stable": "nixpkgs-stable",
         "nixvim": "nixvim",
         "opencode": "opencode",
-        "opsplaza": "opsplaza",
         "pdf-detective": "pdf-detective",
         "perlpimpnet": "perlpimpnet",
         "rust-overlay": "rust-overlay_5",

@@ -25,17 +25,14 @@
     ./shouldidrinktoday.nix
     ./unixpimpsnet.nix
     ./mailserver.nix
-    ./opsplaza.nix
     ./plausible.nix
     ./perlpimpnet.nix
   ];
 
   sops.secrets.nix_builder_access_tokens = { };
   sops.secrets.cloudflare_api_key = { };
-  services.opsplaza.enable = false;
 
   sops.secrets.opsplaza_smtp_pass = { };
-  sops.secrets.gitea_access_token = { };
 
   sops.templates."themailer-smtp-credentials" = {
     content = "themailer@unixpimps.net:${config.sops.placeholder.opsplaza_smtp_pass}";

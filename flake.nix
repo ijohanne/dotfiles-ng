@@ -111,11 +111,6 @@
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 
-    opsplaza = {
-      url = "tarball+https://git.unixpimps.net/ijohanne/opsplaza-artifacts/archive/master.tar.gz";
-      inputs.nixpkgs.follows = "nixpkgs-stable";
-    };
-
     themailer-wrapper = {
       url = "github:ijohanne/themailer-wrapper";
       inputs.nixpkgs.follows = "nixpkgs-stable";
@@ -152,7 +147,6 @@
       nixos-mailserver,
       shouldidrinktoday,
       unixpimpsnet,
-      opsplaza,
       themailer-wrapper,
       perlpimpnet,
       ...
@@ -309,6 +303,14 @@
           ];
         };
 
+        rtsp-dev-vm = nixpkgs.lib.nixosSystem {
+          system = "aarch64-linux";
+          specialArgs = { inherit inputs self user; };
+          modules = [
+            ./hosts/rtsp-dev-vm/configuration.nix
+          ];
+        };
+
         rpi4-stable = nixpkgs-stable.lib.nixosSystem {
           system = "aarch64-linux";
           specialArgs = { inherit inputs self user; };
@@ -331,6 +333,7 @@
         rpi4-unstable = self.nixosConfigurations.rpi4-unstable.config.system.build.sdImage;
         bhyve = self.nixosConfigurations.bhyve-image.config.system.build.diskoImages;
         bhyve-server = self.nixosConfigurations.bhyve-image-server.config.system.build.diskoImages;
+        rtsp-dev-vm = self.nixosConfigurations.rtsp-dev-vm.config.system.build.vm;
       };
 
       darwinConfigurations = {
@@ -384,12 +387,6 @@
           ${pkgs.openssh}/bin/ssh-keyscan "$1" 2>/dev/null \
             | ${pkgs.ssh-to-age}/bin/ssh-to-age 2>/dev/null
         '';
-        gsed-compat = pkgs.writeShellScriptBin "gsed" ''exec ${pkgs.gnused}/bin/sed "$@"'';
-        migrate-opsplaza-couchdb = pkgs.writeShellApplication {
-          name = "migrate-opsplaza-couchdb";
-          runtimeInputs = with pkgs; [ openssh curl bash gnused gsed-compat file gawk coreutils lsof ];
-          text = builtins.readFile ./scripts/migrate-opsplaza-couchdb.sh;
-        };
       in
       {
         devShells.default = pkgs.mkShell {
@@ -401,7 +398,6 @@
             bd
             bd-init
             ssh-to-age-remote
-            migrate-opsplaza-couchdb
           ];
         };
       }

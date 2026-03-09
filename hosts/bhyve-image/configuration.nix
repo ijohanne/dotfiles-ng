@@ -14,11 +14,6 @@
 
   time.timeZone = "Europe/Madrid";
 
-  boot.loader.grub = {
-    enable = true;
-    device = "/dev/sda";
-  };
-
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   nixpkgs.config.allowUnfree = true;
 
