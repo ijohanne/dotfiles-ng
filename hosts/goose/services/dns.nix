@@ -11,6 +11,7 @@
         access-control = [ "10.0.0.0/8 allow" "127.0.0.0/8 allow" ] ++ (if network.enableIPv6ULA then [ "fc00::/7 allow" "::1/128 allow" ] else []);
         do-tcp = "yes";
         do-udp = "yes";
+        outgoing-interface = "0.0.0.0";
         hide-identity = "yes";
         hide-version = "yes";
         harden-glue = "yes";
