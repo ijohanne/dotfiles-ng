@@ -38,10 +38,10 @@ in
 
   mailserver = {
     enable = true;
-    enablePop3 = true;
+    enablePop3 = false;
     enablePop3Ssl = true;
     enableImapSsl = true;
-    enableImap = true;
+    enableImap = false;
     enableManageSieve = true;
     fqdn = "pakhet.est.unixpimps.net";
     domains = network.mailDomains;

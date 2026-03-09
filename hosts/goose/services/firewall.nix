@@ -60,7 +60,7 @@
 
               ip saddr 172.26.0.0/16 accept
               ip saddr 172.23.0.0/16 accept
-              meta iifname { "ppp0", "${interfaces.external}" }  meta oif "wired" ip daddr ${network.hosts.pakhet.ip} tcp dport { 25, 80, 110, 143, 443, 465, 587, 993, 995, 2525, 4190 } ct state new accept
+              meta iifname { "ppp0", "${interfaces.external}" }  meta oif "wired" ip daddr ${network.hosts.pakhet.ip} tcp dport { 25, 80, 443, 465, 587, 993, 995, 2525, 4190 } ct state new accept
               meta iifname { "ppp0", "${interfaces.external}" }  meta oif "wired" ip daddr ${network.hosts.cctax-node.ip} tcp dport { 8888, 20000 } ct state new accept
               log prefix "nft-forward-drop: " counter drop
             }
@@ -76,8 +76,8 @@
               type nat hook prerouting priority -100; policy accept;
               iifname "${interfaces.external}" ip saddr 172.26.0.0/16 ip daddr != 224.0.0.0/4 dnat to ${network.hosts.livingroom-movistar-stb.ip}
               iifname "${interfaces.external}" ip saddr 172.23.0.0/16 ip daddr != 224.0.0.0/4 dnat to ${network.hosts.livingroom-movistar-stb.ip}
-              meta iifname { "ppp0", "${interfaces.external}" }  tcp dport { 25, 80, 110, 143, 443, 465, 587, 993, 995, 2525, 4190 } dnat ${network.hosts.pakhet.ip};
-              tcp dport { 25, 80, 110, 143, 443, 465, 587, 993, 995, 2525, 4190 } fib daddr type local dnat ip to ${network.hosts.pakhet.ip};
+              meta iifname { "ppp0", "${interfaces.external}" }  tcp dport { 25, 80, 443, 465, 587, 993, 995, 2525, 4190 } dnat ${network.hosts.pakhet.ip};
+              tcp dport { 25, 80, 443, 465, 587, 993, 995, 2525, 4190 } fib daddr type local dnat ip to ${network.hosts.pakhet.ip};
               meta iifname { "ppp0", "${interfaces.external}" }  tcp dport { 8888, 20000 } dnat ${network.hosts.cctax-node.ip};
               tcp dport { 8888, 20000 } fib daddr type local dnat ip to ${network.hosts.cctax-node.ip};
             }
