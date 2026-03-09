@@ -1,5 +1,13 @@
 { network, ... }:
 
+let
+  searchDomainOption = {
+    code = 119;
+    data = "local, ${network.domain}, unixpimps.net";
+    name = "domain-search";
+    space = "dhcp4";
+  };
+in
 {
   services.kea = {
     dhcp4 = {
@@ -127,12 +135,6 @@
             name = "ntp-servers";
             space = "dhcp4";
           }
-          {
-            code = 119;
-            data = "local, ${network.domain}, unixpimps.net";
-            name = "domain-search";
-            space = "dhcp4";
-          }
         ];
         option-def = [
           {
@@ -197,6 +199,7 @@
                 name = "unifi-address";
                 space = "ubnt";
               }
+              searchDomainOption
             ];
             pools = [{ pool = "10.255.100.1 - 10.255.100.200"; }];
             subnet = "10.255.100.0/24";
@@ -228,6 +231,7 @@
                 name = "unifi-address";
                 space = "ubnt";
               }
+              searchDomainOption
             ];
             pools = [{ pool = "10.255.101.1 - 10.255.101.200"; }];
             subnet = "10.255.101.0/24";
@@ -321,6 +325,7 @@
                 name = "domain-name-servers";
                 space = "dhcp4";
               }
+              searchDomainOption
             ];
             pools = [{ pool = "10.255.254.1 - 10.255.254.200"; }];
             subnet = "10.255.254.0/24";
