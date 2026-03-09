@@ -11,8 +11,6 @@
     allowInterfaces = [
       "wifi"
       "wired"
-      "camera"
-      "mgnt"
     ];
   };
 }
