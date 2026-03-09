@@ -7,7 +7,6 @@
     enable = true;
     port = 9001;
     retentionTime = "4320h";
-    extraFlags = [ "--web.enable-admin-api" ];
     globalConfig = {
       scrape_interval = "15s";
     };
