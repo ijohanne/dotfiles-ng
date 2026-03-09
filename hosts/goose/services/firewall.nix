@@ -85,7 +85,7 @@
               oifname "ppp0" masquerade
               oifname "${interfaces.external}" masquerade
               oifname "mobile" masquerade
-              oifname { "wifi", "wired", "camera", "mgnt" }
+              iifname "wired" oifname "wired" ct status dnat masquerade
             }
         }
       '';
