@@ -25,12 +25,22 @@
                 "wifi",
                 "wired",
                 "mgnt",
-                "guest",
-                "camera",
                 "${interfaces.external}",
                 "lo",
                 "wg0"
               } counter accept
+
+              # Guest: DNS + DHCP only
+              iifname "guest" udp dport { 53, 67, 68 } accept
+              iifname "guest" tcp dport 53 accept
+              iifname "guest" ct state { established, related } accept
+              iifname "guest" drop
+
+              # Camera: DNS + DHCP only
+              iifname "camera" udp dport { 53, 67, 68 } accept
+              iifname "camera" tcp dport 53 accept
+              iifname "camera" ct state { established, related } accept
+              iifname "camera" drop
               ip protocol igmp accept comment "Accept IGMP"
               ip saddr 224.0.0.0/4 accept
               iifname "ppp0" ct state { established, related } counter accept
@@ -46,17 +56,27 @@
               # ACS (80.58.63.218) returns a TLS cert the STB rejects, causing a fatal boot failure.
               # When ACS is unreachable the STB skips it and boots via Movistar internal services.
               ip saddr ${network.hosts.livingroom-movistar-stb.ip} ip daddr 80.58.63.218 reject with icmp host-unreachable
-              iifname { "guest", "wifi", "wired", "camera", "mgnt", "${interfaces.external}", "wg0" } oifname {
+              # LAN/guest → internet
+              iifname { "guest", "wifi", "wired", "mgnt", "${interfaces.external}", "wg0" } oifname {
                 "ppp0", "${interfaces.external}", "mobile"
               } counter accept
+
+              # Camera VLAN: only UNVR gets internet
+              iifname "camera" ip saddr ${network.hosts.unvr.ip} oifname {
+                "ppp0", "${interfaces.external}", "mobile"
+              } accept
 
               iifname {
                 "ppp0", "${interfaces.external}", "mobile"
               } oifname { "guest", "wifi", "wired", "camera", "mgnt", "${interfaces.external}", "wg0"
               } ct state established,related counter accept
 
-              iifname { "wifi", "wired", "camera", "mgnt", "${interfaces.external}", "wg0" } oifname {
-                "wifi", "wired", "camera", "mgnt", "${interfaces.external}", "wg0" } counter accept
+              # Trusted inter-VLAN
+              iifname { "wifi", "wired", "mgnt", "${interfaces.external}", "wg0" } oifname {
+                "wifi", "wired", "mgnt", "${interfaces.external}", "wg0" } counter accept
+
+              # Trusted → camera (Protect web UI access from LAN)
+              iifname { "wifi", "wired", "mgnt", "wg0" } oifname "camera" counter accept
 
               ip saddr 172.26.0.0/16 accept
               ip saddr 172.23.0.0/16 accept
