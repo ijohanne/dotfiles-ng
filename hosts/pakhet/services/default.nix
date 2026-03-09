@@ -54,7 +54,7 @@
     enable = true;
     customerIdFile = config.sops.secrets.themailer_wrapper_customer_id.path;
     baseUrl = "https://themailer.opsplaza.com";
-    smtpHost = "127.0.0.1";
+    smtpHost = "pakhet.est.unixpimps.net";
     smtpPort = 25;
     smtpCredentialsFile = config.sops.templates."themailer-smtp-credentials".path;
     listenPort = 12002;
