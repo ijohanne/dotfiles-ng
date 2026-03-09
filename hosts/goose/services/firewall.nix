@@ -103,6 +103,40 @@ in
             }
         }
 
+        ${if network.enableIPv6ULA then ''
+        table ip6 filter {
+            chain input {
+              type filter hook input priority filter; policy drop;
+              ct state invalid counter drop
+              ip6 saddr fc00::/7 tcp dport 53 accept
+              ip6 saddr fc00::/7 udp dport 53 accept
+              ip6 saddr fc00::/7 icmpv6 type { destination-unreachable, packet-too-big, time-exceeded, parameter-problem, echo-request, echo-reply, nd-neighbor-solicit, nd-neighbor-advert, nd-router-solicit } accept
+              ip6 saddr fc00::/7 udp dport 546 accept
+              iifname { "wifi", "wired", "mgnt", "${interfaces.external}", "lo", "wg0" } counter accept
+              iifname "guest" udp dport { 53, 547 } accept
+              iifname "guest" tcp dport 53 accept
+              iifname "guest" ct state { established, related } accept
+              iifname "guest" drop
+              iifname "camera" udp dport { 53, 547 } accept
+              iifname "camera" tcp dport 53 accept
+              iifname "camera" ct state { established, related } accept
+              iifname "camera" drop
+              log prefix "nft-ip6-input-drop: " counter drop
+            }
+
+            chain forward {
+              type filter hook forward priority filter; policy drop;
+              ct state invalid counter drop
+              iifname { "ppp0", "mobile" } ip6 nexthdr != 0 drop
+              oifname { "ppp0", "mobile" } ip6 nexthdr != 0 drop
+              iifname { "wifi", "wired", "mgnt", "${interfaces.external}", "wg0" } oifname { "wifi", "wired", "mgnt", "${interfaces.external}", "wg0" } counter accept
+              iifname { "wifi", "wired", "mgnt", "wg0" } oifname "camera" counter accept
+              icmpv6 type { destination-unreachable, packet-too-big, time-exceeded, parameter-problem, echo-request, echo-reply, nd-neighbor-solicit, nd-neighbor-advert } accept
+              log prefix "nft-ip6-forward-drop: " counter drop
+            }
+        }
+        '' else ""}
+
         table ip nat {
             chain prerouting {
               type nat hook prerouting priority -100; policy accept;

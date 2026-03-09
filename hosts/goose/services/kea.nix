@@ -337,6 +337,37 @@ in
     };
   };
 
+  services.kea.dhcp6 = {
+    enable = network.enableIPv6ULA;
+    settings = {
+      interfaces-config = { interfaces = [ "wired" ]; };
+      lease-database = {
+        type = "memfile";
+        persist = true;
+        name = "/var/lib/kea/dhcp6.leases";
+      };
+      preferred-lifetime = 86400;
+      valid-lifetime = 86400;
+      host-reservation-identifiers = [ "hw-address" ];
+      reservations-global = true;
+      reservations = network.dhcp6Reservations;
+      subnet6 = [
+        {
+          id = 1;
+          interface = "wired";
+          subnet = "${network.ulaPrefix}:101::/64";
+          pools = [{ pool = "${network.ulaPrefix}:101::1000 - ${network.ulaPrefix}:101::ffff"; }];
+          option-data = [
+            {
+              name = "dns-servers";
+              data = network.hosts.goose.ip6s.wired;
+            }
+          ];
+        }
+      ];
+    };
+  };
+
   services.atftpd = {
     enable = true;
     root = "/srv/tftp";
@@ -352,5 +383,10 @@ in
   systemd.services.kea-dhcp4-server = {
     bindsTo = [ "network-addresses-wired.service" "network-addresses-wifi.service" ];
     after = [ "network-addresses-wired.service" "network-addresses-wifi.service" ];
+  };
+
+  systemd.services.kea-dhcp6-server = {
+    bindsTo = [ "network-addresses-wired.service" ];
+    after = [ "network-addresses-wired.service" ];
   };
 }

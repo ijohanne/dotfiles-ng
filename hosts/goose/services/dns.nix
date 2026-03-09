@@ -7,8 +7,8 @@
     enableRootTrustAnchor = true;
     settings = {
       server = {
-        interface = [ "0.0.0.0" ];
-        access-control = [ "10.0.0.0/8 allow" "127.0.0.0/8 allow" ];
+        interface = [ "0.0.0.0" ] ++ (if network.enableIPv6ULA then [ "::0" ] else []);
+        access-control = [ "10.0.0.0/8 allow" "127.0.0.0/8 allow" ] ++ (if network.enableIPv6ULA then [ "fc00::/7 allow" "::1/128 allow" ] else []);
         do-tcp = "yes";
         do-udp = "yes";
         hide-identity = "yes";
@@ -39,8 +39,8 @@
         statistics-interval = 0;
         extended-statistics = "yes";
         statistics-cumulative = "yes";
-        local-zone = network.reverseZones;
-        local-data = network.forwardDns ++ network.reverseDns;
+        local-zone = network.reverseZones ++ network.reverseZones6;
+        local-data = network.forwardDns ++ network.reverseDns ++ network.forwardDns6 ++ network.reverseDns6;
       };
       remote-control = {
         control-enable = true;

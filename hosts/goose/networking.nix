@@ -1,5 +1,6 @@
-{ interfaces, ... }:
+{ interfaces, network }:
 
+{ lib, ... }:
 {
   boot.kernel.sysctl = {
     "net.ipv4.conf.all.forwarding" = true;
@@ -90,6 +91,10 @@
           address = "10.255.101.254";
           prefixLength = 24;
         }];
+        ipv6.addresses = lib.optionals network.enableIPv6ULA [{
+          address = network.hosts.goose.ip6s.wired;
+          prefixLength = 64;
+        }];
       };
       guest = {
         ipv4.addresses = [{
@@ -152,6 +157,22 @@
         /run/current-system/sw/bin/systemctl start cloudflare-dyndns.service
       '';
     };
+  };
+
+  services.radvd = lib.mkIf network.enableIPv6ULA {
+    enable = true;
+    config = ''
+      interface wired {
+        AdvSendAdvert on;
+        AdvManagedFlag on;
+        AdvOtherConfigFlag on;
+        prefix ${network.ulaPrefix}:101::/64 {
+          AdvOnLink on;
+          AdvAutonomous off;
+        };
+        RDNSS ${network.hosts.goose.ip6s.wired} {};
+      };
+    '';
   };
 
   services.lldpd.enable = true;

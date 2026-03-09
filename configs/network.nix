@@ -2,6 +2,10 @@
 let
   domain = "est.unixpimps.net";
 
+  # IPv6 ULA kill switch — set to false to disable all IPv6 ULA features
+  enableIPv6ULA = true;
+  ulaPrefix = "fd00:255";
+
   hosts = {
     # --- Gateway (goose) ---
     goose = rec {
@@ -12,13 +16,16 @@ let
         camera = "10.255.200.254";
         mgnt   = "10.255.254.254";
       };
+      ip6s = {
+        wired  = "${ulaPrefix}:101::1";
+      };
       ip = ips.mgnt;
       dns = [ "r0" "goose" ];
     };
     goose-ipmi = { ip = "10.255.254.210"; dns = [ "r0.ipmi" ]; };
 
     # --- Servers ---
-    pakhet        = { ip = "10.255.101.200"; mac = "58:9c:fc:0e:56:98"; dnat = [
+    pakhet        = { ip = "10.255.101.200"; ip6 = "${ulaPrefix}:101::200"; mac = "58:9c:fc:0e:56:98"; dnat = [
       { proto = "tcp"; port = 25; }
       { proto = "tcp"; port = 80; }
       { proto = "tcp"; port = 443; }
@@ -137,6 +144,54 @@ let
     in ''"${rev3}.in-addr.arpa." static''
   ) hosts);
 
+  # IPv6 ULA: AAAA records for hosts with ip6
+  hostsWithIp6 = lib.filterAttrs (_: host: host ? ip6) hosts;
+
+  forwardDns6 = lib.optionals enableIPv6ULA (lib.flatten (lib.mapAttrsToList (name: host:
+    let names = hostDnsNames name host;
+    in map (n: ''"${qualify n}. IN AAAA ${host.ip6}"'') names
+  ) hostsWithIp6));
+
+  reverseDns6 = lib.optionals enableIPv6ULA (lib.mapAttrsToList (name: host:
+    let
+      dnsName = builtins.head (hostDnsNames name host);
+      fqdn = qualify dnsName;
+      expanded = expandIp6 host.ip6;
+      nibbles = lib.stringToCharacters (lib.replaceStrings [":"] [""] expanded);
+      rev = lib.concatStringsSep "." (lib.reverseList nibbles);
+    in ''"${rev}.ip6.arpa. IN PTR ${fqdn}."''
+  ) hostsWithIp6);
+
+  # Expand :: in IPv6 address to full 32-nibble form
+  expandIp6 = addr:
+    let
+      halves = lib.splitString "::" addr;
+      left = if builtins.head halves == "" then [] else lib.splitString ":" (builtins.head halves);
+      right = if lib.length halves > 1 && builtins.elemAt halves 1 != "" then lib.splitString ":" (builtins.elemAt halves 1) else [];
+      missing = 8 - lib.length left - lib.length right;
+      zeros = lib.genList (_: "0000") missing;
+      pad = s: let len = builtins.stringLength s; in
+        if len >= 4 then s
+        else pad ("0" + s);
+      allGroups = map pad (left ++ zeros ++ right);
+    in lib.concatStringsSep ":" allGroups;
+
+  reverseZones6 = lib.optionals enableIPv6ULA (lib.unique (lib.mapAttrsToList (_: host:
+    let
+      expanded = expandIp6 host.ip6;
+      nibbles = lib.stringToCharacters (lib.replaceStrings [":"] [""] expanded);
+      # /48 reverse zone = first 12 nibbles
+      rev12 = lib.concatStringsSep "." (lib.reverseList (lib.take 12 nibbles));
+    in ''"${rev12}.ip6.arpa." static''
+  ) hostsWithIp6));
+
+  # DHCPv6 reservations: hosts with mac and ip6
+  dhcp6Reservations = lib.optionals enableIPv6ULA (lib.mapAttrsToList (name: host: {
+    hostname = name;
+    hw-address = host.mac;
+    ip-addresses = [ host.ip6 ];
+  }) (lib.filterAttrs (_: host: host ? mac && host ? ip6) hosts));
+
   # DHCP reservations: only hosts with `mac`
   dhcpReservations = lib.mapAttrsToList (name: host: {
     hostname = name;
@@ -187,5 +242,7 @@ let
 
 in {
   inherit domain hosts extraDns mailDomains mkDnatRules;
+  inherit enableIPv6ULA ulaPrefix;
   inherit forwardDns reverseDns reverseZones dhcpReservations;
+  inherit forwardDns6 reverseDns6 reverseZones6 dhcp6Reservations;
 }

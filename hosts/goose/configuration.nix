@@ -74,7 +74,7 @@ in
   imports = [
     ../../configs/server.nix
     ./hardware-configuration.nix
-    (import ./networking.nix { inherit interfaces; })
+    (import ./networking.nix { inherit interfaces network; })
     (import ./services { inherit interfaces network; })
   ];
 
