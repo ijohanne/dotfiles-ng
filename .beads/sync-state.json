@@ -1,0 +1,7 @@
+{
+  "last_failure": "2026-03-09T11:26:53.067221+01:00",
+  "failure_count": 16,
+  "backoff_until": "2026-03-09T11:56:53.067222+01:00",
+  "needs_manual_sync": true,
+  "failure_reason": "failed to pull from sync branch: git fetch failed in worktree: exit status 128\nfatal: .git/index: index file open failed: Not a directory\n"
+}
