@@ -20,6 +20,7 @@
         edns-buffer-size = 1232;
         cache-min-ttl = 0;
         cache-max-ttl = 14400;
+        cache-max-negative-ttl = 5;
         prefetch = "yes";
         serve-expired = "yes";
         serve-expired-ttl = "7200";
