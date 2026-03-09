@@ -15,12 +15,10 @@ in
       "show_additional_headers"
     ];
     extraConfig = ''
-      $config['imap_host'] = "ssl://localhost";
-      $config['smtp_host'] = "ssl://localhost";
+      $config['imap_host'] = "ssl://pakhet.est.unixpimps.net";
+      $config['smtp_host'] = "ssl://pakhet.est.unixpimps.net";
       $config['smtp_user'] = "%u";
       $config['smtp_pass'] = "%p";
-      $config['imap_conn_options'] = ['ssl' => ['verify_peer' => false, 'verify_peer_name' => false]];
-      $config['smtp_conn_options'] = ['ssl' => ['verify_peer' => false, 'verify_peer_name' => false]];
     '';
   };
 
