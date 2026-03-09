@@ -6,7 +6,7 @@ in
 {
   services.roundcube = {
     enable = true;
-    hostName = "webmail.est.unixpimps.net";
+    hostName = "webmail.unixpimps.net";
     plugins = [
       "managesieve"
       "markasjunk"
