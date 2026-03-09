@@ -24,6 +24,8 @@
         prefetch = "yes";
         serve-expired = "yes";
         serve-expired-ttl = "7200";
+        serve-expired-client-timeout = "1800";
+        log-servfail = "yes";
         num-threads = 8;
         msg-cache-slabs = 8;
         rrset-cache-slabs = 8;
