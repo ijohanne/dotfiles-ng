@@ -31,6 +31,7 @@
   sops.secrets.sms_password = {};
   sops.secrets.sms_ip = {};
   sops.secrets.sms_target_number = {};
+  sops.secrets.sms_modem = {};
   sops.secrets.wireguard_private_key = {};
 
   sops.templates."sms-env" = {
@@ -39,6 +40,7 @@
       SMS_PASSWORD=${config.sops.placeholder.sms_password}
       SMS_IP=${config.sops.placeholder.sms_ip}
       SMS_TARGET_NUMBER=${config.sops.placeholder.sms_target_number}
+      SMS_MODEM=${config.sops.placeholder.sms_modem}
     '';
   };
 }

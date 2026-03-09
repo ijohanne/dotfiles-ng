@@ -11,11 +11,10 @@ let
 
   sms = pkgs.writeShellApplication {
     name = "sms";
-    runtimeInputs = with pkgs; [ bash curl ];
+    runtimeInputs = with pkgs; [ bash curl jq ];
     excludeShellChecks = [ "SC1091" ];
     text = ''
-      if [[ $# -ne 1 ]];
-      then
+      if [[ $# -ne 1 ]]; then
         echo "Need text message as argument"
         exit 1
       fi
@@ -23,16 +22,19 @@ let
       source /run/secrets/rendered/sms-env
 
       message="$1"
-      url="http://$SMS_IP/cgi-bin/sms_send"
+
+      sid=$(curl -sf "http://$SMS_IP/ubus" -X POST \
+        -H "Content-Type: application/json" \
+        -d "{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"call\",\"params\":[\"00000000000000000000000000000000\",\"session\",\"login\",{\"username\":\"$SMS_USER\",\"password\":\"$SMS_PASSWORD\"}]}" \
+        | jq -re '.result[1].ubus_rpc_session')
 
       IFS=',' read -ra numbers <<< "$SMS_TARGET_NUMBER"
       for number in "''${numbers[@]}"; do
-        curl --get \
-          --data-urlencode "username=$SMS_USER" \
-          --data-urlencode "password=$SMS_PASSWORD" \
-          --data-urlencode "number=$number" \
-          --data-urlencode "text=$message" \
-          "$url"
+        curl -sf "http://$SMS_IP/api/messages/actions/send" -X POST \
+          -H "Content-Type: application/json" \
+          -H "Authorization: Bearer $sid" \
+          -d "{\"data\":{\"modem\":\"$SMS_MODEM\",\"number\":\"$number\",\"message\":\"$message\"}}"
+        echo ""
       done
     '';
   };
