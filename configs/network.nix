@@ -55,13 +55,18 @@ let
     terrace-laundry-plug = { ip = "10.255.100.234"; mac = "54:af:97:1d:55:e6"; };
     terrace-fridge-plug  = { ip = "10.255.100.235"; mac = "54:af:97:1d:59:d8"; };
 
-    # --- Cameras ---
-    camera-entrance          = { ip = "10.255.100.220"; mac = "e8:ca:c8:bf:08:17"; };
-    camera-terrace-indoor    = { ip = "10.255.100.221"; mac = "e8:ca:c8:7a:83:71"; };
-    camera-kitchen           = { ip = "10.255.100.222"; mac = "5c:c3:36:39:7f:c9"; };
-    camera-terrace-outdoor-00 = { ip = "10.255.101.220"; mac = "ec:71:db:68:f9:2e"; };
-    camera-terrace-outdoor-01 = { ip = "10.255.101.221"; mac = "ec:71:db:94:da:da"; };
-    camera-terrace-outdoor-02 = { ip = "10.255.101.222"; mac = "ec:71:db:02:52:4a"; };
+    # --- Cameras (VLAN 200, managed by UNVR/Protect) ---
+    camera-livingroom        = { ip = "10.255.200.1";  mac = "f4:e2:c6:0e:5f:06"; };
+    camera-kitchen           = { ip = "10.255.200.2";  mac = "f4:e2:c6:7c:03:be"; };
+    camera-terrace-east      = { ip = "10.255.200.3";  mac = "d0:21:f9:97:a6:7d"; };
+    camera-terrace-indoor    = { ip = "10.255.200.4";  mac = "f4:e2:c6:0f:f3:cc"; };
+    camera-hallway-entry     = { ip = "10.255.200.5";  mac = "f4:e2:c6:70:3f:fa"; };
+    camera-terrace-door      = { ip = "10.255.200.7";  mac = "f4:e2:c6:77:99:d6"; };
+    camera-terrace-west-east = { ip = "10.255.200.8";  mac = "f4:e2:c6:77:99:d7"; };
+    camera-terrace-west-south = { ip = "10.255.200.9"; mac = "f4:e2:c6:77:98:1c"; };
+    camera-hallway-kitchen   = { ip = "10.255.200.10"; mac = "f4:e2:c6:0e:61:6d"; };
+    camera-hallway-office    = { ip = "10.255.200.13"; mac = "f4:e2:c6:0e:5d:ce"; };
+    camera-office            = { ip = "10.255.200.14"; mac = "f4:e2:c6:0e:5d:9f"; };
 
     # --- Movistar STB ---
     livingroom-movistar-stb = { ip = "10.255.101.201"; mac = "e8:b2:fe:06:a1:28"; };
