@@ -16,9 +16,6 @@ in
     hostName = "pakhet";
     useDHCP = true;
     nameservers = [ "${network.hosts.goose.ips.wired}" ];
-    hosts = {
-      "127.0.0.1" = [ "git.unixpimps.net" ];
-    };
   };
 
   # kresd is pulled in by nixos-mailserver for DANE — keep it for postfix
