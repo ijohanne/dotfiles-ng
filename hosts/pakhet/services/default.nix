@@ -60,6 +60,7 @@
     listenPort = 12002;
     domain = "themailer.opsplaza.com";
     acme = true;
+    forceSSL = false;
   };
 
   sops.secrets.maxmind_api_key = {

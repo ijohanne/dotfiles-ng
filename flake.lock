@@ -2260,11 +2260,11 @@
         "rust-overlay": "rust-overlay_7"
       },
       "locked": {
-        "lastModified": 1772828234,
-        "narHash": "sha256-kzPPoGkXIjaqtTlB8YO4pMlxMMgmUNkLFx/h9I6K3Qc=",
+        "lastModified": 1773048223,
+        "narHash": "sha256-eK8TZUbZ2onfY6dN8oJyXYEUA6lS584L/TofZrivIic=",
         "owner": "ijohanne",
         "repo": "themailer-wrapper",
-        "rev": "bb36b9ae3ba2c42da20c9dfca1caba5079a8d2ec",
+        "rev": "7f86bba6120e96888747a89f7c9fdaedd0a8a972",
         "type": "github"
       },
       "original": {
