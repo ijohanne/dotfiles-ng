@@ -12,4 +12,13 @@
     ipv4 = true;
     deleteMissing = false;
   };
+
+  systemd.services.cloudflare-dyndns = {
+    after = [ "unbound.service" ];
+    serviceConfig = {
+      Restart = "on-failure";
+      RestartSec = "10s";
+      RestartMaxDelaySec = "5min";
+    };
+  };
 }
