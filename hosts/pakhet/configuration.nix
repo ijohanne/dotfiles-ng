@@ -29,6 +29,7 @@ in
   '';
 
   environment.systemPackages = with pkgs; [
+    (writeShellScriptBin "ping6" ''exec ping -6 "$@"'')
     (writeShellScriptBin "deploy-pakhet" ''
       for dir in /home/*/git/dotfiles-ng /root/git/dotfiles-ng; do
         if [ -d "$dir/.git" ]; then

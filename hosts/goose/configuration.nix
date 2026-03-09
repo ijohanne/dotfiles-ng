@@ -88,6 +88,7 @@ in
   time.timeZone = "Europe/Madrid";
 
   environment.systemPackages = with pkgs; [
+    (writeShellScriptBin "ping6" ''exec ping -6 "$@"'')
     efibootmgr
     ethtool
     ppp

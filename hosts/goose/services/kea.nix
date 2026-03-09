@@ -340,7 +340,7 @@ in
   services.kea.dhcp6 = {
     enable = network.enableIPv6ULA;
     settings = {
-      interfaces-config = { interfaces = [ "wired" ]; };
+      interfaces-config = { interfaces = [ "wired" "wifi" "mgnt" ]; };
       lease-database = {
         type = "memfile";
         persist = true;
@@ -361,6 +361,30 @@ in
             {
               name = "dns-servers";
               data = network.hosts.goose.ip6s.wired;
+            }
+          ];
+        }
+        {
+          id = 2;
+          interface = "wifi";
+          subnet = "${network.ulaPrefix}:100::/64";
+          pools = [{ pool = "${network.ulaPrefix}:100::1000 - ${network.ulaPrefix}:100::ffff"; }];
+          option-data = [
+            {
+              name = "dns-servers";
+              data = network.hosts.goose.ip6s.wifi;
+            }
+          ];
+        }
+        {
+          id = 3;
+          interface = "mgnt";
+          subnet = "${network.ulaPrefix}:254::/64";
+          pools = [{ pool = "${network.ulaPrefix}:254::1000 - ${network.ulaPrefix}:254::ffff"; }];
+          option-data = [
+            {
+              name = "dns-servers";
+              data = network.hosts.goose.ip6s.mgnt;
             }
           ];
         }
@@ -386,7 +410,7 @@ in
   };
 
   systemd.services.kea-dhcp6-server = {
-    bindsTo = [ "network-addresses-wired.service" ];
-    after = [ "network-addresses-wired.service" ];
+    bindsTo = [ "network-addresses-wired.service" "network-addresses-wifi.service" "network-addresses-mgnt.service" ];
+    after = [ "network-addresses-wired.service" "network-addresses-wifi.service" "network-addresses-mgnt.service" ];
   };
 }

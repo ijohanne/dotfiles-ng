@@ -17,9 +17,12 @@ let
         mgnt   = "10.255.254.254";
       };
       ip6s = {
+        wifi   = "${ulaPrefix}:100::1";
         wired  = "${ulaPrefix}:101::1";
+        mgnt   = "${ulaPrefix}:254::1";
       };
       ip = ips.mgnt;
+      ip6 = "${ulaPrefix}:254::1";
       dns = [ "r0" "goose" ];
     };
     goose-ipmi = { ip = "10.255.254.210"; dns = [ "r0.ipmi" ]; };
@@ -51,9 +54,8 @@ let
     unvr          = { ip = "10.255.200.253"; mac = "e4:38:83:74:5d:a1"; };
 
     # --- Wireless devices ---
-    chronos       = { ip = "10.255.100.202"; mac = "dc:a6:32:34:1e:6e"; dns = [ "chronos-wifi" ]; };
-    sobek         = { ip = "10.255.100.203"; mac = "dc:a6:32:08:7c:33"; dns = [ "sobek-wifi" ]; };
-    ij-laptop     = { ip = "10.255.100.201"; mac = "c8:e2:65:2d:7e:8b"; };
+    chronos       = { ip = "10.255.100.202"; ip6 = "${ulaPrefix}:100::202"; mac = "dc:a6:32:34:1e:6e"; dns = [ "chronos-wifi" ]; };
+    sobek         = { ip = "10.255.100.203"; ip6 = "${ulaPrefix}:100::203"; mac = "dc:a6:32:08:7c:33"; dns = [ "sobek-wifi" ]; };
     canon-printserver = { ip = "10.255.100.204"; mac = "dc:a6:32:34:02:6f"; };
     dyson-office  = { ip = "10.255.100.205"; mac = "c8:ff:77:27:b3:f1"; };
     dyson-livingroom = { ip = "10.255.100.206"; mac = "c8:ff:77:67:34:b5"; };
@@ -98,9 +100,6 @@ let
 
   # Extra DNS aliases (different domain or pointing to existing host IPs)
   extraDns = [
-    { name = "app-backend.local";   ip = hosts.ij-laptop.ip; }
-    { name = "app-frontend.local";  ip = hosts.ij-laptop.ip; }
-    { name = "www.app-frontend.local"; ip = hosts.ij-laptop.ip; }
     { name = "k8s-master.local";    ip = hosts.k8s-master-00.ip; }
     { name = "k8s-master-00.local"; ip = hosts.k8s-master-00.ip; }
     { name = "k8s-worker-00.local"; ip = hosts.k8s-worker-00.ip; }

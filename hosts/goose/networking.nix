@@ -22,6 +22,7 @@
 
   networking = {
     nameservers = [ "127.0.0.1" "8.8.8.8" ];
+    search = [ network.domain ];
     dhcpcd.persistent = true;
     vlans = {
       wifi = {
@@ -85,6 +86,10 @@
           address = "10.255.100.254";
           prefixLength = 24;
         }];
+        ipv6.addresses = lib.optionals network.enableIPv6ULA [{
+          address = network.hosts.goose.ip6s.wifi;
+          prefixLength = 64;
+        }];
       };
       wired = {
         ipv4.addresses = [{
@@ -112,6 +117,10 @@
         ipv4.addresses = [{
           address = "10.255.254.254";
           prefixLength = 24;
+        }];
+        ipv6.addresses = lib.optionals network.enableIPv6ULA [{
+          address = network.hosts.goose.ip6s.mgnt;
+          prefixLength = 64;
         }];
       };
       mobile = {
@@ -171,6 +180,28 @@
           AdvAutonomous off;
         };
         RDNSS ${network.hosts.goose.ip6s.wired} {};
+      };
+
+      interface wifi {
+        AdvSendAdvert on;
+        AdvManagedFlag on;
+        AdvOtherConfigFlag on;
+        prefix ${network.ulaPrefix}:100::/64 {
+          AdvOnLink on;
+          AdvAutonomous off;
+        };
+        RDNSS ${network.hosts.goose.ip6s.wifi} {};
+      };
+
+      interface mgnt {
+        AdvSendAdvert on;
+        AdvManagedFlag on;
+        AdvOtherConfigFlag on;
+        prefix ${network.ulaPrefix}:254::/64 {
+          AdvOnLink on;
+          AdvAutonomous off;
+        };
+        RDNSS ${network.hosts.goose.ip6s.mgnt} {};
       };
     '';
   };
