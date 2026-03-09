@@ -23,15 +23,17 @@ let
       source /run/secrets/rendered/sms-env
 
       message="$1"
-
       url="http://$SMS_IP/cgi-bin/sms_send"
 
-      curl --get \
-        --data-urlencode "username=$SMS_USER" \
-        --data-urlencode "password=$SMS_PASSWORD" \
-        --data-urlencode "number=$SMS_TARGET_NUMBER" \
-        --data-urlencode "text=$message" \
-        "$url"
+      IFS=',' read -ra numbers <<< "$SMS_TARGET_NUMBER"
+      for number in "''${numbers[@]}"; do
+        curl --get \
+          --data-urlencode "username=$SMS_USER" \
+          --data-urlencode "password=$SMS_PASSWORD" \
+          --data-urlencode "number=$number" \
+          --data-urlencode "text=$message" \
+          "$url"
+      done
     '';
   };
 
