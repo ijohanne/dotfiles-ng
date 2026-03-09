@@ -178,7 +178,7 @@ Entrance             sw9     2     PoE
 
 The registry contains:
 
-- **`hosts`** — Attrset of all hosts with `ip`, optional `mac`, optional `dns` names, and optional `ips` (for multi-IP hosts like goose)
+- **`hosts`** — Attrset of all hosts with `ip`, optional `mac`, optional `dns` names, optional `ips` (for multi-IP hosts like goose), and optional `dnat` (port forwarding rules)
 - **`extraDns`** — Additional DNS aliases (e.g., `.local` domain entries)
 
 From these, helper functions generate:
@@ -189,6 +189,7 @@ From these, helper functions generate:
 | `reverseDns`        | `dns.nix` (unbound)  | Reverse PTR records (local-data)      |
 | `reverseZones`      | `dns.nix` (unbound)  | Reverse zone declarations (local-zone)|
 | `dhcpReservations`  | `kea.nix`            | DHCP static leases (hosts with `mac`) |
+| `mkDnatRules`       | `firewall.nix`       | DNAT/port-forward nftables rules (hosts with `dnat`) |
 
 Cross-host references use `network.hosts.<name>.ip` directly (e.g., firewall rules, nginx proxy_pass, prometheus targets).
 
@@ -224,6 +225,24 @@ Reverse zones (`in-addr.arpa`) use `local-zone: static` since private IPs never 
    - `mac` — Adds a DHCP reservation (omit for static-only hosts)
    - `dns` — Override DNS names (default: uses the attribute name)
    - `ips` — Multiple IPs for multi-homed hosts
+   - `dnat` — Port forwarding rules (list of `{ proto, port, toPort? }`)
+
+### Port Forwarding (DNAT)
+
+To expose a host's ports to the internet, add a `dnat` attribute:
+
+```nix
+my-host = {
+  ip = "10.255.101.123"; mac = "aa:bb:cc:dd:ee:ff";
+  dnat = [
+    { proto = "tcp"; port = 80; }
+    { proto = "tcp"; port = 443; }
+    { proto = "tcp"; port = 8080; toPort = 80; }  # remap external 8080 → internal 80
+  ];
+};
+```
+
+The `mkDnatRules` helper generates nftables forward-accept, prerouting DNAT, and local DNAT rules from these attributes. `firewall.nix` calls `network.mkDnatRules { extIfaces = ...; }` and interpolates the result.
 
 3. Rebuild affected hosts:
    ```bash

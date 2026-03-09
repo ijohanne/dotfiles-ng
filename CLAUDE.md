@@ -23,7 +23,7 @@ NixOS/Darwin dotfiles repository using **flakes**. All nix changes must be made 
 
 ### Shared Configuration
 
-- **`configs/network.nix`** — single registry for all hosts (IPs, MACs, DNS), DHCP reservations, and `mailDomains` (used by both khosu and pakhet mail configs)
+- **`configs/network.nix`** — single registry for all hosts (IPs, MACs, DNS, DNAT port forwarding), DHCP reservations, `mkDnatRules` (generates nftables DNAT rules), and `mailDomains` (used by both khosu and pakhet mail configs)
 - **`lib/user.nix`** — user settings; `developer = true` enables LSP, dev tools
 
 ### Secrets Management
