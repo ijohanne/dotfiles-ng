@@ -55,7 +55,7 @@
     customerIdFile = config.sops.secrets.themailer_wrapper_customer_id.path;
     baseUrl = "https://themailer.opsplaza.com";
     smtpHost = "127.0.0.1";
-    smtpPort = 587;
+    smtpPort = 25;
     smtpCredentialsFile = config.sops.templates."themailer-smtp-credentials".path;
     listenPort = 12002;
     domain = "themailer.opsplaza.com";
