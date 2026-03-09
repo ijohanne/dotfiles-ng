@@ -37,6 +37,7 @@
               iifname "ppp0" drop
               iifname "mobile" ct state { established, related } counter accept
               iifname "mobile" drop
+              log prefix "nft-input-drop: " counter drop
             }
 
             chain forward {
@@ -61,6 +62,7 @@
               ip saddr 172.23.0.0/16 accept
               meta iifname { "ppp0", "${interfaces.external}" }  meta oif "wired" ip daddr ${network.hosts.pakhet.ip} tcp dport { 25, 80, 110, 143, 443, 465, 587, 993, 995, 2525, 4190 } ct state new accept
               meta iifname { "ppp0", "${interfaces.external}" }  meta oif "wired" ip daddr ${network.hosts.cctax-node.ip} tcp dport { 8888, 20000 } ct state new accept
+              log prefix "nft-forward-drop: " counter drop
             }
 
             flowtable fastnat {
