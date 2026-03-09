@@ -83,6 +83,9 @@ in
               # Trusted → camera (Protect web UI access from LAN)
               iifname { "wifi", "wired", "mgnt", "wg0" } oifname "camera" counter accept
 
+              # Guest/camera → NTP
+              iifname { "guest", "camera" } oifname "wired" ip daddr ${network.hosts.chronos-wired.ip} udp dport 123 accept
+
               ip saddr 172.26.0.0/16 accept
               ip saddr 172.23.0.0/16 accept
               ${dnat.forward}
