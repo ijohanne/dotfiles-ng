@@ -16,7 +16,7 @@
         harden-glue = "yes";
         harden-dnssec-stripped = "yes";
         qname-minimisation = "yes";
-        use-caps-for-id = "yes";
+        use-caps-for-id = "no";
         edns-buffer-size = 1232;
         cache-min-ttl = 0;
         cache-max-ttl = 14400;
