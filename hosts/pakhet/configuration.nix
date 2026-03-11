@@ -2,6 +2,7 @@
 
 let
   network = import ../../configs/network.nix { inherit lib; };
+  deploy = import ../../configs/deploy { inherit pkgs; };
 in
 {
   imports = [
@@ -30,15 +31,10 @@ in
 
   environment.systemPackages = with pkgs; [
     (writeShellScriptBin "ping6" ''exec ping -6 "$@"'')
-    (writeShellScriptBin "deploy-pakhet" ''
-      for dir in /home/*/git/dotfiles-ng /root/git/dotfiles-ng; do
-        if [ -d "$dir/.git" ]; then
-          git -C "$dir" add -A
-          exec sudo nixos-rebuild switch --flake "$dir#pakhet"
-        fi
-      done
-      exec sudo nixos-rebuild switch --flake github:ijohanne/dotfiles-ng#pakhet --refresh
-    '')
+    (deploy.mkDeployScript {
+      name = "deploy-pakhet";
+      host = "pakhet";
+    })
   ];
 
   sops = {

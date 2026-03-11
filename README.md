@@ -38,7 +38,7 @@ Nix-based dotfiles for managing macOS and Linux configurations.
 - **pakhet** — NixOS application server (x86_64-linux)
 - **bhyve-image** — Minimal bhyve VM image (x86_64-linux)
 - **bhyve-image-server** — bhyve VM image with server users and home-manager (x86_64-linux)
-- **rpi4-stable** — Raspberry Pi 4 SD card image (aarch64-linux, nixos-25.05)
+- **rpi4-stable** — Raspberry Pi 4 SD card image (aarch64-linux, nixos-25.11)
 - **rpi4-unstable** — Raspberry Pi 4 SD card image (aarch64-linux, nixos-unstable)
 
 ### Structure
@@ -115,7 +115,7 @@ sudo nixos-rebuild switch --flake .#khosu
 
 1. Clone this repository:
    ```bash
-   git clone https://github.com/yourusername/dotfiles.git ~/dotfiles
+   git clone https://github.com/ijohanne/dotfiles-ng.git ~/dotfiles
    cd ~/dotfiles
    ```
 
@@ -398,7 +398,7 @@ sudo nixos-rebuild switch --flake github:ijohanne/dotfiles-ng#my-vm
 
 The RPi4 images are templates for bootstrapping new NixOS hosts on Raspberry Pi 4. Two variants are available:
 
-- **rpi4-stable** — Uses nixos-25.05 (recommended for production)
+- **rpi4-stable** — Uses nixos-25.11 (recommended for production)
 - **rpi4-unstable** — Uses nixos-unstable (latest features)
 
 #### Building the Image
@@ -463,7 +463,7 @@ To use this as a starting point for a new dedicated host:
 
 5. After first boot, switch to the new configuration:
    ```bash
-   sudo nixos-rebuild switch --flake github:yourusername/dotfiles#my-new-rpi
+   sudo nixos-rebuild switch --flake github:ijohanne/dotfiles-ng#my-new-rpi
    ```
 
 ### RTSP Dev VM
@@ -704,7 +704,6 @@ Secrets are organized per-host for isolation:
 
 - `secrets/macbook.yaml` — macbook-only secrets
 - `secrets/pakhet.yaml` — pakhet-only secrets
-- `secrets/shared.yaml` — secrets accessible by all hosts (if needed)
 
 Each file is encrypted with only the keys that need access, configured in `.sops.yaml`.
 

@@ -2,6 +2,7 @@
 
 let
   network = import ../../configs/network.nix { inherit lib; };
+  deploy = import ../../configs/deploy { inherit pkgs; };
 
   interfaces = {
     external = "br-wan";
@@ -129,15 +130,10 @@ in
     fping
     sms
     test_main_wan_uplink
-    (writeShellScriptBin "deploy-goose" ''
-      for dir in /home/*/git/dotfiles-ng /root/git/dotfiles-ng; do
-        if [ -d "$dir/.git" ]; then
-          git -C "$dir" add -A
-          exec sudo nixos-rebuild switch --flake "$dir#goose"
-        fi
-      done
-      exec sudo nixos-rebuild switch --flake github:ijohanne/dotfiles-ng#goose --refresh
-    '')
+    (deploy.mkDeployScript {
+      name = "deploy-goose";
+      host = "goose";
+    })
   ];
 
   nix.gc.options = lib.mkForce "--delete-older-than 30d";

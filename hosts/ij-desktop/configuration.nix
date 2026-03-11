@@ -1,5 +1,8 @@
 { inputs, config, pkgs, user, ... }:
 
+let
+  deploy = import ../../configs/deploy { inherit pkgs; };
+in
 {
   imports = [
     ../../configs/secrets.nix
@@ -76,6 +79,14 @@
   virtualisation.docker = {
     enable = true;
   };
+
+  environment.systemPackages = [
+    (deploy.mkLocalDeployScript {
+      name = "deploy-ij-desktop";
+      host = "ij-desktop";
+      rebuildCmd = "nixos-rebuild switch --flake";
+    })
+  ];
 
   system.stateVersion = "23.05";
 }

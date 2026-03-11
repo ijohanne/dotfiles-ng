@@ -31,6 +31,9 @@ jobs:
       - name: Check flake
         run: nix flake show
 
+      - name: Flake checks
+        run: nix flake check
+
   build-darwin:
     runs-on: macos-latest
     steps:
@@ -66,6 +69,12 @@ jobs:
 
       - name: Build pakhet configuration
         run: nix build .#nixosConfigurations.pakhet.config.system.build.toplevel --dry-run
+
+      - name: Build goose configuration
+        run: nix build .#nixosConfigurations.goose.config.system.build.toplevel --dry-run
+
+      - name: Build khosu configuration
+        run: nix build .#nixosConfigurations.khosu.config.system.build.toplevel --dry-run
 
   build-rpi4:
     runs-on: ubuntu-latest

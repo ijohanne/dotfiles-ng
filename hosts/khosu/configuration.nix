@@ -1,5 +1,8 @@
 { inputs, config, pkgs, lib, user, ... }:
 
+let
+  deploy = import ../../configs/deploy { inherit pkgs; };
+in
 {
   imports = [
     ../../configs/server.nix
@@ -41,15 +44,10 @@
   # GRUB device is set automatically by disko via the EF02 partition
 
   environment.systemPackages = with pkgs; [
-    (writeShellScriptBin "deploy-khosu" ''
-      for dir in /home/*/git/dotfiles-ng /root/git/dotfiles-ng; do
-        if [ -d "$dir/.git" ]; then
-          git -C "$dir" add -A
-          exec sudo nixos-rebuild switch --flake "$dir#khosu"
-        fi
-      done
-      exec sudo nixos-rebuild switch --flake github:ijohanne/dotfiles-ng#khosu --refresh
-    '')
+    (deploy.mkDeployScript {
+      name = "deploy-khosu";
+      host = "khosu";
+    })
   ];
 
   sops = {

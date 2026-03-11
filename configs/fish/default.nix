@@ -5,9 +5,14 @@
     enable = true;
     interactiveShellInit = ''
       function nix_rebuild_switch
-          set -l oldpwd (pwd)
-          builtin cd $HOME/git/private/dotfiles && sudo darwin-rebuild switch --flake .#macbook
-          builtin cd $oldpwd
+          if command -q deploy-macbook
+              command deploy-macbook
+          else if command -q deploy-ij-desktop
+              command deploy-ij-desktop
+          else
+              echo "No deploy command found for this host"
+              return 1
+          end
       end
 
       function vim

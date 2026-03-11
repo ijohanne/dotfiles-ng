@@ -1,6 +1,8 @@
-{ config, pkgs, lib, user, inputs, ... }:
+{ pkgs, user, ... }:
 
 {
+  imports = [ ./ij-base.nix ];
+
   home = {
     stateVersion = "22.05";
     username = user.username;
@@ -38,19 +40,6 @@
       gping
       httpie
     ];
-  };
-
-  home.activation.importGpgKey = lib.hm.dag.entryBefore [ "writeBoundary" ] ''
-    gpg --import "${../../secrets/ij-public-key.gpg}" 2>/dev/null || true
-  '';
-
-  home.activation.tldrUpdate = lib.hm.dag.entryAfter [ "importGpgKey" ] ''
-    ${pkgs.tealdeer}/bin/tldr --update 2>/dev/null || true
-  '';
-
-  services.gpg-agent = {
-    enable = true;
-    enableSshSupport = true;
   };
 
   programs = {
@@ -95,58 +84,11 @@
       '';
     };
 
-    starship = {
-      enable = true;
-      enableFishIntegration = false;
-      settings = {};
-    };
-
-    htop = {
-      enable = true;
-      settings.color_scheme = 6;
-    };
-
-    home-manager = {
-      enable = true;
-    };
-
-    password-store = {
-      enable = true;
-    };
-
-    zoxide = {
-      enable = true;
-      options = [ "--cmd cd" ];
-    };
-
-    lazygit = {
-      enable = true;
-      settings = {
-        gui.theme = {
-          activeBorderColor = [ "#89b4fa" "bold" ];
-          inactiveBorderColor = [ "#a6adc8" ];
-          optionsTextColor = [ "#89b4fa" ];
-          selectedLineBgColor = [ "#313244" ];
-          cherryPickedCommitBgColor = [ "#45475a" ];
-          cherryPickedCommitFgColor = [ "#89b4fa" ];
-          unstagedChangesColor = [ "#f38ba8" ];
-          defaultFgColor = [ "#cdd6f4" ];
-          searchingActiveBorderColor = [ "#f9e2af" ];
-        };
-        gui.authorColors = {
-          "dependabot[bot]" = "#a6adc8";
-        };
-        gui.nerdFontsVersion = "3";
-        gui.showFileIcons = true;
-      };
-    };
-
     git = {
       enable = true;
-      userName = user.name;
-      userEmail = user.email;
-      delta.enable = true;
-      extraConfig = {
+      settings = {
+        user.name = user.name;
+        user.email = user.email;
         init.defaultBranch = "master";
         pull.rebase = true;
         pull.ff = "only";

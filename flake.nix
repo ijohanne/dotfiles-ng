@@ -153,35 +153,61 @@
     }@inputs:
     let
       user = import ./lib/user.nix;
+
+      mkNixosHost = { pkgsLib, system, modules }:
+        pkgsLib.nixosSystem {
+          inherit system modules;
+          specialArgs = { inherit inputs self user; };
+        };
+
+      mkDarwinHost = { system, modules }:
+        nix-darwin.lib.darwinSystem {
+          inherit system modules;
+          specialArgs = { inherit inputs self user; };
+        };
+
+      mkHomeManagerModule = {
+        homeManagerModule,
+        users,
+        backupFileExtension ? null,
+      }:
+        [
+          homeManagerModule
+          ({ ... }: {
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              extraSpecialArgs = { inherit user inputs; };
+              users = nixpkgs.lib.mapAttrs (_: imports: { inherit imports; }) users;
+            }
+            // nixpkgs.lib.optionalAttrs (backupFileExtension != null) {
+              inherit backupFileExtension;
+            };
+          })
+        ];
     in
     {
       nixosConfigurations = {
-        ij-desktop = nixpkgs.lib.nixosSystem {
+        ij-desktop = mkNixosHost {
+          pkgsLib = nixpkgs.lib;
           system = "x86_64-linux";
-          specialArgs = { inherit inputs self user; };
           modules = [
             disko.nixosModules.disko
             sops-nix.nixosModules.sops
             ./hosts/ij-desktop/disko.nix
             ./hosts/ij-desktop/configuration.nix
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.extraSpecialArgs = { inherit user inputs; };
-              home-manager.users.${user.username} = {
-                imports = [
-                  ./hosts/ij-desktop/home.nix
-                  inputs.nixvim.homeModules.nixvim
-                ];
-              };
-            }
-          ];
+          ] ++ mkHomeManagerModule {
+            homeManagerModule = home-manager.nixosModules.home-manager;
+            users.${user.username} = [
+              ./hosts/ij-desktop/home.nix
+              inputs.nixvim.homeModules.nixvim
+            ];
+          };
         };
 
-        pakhet = nixpkgs-stable.lib.nixosSystem {
+        pakhet = mkNixosHost {
+          pkgsLib = nixpkgs-stable.lib;
           system = "x86_64-linux";
-          specialArgs = { inherit inputs self user; };
           modules = [
             sops-nix.nixosModules.sops
             nixos-mailserver.nixosModules.default
@@ -199,26 +225,18 @@
               ];
             }
             ./hosts/pakhet/configuration.nix
-            home-manager-stable.nixosModules.home-manager
-            ({ config, pkgs, ... }: {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.extraSpecialArgs = { inherit user inputs; };
-              home-manager.users.${user.username} = {
-                imports = [
-                  ./hosts/pakhet/home.nix
-                ];
-              };
-              home-manager.users.mj = {
-                imports = [ ./configs/users/mj.nix ];
-              };
-            })
-          ];
+          ] ++ mkHomeManagerModule {
+            homeManagerModule = home-manager-stable.nixosModules.home-manager;
+            users = {
+              ${user.username} = [ ./hosts/pakhet/home.nix ];
+              mj = [ ./configs/users/mj.nix ];
+            };
+          };
         };
 
-        goose = nixpkgs-stable.lib.nixosSystem {
+        goose = mkNixosHost {
+          pkgsLib = nixpkgs-stable.lib;
           system = "x86_64-linux";
-          specialArgs = { inherit inputs self user; };
           modules = [
             sops-nix.nixosModules.sops
             ijohanne-nur.nixosModules.multicast-relay
@@ -232,47 +250,33 @@
               ];
             }
             ./hosts/goose/configuration.nix
-            home-manager-stable.nixosModules.home-manager
-            ({ config, pkgs, ... }: {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.backupFileExtension = "bak";
-              home-manager.extraSpecialArgs = { inherit user inputs; };
-              home-manager.users.${user.username} = {
-                imports = [
-                  ./hosts/goose/home.nix
-                ];
-              };
-              home-manager.users.mj = {
-                imports = [ ./configs/users/mj.nix ];
-              };
-            })
-          ];
+          ] ++ mkHomeManagerModule {
+            homeManagerModule = home-manager-stable.nixosModules.home-manager;
+            backupFileExtension = "bak";
+            users = {
+              ${user.username} = [ ./hosts/goose/home.nix ];
+              mj = [ ./configs/users/mj.nix ];
+            };
+          };
         };
 
-        khosu = nixpkgs-stable.lib.nixosSystem {
+        khosu = mkNixosHost {
+          pkgsLib = nixpkgs-stable.lib;
           system = "x86_64-linux";
-          specialArgs = { inherit inputs self user; };
           modules = [
             disko.nixosModules.disko
             sops-nix.nixosModules.sops
             ./hosts/khosu/disko.nix
             ./hosts/khosu/configuration.nix
-            home-manager-stable.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.extraSpecialArgs = { inherit user inputs; };
-              home-manager.users.${user.username} = {
-                imports = [ ./hosts/khosu/home.nix ];
-              };
-            }
-          ];
+          ] ++ mkHomeManagerModule {
+            homeManagerModule = home-manager-stable.nixosModules.home-manager;
+            users.${user.username} = [ ./hosts/khosu/home.nix ];
+          };
         };
 
-        bhyve-image = nixpkgs-stable.lib.nixosSystem {
+        bhyve-image = mkNixosHost {
+          pkgsLib = nixpkgs-stable.lib;
           system = "x86_64-linux";
-          specialArgs = { inherit inputs self user; };
           modules = [
             disko.nixosModules.disko
             ./hosts/bhyve-image/disko.nix
@@ -280,48 +284,42 @@
           ];
         };
 
-        bhyve-image-server = nixpkgs-stable.lib.nixosSystem {
+        bhyve-image-server = mkNixosHost {
+          pkgsLib = nixpkgs-stable.lib;
           system = "x86_64-linux";
-          specialArgs = { inherit inputs self user; };
           modules = [
             disko.nixosModules.disko
             sops-nix.nixosModules.sops
             ./hosts/bhyve-image/disko.nix
             ./hosts/bhyve-image/configuration-server.nix
-            home-manager-stable.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.extraSpecialArgs = { inherit user inputs; };
-              home-manager.users.${user.username} = {
-                imports = [ ./configs/users/ij.nix ];
-              };
-              home-manager.users.mj = {
-                imports = [ ./configs/users/mj.nix ];
-              };
-            }
-          ];
+          ] ++ mkHomeManagerModule {
+            homeManagerModule = home-manager-stable.nixosModules.home-manager;
+            users = {
+              ${user.username} = [ ./configs/users/ij.nix ];
+              mj = [ ./configs/users/mj.nix ];
+            };
+          };
         };
 
-        rtsp-dev-vm = nixpkgs.lib.nixosSystem {
+        rtsp-dev-vm = mkNixosHost {
+          pkgsLib = nixpkgs.lib;
           system = "aarch64-linux";
-          specialArgs = { inherit inputs self user; };
           modules = [
             ./hosts/rtsp-dev-vm/configuration.nix
           ];
         };
 
-        rpi4-stable = nixpkgs-stable.lib.nixosSystem {
+        rpi4-stable = mkNixosHost {
+          pkgsLib = nixpkgs-stable.lib;
           system = "aarch64-linux";
-          specialArgs = { inherit inputs self user; };
           modules = [
             ./hosts/rpi4-image/stable/configuration.nix
           ];
         };
 
-        rpi4-unstable = nixpkgs.lib.nixosSystem {
+        rpi4-unstable = mkNixosHost {
+          pkgsLib = nixpkgs.lib;
           system = "aarch64-linux";
-          specialArgs = { inherit inputs self user; };
           modules = [
             ./hosts/rpi4-image/unstable/configuration.nix
           ];
@@ -337,29 +335,22 @@
       };
 
       darwinConfigurations = {
-        macbook = nix-darwin.lib.darwinSystem {
+        macbook = mkDarwinHost {
           system = "aarch64-darwin";
-          specialArgs = { inherit inputs self user; };
           modules = [
             mac-app-util.darwinModules.default
             sops-nix.darwinModules.sops
             ./hosts/macbook/configuration.nix
             ./hosts/macbook/software.nix
-            home-manager.darwinModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.backupFileExtension = "backup";
-              home-manager.extraSpecialArgs = { inherit user inputs; };
-              home-manager.users.${user.username} = {
-                imports = [
-                  mac-app-util.homeManagerModules.default
-                  ./hosts/macbook/home.nix
-                  inputs.nixvim.homeModules.nixvim
-                ];
-              };
-            }
-          ];
+          ] ++ mkHomeManagerModule {
+            homeManagerModule = home-manager.darwinModules.home-manager;
+            backupFileExtension = "backup";
+            users.${user.username} = [
+              mac-app-util.homeManagerModules.default
+              ./hosts/macbook/home.nix
+              inputs.nixvim.homeModules.nixvim
+            ];
+          };
         };
       };
 

@@ -5,6 +5,7 @@
     ../../configs
     ../../configs/dev.nix
     ../../configs/flutter.nix
+    ../../configs/users/ij-base.nix
   ];
 
   home = {
@@ -51,14 +52,6 @@
     ];
   };
 
-  home.activation.importGpgKey = lib.hm.dag.entryBefore [ "writeBoundary" ] ''
-    gpg --import "${../../secrets/ij-public-key.gpg}" 2>/dev/null || true
-  '';
-
-  home.activation.tldrUpdate = lib.hm.dag.entryAfter [ "importGpgKey" ] ''
-    ${pkgs.tealdeer}/bin/tldr --update 2>/dev/null || true
-  '';
-
   home.activation.setupAuthorizedKeys = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     mkdir -p "$HOME/.ssh"
     chmod 700 "$HOME/.ssh"
@@ -71,27 +64,23 @@ EOF
   home.file."Library/Application Support/com.mitchellh.ghostty/config".source =
     config.xdg.configFile."ghostty/config".source;
 
-  services.gpg-agent = {
-    enable = true;
-    enableSshSupport = true;
-  };
-
   programs = {
     ssh = {
       enable = true;
-      forwardAgent = true;
-      extraConfig = ''
-        PubkeyAuthentication unbound
-      '';
+      enableDefaultConfig = false;
+      matchBlocks."*" = {
+        forwardAgent = true;
+        extraOptions = {
+          PubkeyAuthentication = "unbound";
+        };
+      };
     };
 
     fish = {
       enable = true;
       interactiveShellInit = ''
         function deploy-macbook
-            set -l oldpwd (pwd)
-            builtin cd $HOME/git/private/dotfiles && sudo darwin-rebuild switch --flake .#macbook
-            builtin cd $oldpwd
+            command deploy-macbook
         end
         function vim
             nvim $argv
@@ -107,26 +96,6 @@ EOF
         gpgconf --launch gpg-agent 2>/dev/null || true
         export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket 2>/dev/null || echo "$HOME/.gnupg/S.gpg-agent.ssh")"
       '';
-    };
-
-    starship = {
-      enable = true;
-      enableFishIntegration = false;
-      settings = {
-      };
-    };
-
-    htop = {
-      enable = true;
-      settings.color_scheme = 6;
-    };
-
-    home-manager = {
-      enable = true;
-    };
-
-    password-store = {
-      enable = true;
     };
 
     git = {
@@ -156,36 +125,6 @@ EOF
       };
     };
 
-    zoxide = {
-      enable = true;
-      options = [ "--cmd cd" ];
-    };
-
-    lazygit = {
-      enable = true;
-      settings = {
-        gui.theme = {
-          activeBorderColor = [ "#89b4fa" "bold" ];
-          inactiveBorderColor = [ "#a6adc8" ];
-          optionsTextColor = [ "#89b4fa" ];
-          selectedLineBgColor = [ "#313244" ];
-          cherryPickedCommitBgColor = [ "#45475a" ];
-          cherryPickedCommitFgColor = [ "#89b4fa" ];
-          unstagedChangesColor = [ "#f38ba8" ];
-          defaultFgColor = [ "#cdd6f4" ];
-          searchingActiveBorderColor = [ "#f9e2af" ];
-        };
-        gui.authorColors = {
-          "dependabot[bot]" = "#a6adc8";
-        };
-        gui.nerdFontsVersion = "3";
-        gui.showFileIcons = true;
-      };
-    };
-
-    delta = {
-      enable = true;
-    };
   };
 
   xdg.configFile."procs/config.toml".text = ''

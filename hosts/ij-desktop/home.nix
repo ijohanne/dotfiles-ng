@@ -1,10 +1,11 @@
-{ config, pkgs, lib, user, inputs, ... }:
+{ config, pkgs, user, inputs, ... }:
 
 {
   imports = [
     ../../configs
     ../../configs/dev.nix
     ../../configs/flutter.nix
+    ../../configs/users/ij-base.nix
   ];
 
   home = {
@@ -55,19 +56,6 @@
     ];
   };
 
-  home.activation.importGpgKey = lib.hm.dag.entryBefore [ "writeBoundary" ] ''
-    gpg --import "${../../secrets/ij-public-key.gpg}" 2>/dev/null || true
-  '';
-
-  home.activation.tldrUpdate = lib.hm.dag.entryAfter [ "importGpgKey" ] ''
-    ${pkgs.tealdeer}/bin/tldr --update 2>/dev/null || true
-  '';
-
-  services.gpg-agent = {
-    enable = true;
-    enableSshSupport = true;
-  };
-
   programs = {
     fish = {
       enable = true;
@@ -82,57 +70,6 @@
             dog $argv
         end
       '';
-    };
-
-    starship = {
-      enable = true;
-      enableFishIntegration = false;
-      settings = {
-      };
-    };
-
-    htop = {
-      enable = true;
-      settings.color_scheme = 6;
-    };
-
-    home-manager = {
-      enable = true;
-    };
-
-    password-store = {
-      enable = true;
-    };
-
-    zoxide = {
-      enable = true;
-      options = [ "--cmd cd" ];
-    };
-
-    lazygit = {
-      enable = true;
-      settings = {
-        gui.theme = {
-          activeBorderColor = [ "#89b4fa" "bold" ];
-          inactiveBorderColor = [ "#a6adc8" ];
-          optionsTextColor = [ "#89b4fa" ];
-          selectedLineBgColor = [ "#313244" ];
-          cherryPickedCommitBgColor = [ "#45475a" ];
-          cherryPickedCommitFgColor = [ "#89b4fa" ];
-          unstagedChangesColor = [ "#f38ba8" ];
-          defaultFgColor = [ "#cdd6f4" ];
-          searchingActiveBorderColor = [ "#f9e2af" ];
-        };
-        gui.authorColors = {
-          "dependabot[bot]" = "#a6adc8";
-        };
-        gui.nerdFontsVersion = "3";
-        gui.showFileIcons = true;
-      };
-    };
-
-    delta = {
-      enable = true;
     };
 
     ghostty = {

@@ -115,7 +115,7 @@ let
 
   # Qualify a DNS name: if it already contains a dot, use as-is; otherwise append domain
   qualify = n:
-    if lib.hasInfix "." n then "${n}.${domain}"
+    if lib.hasInfix "." n then n
     else "${n}.${domain}";
 
   # Forward DNS: A records for unbound local-data

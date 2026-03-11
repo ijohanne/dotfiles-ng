@@ -1,5 +1,8 @@
 { inputs, config, pkgs, lib, user, ... }:
 
+let
+  deploy = import ../../configs/deploy { inherit pkgs; };
+in
 {
   imports = [
     ../../configs/secrets.nix
@@ -69,6 +72,14 @@
 
   nixpkgs.overlays = [
     inputs.rust-overlay.overlays.default
+  ];
+
+  environment.systemPackages = [
+    (deploy.mkLocalDeployScript {
+      name = "deploy-macbook";
+      host = "macbook";
+      rebuildCmd = "darwin-rebuild switch --flake";
+    })
   ];
 
   security.pam.services.sudo_local.touchIdAuth = true;
