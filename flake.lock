@@ -1904,11 +1904,11 @@
         "rust-overlay": "rust-overlay_6"
       },
       "locked": {
-        "lastModified": 1773088931,
-        "narHash": "sha256-p+XlKdtooZcwmR/+X/MAodtYVUqauvZOU8q+aB7v8cU=",
+        "lastModified": 1773232165,
+        "narHash": "sha256-Ps6W989nONhVgmLNAl9og/RrusV2Pyxw8VofHD28edI=",
         "owner": "ijohanne",
         "repo": "screeny",
-        "rev": "094aa88a3cc1056a91cf53c256f451280d2c29da",
+        "rev": "c17c0e83cace34bd2f8f02234bf0b5bf5917e817",
         "type": "github"
       },
       "original": {
