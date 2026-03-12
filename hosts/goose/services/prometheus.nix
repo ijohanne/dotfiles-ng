@@ -12,9 +12,10 @@
     };
     scrapeConfigs = [
       {
-        job_name = "smartctl_fatty";
+        job_name = "smartctl";
         static_configs = [{
           targets = [ "${network.hosts.fatty.ip}:9633" ];
+          labels = { instance = "fatty"; };
         }];
       }
       {
