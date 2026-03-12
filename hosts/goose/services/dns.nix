@@ -40,7 +40,7 @@
         statistics-interval = 0;
         extended-statistics = "yes";
         statistics-cumulative = "yes";
-        local-zone = network.reverseZones ++ network.reverseZones6;
+        local-zone = [ ''"${network.domain}." transparent'' ] ++ network.reverseZones ++ network.reverseZones6;
         local-data = network.forwardDns ++ network.reverseDns ++ network.forwardDns6 ++ network.reverseDns6;
       };
       remote-control = {
