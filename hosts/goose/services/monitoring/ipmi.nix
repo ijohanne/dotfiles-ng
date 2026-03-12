@@ -41,7 +41,6 @@
     serviceConfig = {
       ExecStart = "${pkgs.prometheus-ipmi-exporter}/bin/ipmi_exporter --config.file=${config.sops.templates."ipmi-exporter.yml".path} --web.listen-address=:9290";
       Restart = "always";
-      DynamicUser = true;
     };
     path = [ pkgs.freeipmi ];
   };
