@@ -23,7 +23,8 @@
   sops.secrets.grafana_admin_password = {};
   sops.secrets.unpoller_password = { owner = "unpoller-exporter"; };
   sops.secrets.fireboard_token = {};
-  sops.secrets.hue_api_key = {};
+  sops.secrets.hue_api_key = { owner = "hue-exporter"; };
+  sops.secrets.hue_api_key_secondary = { owner = "hue-exporter"; };
   sops.secrets.tplink_username = { owner = "tplink-p110-exporter"; };
   sops.secrets.tplink_password = { owner = "tplink-p110-exporter"; };
   sops.secrets.smtp_pass_brother = {};
