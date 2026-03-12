@@ -101,11 +101,7 @@ my-host = {
 };
 ```
 
-Then rebuild goose to pick up DNS/DHCP changes:
-
-```bash
-ssh r0.est.unixpimps.net deploy-goose
-```
+Then rebuild the router/DNS host to pick up DNS/DHCP changes.
 
 See [NETWORK.md](../NETWORK.md) for VLAN assignments, DNAT rules, and the full host registry.
 
