@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "id": 58,
+  "id": null,
   "links": [
     {
       "asDropdown": true,
@@ -1002,6 +1002,18 @@
   ],
   "templating": {
     "list": [
+      {
+        "name": "datasource",
+        "type": "datasource",
+        "query": "prometheus",
+        "current": {},
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "options": [],
+        "refresh": 1,
+        "regex": ""
+      },
       {
         "current": {
           "text": [
