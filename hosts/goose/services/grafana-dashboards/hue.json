@@ -75,7 +75,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "hue_bridge_info{job=~\\\"$bridge\\\"}",
+          "expr": "hue_bridge_info{job=~\"$bridge\"}",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -141,7 +141,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "hue_bridge_info{job=~\\\"$bridge\\\"}",
+          "expr": "hue_bridge_info{job=~\"$bridge\"}",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -207,7 +207,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "hue_bridge_info{job=~\\\"$bridge\\\"}",
+          "expr": "hue_bridge_info{job=~\"$bridge\"}",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -273,7 +273,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "hue_bridge_info{job=~\\\"$bridge\\\"}",
+          "expr": "hue_bridge_info{job=~\"$bridge\"}",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -340,7 +340,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "hue_bridge_info{job=~\\\"$bridge\\\"}",
+          "expr": "hue_bridge_info{job=~\"$bridge\"}",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -406,7 +406,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "hue_bridge_info{job=~\\\"$bridge\\\"}",
+          "expr": "hue_bridge_info{job=~\"$bridge\"}",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -473,7 +473,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "hue_bridge_info{job=~\\\"$bridge\\\"}",
+          "expr": "hue_bridge_info{job=~\"$bridge\"}",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -539,7 +539,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(hue_light_state{job=~\\\"$bridge\\\"})",
+          "expr": "sum(hue_light_state{job=~\"$bridge\"})",
           "format": "time_series",
           "instant": false,
           "interval": "",
@@ -605,7 +605,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "count(hue_light_state{job=~\\\"$bridge\\\"})-sum(hue_light_state{job=~\\\"$bridge\\\"})",
+          "expr": "count(hue_light_state{job=~\"$bridge\"})-sum(hue_light_state{job=~\"$bridge\"})",
           "format": "time_series",
           "instant": false,
           "interval": "",
@@ -770,7 +770,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "10^((hue_sensor_lightlevel{job=~\\\"$bridge\\\"}-1)/10000)",
+          "expr": "10^((hue_sensor_lightlevel{job=~\"$bridge\"}-1)/10000)",
           "interval": "",
           "legendFormat": "{{name}}",
           "refId": "A"
@@ -936,7 +936,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "hue_sensor_temperature{job=~\\\"$bridge\\\"}/100",
+          "expr": "hue_sensor_temperature{job=~\"$bridge\"}/100",
           "interval": "",
           "legendFormat": "{{name}}",
           "refId": "A"
@@ -1112,7 +1112,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "hue_sensor_info{job=~\\\"$bridge\\\",type=~\"ZLL.*\"}",
+          "expr": "hue_sensor_info{job=~\"$bridge\",type=~\"ZLL.*\"}",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -1368,7 +1368,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "hue_light_info{job=~\\\"$bridge\\\"}",
+          "expr": "hue_light_info{job=~\"$bridge\"}",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -1437,11 +1437,7 @@
         "type": "datasource"
       },
       {
-        "current": {
-          "selected": true,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": {
           "type": "prometheus",
           "uid": "${datasource}"
