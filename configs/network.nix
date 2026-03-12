@@ -222,7 +222,7 @@ let
             preroutingLocal = "${proto} dport ${portSet batchPorts} fib daddr type local dnat ip to ${host.ip};";
           }])
           ++ map (r: {
-            forward = "meta iifname ${extIfaces} oifname \"${oif}\" ip daddr ${host.ip} ${proto} dport ${toString r.port} ct state new accept";
+            forward = "meta iifname ${extIfaces} oifname \"${oif}\" ip daddr ${host.ip} ${proto} dport ${toString r.toPort} ct state new accept";
             prerouting = "meta iifname ${extIfaces} ${proto} dport ${toString r.port} dnat ${host.ip}:${toString r.toPort};";
             preroutingLocal = "${proto} dport ${toString r.port} fib daddr type local dnat ip to ${host.ip}:${toString r.toPort};";
           }) remap
