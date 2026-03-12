@@ -1428,19 +1428,12 @@
   "templating": {
     "list": [
       {
-        "current": {
-          "selected": false,
-          "text": "default",
-          "value": "default"
-        },
-        "hide": 2,
+        "current": {},
         "includeAll": false,
         "multi": false,
         "name": "datasource",
-        "options": [],
         "query": "prometheus",
         "refresh": 1,
-        "regex": "",
         "type": "datasource"
       },
       {
