@@ -55,6 +55,12 @@ let
     fatty-ipmi    = { ip = "10.255.254.211"; mac = "04:42:1a:1c:6c:c1"; dns = [ "fatty.ipmi" ]; };
     unvr          = { ip = "10.255.200.253"; mac = "e4:38:83:74:5d:a1"; };
 
+    # --- Access Points (mgmt VLAN, static IPs set via controller) ---
+    ap0           = { ip = "10.255.254.20";  mac = "d0:21:f9:8c:47:a9"; };
+    ap1           = { ip = "10.255.254.19";  mac = "d0:21:f9:8c:63:b1"; };
+    ap2           = { ip = "10.255.254.165"; mac = "9c:05:d6:f3:82:72"; };
+    ap3           = { ip = "10.255.254.44";  mac = "e4:38:83:34:36:cc"; };
+
     # --- Wireless devices ---
     chronos       = { ip = "10.255.100.202"; ip6 = "${ulaPrefix}:100::202"; mac = "dc:a6:32:34:1e:6e"; dns = [ "chronos-wifi" ]; };
     sobek         = { ip = "10.255.100.203"; ip6 = "${ulaPrefix}:100::203"; mac = "dc:a6:32:08:7c:33"; dns = [ "sobek-wifi" ]; };

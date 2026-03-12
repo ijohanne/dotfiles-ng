@@ -13,12 +13,14 @@
     pkgs.writeShellScriptBin name ''
       set -euo pipefail
 
-      for dir in ${builtins.concatStringsSep " " localCheckoutGlobs}; do
-        if [ -d "$dir/.git" ]; then
-          git -C "$dir" add -A
-          exec sudo nixos-rebuild switch --flake "$dir#${host}"
-        fi
-      done
+      if [ "''${1:-}" != "--no-local" ]; then
+        for dir in ${builtins.concatStringsSep " " localCheckoutGlobs}; do
+          if [ -d "$dir/.git" ]; then
+            git -C "$dir" add -A
+            exec sudo nixos-rebuild switch --flake "$dir#${host}"
+          fi
+        done
+      fi
 
       exec sudo nixos-rebuild switch --flake "${githubRef}#${host}" --refresh
     '';
@@ -44,20 +46,22 @@
         invoker_home="$HOME"
       fi
 
-      selected=""
-      checked=""
-      for rel in ${builtins.concatStringsSep " " repoCandidates}; do
-        candidate="$invoker_home/$rel"
-        checked="$checked $candidate"
-        if [ -d "$candidate/.git" ]; then
-          selected="$candidate"
-          break
-        fi
-      done
+      if [ "''${1:-}" != "--no-local" ]; then
+        selected=""
+        checked=""
+        for rel in ${builtins.concatStringsSep " " repoCandidates}; do
+          candidate="$invoker_home/$rel"
+          checked="$checked $candidate"
+          if [ -d "$candidate/.git" ]; then
+            selected="$candidate"
+            break
+          fi
+        done
 
-      if [ -n "$selected" ]; then
-        ${if gitAdd then "git -C \"$selected\" add -A" else ":"}
-        exec ${if useSudo then "sudo " else ""}${rebuildCmd} "$selected#${host}"
+        if [ -n "$selected" ]; then
+          ${if gitAdd then "git -C \"$selected\" add -A" else ":"}
+          exec ${if useSudo then "sudo " else ""}${rebuildCmd} "$selected#${host}"
+        fi
       fi
 
       if ${if useSudo then "sudo " else ""}${rebuildCmd} "${githubRef}#${host}" --refresh; then

@@ -88,6 +88,12 @@ in
               # Trusted → camera (Protect web UI access from LAN)
               iifname { "wifi", "wired", "mgnt", "wg0" } oifname "camera" counter accept
 
+              # UNVR → APs: BLE/SuperLink proxy for Protect sensors (UP-SENSE)
+              iifname "camera" ip saddr ${network.hosts.unvr.ip} oifname "mgnt" ip daddr {
+                ${network.hosts.ap0.ip}, ${network.hosts.ap1.ip},
+                ${network.hosts.ap2.ip}, ${network.hosts.ap3.ip}
+              } tcp dport 8381 accept
+
               # Guest/camera → NTP
               iifname { "guest", "camera" } oifname "wired" ip daddr ${network.hosts.chronos-wired.ip} udp dport 123 accept
 
