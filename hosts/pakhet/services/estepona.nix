@@ -30,6 +30,23 @@
       };
     };
 
+    virtualHosts."cctax-proxy.grpc.unixpimps.net" = {
+      forceSSL = true;
+      enableACME = true;
+      acmeRoot = null;
+      extraConfig = ''
+        client_max_body_size 64m;
+      '';
+      locations."/" = {
+        extraConfig = ''
+          grpc_pass grpc://${network.hosts.cctax-couch.ip}:50051;
+          grpc_read_timeout 600s;
+          grpc_send_timeout 600s;
+          proxy_buffering off;
+        '';
+      };
+    };
+
     virtualHosts."cctax-couch.${network.domain}" = {
       forceSSL = true;
       enableACME = true;
