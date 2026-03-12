@@ -1,14 +1,16 @@
-{ config, pkgs, lib, user, ... }:
+{ pkgs, user, ... }:
 
 {
+  imports = [
+    (import ./common.nix {})
+    (import ../bash {})
+  ];
+
   home = {
     stateVersion = "22.05";
-    username = "mj";
-    homeDirectory = "/home/mj";
+    username = user.username;
+    homeDirectory = "/home/${user.username}";
   };
 
-  programs = {
-    zsh.enable = true;
-    home-manager.enable = true;
-  };
+  programs.${user.shell}.enable = true;
 }

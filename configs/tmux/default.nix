@@ -1,5 +1,10 @@
-{ pkgs, ... }:
-
+{ desktop ? false }:
+{ pkgs, lib, ... }:
+let
+  clipboardCmd =
+    if pkgs.stdenv.isDarwin then "pbcopy"
+    else "xclip -selection clipboard";
+in
 {
   programs.tmux = {
     enable = true;
@@ -57,8 +62,10 @@
       set -agF status-right "#{E:@catppuccin_status_battery}"
 
       bind-key -T copy-mode-vi v send-keys -X begin-selection
-      bind-key -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "pbcopy"
-      bind-key -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel "pbcopy"
+    '' + lib.optionalString desktop ''
+      bind-key -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "${clipboardCmd}"
+      bind-key -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel "${clipboardCmd}"
+    '' + ''
 
       set -g set-titles on
       set -g set-titles-string "#S:#I:#W - #T"

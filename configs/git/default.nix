@@ -1,9 +1,7 @@
-{ config, pkgs, user, ... }:
-
+{ ... }:
+{ user, ... }:
 {
-  programs.gh = {
-    enable = true;
-  };
+  programs.gh.enable = true;
 
   programs.git = {
     enable = true;
@@ -12,11 +10,16 @@
       user.email = user.email;
       init.defaultBranch = "master";
       pull.rebase = true;
-      diff.color = "auto";
+      pull.ff = "only";
       status.submodule = "summary";
-      lfs.enable = true;
       commit.gpgsign = true;
-      extraConfig = { pull = { ff = "only"; }; };
+      merge.conflictstyle = "diff3";
+      diff.color = "auto";
+      diff.mnemonicPrefix = true;
+      diff.relativeDate = true;
+      core.pager = "delta";
+      interactive.diffFilter = "delta --color-only";
     };
+    lfs.enable = true;
   };
 }

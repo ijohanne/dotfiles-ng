@@ -194,32 +194,6 @@ in
   home.packages = commonDevPackages ++ darwinDevPackages ++ linuxDevPackages;
 
   programs = {
-    direnv = {
-      enable = true;
-      nix-direnv = {
-        enable = true;
-      };
-    };
-
-    fish = {
-      enable = true;
-      shellInit = ''
-        set -p fish_function_path ${inputs.fish-eza}/functions $fish_function_path
-      '';
-      shellAliases = {
-        du = "${pkgs.dust}/bin/dust";
-        top = "${pkgs.htop}/bin/htop";
-        la = "eza -la";
-        lx = "eza -la --sort=size";
-        llm = "eza -l --icons=always";
-        tree = "eza --tree";
-        lt = "eza --tree -L 2";
-      };
-      interactiveShellInit = ''
-        ${pkgs.direnv}/bin/direnv hook fish | source
-      '';
-    };
-
     nixvim = {
       enable = true;
       defaultEditor = true;

@@ -1,4 +1,4 @@
-{ lib, config, pkgs, user, modulesPath, ... }:
+{ lib, config, pkgs, user, users, modulesPath, ... }:
 
 {
   imports = [
@@ -47,20 +47,15 @@
     wheelNeedsPassword = false;
   };
 
-  users.users.root = {
-    initialHashedPassword = "";
-    openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKeFunHfY3vS2izkp7fMHk2bXuaalNijYcctAF2NGc1T"
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKiCGBgFgwbHB+2m++ViEnhoFjww2Twvx8gXWcMvHvz3 martin@martin8412.dk"
-    ];
-  };
-
-  users.users.${user.username} = {
+  users.users = lib.mapAttrs (_: u: {
     isNormalUser = true;
     extraGroups = [ "wheel" ];
-    openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKeFunHfY3vS2izkp7fMHk2bXuaalNijYcctAF2NGc1T"
-    ];
+    openssh.authorizedKeys.keys = u.sshKeys;
+  }) users // {
+    root = {
+      initialHashedPassword = "";
+      openssh.authorizedKeys.keys = lib.concatMap (u: u.sshKeys) (lib.attrValues users);
+    };
   };
 
   sdImage.compressImage = false;

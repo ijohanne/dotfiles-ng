@@ -1,4 +1,4 @@
-{ pkgs, lib, user, ... }:
+{ pkgs, lib, users, ... }:
 
 {
   services.openssh = {
@@ -41,35 +41,23 @@
 
   users.groups.srv = {};
 
-  users.users.root = {
-    initialHashedPassword = "";
-    openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKeFunHfY3vS2izkp7fMHk2bXuaalNijYcctAF2NGc1T"
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKiCGBgFgwbHB+2m++ViEnhoFjww2Twvx8gXWcMvHvz3 martin@martin8412.dk"
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMGlZ6MnFwequnPcUuM26bxcHZR/1447SL0vP3fjIkJq nix-remote-builder-macbook"
-    ];
-  };
-
-  users.users.mj = {
+  users.users = lib.mapAttrs (_: u: {
     createHome = true;
-    description = "Martin Karlsen Jensen";
+    description = u.name;
     extraGroups = [ "wheel" ];
     group = "adm";
     isNormalUser = true;
-    shell = pkgs.zsh;
-    openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKiCGBgFgwbHB+2m++ViEnhoFjww2Twvx8gXWcMvHvz3 martin@martin8412.dk"
-    ];
-  };
-
-  users.users.${user.username} = {
-    createHome = true;
-    description = user.name;
-    extraGroups = [ "wheel" ];
-    group = "adm";
-    isNormalUser = true;
-    shell = pkgs.fish;
-    openssh.authorizedKeys.keys = user.sshKeys;
+    shell = pkgs.${u.shell};
+    openssh.authorizedKeys.keys = u.sshKeys;
+  }) users // {
+    root = {
+      initialHashedPassword = "";
+      openssh.authorizedKeys.keys =
+        lib.concatMap (u: u.sshKeys) (lib.attrValues users)
+        ++ [
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMGlZ6MnFwequnPcUuM26bxcHZR/1447SL0vP3fjIkJq nix-remote-builder-macbook"
+        ];
+    };
   };
 
   nix.settings = {

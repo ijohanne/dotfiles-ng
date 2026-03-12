@@ -152,23 +152,23 @@
       ...
     }@inputs:
     let
-      user = import ./lib/user.nix;
+      users = import ./configs/users.nix;
 
-      mkNixosHost = { pkgsLib, system, modules }:
+      mkNixosHost = { pkgsLib, system, modules, primaryUser ? "ij" }:
         pkgsLib.nixosSystem {
           inherit system modules;
-          specialArgs = { inherit inputs self user; };
+          specialArgs = { inherit inputs self users; user = users.${primaryUser}; };
         };
 
-      mkDarwinHost = { system, modules }:
+      mkDarwinHost = { system, modules, primaryUser ? "ij" }:
         nix-darwin.lib.darwinSystem {
           inherit system modules;
-          specialArgs = { inherit inputs self user; };
+          specialArgs = { inherit inputs self users; user = users.${primaryUser}; };
         };
 
       mkHomeManagerModule = {
         homeManagerModule,
-        users,
+        hmUsers,
         backupFileExtension ? null,
       }:
         [
@@ -177,8 +177,12 @@
             home-manager = {
               useGlobalPkgs = true;
               useUserPackages = true;
-              extraSpecialArgs = { inherit user inputs; };
-              users = nixpkgs.lib.mapAttrs (_: imports: { inherit imports; }) users;
+              extraSpecialArgs = { inherit users inputs; };
+              users = nixpkgs.lib.mapAttrs (username: imports: {
+                imports = imports ++ [
+                  { _module.args.user = users.${username}; }
+                ];
+              }) hmUsers;
             }
             // nixpkgs.lib.optionalAttrs (backupFileExtension != null) {
               inherit backupFileExtension;
@@ -198,7 +202,7 @@
             ./hosts/ij-desktop/configuration.nix
           ] ++ mkHomeManagerModule {
             homeManagerModule = home-manager.nixosModules.home-manager;
-            users.${user.username} = [
+            hmUsers.${users.ij.username} = [
               ./hosts/ij-desktop/home.nix
               inputs.nixvim.homeModules.nixvim
             ];
@@ -227,9 +231,9 @@
             ./hosts/pakhet/configuration.nix
           ] ++ mkHomeManagerModule {
             homeManagerModule = home-manager-stable.nixosModules.home-manager;
-            users = {
-              ${user.username} = [ ./hosts/pakhet/home.nix ];
-              mj = [ ./configs/users/mj.nix ];
+            hmUsers = {
+              ${users.ij.username} = [ ./hosts/pakhet/home.nix ];
+              ${users.mj.username} = [ ./configs/users/mj.nix ];
             };
           };
         };
@@ -253,9 +257,9 @@
           ] ++ mkHomeManagerModule {
             homeManagerModule = home-manager-stable.nixosModules.home-manager;
             backupFileExtension = "bak";
-            users = {
-              ${user.username} = [ ./hosts/goose/home.nix ];
-              mj = [ ./configs/users/mj.nix ];
+            hmUsers = {
+              ${users.ij.username} = [ ./hosts/goose/home.nix ];
+              ${users.mj.username} = [ ./configs/users/mj.nix ];
             };
           };
         };
@@ -270,7 +274,7 @@
             ./hosts/khosu/configuration.nix
           ] ++ mkHomeManagerModule {
             homeManagerModule = home-manager-stable.nixosModules.home-manager;
-            users.${user.username} = [ ./hosts/khosu/home.nix ];
+            hmUsers.${users.ij.username} = [ ./hosts/khosu/home.nix ];
           };
         };
 
@@ -294,9 +298,9 @@
             ./hosts/bhyve-image/configuration-server.nix
           ] ++ mkHomeManagerModule {
             homeManagerModule = home-manager-stable.nixosModules.home-manager;
-            users = {
-              ${user.username} = [ ./configs/users/ij.nix ];
-              mj = [ ./configs/users/mj.nix ];
+            hmUsers = {
+              ${users.ij.username} = [ ./configs/users/ij.nix ];
+              ${users.mj.username} = [ ./configs/users/mj.nix ];
             };
           };
         };
@@ -345,7 +349,7 @@
           ] ++ mkHomeManagerModule {
             homeManagerModule = home-manager.darwinModules.home-manager;
             backupFileExtension = "backup";
-            users.${user.username} = [
+            hmUsers.${users.ij.username} = [
               mac-app-util.homeManagerModules.default
               ./hosts/macbook/home.nix
               inputs.nixvim.homeModules.nixvim
