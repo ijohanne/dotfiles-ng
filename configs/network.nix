@@ -76,7 +76,7 @@ let
 
     # --- Smart home ---
     main-bridge          = { ip = "10.255.101.240"; mac = "00:17:88:a7:27:9c"; };
-    secondary-bridge     = { ip = "10.255.101.241"; mac = "ec:b5:fa:a5:8e:7d"; };
+    secondary-bridge     = { ip = "10.255.101.239"; mac = "ec:b5:fa:a5:8e:7d"; };
     office-ian-plug      = { ip = "10.255.100.231"; mac = "6c:5a:b0:2e:79:70"; };
     office-martin-plug   = { ip = "10.255.100.232"; mac = "54:af:97:1d:72:c4"; };
     livingroom-heater-plug = { ip = "10.255.100.233"; mac = "54:af:97:1d:63:6c"; };
