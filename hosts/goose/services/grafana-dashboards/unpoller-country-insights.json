@@ -1177,7 +1177,7 @@
     ]
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-6h",
     "to": "now"
   },
   "timepicker": {
@@ -1194,5 +1194,6 @@
   "timezone": "browser",
   "title": "UniFi-Poller: Country Insights - Prometheus",
   "uid": "adrwdnc",
-  "version": 21
+  "version": 21,
+  "refresh": "30s"
 }

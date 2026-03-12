@@ -1,5 +1,7 @@
 {
-  "annotations": { "list": [] },
+  "annotations": {
+    "list": []
+  },
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
@@ -7,397 +9,1267 @@
   "panels": [
     {
       "collapsed": false,
-      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
       "id": 100,
       "title": "Overview",
       "type": "row"
     },
     {
-      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
       "fieldConfig": {
         "defaults": {
           "mappings": [
-            { "options": { "0": { "text": "Active Baker" }, "1": { "text": "Not in Committee" }, "2": { "text": "Upcoming Baker" }, "3": { "text": "Key Mismatch" } }, "type": "value" }
+            {
+              "options": {
+                "0": {
+                  "text": "Active Baker"
+                },
+                "1": {
+                  "text": "Not in Committee"
+                },
+                "2": {
+                  "text": "Upcoming Baker"
+                },
+                "3": {
+                  "text": "Key Mismatch"
+                }
+              },
+              "type": "value"
+            }
           ],
-          "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "red", "value": 1 }] }
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          }
         },
         "overrides": []
       },
-      "gridPos": { "h": 4, "w": 4, "x": 0, "y": 1 },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 0,
+        "y": 1
+      },
       "id": 1,
-      "options": { "colorMode": "background", "graphMode": "none", "justifyMode": "auto", "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "textMode": "value" },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value"
+      },
       "title": "Baking Committee",
       "type": "stat",
-      "targets": [{ "expr": "consensus_baking_committee{instance=\"$instance\"}", "refId": "A" }]
+      "targets": [
+        {
+          "expr": "consensus_baking_committee{instance=\"$instance\"}",
+          "refId": "A"
+        }
+      ]
     },
     {
-      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
       "fieldConfig": {
         "defaults": {
-          "mappings": [{ "options": { "0": { "text": "No" }, "1": { "text": "Yes" } }, "type": "value" }],
-          "thresholds": { "mode": "absolute", "steps": [{ "color": "red", "value": null }, { "color": "green", "value": 1 }] }
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "text": "No"
+                },
+                "1": {
+                  "text": "Yes"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          }
         },
         "overrides": []
       },
-      "gridPos": { "h": 4, "w": 4, "x": 4, "y": 1 },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 4,
+        "y": 1
+      },
       "id": 2,
-      "options": { "colorMode": "background", "graphMode": "none", "justifyMode": "auto", "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "textMode": "value" },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value"
+      },
       "title": "Finalization Committee",
       "type": "stat",
-      "targets": [{ "expr": "consensus_finalization_committee{instance=\"$instance\"}", "refId": "A" }]
+      "targets": [
+        {
+          "expr": "consensus_finalization_committee{instance=\"$instance\"}",
+          "refId": "A"
+        }
+      ]
     },
     {
-      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
       "fieldConfig": {
         "defaults": {
           "unit": "percentunit",
-          "thresholds": { "mode": "absolute", "steps": [{ "color": "red", "value": null }, { "color": "yellow", "value": 0.001 }, { "color": "green", "value": 0.01 }] }
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 0.001
+              },
+              {
+                "color": "green",
+                "value": 0.01
+              }
+            ]
+          }
         },
         "overrides": []
       },
-      "gridPos": { "h": 4, "w": 4, "x": 8, "y": 1 },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 8,
+        "y": 1
+      },
       "id": 3,
-      "options": { "colorMode": "background", "graphMode": "none", "justifyMode": "auto", "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "textMode": "value" },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value"
+      },
       "title": "Lottery Power",
       "type": "stat",
-      "targets": [{ "expr": "consensus_baking_lottery_power{instance=\"$instance\"}", "refId": "A" }]
+      "targets": [
+        {
+          "expr": "consensus_baking_lottery_power{instance=\"$instance\"}",
+          "refId": "A"
+        }
+      ]
     },
     {
-      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
       "fieldConfig": {
         "defaults": {
-          "thresholds": { "mode": "absolute", "steps": [{ "color": "red", "value": null }, { "color": "yellow", "value": 1 }, { "color": "green", "value": 5 }] }
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 1
+              },
+              {
+                "color": "green",
+                "value": 5
+              }
+            ]
+          }
         },
         "overrides": []
       },
-      "gridPos": { "h": 4, "w": 4, "x": 12, "y": 1 },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 12,
+        "y": 1
+      },
       "id": 4,
-      "options": { "colorMode": "background", "graphMode": "area", "justifyMode": "auto", "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "textMode": "value" },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value"
+      },
       "title": "Connected Peers",
       "type": "stat",
-      "targets": [{ "expr": "network_connected_peers{instance=\"$instance\"}", "refId": "A" }]
+      "targets": [
+        {
+          "expr": "network_connected_peers{instance=\"$instance\"}",
+          "refId": "A"
+        }
+      ]
     },
     {
-      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
       "fieldConfig": {
         "defaults": {
-          "thresholds": { "mode": "absolute", "steps": [{ "color": "blue", "value": null }] }
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          }
         },
         "overrides": []
       },
-      "gridPos": { "h": 4, "w": 4, "x": 16, "y": 1 },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 16,
+        "y": 1
+      },
       "id": 5,
-      "options": { "colorMode": "background", "graphMode": "none", "justifyMode": "auto", "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "textMode": "name" },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "name"
+      },
       "title": "Node Version",
       "type": "stat",
-      "targets": [{ "expr": "node_info{instance=\"$instance\"}", "legendFormat": "{{version}}", "refId": "A" }]
+      "targets": [
+        {
+          "expr": "node_info{instance=\"$instance\"}",
+          "legendFormat": "{{version}}",
+          "refId": "A"
+        }
+      ]
     },
     {
-      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
       "fieldConfig": {
         "defaults": {
           "unit": "s",
-          "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "yellow", "value": 300 }, { "color": "red", "value": 600 }] }
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 300
+              },
+              {
+                "color": "red",
+                "value": 600
+              }
+            ]
+          }
         },
         "overrides": []
       },
-      "gridPos": { "h": 4, "w": 4, "x": 20, "y": 1 },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 20,
+        "y": 1
+      },
       "id": 6,
-      "options": { "colorMode": "background", "graphMode": "none", "justifyMode": "auto", "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "textMode": "value" },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value"
+      },
       "title": "Uptime",
       "type": "stat",
-      "targets": [{ "expr": "(time() * 1000 - node_startup_timestamp{instance=\"$instance\"}) / 1000", "refId": "A" }]
+      "targets": [
+        {
+          "expr": "(time() * 1000 - node_startup_timestamp{instance=\"$instance\"}) / 1000",
+          "refId": "A"
+        }
+      ]
     },
     {
       "collapsed": false,
-      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 5 },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 5
+      },
       "id": 101,
       "title": "Consensus",
       "type": "row"
     },
     {
-      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
       "fieldConfig": {
-        "defaults": { "color": { "mode": "palette-classic" }, "custom": { "lineWidth": 1, "fillOpacity": 10, "spanNulls": false, "axisBorderShow": false } },
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "lineWidth": 1,
+            "fillOpacity": 10,
+            "spanNulls": false,
+            "axisBorderShow": false
+          }
+        },
         "overrides": [
-          { "matcher": { "id": "byName", "options": "Finalized" }, "properties": [{ "id": "color", "value": { "fixedColor": "green", "mode": "fixed" } }] },
-          { "matcher": { "id": "byName", "options": "Last Arrived" }, "properties": [{ "id": "color", "value": { "fixedColor": "blue", "mode": "fixed" } }] }
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Finalized"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Last Arrived"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
         ]
       },
-      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 6 },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 6
+      },
       "id": 10,
-      "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi" } },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
       "title": "Block Height",
       "type": "timeseries",
       "targets": [
-        { "expr": "consensus_last_finalized_block_height{instance=\"$instance\"}", "legendFormat": "Finalized", "refId": "A" },
-        { "expr": "consensus_last_arrived_block_height{instance=\"$instance\"}", "legendFormat": "Last Arrived", "refId": "B" }
+        {
+          "expr": "consensus_last_finalized_block_height{instance=\"$instance\"}",
+          "legendFormat": "Finalized",
+          "refId": "A"
+        },
+        {
+          "expr": "consensus_last_arrived_block_height{instance=\"$instance\"}",
+          "legendFormat": "Last Arrived",
+          "refId": "B"
+        }
       ]
     },
     {
-      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
       "fieldConfig": {
-        "defaults": { "color": { "mode": "palette-classic" }, "custom": { "lineWidth": 1, "fillOpacity": 10, "spanNulls": false }, "unit": "s" },
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "lineWidth": 1,
+            "fillOpacity": 10,
+            "spanNulls": false
+          },
+          "unit": "s"
+        },
         "overrides": []
       },
-      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 6 },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 6
+      },
       "id": 11,
-      "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi" } },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
       "title": "Finalization Lag",
       "description": "Delay between last arrived and last finalized block timestamps",
       "type": "timeseries",
       "targets": [
-        { "expr": "(consensus_last_arrived_block_timestamp{instance=\"$instance\"} - consensus_last_finalized_block_timestamp{instance=\"$instance\"}) / 1000", "legendFormat": "Finalization lag", "refId": "A" }
+        {
+          "expr": "(consensus_last_arrived_block_timestamp{instance=\"$instance\"} - consensus_last_finalized_block_timestamp{instance=\"$instance\"}) / 1000",
+          "legendFormat": "Finalization lag",
+          "refId": "A"
+        }
       ]
     },
     {
-      "datasource": { "type": "prometheus", "uid": "${datasource}" },
-      "fieldConfig": {
-        "defaults": { "color": { "mode": "palette-classic" }, "custom": { "lineWidth": 1, "fillOpacity": 10, "spanNulls": false, "stacking": { "mode": "normal" } } },
-        "overrides": []
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
       },
-      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 14 },
-      "id": 12,
-      "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi" } },
-      "title": "Consensus Messages Received (rate)",
-      "type": "timeseries",
-      "targets": [
-        { "expr": "rate(consensus_received_messages_total{instance=\"$instance\"}[$__rate_interval])", "legendFormat": "{{message}} ({{result}})", "refId": "A" }
-      ]
-    },
-    {
-      "datasource": { "type": "prometheus", "uid": "${datasource}" },
-      "fieldConfig": {
-        "defaults": { "color": { "mode": "palette-classic" }, "custom": { "lineWidth": 1, "fillOpacity": 10, "spanNulls": false, "stacking": { "mode": "normal" } } },
-        "overrides": []
-      },
-      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 14 },
-      "id": 13,
-      "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi" } },
-      "title": "Consensus Messages Sent (rate)",
-      "type": "timeseries",
-      "targets": [
-        { "expr": "rate(consensus_sent_messages_total{instance=\"$instance\"}[$__rate_interval])", "legendFormat": "{{message}}", "refId": "A" }
-      ]
-    },
-    {
-      "datasource": { "type": "prometheus", "uid": "${datasource}" },
-      "fieldConfig": {
-        "defaults": { "color": { "mode": "palette-classic" }, "custom": { "lineWidth": 1, "fillOpacity": 10, "spanNulls": false } },
-        "overrides": []
-      },
-      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 22 },
-      "id": 14,
-      "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi" } },
-      "title": "Blocks Baked",
-      "type": "timeseries",
-      "targets": [
-        { "expr": "consensus_baked_blocks_total{instance=\"$instance\"}", "legendFormat": "Baked (total)", "refId": "A" },
-        { "expr": "consensus_finalized_baked_blocks_total{instance=\"$instance\"}", "legendFormat": "Finalized (total)", "refId": "B" }
-      ]
-    },
-    {
-      "datasource": { "type": "prometheus", "uid": "${datasource}" },
       "fieldConfig": {
         "defaults": {
-          "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "yellow", "value": 10 }, { "color": "red", "value": 100 }] },
-          "color": { "mode": "palette-classic" },
-          "custom": { "lineWidth": 1, "fillOpacity": 10, "spanNulls": false }
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "lineWidth": 1,
+            "fillOpacity": 10,
+            "spanNulls": false,
+            "stacking": {
+              "mode": "normal"
+            }
+          }
         },
         "overrides": []
       },
-      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 22 },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 14
+      },
+      "id": 12,
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "title": "Consensus Messages Received (rate)",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "rate(consensus_received_messages_total{instance=\"$instance\"}[$__rate_interval])",
+          "legendFormat": "{{message}} ({{result}})",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "lineWidth": 1,
+            "fillOpacity": 10,
+            "spanNulls": false,
+            "stacking": {
+              "mode": "normal"
+            }
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 14
+      },
+      "id": 13,
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "title": "Consensus Messages Sent (rate)",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "rate(consensus_sent_messages_total{instance=\"$instance\"}[$__rate_interval])",
+          "legendFormat": "{{message}}",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "lineWidth": 1,
+            "fillOpacity": 10,
+            "spanNulls": false
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 22
+      },
+      "id": 14,
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "title": "Blocks Baked",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "consensus_baked_blocks_total{instance=\"$instance\"}",
+          "legendFormat": "Baked (total)",
+          "refId": "A"
+        },
+        {
+          "expr": "consensus_finalized_baked_blocks_total{instance=\"$instance\"}",
+          "legendFormat": "Finalized (total)",
+          "refId": "B"
+        }
+      ]
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 10
+              },
+              {
+                "color": "red",
+                "value": 100
+              }
+            ]
+          },
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "lineWidth": 1,
+            "fillOpacity": 10,
+            "spanNulls": false
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 22
+      },
       "id": 15,
-      "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi" } },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
       "title": "Non-Finalized Transactions",
       "type": "timeseries",
       "targets": [
-        { "expr": "consensus_non_finalized_transactions{instance=\"$instance\"}", "legendFormat": "Pending txns", "refId": "A" }
+        {
+          "expr": "consensus_non_finalized_transactions{instance=\"$instance\"}",
+          "legendFormat": "Pending txns",
+          "refId": "A"
+        }
       ]
     },
     {
       "collapsed": false,
-      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 30 },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 30
+      },
       "id": 102,
       "title": "Network",
       "type": "row"
     },
     {
-      "datasource": { "type": "prometheus", "uid": "${datasource}" },
-      "fieldConfig": {
-        "defaults": { "color": { "mode": "palette-classic" }, "custom": { "lineWidth": 1, "fillOpacity": 10, "spanNulls": false }, "unit": "Bps" },
-        "overrides": []
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
       },
-      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 31 },
-      "id": 20,
-      "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi" } },
-      "title": "Network Throughput",
-      "type": "timeseries",
-      "targets": [
-        { "expr": "rate(network_received_bytes{instance=\"$instance\"}[$__rate_interval])", "legendFormat": "Received", "refId": "A" },
-        { "expr": "rate(network_sent_bytes{instance=\"$instance\"}[$__rate_interval])", "legendFormat": "Sent", "refId": "B" }
-      ]
-    },
-    {
-      "datasource": { "type": "prometheus", "uid": "${datasource}" },
-      "fieldConfig": {
-        "defaults": { "color": { "mode": "palette-classic" }, "custom": { "lineWidth": 1, "fillOpacity": 10, "spanNulls": false }, "unit": "pps" },
-        "overrides": []
-      },
-      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 31 },
-      "id": 21,
-      "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi" } },
-      "title": "Packet Rate",
-      "type": "timeseries",
-      "targets": [
-        { "expr": "rate(network_packets_received_total{instance=\"$instance\"}[$__rate_interval])", "legendFormat": "Received", "refId": "A" },
-        { "expr": "rate(network_packets_sent_total{instance=\"$instance\"}[$__rate_interval])", "legendFormat": "Sent", "refId": "B" }
-      ]
-    },
-    {
-      "datasource": { "type": "prometheus", "uid": "${datasource}" },
-      "fieldConfig": {
-        "defaults": { "color": { "mode": "palette-classic" }, "custom": { "lineWidth": 1, "fillOpacity": 10, "spanNulls": false } },
-        "overrides": []
-      },
-      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 39 },
-      "id": 22,
-      "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi" } },
-      "title": "Connected Peers",
-      "type": "timeseries",
-      "targets": [
-        { "expr": "network_connected_peers{instance=\"$instance\"}", "legendFormat": "Connected", "refId": "A" },
-        { "expr": "network_soft_banned_peers{instance=\"$instance\"}", "legendFormat": "Soft Banned", "refId": "B" }
-      ]
-    },
-    {
-      "datasource": { "type": "prometheus", "uid": "${datasource}" },
       "fieldConfig": {
         "defaults": {
-          "color": { "mode": "palette-classic" },
-          "custom": { "lineWidth": 1, "fillOpacity": 20, "spanNulls": false },
-          "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "yellow", "value": 100 }, { "color": "red", "value": 1000 }] }
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "lineWidth": 1,
+            "fillOpacity": 10,
+            "spanNulls": false
+          },
+          "unit": "Bps"
         },
         "overrides": []
       },
-      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 39 },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 31
+      },
+      "id": 20,
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "title": "Network Throughput",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "rate(network_received_bytes{instance=\"$instance\"}[$__rate_interval])",
+          "legendFormat": "Received",
+          "refId": "A"
+        },
+        {
+          "expr": "rate(network_sent_bytes{instance=\"$instance\"}[$__rate_interval])",
+          "legendFormat": "Sent",
+          "refId": "B"
+        }
+      ]
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "lineWidth": 1,
+            "fillOpacity": 10,
+            "spanNulls": false
+          },
+          "unit": "pps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 31
+      },
+      "id": 21,
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "title": "Packet Rate",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "rate(network_packets_received_total{instance=\"$instance\"}[$__rate_interval])",
+          "legendFormat": "Received",
+          "refId": "A"
+        },
+        {
+          "expr": "rate(network_packets_sent_total{instance=\"$instance\"}[$__rate_interval])",
+          "legendFormat": "Sent",
+          "refId": "B"
+        }
+      ]
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "lineWidth": 1,
+            "fillOpacity": 10,
+            "spanNulls": false
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 39
+      },
+      "id": 22,
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "title": "Connected Peers",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "network_connected_peers{instance=\"$instance\"}",
+          "legendFormat": "Connected",
+          "refId": "A"
+        },
+        {
+          "expr": "network_soft_banned_peers{instance=\"$instance\"}",
+          "legendFormat": "Soft Banned",
+          "refId": "B"
+        }
+      ]
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "lineWidth": 1,
+            "fillOpacity": 20,
+            "spanNulls": false
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 100
+              },
+              {
+                "color": "red",
+                "value": 1000
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 39
+      },
       "id": 23,
-      "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi" } },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
       "title": "Message Queue Sizes",
       "description": "Should average near 0. Sustained high values mean the node is struggling.",
       "type": "timeseries",
       "targets": [
-        { "expr": "network_inbound_high_priority_message_queue_size{instance=\"$instance\"}", "legendFormat": "Inbound High", "refId": "A" },
-        { "expr": "network_inbound_low_priority_message_queue_size{instance=\"$instance\"}", "legendFormat": "Inbound Low", "refId": "B" },
-        { "expr": "network_outbound_high_priority_message_queue_size{instance=\"$instance\"}", "legendFormat": "Outbound High", "refId": "C" },
-        { "expr": "network_outbound_low_priority_message_queue_size{instance=\"$instance\"}", "legendFormat": "Outbound Low", "refId": "D" }
+        {
+          "expr": "network_inbound_high_priority_message_queue_size{instance=\"$instance\"}",
+          "legendFormat": "Inbound High",
+          "refId": "A"
+        },
+        {
+          "expr": "network_inbound_low_priority_message_queue_size{instance=\"$instance\"}",
+          "legendFormat": "Inbound Low",
+          "refId": "B"
+        },
+        {
+          "expr": "network_outbound_high_priority_message_queue_size{instance=\"$instance\"}",
+          "legendFormat": "Outbound High",
+          "refId": "C"
+        },
+        {
+          "expr": "network_outbound_low_priority_message_queue_size{instance=\"$instance\"}",
+          "legendFormat": "Outbound Low",
+          "refId": "D"
+        }
       ]
     },
     {
       "collapsed": false,
-      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 47 },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 47
+      },
       "id": 103,
       "title": "gRPC",
       "type": "row"
     },
     {
-      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
       "fieldConfig": {
-        "defaults": { "color": { "mode": "palette-classic" }, "custom": { "lineWidth": 1, "fillOpacity": 10, "spanNulls": false } },
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "lineWidth": 1,
+            "fillOpacity": 10,
+            "spanNulls": false
+          }
+        },
         "overrides": []
       },
-      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 48 },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 48
+      },
       "id": 30,
-      "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi" } },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
       "title": "gRPC Connected Clients",
       "type": "timeseries",
       "targets": [
-        { "expr": "grpc_connected_clients{instance=\"$instance\"}", "legendFormat": "Clients", "refId": "A" }
+        {
+          "expr": "grpc_connected_clients{instance=\"$instance\"}",
+          "legendFormat": "Clients",
+          "refId": "A"
+        }
       ]
     },
     {
-      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
       "fieldConfig": {
-        "defaults": { "color": { "mode": "palette-classic" }, "custom": { "lineWidth": 1, "fillOpacity": 10, "spanNulls": false } },
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "lineWidth": 1,
+            "fillOpacity": 10,
+            "spanNulls": false
+          }
+        },
         "overrides": []
       },
-      "gridPos": { "h": 8, "w": 8, "x": 8, "y": 48 },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 48
+      },
       "id": 31,
-      "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi" } },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
       "title": "gRPC In-Flight Requests",
       "type": "timeseries",
       "targets": [
-        { "expr": "grpc_in_flight_requests{instance=\"$instance\"}", "legendFormat": "In-flight", "refId": "A" }
+        {
+          "expr": "grpc_in_flight_requests{instance=\"$instance\"}",
+          "legendFormat": "In-flight",
+          "refId": "A"
+        }
       ]
     },
     {
-      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
       "fieldConfig": {
-        "defaults": { "color": { "mode": "palette-classic" }, "custom": { "lineWidth": 1, "fillOpacity": 10, "spanNulls": false, "stacking": { "mode": "normal" } }, "unit": "s" },
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "lineWidth": 1,
+            "fillOpacity": 10,
+            "spanNulls": false,
+            "stacking": {
+              "mode": "normal"
+            }
+          },
+          "unit": "s"
+        },
         "overrides": []
       },
-      "gridPos": { "h": 8, "w": 8, "x": 16, "y": 48 },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 48
+      },
       "id": 32,
-      "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi" } },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
       "title": "gRPC Response Time (p95)",
       "type": "timeseries",
       "targets": [
-        { "expr": "histogram_quantile(0.95, rate(grpc_request_response_time_seconds_bucket{instance=\"$instance\"}[$__rate_interval]))", "legendFormat": "p95", "refId": "A" },
-        { "expr": "histogram_quantile(0.50, rate(grpc_request_response_time_seconds_bucket{instance=\"$instance\"}[$__rate_interval]))", "legendFormat": "p50", "refId": "B" }
+        {
+          "expr": "histogram_quantile(0.95, rate(grpc_request_response_time_seconds_bucket{instance=\"$instance\"}[$__rate_interval]))",
+          "legendFormat": "p95",
+          "refId": "A"
+        },
+        {
+          "expr": "histogram_quantile(0.50, rate(grpc_request_response_time_seconds_bucket{instance=\"$instance\"}[$__rate_interval]))",
+          "legendFormat": "p50",
+          "refId": "B"
+        }
       ]
     },
     {
       "collapsed": false,
-      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 56 },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 56
+      },
       "id": 104,
       "title": "Alerts",
       "type": "row"
     },
     {
-      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
       "fieldConfig": {
         "defaults": {
-          "mappings": [{ "options": { "0": { "text": "None", "color": "green" } }, "type": "value" }],
-          "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "red", "value": 1 }] }
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "text": "None",
+                  "color": "green"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          }
         },
         "overrides": []
       },
-      "gridPos": { "h": 4, "w": 12, "x": 0, "y": 57 },
+      "gridPos": {
+        "h": 4,
+        "w": 12,
+        "x": 0,
+        "y": 57
+      },
       "id": 40,
-      "options": { "colorMode": "background", "graphMode": "none", "justifyMode": "auto", "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "textMode": "value" },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value"
+      },
       "title": "Unsupported Protocol Update",
       "description": "Non-zero means a pending protocol update the node doesn't support. Update the node!",
       "type": "stat",
-      "targets": [{ "expr": "consensus_unsupported_pending_protocol_version{instance=\"$instance\"}", "refId": "A" }]
+      "targets": [
+        {
+          "expr": "consensus_unsupported_pending_protocol_version{instance=\"$instance\"}",
+          "refId": "A"
+        }
+      ]
     },
     {
-      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
       "fieldConfig": {
         "defaults": {
-          "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "yellow", "value": 5 }, { "color": "red", "value": 20 }] }
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 5
+              },
+              {
+                "color": "red",
+                "value": 20
+              }
+            ]
+          }
         },
         "overrides": []
       },
-      "gridPos": { "h": 4, "w": 12, "x": 12, "y": 57 },
+      "gridPos": {
+        "h": 4,
+        "w": 12,
+        "x": 12,
+        "y": 57
+      },
       "id": 41,
-      "options": { "colorMode": "background", "graphMode": "area", "justifyMode": "auto", "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "textMode": "value" },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value"
+      },
       "title": "Soft Banned Peers",
       "type": "stat",
-      "targets": [{ "expr": "network_soft_banned_peers{instance=\"$instance\"}", "refId": "A" }]
+      "targets": [
+        {
+          "expr": "network_soft_banned_peers{instance=\"$instance\"}",
+          "refId": "A"
+        }
+      ]
     }
   ],
   "schemaVersion": 39,
-  "tags": ["concordium", "blockchain"],
+  "tags": [
+    "concordium",
+    "blockchain"
+  ],
   "templating": {
     "list": [
       {
         "current": {},
-        "datasource": { "type": "prometheus", "uid": "${datasource}" },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${datasource}"
+        },
         "definition": "label_values(consensus_baking_committee, instance)",
         "includeAll": false,
         "multi": false,
         "name": "instance",
-        "query": { "query": "label_values(consensus_baking_committee, instance)", "refId": "StandardVariableQuery" },
+        "query": {
+          "query": "label_values(consensus_baking_committee, instance)",
+          "refId": "StandardVariableQuery"
+        },
         "refresh": 2,
         "sort": 1,
         "type": "query"
@@ -413,9 +1285,13 @@
       }
     ]
   },
-  "time": { "from": "now-6h", "to": "now" },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
   "timepicker": {},
   "timezone": "",
   "title": "Concordium Node",
-  "uid": "concordium-node"
+  "uid": "concordium-node",
+  "refresh": "30s"
 }

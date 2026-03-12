@@ -2815,7 +2815,7 @@
       "type": "row"
     }
   ],
-  "refresh": "1m",
+  "refresh": "30s",
   "schemaVersion": 39,
   "tags": [
     "unifi",
@@ -2951,7 +2951,7 @@
     ]
   },
   "time": {
-    "from": "now-3h",
+    "from": "now-6h",
     "to": "now"
   },
   "timepicker": {
