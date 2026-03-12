@@ -4,7 +4,10 @@
   services.prometheus.exporters.unbound = {
     enable = true;
     unbound = {
-      host = "unix:///run/unbound/unbound.ctl";
+      host = "tcp://127.0.0.1:8953";
+      ca = "/var/lib/unbound/unbound_server.pem";
+      certificate = "/var/lib/unbound/unbound_control.pem";
+      key = "/var/lib/unbound/unbound_control.key";
     };
   };
 
