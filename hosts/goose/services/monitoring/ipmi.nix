@@ -2,13 +2,22 @@
 
 { pkgs, ... }:
 
+let
+  ipmiConfig = pkgs.writeText "ipmi-exporter.yml" ''
+    modules:
+      default:
+        collector: ipmi
+        privilege_level: user
+        driver: LAN_2_0
+  '';
+in
 {
   systemd.services.prometheus-ipmi-exporter = {
     description = "Prometheus IPMI Exporter";
     wantedBy = [ "multi-user.target" ];
     after = [ "network.target" ];
     serviceConfig = {
-      ExecStart = "${pkgs.prometheus-ipmi-exporter}/bin/ipmi_exporter --web.listen-address=:9290";
+      ExecStart = "${pkgs.prometheus-ipmi-exporter}/bin/ipmi_exporter --config.file=${ipmiConfig} --web.listen-address=:9290";
       Restart = "always";
       DynamicUser = true;
     };
