@@ -3,22 +3,23 @@
 {
   imports = [
     (import ../../configs/users/common.nix { desktop = true; })
-    (import ../../configs/fish { desktop = true; })
-    (import ../../configs/tmux { desktop = true; })
-    (import ../../configs/git {})
-    (import ../../configs/bash {})
-    (import ../../configs/direnv {})
-    (import ../../configs/lazygit {})
-    (import ../../configs/starship {})
-    (import ../../configs/htop {})
-    (import ../../configs/zoxide {})
-    (import ../../configs/delta {})
-    (import ../../configs/ghostty {})
-    (import ../../configs/kitty {})
-    (import ../../configs/procs {})
-    ../../configs/dev.nix
-    ../../configs/flutter.nix
-    ../../configs/zed
+    (import ../../configs/programs/fish { desktop = true; })
+    (import ../../configs/programs/tmux { desktop = true; })
+    (import ../../configs/programs/git {})
+    (import ../../configs/programs/bash {})
+    (import ../../configs/programs/direnv {})
+    (import ../../configs/programs/lazygit {})
+    (import ../../configs/programs/starship {})
+    (import ../../configs/programs/htop {})
+    (import ../../configs/programs/zoxide {})
+    (import ../../configs/programs/delta {})
+    (import ../../configs/programs/ghostty {})
+    (import ../../configs/programs/kitty {})
+    (import ../../configs/programs/procs {})
+    ../../configs/programs/neovim
+    ../../configs/programs/lorri
+    ../../configs/programs/zed
+    ../../configs/dev/languages
   ];
 
   home = {

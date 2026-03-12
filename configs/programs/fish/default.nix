@@ -17,7 +17,7 @@
     interactiveShellInit = lib.concatStringsSep "\n" ([
       ''
         if not set -q SSH_CONNECTION; or not set -q SSH_AUTH_SOCK
-            export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket 2>/dev/null || echo "$HOME/.gnupg/S.gpg-agent.ssh")"
+            export SSH_AUTH_SOCK="$(${pkgs.gnupg}/bin/gpgconf --list-dirs agent-ssh-socket 2>/dev/null || echo "$HOME/.gnupg/S.gpg-agent.ssh")"
         end
         abbr -a tldr tealdeer
         abbr -a ps procs
@@ -69,8 +69,8 @@
         set -p PATH /etc/profiles/per-user/${user.username}/bin
         set -p PATH /run/current-system/sw/bin
         set -p PATH /nix/var/nix/profiles/default/bin
-        gpgconf --launch gpg-agent 2>/dev/null || true
-        export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket 2>/dev/null || echo "$HOME/.gnupg/S.gpg-agent.ssh")"
+        ${pkgs.gnupg}/bin/gpgconf --launch gpg-agent 2>/dev/null || true
+        export SSH_AUTH_SOCK="$(${pkgs.gnupg}/bin/gpgconf --list-dirs agent-ssh-socket 2>/dev/null || echo "$HOME/.gnupg/S.gpg-agent.ssh")"
         function nix_rebuild_switch
             if command -q deploy-macbook
                 command deploy-macbook

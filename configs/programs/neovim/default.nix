@@ -1,31 +1,6 @@
-{ pkgs, lib, inputs, user, ... }:
+{ pkgs, lib, user, ... }:
 let
   isDeveloper = user.developer or false;
-
-  commonDevPackages = with pkgs; [
-    nixd
-    lua-language-server
-    marksman
-    bat
-    bottom
-    dust
-    eza
-    fd
-    fzf
-    gping
-    htop
-    httpie
-  ];
-
-  darwinDevPackages = lib.optionals pkgs.stdenv.isDarwin [
-    pkgs.rust-bin.stable.latest.default
-    pkgs.rust-bin.stable.latest.rust-analyzer
-  ];
-
-  linuxDevPackages = lib.optionals pkgs.stdenv.isLinux [
-    pkgs.rust-bin.stable.latest.default
-    pkgs.rust-bin.stable.latest.rust-analyzer
-  ];
 
   lspPlugins = with pkgs.vimPlugins; [
     nvim-cmp
@@ -37,30 +12,9 @@ let
     cmp-vsnip
     vim-vsnip
     nvim-lspconfig
-    catppuccin-nvim
-    crates-nvim
-    fidget-nvim
-    nvim-treesitter
-    nvim-treesitter-textobjects
-    gitsigns-nvim
-    telescope-nvim
-    grug-far-nvim
-    fzf-vim
-    fzf-wrapper
-    flutter-tools-nvim
-    plenary-nvim
   ];
 
-  nonLspPlugins = with pkgs.vimPlugins; [
-    catppuccin-nvim
-    nvim-treesitter
-    nvim-treesitter-textobjects
-    gitsigns-nvim
-    telescope-nvim
-    grug-far-nvim
-    fzf-vim
-    fzf-wrapper
-  ];
+  nonLspPlugins = [];
 
   lspKeymaps = [
     { mode = "n"; key = "gd"; action = ":lua vim.lsp.buf.definition()<CR>"; options = { desc = "Go to definition"; }; }
@@ -78,7 +32,6 @@ let
     { mode = "n"; key = "<leader>w"; action = ":w<CR>"; options = { desc = "Save file"; }; }
     { mode = "i"; key = "<C-Space>"; action = ":lua require('cmp').complete()<CR>"; options = { desc = "Trigger completion"; }; }
     { mode = "i"; key = "<C-e>"; action = ":lua require('cmp').abort()<CR>"; options = { desc = "Abort completion"; }; }
-    #{ mode = "i"; key = "<CR>"; action = ":lua require('cmp').confirm({ select = true })<CR>"; options = { desc = "Confirm selection"; }; }
     { mode = "i"; key = "<C-n>"; action = ":lua require('cmp').select_next_item()<CR>"; options = { desc = "Next item"; }; }
     { mode = "i"; key = "<C-p>"; action = ":lua require('cmp').select_prev_item()<CR>"; options = { desc = "Previous item"; }; }
   ];
@@ -102,29 +55,7 @@ let
           local capabilities = vim.lsp.protocol.make_client_capabilities()
           capabilities = cmp_lsp.default_capabilities(capabilities)
 
-          vim.lsp.config("nixd", { capabilities = capabilities })
-          vim.lsp.config("rust_analyzer", { capabilities = capabilities })
-          vim.lsp.config("lua_ls", { capabilities = capabilities })
-          vim.lsp.config("marksman", { capabilities = capabilities })
-          vim.lsp.enable("nixd")
-          vim.lsp.enable("rust_analyzer")
-          vim.lsp.enable("lua_ls")
-          vim.lsp.enable("marksman")
-
-          require("crates").setup()
-
-          require("flutter-tools").setup({
-            lsp = {
-              capabilities = capabilities,
-              settings = {
-                showTodos = true,
-                completeFunctionCalls = true,
-                enableSnippets = true,
-              },
-            },
-            widget_guides = { enabled = true },
-            closing_tags = { enabled = true },
-          })
+          vim.lsp.config("*", { capabilities = capabilities })
 
           local cmp = require("cmp")
 
@@ -191,94 +122,76 @@ let
   '';
 in
 {
-  home.packages = commonDevPackages ++ darwinDevPackages ++ linuxDevPackages;
+  programs.nixvim = {
+    enable = true;
+    defaultEditor = true;
 
-  programs = {
-    nixvim = {
+    extraPlugins = if isDeveloper then lspPlugins else nonLspPlugins;
+
+    keymaps = if isDeveloper then lspKeymaps else nonLspKeymaps;
+
+    opts = {
+      relativenumber = true;
+      number = true;
+      mouse = "a";
+      clipboard = "unnamedplus";
+      splitbelow = true;
+      splitright = true;
+      termguicolors = true;
+      hidden = true;
+      completeopt = "menuone,noselect";
+      background = "dark";
+      scrolloff = 8;
+      updatetime = 300;
+      wildmenu = true;
+      ignorecase = true;
+      smartcase = true;
+      incsearch = true;
+    };
+
+    colorschemes.catppuccin = {
       enable = true;
-      defaultEditor = true;
+    };
 
-      extraPlugins = if isDeveloper then lspPlugins else nonLspPlugins;
+    lsp = {
+      enable = isDeveloper;
+    };
 
-      keymaps = if isDeveloper then lspKeymaps else nonLspKeymaps;
+    treesitter = {
+      enable = true;
+      ensureInstalled = [ "nix" "vim" "vimdoc" "bash" "json" "toml" "markdown" ];
+      indent = true;
+    };
 
-      opts = {
-        relativenumber = true;
-        number = true;
-        mouse = "a";
-        clipboard = "unnamedplus";
-        splitbelow = true;
-        splitright = true;
-        termguicolors = true;
-        hidden = true;
-        completeopt = "menuone,noselect";
-        background = "dark";
-        scrolloff = 8;
-        updatetime = 300;
-        wildmenu = true;
-        ignorecase = true;
-        smartcase = true;
-        incsearch = true;
-       };
-
-       colorschemes.catppuccin = {
-         enable = true;
-       };
-
-       lsp = {
-         enable = isDeveloper;
-       };
-
-       treesitter = {
-        enable = true;
-        ensureInstalled = [ "nix" "rust" "lua" "vim" "vimdoc" "bash" "json" "toml" "markdown" "dart" ];
-        indent = true;
-      };
-
-      gitsigns = {
-        enable = true;
-        settings = {
-          current_line_blame = true;
-          trouble = true;
-        };
-      };
-
-      telescope = {
-        enable = true;
-      };
-
-      grugFar = {
-        enable = true;
-      };
-
-      plugins.fidget = {
-        enable = true;
-        settings.progress = {
-          suppress_on_insert = true;
-          ignore_done_already = true;
-          poll_rate = 1;
-        };
-      };
-
-      extraConfigLua = if isDeveloper then lspExtraConfig else nonLspExtraConfig;
-
-      cmp = {
-        enable = isDeveloper;
+    gitsigns = {
+      enable = true;
+      settings = {
+        current_line_blame = true;
+        trouble = true;
       };
     };
-  };
 
-  systemd.user.services.lorri = lib.mkIf (pkgs.stdenv.isLinux && isDeveloper) {
-    Unit = {
-      Description = "Lorri Nix shell env daemon";
-      After = [ "nix-daemon.socket" ];
+    telescope = {
+      enable = true;
     };
-    Install = {
-      WantedBy = [ "default.target" ];
+
+    grugFar = {
+      enable = true;
     };
-    Service = {
-      ExecStart = "${pkgs.lorri}/bin/lorri daemon";
-      Restart = "on-failure";
+
+    plugins.fidget = {
+      enable = true;
+      settings.progress = {
+        suppress_on_insert = true;
+        ignore_done_already = true;
+        poll_rate = 1;
+      };
+    };
+
+    extraConfigLua = if isDeveloper then lspExtraConfig else nonLspExtraConfig;
+
+    cmp = {
+      enable = isDeveloper;
     };
   };
 }

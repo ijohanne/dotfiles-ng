@@ -154,6 +154,15 @@
     let
       users = import ./configs/users.nix;
 
+      mkPkgsUnstable = system: import nixpkgs {
+        inherit system;
+        config = {
+          allowUnfree = true;
+          android_sdk.accept_license = true;
+        };
+        overlays = [ rust-overlay.overlays.default ];
+      };
+
       mkNixosHost = { pkgsLib, system, modules, primaryUser ? "ij" }:
         pkgsLib.nixosSystem {
           inherit system modules;
@@ -170,6 +179,7 @@
         homeManagerModule,
         hmUsers,
         backupFileExtension ? null,
+        extraSpecialArgs ? {},
       }:
         [
           homeManagerModule
@@ -177,7 +187,7 @@
             home-manager = {
               useGlobalPkgs = true;
               useUserPackages = true;
-              extraSpecialArgs = { inherit users inputs; };
+              extraSpecialArgs = { inherit users inputs; } // extraSpecialArgs;
               users = nixpkgs.lib.mapAttrs (username: imports: {
                 imports = imports ++ [
                   { _module.args.user = users.${username}; }
@@ -202,6 +212,7 @@
             ./hosts/ij-desktop/configuration.nix
           ] ++ mkHomeManagerModule {
             homeManagerModule = home-manager.nixosModules.home-manager;
+            extraSpecialArgs = { pkgs-unstable = mkPkgsUnstable "x86_64-linux"; };
             hmUsers.${users.ij.username} = [
               ./hosts/ij-desktop/home.nix
               inputs.nixvim.homeModules.nixvim
@@ -231,8 +242,12 @@
             ./hosts/pakhet/configuration.nix
           ] ++ mkHomeManagerModule {
             homeManagerModule = home-manager-stable.nixosModules.home-manager;
+            extraSpecialArgs = { pkgs-unstable = mkPkgsUnstable "x86_64-linux"; };
             hmUsers = {
-              ${users.ij.username} = [ ./hosts/pakhet/home.nix ];
+              ${users.ij.username} = [
+                ./hosts/pakhet/home.nix
+                inputs.nixvim.homeModules.nixvim
+              ];
               ${users.mj.username} = [ ./configs/users/mj.nix ];
             };
           };
@@ -257,8 +272,12 @@
           ] ++ mkHomeManagerModule {
             homeManagerModule = home-manager-stable.nixosModules.home-manager;
             backupFileExtension = "bak";
+            extraSpecialArgs = { pkgs-unstable = mkPkgsUnstable "x86_64-linux"; };
             hmUsers = {
-              ${users.ij.username} = [ ./hosts/goose/home.nix ];
+              ${users.ij.username} = [
+                ./hosts/goose/home.nix
+                inputs.nixvim.homeModules.nixvim
+              ];
               ${users.mj.username} = [ ./configs/users/mj.nix ];
             };
           };
@@ -274,7 +293,11 @@
             ./hosts/khosu/configuration.nix
           ] ++ mkHomeManagerModule {
             homeManagerModule = home-manager-stable.nixosModules.home-manager;
-            hmUsers.${users.ij.username} = [ ./hosts/khosu/home.nix ];
+            extraSpecialArgs = { pkgs-unstable = mkPkgsUnstable "x86_64-linux"; };
+            hmUsers.${users.ij.username} = [
+              ./hosts/khosu/home.nix
+              inputs.nixvim.homeModules.nixvim
+            ];
           };
         };
 
@@ -298,8 +321,12 @@
             ./hosts/bhyve-image/configuration-server.nix
           ] ++ mkHomeManagerModule {
             homeManagerModule = home-manager-stable.nixosModules.home-manager;
+            extraSpecialArgs = { pkgs-unstable = mkPkgsUnstable "x86_64-linux"; };
             hmUsers = {
-              ${users.ij.username} = [ ./configs/users/ij.nix ];
+              ${users.ij.username} = [
+                ./configs/users/ij.nix
+                inputs.nixvim.homeModules.nixvim
+              ];
               ${users.mj.username} = [ ./configs/users/mj.nix ];
             };
           };
@@ -349,6 +376,7 @@
           ] ++ mkHomeManagerModule {
             homeManagerModule = home-manager.darwinModules.home-manager;
             backupFileExtension = "backup";
+            extraSpecialArgs = { pkgs-unstable = mkPkgsUnstable "aarch64-darwin"; };
             hmUsers.${users.ij.username} = [
               mac-app-util.homeManagerModules.default
               ./hosts/macbook/home.nix

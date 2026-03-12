@@ -2,32 +2,45 @@
 
 This module uses [nixvim](https://github.com/nix-community/nixvim) to configure Neovim with LSP support, completion, and plugins.
 
-## Common Development Module
+## Architecture
 
-All development tools (Neovim, Rust, LSPs) are configured in `configs/dev.nix` and shared between all hosts.
+Neovim is split into two layers:
 
-### Importing the Dev Module
+- **`configs/programs/neovim/`** — base nixvim config (opts, colorscheme, treesitter, cmp, LSP infra). Sets `vim.lsp.config('*', { capabilities })` so all LSP servers get cmp capabilities automatically.
+- **`configs/dev/languages/`** — self-contained language modules. Each provides toolchain packages, LSP server, and neovim wiring (`vim.lsp.enable("server")`).
 
-Add to your host's `home.nix`:
+Language modules use `pkgs-unstable` for LSP/toolchain packages, keeping server hosts on stable nixpkgs while getting up-to-date dev tools.
+
+### Importing
 
 ```nix
-{
-  imports = [
-    ../../configs
-    ../../configs/dev.nix
-  ];
-}
+# Host home.nix — desktop, all languages
+imports = [
+  ../../configs/programs/neovim
+  ../../configs/dev/languages       # imports all languages
+];
+
+# Server home.nix — selective
+imports = [
+  ../../configs/programs/neovim
+  ../../configs/dev/languages/nix.nix
+];
 ```
 
 ## LSP Configuration
 
-LSP servers are configured in `extraConfigLua` using `vim.lsp.config` and `vim.lsp.enable`:
+Language modules call `vim.lsp.enable("server_name")` — the base neovim module handles capabilities via `vim.lsp.config('*', ...)`.
+
+To add a new language, create `configs/dev/languages/mylang.nix`:
 
 ```nix
-extraConfigLua = ''
-  vim.lsp.config("server_name", { capabilities = capabilities })
-  vim.lsp.enable("server_name")
-'';
+{ pkgs-unstable, ... }:
+{
+  home.packages = [ pkgs-unstable.my-language-server ];
+  programs.nixvim.extraConfigLua = ''
+    vim.lsp.enable("my_server")
+  '';
+}
 ```
 
 ### Available LSP Packages
@@ -129,8 +142,8 @@ Uses catppuccin colorscheme.
 
 ## Rust Toolchain
 
-Rust is provided by [oxalica/rust-overlay](https://github.com/oxalica/rust-overlay) for up-to-date versions.
+Rust is provided by [oxalica/rust-overlay](https://github.com/oxalica/rust-overlay) via `configs/dev/languages/rust.nix`.
 
-Available packages:
-- `pkgs.rust-bin.stable.latest.default` - Rust toolchain (rustc, cargo, rustfmt, clippy, etc.)
-- `pkgs.rust-bin.stable.latest.rust-analyzer` - Rust analyzer binary
+Available packages (from `pkgs-unstable`):
+- `pkgs-unstable.rust-bin.stable.latest.default` - Rust toolchain (rustc, cargo, rustfmt, clippy, etc.)
+- `pkgs-unstable.rust-bin.stable.latest.rust-analyzer` - Rust analyzer binary

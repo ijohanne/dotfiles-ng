@@ -10,7 +10,11 @@ NixOS/Darwin dotfiles repository using **flakes**. All nix changes must be made 
 
 ### Directory Structure
 
-- `configs/` — shared configuration modules (packages, network registry, neovim, dev tools)
+- `configs/` — shared configuration modules
+  - `configs/programs/` — program modules (fish, tmux, git, neovim, bat, eza, fd, etc.)
+  - `configs/dev/languages/` — language modules (rust, nix, lua, markdown, flutter) — self-contained: toolchain + LSP + neovim wiring
+  - `configs/users/` — per-user home-manager configs (ij.nix, mj.nix, common.nix)
+  - `configs/darwin/` — macOS-specific modules
 - `hosts/` — per-host wiring (configuration.nix, services/, home.nix)
 - `lib/` — library functions (`user.nix` for user settings)
 - `secrets/` — sops-encrypted secrets (`.sops.yaml` at repo root)
@@ -19,11 +23,13 @@ NixOS/Darwin dotfiles repository using **flakes**. All nix changes must be made 
 ### Key References
 
 - **@NETWORK.md** — full network topology, VLANs, switches, cameras, DNS, and how `configs/network.nix` works
-- **@configs/nvim_README.md** — neovim/nixvim configuration, LSP setup, keybindings, plugins
+- **@configs/programs/neovim/README.md** — neovim/nixvim configuration, LSP setup, keybindings, plugins
 
 ### Shared Configuration
 
 - **`configs/network.nix`** — single registry for all hosts (IPs, MACs, DNS, DNAT port forwarding), DHCP reservations, `mkDnatRules` (generates nftables DNAT rules), and `mailDomains` (used by both khosu and pakhet mail configs)
+- **`configs/programs/neovim/`** — nixvim base config (opts, colorscheme, treesitter, cmp, LSP infra with `vim.lsp.config('*', { capabilities })`)
+- **`configs/dev/languages/`** — composable language modules; each provides packages + neovim LSP wiring via `pkgs-unstable`
 - **`lib/user.nix`** — user settings; `developer = true` enables LSP, dev tools
 
 ### Secrets Management

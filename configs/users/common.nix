@@ -1,6 +1,12 @@
 { desktop ? false }:
 { pkgs, lib, inputs, ... }:
 {
+  imports = [
+    ../programs/bat
+    ../programs/eza
+    ../programs/fd
+  ];
+
   programs.home-manager.enable = true;
 
   home.packages = with pkgs; [
@@ -22,11 +28,8 @@
     tealdeer
     procs
     doggo
-    bat
     bottom
     dust
-    eza
-    fd
     gping
     httpie
   ] ++ lib.optionals desktop [

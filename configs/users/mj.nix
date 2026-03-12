@@ -3,7 +3,7 @@
 {
   imports = [
     (import ./common.nix {})
-    (import ../bash {})
+    (import ../programs/bash {})
   ];
 
   home = {
