@@ -6,9 +6,13 @@ let
   ipmiConfig = pkgs.writeText "ipmi-exporter.yml" ''
     modules:
       default:
-        collector: ipmi
-        privilege_level: user
-        driver: LAN_2_0
+        driver: "LAN_2_0"
+        privilege: "admin"
+        timeout: 10000
+        collectors:
+        - bmc
+        - ipmi
+        - chassis
   '';
 in
 {
