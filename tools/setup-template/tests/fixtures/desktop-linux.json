@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "repo_ref": "github:ijohanne/dotfiles-ng",
+  "users": [
+    {
+      "username": "alice",
+      "name": "Alice Smith",
+      "email": "alice@example.com",
+      "shell": "fish",
+      "developer": true,
+      "ssh_keys": ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI..."]
+    }
+  ],
+  "hosts": [
+    {
+      "name": "alice-desktop",
+      "platform": "linux",
+      "arch": "x86_64",
+      "role": "desktop",
+      "nixpkgs": "unstable",
+      "deploy_mode": "local",
+      "primary_user": "alice",
+      "additional_users": [],
+      "modules": {
+        "secrets": true,
+        "neovim": true,
+        "languages": ["nix", "rust", "lua"]
+      }
+    }
+  ]
+}

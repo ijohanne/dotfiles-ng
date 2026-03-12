@@ -21,6 +21,7 @@ Nix-based dotfiles for managing macOS and Linux configurations.
   - [bhyve VM Images](#bhyve-vm-images)
   - [Raspberry Pi 4 Image](#raspberry-pi-4-image)
   - [RTSP Dev VM](#rtsp-dev-vm)
+- [Setup Template Generator](#setup-template-generator)
 - [Reference](#reference)
   - [Terminal Tools](#terminal-tools)
   - [Neovim](#neovim)
@@ -573,6 +574,23 @@ The RTSP module source is from [maru-sama/rtsp-linux](https://github.com/maru-sa
    ```
 
 4. Replay traffic and verify behavior.
+
+## Setup Template Generator
+
+Scaffold new host and user configurations that match the flake architecture.
+
+```bash
+# Interactive wizard
+nix run .#setup-template -- new
+
+# From a config file
+nix run .#setup-template -- generate --config setup.json
+
+# Preview without writing files
+nix run .#setup-template -- new --dry-run
+```
+
+The generator produces `configs/users.nix`, `hosts/<name>/configuration.nix`, `hosts/<name>/home.nix`, and a ready-to-paste `flake.nix` snippet. See [docs/setup-template-usage.md](docs/setup-template-usage.md) for full details.
 
 ## Reference
 

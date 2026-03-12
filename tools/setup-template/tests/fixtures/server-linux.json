@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "repo_ref": "github:ijohanne/dotfiles-ng",
+  "users": [
+    {
+      "username": "bob",
+      "name": "Bob Jones",
+      "email": "bob@example.com",
+      "shell": "bash",
+      "developer": false,
+      "ssh_keys": ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI..."]
+    }
+  ],
+  "hosts": [
+    {
+      "name": "webserver",
+      "platform": "linux",
+      "arch": "x86_64",
+      "role": "server",
+      "nixpkgs": "stable",
+      "deploy_mode": "remote",
+      "primary_user": "bob",
+      "additional_users": [],
+      "modules": {
+        "secrets": true,
+        "neovim": false,
+        "languages": ["nix"]
+      }
+    }
+  ]
+}
