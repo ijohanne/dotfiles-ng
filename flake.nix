@@ -248,7 +248,7 @@
                 ./hosts/pakhet/home.nix
                 inputs.nixvim.homeModules.nixvim
               ];
-              ${users.mj.username} = [ ./configs/users/mj.nix ];
+              ${users.mj.username} = [ ./hosts/pakhet/home-mj.nix ];
             };
           };
         };
@@ -278,7 +278,7 @@
                 ./hosts/goose/home.nix
                 inputs.nixvim.homeModules.nixvim
               ];
-              ${users.mj.username} = [ ./configs/users/mj.nix ];
+              ${users.mj.username} = [ ./hosts/goose/home-mj.nix ];
             };
           };
         };
@@ -324,10 +324,10 @@
             extraSpecialArgs = { pkgs-unstable = mkPkgsUnstable "x86_64-linux"; };
             hmUsers = {
               ${users.ij.username} = [
-                ./configs/users/ij.nix
+                ./hosts/bhyve-image/home.nix
                 inputs.nixvim.homeModules.nixvim
               ];
-              ${users.mj.username} = [ ./configs/users/mj.nix ];
+              ${users.mj.username} = [ ./hosts/bhyve-image/home-mj.nix ];
             };
           };
         };
