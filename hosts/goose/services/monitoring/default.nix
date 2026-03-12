@@ -7,7 +7,7 @@
     ./smokeping.nix
     (import ./zfs.nix { inherit network; })
     (import ./nut.nix { inherit network; })
-    ./ipmi.nix
+    (import ./ipmi.nix { inherit network; })
     (import ./screeny.nix { inherit network; })
     (import ./grpc-proxier.nix { inherit network; })
     (import ./pdfdetective.nix { inherit network; })
