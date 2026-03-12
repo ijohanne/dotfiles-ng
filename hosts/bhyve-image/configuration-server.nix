@@ -6,8 +6,6 @@
     ../../configs/server.nix
   ];
 
-  system.stateVersion = "25.11";
-
   networking = {
     hostName = lib.mkDefault "nixos";
     useDHCP = true;
@@ -28,4 +26,6 @@
     };
     unitConfig.ConditionPathExists = "/dev/sda2";
   };
+
+  system.stateVersion = "25.11";
 }

@@ -83,7 +83,7 @@
       };
       wifi = {
         ipv4.addresses = [{
-          address = "10.255.100.254";
+          address = network.hosts.goose.ips.wifi;
           prefixLength = 24;
         }];
         ipv6.addresses = lib.optionals network.enableIPv6ULA [{
@@ -93,7 +93,7 @@
       };
       wired = {
         ipv4.addresses = [{
-          address = "10.255.101.254";
+          address = network.hosts.goose.ips.wired;
           prefixLength = 24;
         }];
         ipv6.addresses = lib.optionals network.enableIPv6ULA [{
@@ -103,19 +103,19 @@
       };
       guest = {
         ipv4.addresses = [{
-          address = "10.255.150.254";
+          address = network.hosts.goose.ips.guest;
           prefixLength = 24;
         }];
       };
       camera = {
         ipv4.addresses = [{
-          address = "10.255.200.254";
+          address = network.hosts.goose.ips.camera;
           prefixLength = 24;
         }];
       };
       mgnt = {
         ipv4.addresses = [{
-          address = "10.255.254.254";
+          address = network.hosts.goose.ips.mgnt;
           prefixLength = 24;
         }];
         ipv6.addresses = lib.optionals network.enableIPv6ULA [{

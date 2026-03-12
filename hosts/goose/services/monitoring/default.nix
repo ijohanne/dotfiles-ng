@@ -14,8 +14,8 @@
     ./unbound.nix
     ./wireguard.nix
     (import ./unpoller.nix { inherit network; })
-    ./hue.nix
+    (import ./hue.nix { inherit network; })
     ./telegraf.nix
-    ./tplink-p110.nix
+    (import ./tplink-p110.nix { inherit network; })
   ];
 }

@@ -2,15 +2,14 @@
 
 let
   deploy = import ../../configs/deploy { inherit pkgs; };
+  network = import ../../configs/network.nix { inherit lib; };
 in
 {
   imports = [
     ../../configs/server.nix
     ./hardware-configuration.nix
-    ./services
+    (import ./services { inherit network; })
   ];
-
-  system.stateVersion = "25.11";
 
   networking = {
     hostName = "khosu";
@@ -60,4 +59,6 @@ in
       generateKey = true;
     };
   };
+
+  system.stateVersion = "25.11";
 }

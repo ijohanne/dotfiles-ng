@@ -10,7 +10,7 @@
     (import ./igmpproxy.nix { inherit interfaces; })
     (import ./bird.nix { inherit interfaces network; })
     (import ./kea.nix { inherit network; })
-    ./wireguard.nix
+    (import ./wireguard.nix { inherit network; })
     ./multicast-relay.nix
     (import ./monitoring { inherit network; })
     (import ./prometheus.nix { inherit network; })

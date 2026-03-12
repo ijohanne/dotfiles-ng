@@ -1,10 +1,12 @@
-{ pkgs, lib, user, ... }:
+{ desktop ? false }:
+
+{ pkgs, lib, user, inputs, ... }:
 
 {
   imports = [
-    (import ./common.nix {})
-    (import ../programs/fish {})
-    (import ../programs/tmux {})
+    (import ./common.nix { inherit desktop; })
+    (import ../programs/fish { inherit desktop; })
+    (import ../programs/tmux { inherit desktop; })
     (import ../programs/git {})
     (import ../programs/bash {})
     (import ../programs/direnv {})
@@ -16,15 +18,31 @@
     (import ../programs/procs {})
     ../programs/neovim
     ../programs/lorri
+  ] ++ (if desktop then [
+    (import ../programs/ghostty {})
+    (import ../programs/ssh { desktop = true; })
+    ../programs/zed
+    ../dev/languages
+  ] else [
     ../dev/languages/nix.nix
     ../dev/languages/lua.nix
     ../dev/languages/markdown.nix
-  ];
+  ]);
 
   home = {
-    stateVersion = "22.05";
+    stateVersion = lib.mkDefault "22.05";
     username = user.username;
-    homeDirectory = "/home/${user.username}";
+    homeDirectory = if pkgs.stdenv.isDarwin then "/Users/${user.username}" else "/home/${user.username}";
+    packages = lib.optionals (desktop && !pkgs.stdenv.isDarwin) (with pkgs; [
+      google-chrome
+      mattermost-desktop
+      docker
+      slack
+      libreoffice
+      discord
+      inputs.opencode.packages.${pkgs.system}.default.out
+      notion-app-enhanced
+    ]);
   };
 
   home.activation.importGpgKey = lib.hm.dag.entryBefore [ "writeBoundary" ] ''
@@ -35,7 +53,7 @@
     ${pkgs.tealdeer}/bin/tldr --update 2>/dev/null || true
   '';
 
-  services.gpg-agent = {
+  services.gpg-agent = lib.mkIf (!pkgs.stdenv.isDarwin) {
     enable = true;
     enableSshSupport = true;
   };

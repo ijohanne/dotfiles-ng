@@ -1,9 +1,11 @@
+{ network, ... }:
+
 { config, ... }:
 
 {
   imports = [
     ./postfix.nix
-    ./wireguard.nix
+    (import ./wireguard.nix { inherit network; })
   ];
 
   sops.secrets.wireguard_private_key = { };

@@ -11,8 +11,6 @@ in
     (import ./services { inherit network; })
   ];
 
-  system.stateVersion = "22.05";
-
   networking = {
     hostName = "pakhet";
     useDHCP = true;
@@ -47,4 +45,6 @@ in
       generateKey = true;
     };
   };
+
+  system.stateVersion = "22.05";
 }

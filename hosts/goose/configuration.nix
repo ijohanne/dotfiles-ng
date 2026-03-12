@@ -108,8 +108,6 @@ in
     (import ./services { inherit interfaces network; })
   ];
 
-  system.stateVersion = "22.05";
-
   networking = {
     hostName = "goose";
     useDHCP = false;
@@ -164,4 +162,6 @@ in
       generateKey = true;
     };
   };
+
+  system.stateVersion = "22.05";
 }

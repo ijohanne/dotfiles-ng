@@ -25,6 +25,8 @@ lib.mkIf isDeveloper {
     pkgs-unstable.flutter
     pkgs-unstable.jdk17
     androidSdk
+  ] ++ lib.optionals isDarwin [
+    pkgs-unstable.cocoapods
   ] ++ lib.optionals (!isDarwin) [
     pkgs-unstable.google-chrome
   ];

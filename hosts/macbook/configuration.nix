@@ -2,6 +2,8 @@
 
 let
   deploy = import ../../configs/deploy { inherit pkgs; };
+  network = import ../../configs/network.nix { inherit lib; };
+  pakhetIp = network.hosts.pakhet.ip;
 in
 {
   imports = [
@@ -29,7 +31,7 @@ in
 
   nix.buildMachines = [
     {
-      hostName = "10.255.101.200";
+      hostName = pakhetIp;
       systems = [ "x86_64-linux" "aarch64-linux" ];
       protocol = "ssh-ng";
       sshUser = "root";
@@ -53,10 +55,10 @@ in
       git-lfs
       (writeShellScriptBin "setup-remote-builder" ''
         echo "Setting up SSH known host for remote builder (pakhet)..."
-        sudo ssh-keyscan -t ed25519 10.255.101.200 | sudo tee -a /var/root/.ssh/known_hosts
+        sudo ssh-keyscan -t ed25519 ${pakhetIp} | sudo tee -a /var/root/.ssh/known_hosts
         echo ""
         echo "Testing connection to remote builder..."
-        sudo ssh -i /etc/nix/builder_ed25519 root@10.255.101.200 "echo 'Connection successful!'"
+        sudo ssh -i /etc/nix/builder_ed25519 root@${pakhetIp} "echo 'Connection successful!'"
         echo ""
         echo "Remote builder setup complete."
       '')
@@ -70,17 +72,56 @@ in
     android_sdk.accept_license = true;
   };
 
-  nixpkgs.overlays = [
-    inputs.rust-overlay.overlays.default
-  ];
+  environment = {
+    shells = [ pkgs.fish ];
+    systemPackages = [
+      (deploy.mkLocalDeployScript {
+        name = "deploy-macbook";
+        host = "macbook";
+        rebuildCmd = "darwin-rebuild switch --flake";
+      })
+    ];
+  };
 
-  environment.systemPackages = [
-    (deploy.mkLocalDeployScript {
-      name = "deploy-macbook";
-      host = "macbook";
-      rebuildCmd = "darwin-rebuild switch --flake";
-    })
-  ];
+  homebrew = {
+    enable = true;
+    caskArgs.no_quarantine = true;
+    onActivation = {
+      autoUpdate = true;
+      cleanup = "uninstall";
+      upgrade = true;
+    };
+
+    taps = [
+      "assimelha/tap"
+      "dicklesworthstone/tap"
+      "steipete/tap"
+    ];
+
+    brews = [
+      "assimelha/tap/bdui"
+      "dicklesworthstone/tap/bv"
+    ];
+
+    casks = [
+      "google-chrome"
+      "slack"
+      "mattermost"
+      "libreoffice"
+      "discord"
+      "docker-desktop"
+      "proton-drive"
+      "proton-mail"
+      "proton-pass"
+      "protonvpn"
+      "notion"
+    ];
+
+    masApps = {
+      "WhatsApp" = 310633997;
+      "Xcode" = 497799835;
+    };
+  };
 
   security.pam.services.sudo_local.touchIdAuth = true;
 
@@ -278,4 +319,6 @@ in
       { path = "/System/Applications/Music.app"; }
     ];
   };
+
+  system.stateVersion = 5;
 }

@@ -1,12 +1,16 @@
-{ ... }:
+{ network, ... }:
+
+{ config, ... }:
 
 {
-  #services.prometheus-tplink-p110-exporter = {
-  #  enable = true;
-  #  enableLocalScraping = true;
-  #  secrets via sops:
-  #    config.sops.secrets.tplink_username.path
-  #    config.sops.secrets.tplink_password.path
-  #  hosts = [ "10.255.100.234" "10.255.100.235" ];
-  #};
+  services.prometheus-tplink-p110-exporter = {
+    enable = true;
+    enableLocalScraping = true;
+    usernameFile = config.sops.secrets.tplink_username.path;
+    passwordFile = config.sops.secrets.tplink_password.path;
+    hosts = [
+      network.hosts.terrace-laundry-plug.ip
+      network.hosts.terrace-fridge-plug.ip
+    ];
+  };
 }

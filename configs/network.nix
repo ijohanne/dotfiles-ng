@@ -92,6 +92,16 @@ let
     # --- Movistar STB ---
     livingroom-movistar-stb = { ip = "10.255.101.201"; mac = "e8:b2:fe:06:a1:28"; };
 
+    # --- WireGuard (10.100.0.0/24) ---
+    wg-goose     = { ip = "10.100.0.1"; dns = [ "wg-goose" ]; };
+    wg-peer-2    = { ip = "10.100.0.2"; };
+    wg-peer-3    = { ip = "10.100.0.3"; };
+    wg-peer-4    = { ip = "10.100.0.4"; };
+    wg-peer-5    = { ip = "10.100.0.5"; };
+    wg-peer-6    = { ip = "10.100.0.6"; };
+    wg-peer-7    = { ip = "10.100.0.7"; };
+    wg-khosu     = { ip = "10.100.0.8"; dns = [ "wg-khosu" ]; };
+
     # --- Kubernetes ---
     k8s-master-00 = { ip = "10.255.101.234"; ip6 = "${ulaPrefix}:101::234"; mac = "d8:43:ae:1a:1a:5c"; };
     k8s-worker-00 = { ip = "10.255.101.235"; ip6 = "${ulaPrefix}:101::235"; mac = "d8:43:ae:18:b3:bd"; };

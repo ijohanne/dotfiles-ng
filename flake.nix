@@ -245,7 +245,7 @@
             extraSpecialArgs = { pkgs-unstable = mkPkgsUnstable "x86_64-linux"; };
             hmUsers = {
               ${users.ij.username} = [
-                ./hosts/pakhet/home.nix
+                ./hosts/pakhet/home-ij.nix
                 inputs.nixvim.homeModules.nixvim
               ];
               ${users.mj.username} = [ ./hosts/pakhet/home-mj.nix ];
@@ -259,15 +259,9 @@
           modules = [
             sops-nix.nixosModules.sops
             ijohanne-nur.nixosModules.multicast-relay
-            #ijohanne-nur.nixosModules.prometheus-hue-exporter
-            #ijohanne-nur.nixosModules.prometheus-nftables-exporter
-            #ijohanne-nur.nixosModules.prometheus-netatmo-exporter
-            #ijohanne-nur.nixosModules.prometheus-teamspeak3-exporter
-            {
-              nixpkgs.overlays = [
-                ijohanne-nur.overlays.default
-              ];
-            }
+            ijohanne-nur.nixosModules.prometheus-hue-exporter
+            ijohanne-nur.nixosModules.prometheus-nftables-exporter
+            ijohanne-nur.nixosModules.prometheus-tplink-p110-exporter
             ./hosts/goose/configuration.nix
           ] ++ mkHomeManagerModule {
             homeManagerModule = home-manager-stable.nixosModules.home-manager;
@@ -275,7 +269,7 @@
             extraSpecialArgs = { pkgs-unstable = mkPkgsUnstable "x86_64-linux"; };
             hmUsers = {
               ${users.ij.username} = [
-                ./hosts/goose/home.nix
+                ./hosts/goose/home-ij.nix
                 inputs.nixvim.homeModules.nixvim
               ];
               ${users.mj.username} = [ ./hosts/goose/home-mj.nix ];
@@ -294,10 +288,13 @@
           ] ++ mkHomeManagerModule {
             homeManagerModule = home-manager-stable.nixosModules.home-manager;
             extraSpecialArgs = { pkgs-unstable = mkPkgsUnstable "x86_64-linux"; };
-            hmUsers.${users.ij.username} = [
-              ./hosts/khosu/home.nix
-              inputs.nixvim.homeModules.nixvim
-            ];
+            hmUsers = {
+              ${users.ij.username} = [
+                ./hosts/khosu/home-ij.nix
+                inputs.nixvim.homeModules.nixvim
+              ];
+              ${users.mj.username} = [ ./hosts/khosu/home-mj.nix ];
+            };
           };
         };
 
@@ -324,7 +321,7 @@
             extraSpecialArgs = { pkgs-unstable = mkPkgsUnstable "x86_64-linux"; };
             hmUsers = {
               ${users.ij.username} = [
-                ./hosts/bhyve-image/home.nix
+                ./hosts/bhyve-image/home-ij.nix
                 inputs.nixvim.homeModules.nixvim
               ];
               ${users.mj.username} = [ ./hosts/bhyve-image/home-mj.nix ];
@@ -372,7 +369,6 @@
             mac-app-util.darwinModules.default
             sops-nix.darwinModules.sops
             ./hosts/macbook/configuration.nix
-            ./hosts/macbook/software.nix
           ] ++ mkHomeManagerModule {
             homeManagerModule = home-manager.darwinModules.home-manager;
             backupFileExtension = "backup";

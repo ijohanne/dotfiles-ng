@@ -6,7 +6,7 @@ let
 
   # Deliver inbound mail to pakhet via WireGuard tunnel
   transportMap = lib.concatStringsSep "\n" (
-    map (d: "${d} smtp:[10.255.101.200]:25") relayDomains
+    map (d: "${d} smtp:[${network.hosts.pakhet.ip}]:25") relayDomains
   );
 in
 {
@@ -61,7 +61,7 @@ in
         private = false;
         command = "smtpd";
         args = [
-          "-o" "mynetworks=10.100.0.0/24,10.255.0.0/16"
+          "-o" "mynetworks=${network.hosts.pakhet.ip}/32"
           "-o" "smtpd_recipient_restrictions=permit_mynetworks,reject"
           "-o" "smtpd_tls_security_level=may"
         ];

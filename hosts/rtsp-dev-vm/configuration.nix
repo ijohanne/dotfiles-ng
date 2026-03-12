@@ -11,8 +11,6 @@ in
     (modulesPath + "/profiles/qemu-guest.nix")
   ];
 
-  system.stateVersion = "25.11";
-
   networking = {
     hostName = "rtsp-dev";
     useDHCP = true;
@@ -115,4 +113,6 @@ in
     extraGroups = [ "wheel" ];
     openssh.authorizedKeys.keys = user.sshKeys;
   };
+
+  system.stateVersion = "25.11";
 }

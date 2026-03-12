@@ -1,8 +1,8 @@
 { ... }:
 
 {
-  #services.prometheus-nftables-exporter = {
-  #  enable = true;
-  #  enableLocalScraping = true;
-  #};
+  services.prometheus-nftables-exporter = {
+    enable = true;
+    enableLocalScraping = true;
+  };
 }
