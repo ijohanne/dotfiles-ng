@@ -48,11 +48,6 @@
       flake = false;
     };
 
-    opencode = {
-      url = "github:anomalyco/opencode/v1.2.15";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -132,7 +127,6 @@
       nixvim,
       rust-overlay,
       flake-utils,
-      opencode,
       disko,
       sops-nix,
       nixpkgs-stable,
@@ -397,6 +391,12 @@
           ${bd}/bin/bd init --branch beads-sync "$@"
           rm -f AGENTS.md
         '';
+        nix-repl-unstable = pkgs.writeShellScriptBin "nix-repl-unstable" ''
+          exec nix repl --expr "import (builtins.getFlake \"${nixpkgs}\") { system = \"${system}\"; config.allowUnfree = true; }"
+        '';
+        nix-repl-stable = pkgs.writeShellScriptBin "nix-repl-stable" ''
+          exec nix repl --expr "import (builtins.getFlake \"${nixpkgs-stable}\") { system = \"${system}\"; config.allowUnfree = true; }"
+        '';
         ssh-to-age-remote = pkgs.writeShellScriptBin "ssh-to-age-remote" ''
           set -euo pipefail
           if [ $# -ne 1 ]; then
@@ -440,10 +440,25 @@
             bd
             bd-init
             ssh-to-age-remote
+            nix-repl-unstable
+            nix-repl-stable
           ] ++ [
             rustToolchain
             pkgsWithRust.rust-bin.stable.latest.rust-analyzer
           ];
+          shellHook = ''
+            echo ""
+            echo "dotfiles-ng dev shell"
+            echo "─────────────────────────────────────────────"
+            echo "  nix-repl-unstable     nixpkgs unstable repl"
+            echo "  nix-repl-stable       nixpkgs stable repl"
+            echo "  bd ready              available issues"
+            echo "  bd list               all issues"
+            echo "  sops <file>           edit encrypted secret"
+            echo "  ssh-to-age-remote     convert SSH host key to age"
+            echo "  nix flake check       validate all configs"
+            echo ""
+          '';
         };
       }
     );

@@ -22,13 +22,12 @@ NixOS/Darwin dotfiles repository using **flakes**. All nix changes must be made 
 
 ### Key References
 
-- **@NETWORK.md** — full network topology, VLANs, switches, cameras, DNS, and how `configs/network.nix` works
-- **@configs/programs/neovim/README.md** — neovim/nixvim configuration, LSP setup, keybindings, plugins
+- **@NETWORK.md** — network topology, VLANs, switches, DNS, and how `configs/network.nix` works
+- **@cli-references.md** — keybindings and aliases for tmux, neovim, fish, tool replacements
 
 ### Shared Configuration
 
-- **`configs/network.nix`** — single registry for all hosts (IPs, MACs, DNS, DNAT port forwarding), DHCP reservations, `mkDnatRules` (generates nftables DNAT rules), and `mailDomains` (used by both khosu and pakhet mail configs)
-- **`configs/programs/neovim/`** — nixvim base config (opts, colorscheme, treesitter, cmp, LSP infra with `vim.lsp.config('*', { capabilities })`)
+- **`configs/network.nix`** — single registry for all hosts (IPs, MACs, DNS, DNAT port forwarding), DHCP reservations, `mkDnatRules`, and `mailDomains`
 - **`configs/dev/languages/`** — composable language modules; each provides packages + neovim LSP wiring via `pkgs-unstable`
 - **`lib/user.nix`** — user settings; `developer = true` enables LSP, dev tools
 

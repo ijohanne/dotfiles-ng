@@ -40,7 +40,7 @@
       slack
       libreoffice
       discord
-      inputs.opencode.packages.${pkgs.system}.default.out
+      opencode
       notion-app-enhanced
     ]);
   };

@@ -1,5 +1,44 @@
 # ij-desktop
 
+## Bootstrap (Fresh Install)
+
+Boot from the NixOS minimal installer USB. Once booted:
+
+```bash
+# 1. Connect to the internet (ethernet recommended, or use iwctl for wifi)
+
+# 2. Clone the repo
+nix-shell -p git
+git clone https://github.com/ijohanne/dotfiles-ng.git
+cd dotfiles-ng
+
+# 3. Import GPG public key (needed to decrypt the LUKS passphrase)
+gpg --import secrets/ij-public-key.gpg
+
+# 4. Partition and format the disk with disko
+#    Insert YubiKey — disko will prompt for the LUKS passphrase.
+#    Decrypt it first, then paste when prompted:
+gpg --decrypt hosts/ij-desktop/luks-passphrase.gpg
+sudo nix --experimental-features "nix-command flakes" run github:nix-community/disko -- \
+    --mode disko hosts/ij-desktop/disko.nix
+
+# 5. Install NixOS
+sudo nixos-install --flake .#ij-desktop --no-root-passwd
+
+# 6. Reboot — insert YubiKey, enter GPG PIN at boot to unlock LUKS
+reboot
+```
+
+After first boot, clone the repo again under your user and rebuild:
+
+```bash
+mkdir -p ~/git/private
+cd ~/git/private
+git clone https://github.com/ijohanne/dotfiles-ng.git
+cd dotfiles-ng
+sudo nixos-rebuild switch --flake .#ij-desktop
+```
+
 ## Disk Layout
 
 NixOS lives on `/dev/nvme0n1` (LUKS-encrypted BTRFS), Windows on a separate disk.
