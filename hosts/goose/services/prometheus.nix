@@ -17,6 +17,13 @@
           targets = [ "${network.hosts.fatty.ip}:9633" ];
         }];
       }
+      {
+        job_name = "concordium-node";
+        static_configs = [{
+          targets = [ "${network.hosts.cctax-node.ip}:9090" ];
+          labels = { instance = "cctax-node"; };
+        }];
+      }
     ];
   };
 
@@ -48,6 +55,12 @@
           ];
         };
       };
+      dashboards.settings.providers = [
+        {
+          name = "default";
+          options.path = ./grafana-dashboards;
+        }
+      ];
     };
     declarativePlugins = with pkgs.grafanaPlugins; [ grafana-piechart-panel grafana-clock-panel ];
   };

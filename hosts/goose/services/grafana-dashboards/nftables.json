@@ -1,0 +1,383 @@
+{
+  "annotations": { "list": [] },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "links": [],
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 },
+      "id": 100,
+      "title": "Overview",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [{ "options": { "0": { "text": "Down", "color": "red" }, "1": { "text": "Up", "color": "green" } }, "type": "value" }],
+          "thresholds": { "mode": "absolute", "steps": [{ "color": "red", "value": null }, { "color": "green", "value": 1 }] }
+        }
+      },
+      "gridPos": { "h": 4, "w": 4, "x": 0, "y": 1 },
+      "id": 1,
+      "options": { "colorMode": "background", "graphMode": "none", "reduceOptions": { "calcs": ["lastNotNull"] }, "textMode": "value" },
+      "title": "Exporter Status",
+      "type": "stat",
+      "targets": [{ "expr": "nftables_up{instance=\"$instance\"}", "refId": "A" }]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": { "defaults": { "thresholds": { "mode": "absolute", "steps": [{ "color": "blue", "value": null }] } } },
+      "gridPos": { "h": 4, "w": 5, "x": 4, "y": 1 },
+      "id": 2,
+      "options": { "colorMode": "background", "graphMode": "none", "reduceOptions": { "calcs": ["lastNotNull"] }, "textMode": "value" },
+      "title": "Tables",
+      "type": "stat",
+      "targets": [{ "expr": "count(nftables_table_chains{instance=\"$instance\"})", "refId": "A" }]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": { "defaults": { "thresholds": { "mode": "absolute", "steps": [{ "color": "blue", "value": null }] } } },
+      "gridPos": { "h": 4, "w": 5, "x": 9, "y": 1 },
+      "id": 3,
+      "options": { "colorMode": "background", "graphMode": "none", "reduceOptions": { "calcs": ["lastNotNull"] }, "textMode": "value" },
+      "title": "Chains",
+      "type": "stat",
+      "targets": [{ "expr": "sum(nftables_table_chains{instance=\"$instance\"})", "refId": "A" }]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": { "defaults": { "thresholds": { "mode": "absolute", "steps": [{ "color": "blue", "value": null }] } } },
+      "gridPos": { "h": 4, "w": 5, "x": 14, "y": 1 },
+      "id": 4,
+      "options": { "colorMode": "background", "graphMode": "none", "reduceOptions": { "calcs": ["lastNotNull"] }, "textMode": "value" },
+      "title": "Rules",
+      "type": "stat",
+      "targets": [{ "expr": "sum(nftables_chain_rules{instance=\"$instance\"})", "refId": "A" }]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": { "defaults": { "unit": "Bps", "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }] } } },
+      "gridPos": { "h": 4, "w": 5, "x": 19, "y": 1 },
+      "id": 5,
+      "options": { "colorMode": "background", "graphMode": "area", "reduceOptions": { "calcs": ["lastNotNull"] }, "textMode": "value" },
+      "title": "Total Rule Traffic",
+      "type": "stat",
+      "targets": [{ "expr": "sum(rate(nftables_rule_bytes{instance=\"$instance\"}[$__rate_interval]))", "refId": "A" }]
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 5 },
+      "id": 101,
+      "title": "Drops & Rejects",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": {
+        "defaults": { "color": { "mode": "palette-classic" }, "custom": { "lineWidth": 1, "fillOpacity": 10, "spanNulls": false }, "unit": "pps" }
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 6 },
+      "id": 10,
+      "options": { "legend": { "displayMode": "table", "placement": "right", "calcs": ["mean", "max", "lastNotNull"] }, "tooltip": { "mode": "multi" } },
+      "title": "Dropped Packets (rate)",
+      "description": "All rules with drop action — key indicator of blocked traffic",
+      "type": "timeseries",
+      "targets": [
+        { "expr": "rate(nftables_rule_packets{instance=\"$instance\",action=\"drop\"}[$__rate_interval])", "legendFormat": "{{chain}} — {{comment}}", "refId": "A" }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": {
+        "defaults": { "color": { "mode": "palette-classic" }, "custom": { "lineWidth": 1, "fillOpacity": 10, "spanNulls": false }, "unit": "Bps" }
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 6 },
+      "id": 11,
+      "options": { "legend": { "displayMode": "table", "placement": "right", "calcs": ["mean", "max", "lastNotNull"] }, "tooltip": { "mode": "multi" } },
+      "title": "Dropped Bytes (rate)",
+      "type": "timeseries",
+      "targets": [
+        { "expr": "rate(nftables_rule_bytes{instance=\"$instance\",action=\"drop\"}[$__rate_interval])", "legendFormat": "{{chain}} — {{comment}}", "refId": "A" }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": {
+        "defaults": { "color": { "mode": "palette-classic" }, "custom": { "lineWidth": 1, "fillOpacity": 10, "spanNulls": false }, "unit": "pps" }
+      },
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 14 },
+      "id": 12,
+      "options": { "legend": { "displayMode": "table", "placement": "right", "calcs": ["mean", "max", "lastNotNull"] }, "tooltip": { "mode": "multi" } },
+      "title": "Logged Drops (nft-*-drop prefixed rules)",
+      "description": "Final catch-all drop rules with log prefix — unexpected traffic hitting policy default",
+      "type": "timeseries",
+      "targets": [
+        { "expr": "rate(nftables_rule_packets{instance=\"$instance\",comment=~\".*nft-.*-drop.*\"}[$__rate_interval])", "legendFormat": "{{chain}} — {{comment}}", "refId": "A" }
+      ]
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 22 },
+      "id": 102,
+      "title": "Input Chain",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": {
+        "defaults": { "color": { "mode": "palette-classic" }, "custom": { "lineWidth": 1, "fillOpacity": 10, "spanNulls": false, "stacking": { "mode": "normal" } }, "unit": "pps" }
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 23 },
+      "id": 20,
+      "options": { "legend": { "displayMode": "table", "placement": "right", "calcs": ["mean", "lastNotNull"] }, "tooltip": { "mode": "multi" } },
+      "title": "Input — Packets by Rule",
+      "type": "timeseries",
+      "targets": [
+        { "expr": "rate(nftables_rule_packets{instance=\"$instance\",chain=\"input\",table=\"filter\"}[$__rate_interval]) > 0", "legendFormat": "{{action}} {{comment}}", "refId": "A" }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": {
+        "defaults": { "color": { "mode": "palette-classic" }, "custom": { "lineWidth": 1, "fillOpacity": 10, "spanNulls": false, "stacking": { "mode": "normal" } }, "unit": "Bps" }
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 23 },
+      "id": 21,
+      "options": { "legend": { "displayMode": "table", "placement": "right", "calcs": ["mean", "lastNotNull"] }, "tooltip": { "mode": "multi" } },
+      "title": "Input — Bytes by Rule",
+      "type": "timeseries",
+      "targets": [
+        { "expr": "rate(nftables_rule_bytes{instance=\"$instance\",chain=\"input\",table=\"filter\"}[$__rate_interval]) > 0", "legendFormat": "{{action}} {{comment}}", "refId": "A" }
+      ]
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 31 },
+      "id": 103,
+      "title": "Forward Chain",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": {
+        "defaults": { "color": { "mode": "palette-classic" }, "custom": { "lineWidth": 1, "fillOpacity": 10, "spanNulls": false, "stacking": { "mode": "normal" } }, "unit": "pps" }
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 32 },
+      "id": 30,
+      "options": { "legend": { "displayMode": "table", "placement": "right", "calcs": ["mean", "lastNotNull"] }, "tooltip": { "mode": "multi" } },
+      "title": "Forward — Packets by Rule",
+      "type": "timeseries",
+      "targets": [
+        { "expr": "rate(nftables_rule_packets{instance=\"$instance\",chain=\"forward\",table=\"filter\"}[$__rate_interval]) > 0", "legendFormat": "{{action}} {{comment}}", "refId": "A" }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": {
+        "defaults": { "color": { "mode": "palette-classic" }, "custom": { "lineWidth": 1, "fillOpacity": 10, "spanNulls": false, "stacking": { "mode": "normal" } }, "unit": "Bps" }
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 32 },
+      "id": 31,
+      "options": { "legend": { "displayMode": "table", "placement": "right", "calcs": ["mean", "lastNotNull"] }, "tooltip": { "mode": "multi" } },
+      "title": "Forward — Bytes by Rule",
+      "type": "timeseries",
+      "targets": [
+        { "expr": "rate(nftables_rule_bytes{instance=\"$instance\",chain=\"forward\",table=\"filter\"}[$__rate_interval]) > 0", "legendFormat": "{{action}} {{comment}}", "refId": "A" }
+      ]
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 40 },
+      "id": 104,
+      "title": "NAT",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": {
+        "defaults": { "color": { "mode": "palette-classic" }, "custom": { "lineWidth": 1, "fillOpacity": 10, "spanNulls": false }, "unit": "pps" }
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 41 },
+      "id": 40,
+      "options": { "legend": { "displayMode": "table", "placement": "right", "calcs": ["mean", "lastNotNull"] }, "tooltip": { "mode": "multi" } },
+      "title": "NAT Prerouting — Packets (DNAT)",
+      "type": "timeseries",
+      "targets": [
+        { "expr": "rate(nftables_rule_packets{instance=\"$instance\",chain=\"prerouting\",table=\"nat\"}[$__rate_interval]) > 0", "legendFormat": "{{action}} {{comment}}", "refId": "A" }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": {
+        "defaults": { "color": { "mode": "palette-classic" }, "custom": { "lineWidth": 1, "fillOpacity": 10, "spanNulls": false }, "unit": "pps" }
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 41 },
+      "id": 41,
+      "options": { "legend": { "displayMode": "table", "placement": "right", "calcs": ["mean", "lastNotNull"] }, "tooltip": { "mode": "multi" } },
+      "title": "NAT Postrouting — Packets (Masquerade)",
+      "type": "timeseries",
+      "targets": [
+        { "expr": "rate(nftables_rule_packets{instance=\"$instance\",chain=\"postrouting\",table=\"nat\"}[$__rate_interval]) > 0", "legendFormat": "{{action}} {{comment}}", "refId": "A" }
+      ]
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 49 },
+      "id": 105,
+      "title": "IPv6 Filter",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": {
+        "defaults": { "color": { "mode": "palette-classic" }, "custom": { "lineWidth": 1, "fillOpacity": 10, "spanNulls": false, "stacking": { "mode": "normal" } }, "unit": "pps" }
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 50 },
+      "id": 50,
+      "options": { "legend": { "displayMode": "table", "placement": "right", "calcs": ["mean", "lastNotNull"] }, "tooltip": { "mode": "multi" } },
+      "title": "IPv6 Input — Packets by Rule",
+      "type": "timeseries",
+      "targets": [
+        { "expr": "rate(nftables_rule_packets{instance=\"$instance\",chain=\"input\",table!=\"filter\"}[$__rate_interval]) > 0", "legendFormat": "{{table}}/{{chain}} {{action}} {{comment}}", "refId": "A" }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": {
+        "defaults": { "color": { "mode": "palette-classic" }, "custom": { "lineWidth": 1, "fillOpacity": 10, "spanNulls": false, "stacking": { "mode": "normal" } }, "unit": "pps" }
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 50 },
+      "id": 51,
+      "options": { "legend": { "displayMode": "table", "placement": "right", "calcs": ["mean", "lastNotNull"] }, "tooltip": { "mode": "multi" } },
+      "title": "IPv6 Forward — Packets by Rule",
+      "type": "timeseries",
+      "targets": [
+        { "expr": "rate(nftables_rule_packets{instance=\"$instance\",chain=\"forward\",table!=\"filter\"}[$__rate_interval]) > 0", "legendFormat": "{{table}}/{{chain}} {{action}} {{comment}}", "refId": "A" }
+      ]
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 58 },
+      "id": 106,
+      "title": "Top Rules",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": {
+        "defaults": { "color": { "mode": "palette-classic" }, "custom": { "lineWidth": 1, "fillOpacity": 10, "spanNulls": false }, "unit": "Bps" }
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 59 },
+      "id": 60,
+      "options": { "legend": { "displayMode": "table", "placement": "right", "calcs": ["mean", "max"] }, "tooltip": { "mode": "multi" } },
+      "title": "Top 10 Rules by Bytes",
+      "type": "timeseries",
+      "targets": [
+        { "expr": "topk(10, rate(nftables_rule_bytes{instance=\"$instance\"}[$__rate_interval]))", "legendFormat": "{{table}}/{{chain}} {{action}} {{comment}}", "refId": "A" }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": {
+        "defaults": { "color": { "mode": "palette-classic" }, "custom": { "lineWidth": 1, "fillOpacity": 10, "spanNulls": false }, "unit": "pps" }
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 59 },
+      "id": 61,
+      "options": { "legend": { "displayMode": "table", "placement": "right", "calcs": ["mean", "max"] }, "tooltip": { "mode": "multi" } },
+      "title": "Top 10 Rules by Packets",
+      "type": "timeseries",
+      "targets": [
+        { "expr": "topk(10, rate(nftables_rule_packets{instance=\"$instance\"}[$__rate_interval]))", "legendFormat": "{{table}}/{{chain}} {{action}} {{comment}}", "refId": "A" }
+      ]
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 67 },
+      "id": 107,
+      "title": "Structure",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": {
+        "defaults": { "custom": { "align": "auto" }, "color": { "mode": "thresholds" }, "thresholds": { "mode": "absolute", "steps": [{ "color": "blue", "value": null }] } },
+        "overrides": [
+          { "matcher": { "id": "byName", "options": "Chains" }, "properties": [{ "id": "custom.cellOptions", "value": { "type": "color-background" } }] },
+          { "matcher": { "id": "byName", "options": "Rules" }, "properties": [{ "id": "custom.cellOptions", "value": { "type": "color-background" } }] }
+        ]
+      },
+      "gridPos": { "h": 6, "w": 12, "x": 0, "y": 68 },
+      "id": 70,
+      "options": { "showHeader": true },
+      "title": "Tables & Chains",
+      "type": "table",
+      "targets": [
+        { "expr": "nftables_table_chains{instance=\"$instance\"}", "refId": "A", "instant": true, "format": "table" }
+      ],
+      "transformations": [
+        { "id": "organize", "options": {
+          "excludeByName": { "Time": true, "__name__": true, "instance": true, "job": true },
+          "renameByName": { "table": "Table", "family": "Family", "Value": "Chains" }
+        }}
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": {
+        "defaults": { "custom": { "align": "auto" }, "color": { "mode": "thresholds" }, "thresholds": { "mode": "absolute", "steps": [{ "color": "blue", "value": null }] } },
+        "overrides": [
+          { "matcher": { "id": "byName", "options": "Rules" }, "properties": [{ "id": "custom.cellOptions", "value": { "type": "color-background" } }] }
+        ]
+      },
+      "gridPos": { "h": 6, "w": 12, "x": 12, "y": 68 },
+      "id": 71,
+      "options": { "showHeader": true },
+      "title": "Chains & Rules",
+      "type": "table",
+      "targets": [
+        { "expr": "nftables_chain_rules{instance=\"$instance\"}", "refId": "A", "instant": true, "format": "table" }
+      ],
+      "transformations": [
+        { "id": "organize", "options": {
+          "excludeByName": { "Time": true, "__name__": true, "instance": true, "job": true },
+          "renameByName": { "table": "Table", "family": "Family", "chain": "Chain", "Value": "Rules" }
+        }}
+      ]
+    }
+  ],
+  "schemaVersion": 39,
+  "tags": ["nftables", "firewall"],
+  "templating": {
+    "list": [
+      {
+        "current": {},
+        "datasource": { "type": "prometheus", "uid": "${datasource}" },
+        "definition": "label_values(nftables_up, instance)",
+        "includeAll": false,
+        "multi": false,
+        "name": "instance",
+        "query": { "query": "label_values(nftables_up, instance)", "refId": "StandardVariableQuery" },
+        "refresh": 2,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "includeAll": false,
+        "multi": false,
+        "name": "datasource",
+        "query": "prometheus",
+        "refresh": 1,
+        "type": "datasource"
+      }
+    ]
+  },
+  "time": { "from": "now-6h", "to": "now" },
+  "timepicker": {},
+  "timezone": "",
+  "title": "nftables Firewall",
+  "uid": "nftables-firewall"
+}

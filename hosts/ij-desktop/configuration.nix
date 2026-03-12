@@ -11,6 +11,21 @@ in
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ];
+  boot.kernelModules = [ "kvm-amd" ];
+  hardware.cpu.amd.updateMicrocode = true;
+  powerManagement.cpuFreqGovernor = "ondemand";
+
+  boot.initrd.luks = {
+    gpgSupport = true;
+    devices.cryptroot = {
+      gpgCard = {
+        encryptedPass = ./luks-passphrase.gpg;
+        publicKey = ../../secrets/ij-public-key.gpg;
+      };
+    };
+  };
 
   networking.hostName = "ij-desktop";
 

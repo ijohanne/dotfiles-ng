@@ -4,7 +4,7 @@
   services.prometheus.exporters.unbound = {
     enable = true;
     unbound = {
-      host = "tcp://127.0.0.1:8953";
+      host = "unix:///run/unbound/unbound.ctl";
     };
   };
 
