@@ -41,7 +41,12 @@
       job_name = "node";
       honor_labels = true;
       static_configs = [{
-        targets = [ "127.0.0.1:${toString config.services.prometheus.exporters.node.port}" "${network.hosts.fatty.ip}:9100" ];
+        targets = [
+          "127.0.0.1:${toString config.services.prometheus.exporters.node.port}"
+          "${network.hosts.fatty.ip}:9100"
+          "${network.hosts.pakhet.ip}:9100"
+          "${network.hosts.wg-khosu.ip}:9100"
+        ];
       }];
     }
   ];

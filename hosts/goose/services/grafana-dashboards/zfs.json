@@ -1,0 +1,758 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "description": "ZFS ARC, zpool, and prefetch statistics",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "links": [],
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 },
+      "id": 100,
+      "title": "ARC Overview",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "decbytes",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "blue", "value": null }
+            ]
+          }
+        }
+      },
+      "gridPos": { "h": 4, "w": 4, "x": 0, "y": 1 },
+      "id": 1,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "reduceOptions": { "calcs": ["lastNotNull"] }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "expr": "node_zfs_arcstats_size_bytes{instance=~\"$instance\"}",
+          "legendFormat": ""
+        }
+      ],
+      "title": "ARC Size",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "decbytes",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "purple", "value": null }
+            ]
+          }
+        }
+      },
+      "gridPos": { "h": 4, "w": 4, "x": 4, "y": 1 },
+      "id": 2,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "reduceOptions": { "calcs": ["lastNotNull"] }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "expr": "node_zfs_arcstats_c_max_bytes{instance=~\"$instance\"}",
+          "legendFormat": ""
+        }
+      ],
+      "title": "ARC Max",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "decimals": 2,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "orange", "value": 0.9 },
+              { "color": "green", "value": 0.95 }
+            ]
+          }
+        }
+      },
+      "gridPos": { "h": 4, "w": 4, "x": 8, "y": 1 },
+      "id": 3,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "reduceOptions": { "calcs": ["lastNotNull"] }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "expr": "node_zfs_arcstats_hits_total{instance=~\"$instance\"} / (node_zfs_arcstats_hits_total{instance=~\"$instance\"} + node_zfs_arcstats_misses_total{instance=~\"$instance\"})",
+          "legendFormat": ""
+        }
+      ],
+      "title": "ARC Hit Ratio",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "decimals": 2,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "orange", "value": 0.9 },
+              { "color": "green", "value": 0.95 }
+            ]
+          }
+        }
+      },
+      "gridPos": { "h": 4, "w": 4, "x": 12, "y": 1 },
+      "id": 4,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "reduceOptions": { "calcs": ["lastNotNull"] }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "expr": "node_zfs_arcstats_demand_data_hits_total{instance=~\"$instance\"} / (node_zfs_arcstats_demand_data_hits_total{instance=~\"$instance\"} + node_zfs_arcstats_demand_data_misses_total{instance=~\"$instance\"})",
+          "legendFormat": ""
+        }
+      ],
+      "title": "Data Hit Ratio",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "decimals": 2,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "orange", "value": 0.9 },
+              { "color": "green", "value": 0.95 }
+            ]
+          }
+        }
+      },
+      "gridPos": { "h": 4, "w": 4, "x": 16, "y": 1 },
+      "id": 5,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "reduceOptions": { "calcs": ["lastNotNull"] }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "expr": "node_zfs_arcstats_demand_metadata_hits_total{instance=~\"$instance\"} / (node_zfs_arcstats_demand_metadata_hits_total{instance=~\"$instance\"} + node_zfs_arcstats_demand_metadata_misses_total{instance=~\"$instance\"})",
+          "legendFormat": ""
+        }
+      ],
+      "title": "Metadata Hit Ratio",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "decimals": 2,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "orange", "value": 0.5 },
+              { "color": "green", "value": 0.8 }
+            ]
+          }
+        }
+      },
+      "gridPos": { "h": 4, "w": 4, "x": 20, "y": 1 },
+      "id": 6,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "reduceOptions": { "calcs": ["lastNotNull"] }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "expr": "node_zfs_zfetchstats_hits_total{instance=~\"$instance\"} / (node_zfs_zfetchstats_hits_total{instance=~\"$instance\"} + node_zfs_zfetchstats_misses_total{instance=~\"$instance\"})",
+          "legendFormat": ""
+        }
+      ],
+      "title": "Prefetch Hit Ratio",
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 5 },
+      "id": 101,
+      "title": "ARC Hit Rate",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisPlacement": "auto",
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": { "group": "A", "mode": "none" },
+            "thresholdsStyle": { "mode": "off" }
+          },
+          "unit": "percent",
+          "min": 0,
+          "max": 100
+        }
+      },
+      "gridPos": { "h": 7, "w": 12, "x": 0, "y": 6 },
+      "id": 10,
+      "options": {
+        "legend": {
+          "calcs": ["mean", "min"],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": { "mode": "multi", "sort": "desc" }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "expr": "irate(node_zfs_arcstats_demand_data_hits_total{instance=~\"$instance\"}[5m]) / (irate(node_zfs_arcstats_demand_data_hits_total{instance=~\"$instance\"}[5m]) + irate(node_zfs_arcstats_demand_data_misses_total{instance=~\"$instance\"}[5m])) * 100",
+          "legendFormat": "data"
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "expr": "irate(node_zfs_arcstats_demand_metadata_hits_total{instance=~\"$instance\"}[5m]) / (irate(node_zfs_arcstats_demand_metadata_hits_total{instance=~\"$instance\"}[5m]) + irate(node_zfs_arcstats_demand_metadata_misses_total{instance=~\"$instance\"}[5m])) * 100",
+          "legendFormat": "metadata"
+        }
+      ],
+      "title": "ARC Hit %",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisPlacement": "auto",
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": { "group": "A", "mode": "none" },
+            "thresholdsStyle": { "mode": "off" }
+          },
+          "unit": "ops"
+        }
+      },
+      "gridPos": { "h": 7, "w": 12, "x": 12, "y": 6 },
+      "id": 11,
+      "options": {
+        "legend": {
+          "calcs": ["mean", "max"],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": { "mode": "multi", "sort": "desc" }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "expr": "irate(node_zfs_arcstats_demand_data_hits_total{instance=~\"$instance\"}[5m])",
+          "legendFormat": "data hits"
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "expr": "irate(node_zfs_arcstats_demand_metadata_hits_total{instance=~\"$instance\"}[5m])",
+          "legendFormat": "metadata hits"
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "expr": "irate(node_zfs_arcstats_demand_data_misses_total{instance=~\"$instance\"}[5m])",
+          "legendFormat": "data misses"
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "expr": "irate(node_zfs_arcstats_demand_metadata_misses_total{instance=~\"$instance\"}[5m])",
+          "legendFormat": "metadata misses"
+        }
+      ],
+      "title": "ARC Hits & Misses",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 13 },
+      "id": 102,
+      "title": "ARC Memory",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisPlacement": "auto",
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "none",
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": { "group": "A", "mode": "normal" },
+            "thresholdsStyle": { "mode": "off" }
+          },
+          "unit": "bytes"
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "max" },
+            "properties": [
+              { "id": "custom.fillOpacity", "value": 0 },
+              { "id": "custom.lineWidth", "value": 2 },
+              { "id": "custom.lineStyle", "value": { "fill": "dash", "dash": [10, 10] } },
+              { "id": "custom.stacking", "value": { "mode": "none" } },
+              { "id": "color", "value": { "mode": "fixed", "fixedColor": "red" } }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "target" },
+            "properties": [
+              { "id": "custom.fillOpacity", "value": 0 },
+              { "id": "custom.lineWidth", "value": 2 },
+              { "id": "custom.lineStyle", "value": { "fill": "dash", "dash": [5, 5] } },
+              { "id": "custom.stacking", "value": { "mode": "none" } },
+              { "id": "color", "value": { "mode": "fixed", "fixedColor": "orange" } }
+            ]
+          }
+        ]
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 14 },
+      "id": 20,
+      "options": {
+        "legend": {
+          "calcs": ["mean", "max"],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": { "mode": "multi", "sort": "desc" }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "expr": "node_zfs_arcstats_data_bytes{instance=~\"$instance\"}",
+          "legendFormat": "data"
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "expr": "node_zfs_arcstats_meta_bytes{instance=~\"$instance\"}",
+          "legendFormat": "metadata"
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "expr": "node_zfs_arcstats_hdr_bytes{instance=~\"$instance\"}",
+          "legendFormat": "headers"
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "expr": "node_zfs_arcstats_other_bytes{instance=~\"$instance\"}",
+          "legendFormat": "other"
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "expr": "node_zfs_arcstats_anon_bytes{instance=~\"$instance\"}",
+          "legendFormat": "anon"
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "expr": "node_zfs_arcstats_c_max_bytes{instance=~\"$instance\"}",
+          "legendFormat": "max"
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "expr": "node_zfs_arcstats_c_bytes{instance=~\"$instance\"}",
+          "legendFormat": "target"
+        }
+      ],
+      "title": "ARC Size Breakdown",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisPlacement": "auto",
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": { "group": "A", "mode": "none" },
+            "thresholdsStyle": { "mode": "off" }
+          },
+          "unit": "bytes"
+        }
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 14 },
+      "id": 21,
+      "options": {
+        "legend": {
+          "calcs": ["mean", "max"],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": { "mode": "multi", "sort": "desc" }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "expr": "node_zfs_arcstats_mru_bytes{instance=~\"$instance\"}",
+          "legendFormat": "MRU"
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "expr": "node_zfs_arcstats_mfu_bytes{instance=~\"$instance\"}",
+          "legendFormat": "MFU"
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "expr": "node_zfs_arcstats_mru_ghost_bytes{instance=~\"$instance\"}",
+          "legendFormat": "MRU ghost"
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "expr": "node_zfs_arcstats_mfu_ghost_size{instance=~\"$instance\"}",
+          "legendFormat": "MFU ghost"
+        }
+      ],
+      "title": "ARC MRU / MFU",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 22 },
+      "id": 103,
+      "title": "Prefetch",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisPlacement": "auto",
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": { "group": "A", "mode": "none" },
+            "thresholdsStyle": { "mode": "off" }
+          },
+          "unit": "percent",
+          "min": 0,
+          "max": 100
+        }
+      },
+      "gridPos": { "h": 7, "w": 12, "x": 0, "y": 23 },
+      "id": 30,
+      "options": {
+        "legend": {
+          "calcs": ["mean", "min"],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": { "mode": "multi", "sort": "desc" }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "expr": "irate(node_zfs_zfetchstats_hits_total{instance=~\"$instance\"}[5m]) / (irate(node_zfs_zfetchstats_hits_total{instance=~\"$instance\"}[5m]) + irate(node_zfs_zfetchstats_misses_total{instance=~\"$instance\"}[5m])) * 100",
+          "legendFormat": "prefetch hit %"
+        }
+      ],
+      "title": "Prefetch Hit %",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisPlacement": "auto",
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": { "group": "A", "mode": "none" },
+            "thresholdsStyle": { "mode": "off" }
+          },
+          "unit": "ops"
+        }
+      },
+      "gridPos": { "h": 7, "w": 12, "x": 12, "y": 23 },
+      "id": 31,
+      "options": {
+        "legend": {
+          "calcs": ["mean", "max"],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": { "mode": "multi", "sort": "desc" }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "expr": "irate(node_zfs_zfetchstats_hits_total{instance=~\"$instance\"}[5m])",
+          "legendFormat": "hits"
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "expr": "irate(node_zfs_zfetchstats_misses_total{instance=~\"$instance\"}[5m])",
+          "legendFormat": "misses"
+        }
+      ],
+      "title": "Prefetch Hits & Misses",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 30 },
+      "id": 104,
+      "title": "ABD (Adaptive Buffer Data)",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisPlacement": "auto",
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": { "group": "A", "mode": "none" },
+            "thresholdsStyle": { "mode": "off" }
+          },
+          "unit": "bytes"
+        }
+      },
+      "gridPos": { "h": 7, "w": 12, "x": 0, "y": 31 },
+      "id": 40,
+      "options": {
+        "legend": {
+          "calcs": ["mean", "max"],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": { "mode": "multi", "sort": "desc" }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "expr": "node_zfs_abdstats_linear_data_bytes{instance=~\"$instance\"}",
+          "legendFormat": "linear data"
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "expr": "node_zfs_abdstats_scatter_data_bytes{instance=~\"$instance\"}",
+          "legendFormat": "scatter data"
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "expr": "node_zfs_abdstats_struct_bytes{instance=~\"$instance\"}",
+          "legendFormat": "struct overhead"
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "expr": "node_zfs_abdstats_scatter_chunk_waste_bytes{instance=~\"$instance\"}",
+          "legendFormat": "scatter waste"
+        }
+      ],
+      "title": "ABD Memory",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisPlacement": "auto",
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": { "group": "A", "mode": "none" },
+            "thresholdsStyle": { "mode": "off" }
+          },
+          "unit": "ops"
+        }
+      },
+      "gridPos": { "h": 7, "w": 12, "x": 12, "y": 31 },
+      "id": 41,
+      "options": {
+        "legend": {
+          "calcs": ["mean", "max"],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": { "mode": "multi", "sort": "desc" }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "expr": "irate(node_zfs_abdstats_linear_count_total{instance=~\"$instance\"}[5m])",
+          "legendFormat": "linear"
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "expr": "irate(node_zfs_abdstats_scatter_count_total{instance=~\"$instance\"}[5m])",
+          "legendFormat": "scatter"
+        }
+      ],
+      "title": "ABD Operations",
+      "type": "timeseries"
+    }
+  ],
+  "preload": false,
+  "refresh": "5m",
+  "schemaVersion": 42,
+  "tags": ["zfs"],
+  "templating": {
+    "list": [
+      {
+        "current": {},
+        "includeAll": false,
+        "multi": false,
+        "name": "datasource",
+        "query": "prometheus",
+        "refresh": 1,
+        "type": "datasource"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${datasource}"
+        },
+        "definition": "label_values(node_zfs_arcstats_size_bytes, instance)",
+        "includeAll": false,
+        "multi": false,
+        "name": "instance",
+        "query": {
+          "query": "label_values(node_zfs_arcstats_size_bytes, instance)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 2,
+        "sort": 1,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-3h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "ZFS",
+  "uid": "zfs-overview"
+}

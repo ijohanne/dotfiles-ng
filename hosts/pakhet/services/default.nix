@@ -27,6 +27,7 @@
     ./mailserver.nix
     ./plausible.nix
     ./perlpimpnet.nix
+    (import ./node-exporter.nix { inherit network; })
   ];
 
   sops.secrets.nix_builder_access_tokens = { };
