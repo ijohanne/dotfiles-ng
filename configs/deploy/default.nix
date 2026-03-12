@@ -31,7 +31,7 @@
     gitAdd ? true,
     githubRef ? "github:ijohanne/dotfiles-ng",
     repoCandidates ? [
-      "git/private/dotfiles"
+      "git/private/dotfiles-ng"
       "git/dotfiles-ng"
     ],
   }:
