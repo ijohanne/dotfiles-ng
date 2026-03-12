@@ -10,6 +10,16 @@
     ];
   };
 
+  systemd.services.prometheus-smokeping-exporter = {
+    after = [ "unbound.service" ];
+    requires = [ "unbound.service" ];
+    serviceConfig = {
+      RestartSec = 5;
+      StartLimitIntervalSec = 60;
+      StartLimitBurst = 10;
+    };
+  };
+
   services.prometheus.scrapeConfigs = [
     {
       job_name = "smokeping";
