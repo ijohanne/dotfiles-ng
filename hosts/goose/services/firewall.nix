@@ -25,7 +25,7 @@ in
               ip saddr 10.0.0.0/8 tcp dport 53 accept;
               ip saddr 10.0.0.0/8 udp dport 53 accept;
               ip saddr 10.0.0.0/8 ip protocol icmp accept
-              iifname { "ppp0", "mobile" } icmp type { destination-unreachable, time-exceeded, parameter-problem } accept
+              iifname { "ppp0", "mobile" } icmp type { destination-unreachable, time-exceeded, parameter-problem, echo-reply } accept
               iifname { "ppp0", "mobile" } icmp type echo-request limit rate 5/second burst 10 packets accept
               iifname { "ppp0", "mobile" } ip protocol icmp drop
               ip saddr 0.0.0.0/0 udp dport 51820 accept;
