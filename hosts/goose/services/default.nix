@@ -21,11 +21,11 @@
 
   sops.secrets.cloudflare_api_token = {};
   sops.secrets.grafana_admin_password = {};
-  sops.secrets.unpoller_password = {};
+  sops.secrets.unpoller_password = { owner = "unpoller-exporter"; };
   sops.secrets.fireboard_token = {};
   sops.secrets.hue_api_key = {};
-  sops.secrets.tplink_username = {};
-  sops.secrets.tplink_password = {};
+  sops.secrets.tplink_username = { owner = "tplink-p110-exporter"; };
+  sops.secrets.tplink_password = { owner = "tplink-p110-exporter"; };
   sops.secrets.smtp_pass_brother = {};
   sops.secrets.sms_user = {};
   sops.secrets.sms_password = {};
