@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "repo_ref": "github:ijohanne/dotfiles-ng",
+  "users": [
+    {
+      "username": "carol",
+      "name": "Carol Lee",
+      "email": "carol@example.com",
+      "shell": "zsh",
+      "developer": true,
+      "ssh_keys": []
+    }
+  ],
+  "hosts": [
+    {
+      "name": "carol-mac",
+      "platform": "darwin",
+      "arch": "aarch64",
+      "role": "desktop",
+      "nixpkgs": "unstable",
+      "deploy_mode": "local",
+      "primary_user": "carol",
+      "additional_users": [],
+      "modules": {
+        "secrets": false,
+        "neovim": true,
+        "languages": ["nix", "rust", "lua", "markdown", "flutter"]
+      }
+    }
+  ]
+}

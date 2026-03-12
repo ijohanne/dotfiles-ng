@@ -410,8 +410,31 @@
           ${pkgs.openssh}/bin/ssh-keyscan "$1" 2>/dev/null \
             | ${pkgs.ssh-to-age}/bin/ssh-to-age 2>/dev/null
         '';
+        pkgsWithRust = import nixpkgs {
+          inherit system;
+          overlays = [ rust-overlay.overlays.default ];
+        };
+        rustToolchain = pkgsWithRust.rust-bin.stable.latest.default;
+        setup-template = pkgs.rustPlatform.buildRustPackage {
+          pname = "setup-template";
+          version = "0.1.0";
+          src = ./tools/setup-template;
+          cargoLock.lockFile = ./tools/setup-template/Cargo.lock;
+          nativeBuildInputs = [ rustToolchain ];
+        };
       in
       {
+        packages.setup-template = setup-template;
+
+        apps.setup-template = {
+          type = "app";
+          program = "${setup-template}/bin/setup-template";
+        };
+
+        checks.setup-template = setup-template.overrideAttrs (old: {
+          doCheck = true;
+        });
+
         devShells.default = pkgs.mkShell {
           packages = with pkgs; [
             nixpkgs-fmt
@@ -421,6 +444,9 @@
             bd
             bd-init
             ssh-to-age-remote
+          ] ++ [
+            rustToolchain
+            pkgsWithRust.rust-bin.stable.latest.rust-analyzer
           ];
         };
       }
