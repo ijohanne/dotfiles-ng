@@ -45,7 +45,7 @@
       };
       remote-control = {
         control-enable = true;
-        control-use-cert = "no";
+        control-use-cert = "yes";
       };
     };
   };
