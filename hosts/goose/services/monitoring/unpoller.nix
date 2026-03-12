@@ -14,4 +14,14 @@
       }
     ];
   };
+
+  services.prometheus.scrapeConfigs = [
+    {
+      job_name = "unpoller";
+      honor_labels = true;
+      static_configs = [{
+        targets = [ "127.0.0.1:${toString config.services.prometheus.exporters.unpoller.port}" ];
+      }];
+    }
+  ];
 }
