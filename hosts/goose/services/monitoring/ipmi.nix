@@ -11,7 +11,6 @@
       ExecStart = "${pkgs.prometheus-ipmi-exporter}/bin/ipmi_exporter --web.listen-address=:9290";
       Restart = "always";
       DynamicUser = true;
-      SupplementaryGroups = [ "ipmi" ];
     };
     path = [ pkgs.freeipmi ];
   };
