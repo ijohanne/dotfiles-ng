@@ -27,6 +27,7 @@ in {
         { addr = network.hosts.wg-anubis.ip; port = 443; ssl = true; }
       ];
 
+      forceSSL = true;
       enableACME = true;
 
       extraConfig = ''

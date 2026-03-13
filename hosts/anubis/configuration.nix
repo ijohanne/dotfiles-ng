@@ -37,7 +37,7 @@ in
       enable = true;
       allowedTCPPorts = [ 22 ];
       allowedUDPPorts = [ 51820 51821 ];
-      interfaces.wg1.allowedTCPPorts = [ 443 ];
+      interfaces.wg1.allowedTCPPorts = [ 443 9834 ];
     };
   };
 
