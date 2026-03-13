@@ -29,6 +29,7 @@ in {
 
       forceSSL = true;
       enableACME = true;
+      acmeRoot = null;
 
       extraConfig = ''
         ${lib.concatMapStringsSep "\n" (range: "allow ${range};") allowedRanges}
