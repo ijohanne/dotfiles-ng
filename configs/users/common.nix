@@ -32,6 +32,7 @@
     dust
     gping
     httpie
+    glow
   ] ++ lib.optionals desktop [
     nerd-fonts.jetbrains-mono
     yubikey-manager
