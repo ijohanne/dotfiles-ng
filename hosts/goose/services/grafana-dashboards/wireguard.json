@@ -211,7 +211,7 @@
       "type": "table",
       "targets": [
         {
-          "expr": "wireguard_latest_handshake_seconds{instance=\"$instance\"}",
+          "expr": "(time() - wireguard_latest_handshake_seconds{instance=\"$instance\"}) and wireguard_latest_handshake_seconds{instance=\"$instance\"} > 0 or (wireguard_latest_handshake_seconds{instance=\"$instance\"} == 0) * 0",
           "legendFormat": "",
           "refId": "A",
           "instant": true,
