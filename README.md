@@ -263,7 +263,13 @@ Defined in `hosts/anubis/disko.nix`:
 
 #### OVH Kimsufi Warnings
 
-Kimsufi servers have no KVM/IPMI — if the system doesn't boot, rescue mode is your only recovery option. These lessons are hard-won:
+Kimsufi servers have a Java-based IP KVM (JNLP), but no standard IPMI. If the system doesn't boot, rescue mode is your primary recovery option. To access the KVM console, download the `.jnlp` file from the OVH panel and run it with the flake's devshell tool:
+
+```bash
+jnlp-run /path/to/kvm.jnlp
+```
+
+These deployment lessons are hard-won:
 
 - **Always use `--phases kexec,disko,install`** — never let nixos-anywhere reboot the server. Kimsufi rescue mode is netboot-based: every reboot returns to rescue until you explicitly change the boot device in the OVH panel. If nixos-anywhere reboots, you'll land back in rescue instead of NixOS.
 - **Disable OVH monitoring before kexec** — the kexec step can trigger OVH's automated monitoring, which logs an "intervention" that temporarily blocks netboot changes in the panel. Disable monitoring in the OVH panel first.
