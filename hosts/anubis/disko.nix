@@ -7,15 +7,14 @@
         content = {
           type = "gpt";
           partitions = {
-            boot = {
-              size = "1M";
-              type = "EF02";
-            };
-            mdadm-boot = {
+            esp = {
               size = "512M";
+              type = "EF00";
               content = {
-                type = "mdraid";
-                name = "boot";
+                type = "filesystem";
+                format = "vfat";
+                mountpoint = "/boot/ESP0";
+                mountOptions = [ "umask=0077" ];
               };
             };
             mdadm-root = {
@@ -34,15 +33,14 @@
         content = {
           type = "gpt";
           partitions = {
-            boot = {
-              size = "1M";
-              type = "EF02";
-            };
-            mdadm-boot = {
+            esp = {
               size = "512M";
+              type = "EF00";
               content = {
-                type = "mdraid";
-                name = "boot";
+                type = "filesystem";
+                format = "vfat";
+                mountpoint = "/boot/ESP1";
+                mountOptions = [ "umask=0077" ];
               };
             };
             mdadm-root = {
@@ -57,15 +55,6 @@
       };
     };
     mdadm = {
-      boot = {
-        type = "mdadm";
-        level = 1;
-        content = {
-          type = "filesystem";
-          format = "ext4";
-          mountpoint = "/boot";
-        };
-      };
       root = {
         type = "mdadm";
         level = 0;
