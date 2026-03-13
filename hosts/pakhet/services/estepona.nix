@@ -47,6 +47,45 @@
       };
     };
 
+    virtualHosts."cloudkey.${network.domain}" = {
+      forceSSL = true;
+      enableACME = true;
+      acmeRoot = null;
+      locations."/" = {
+        proxyPass = "https://${network.hosts.cloudkey.ip}/";
+        proxyWebsockets = true;
+        extraConfig = ''
+          proxy_ssl_verify off;
+        '';
+      };
+    };
+
+    virtualHosts."fatty-ipmi.${network.domain}" = {
+      forceSSL = true;
+      enableACME = true;
+      acmeRoot = null;
+      locations."/" = {
+        proxyPass = "https://${network.hosts.fatty-ipmi.ip}/";
+        proxyWebsockets = true;
+        extraConfig = ''
+          proxy_ssl_verify off;
+        '';
+      };
+    };
+
+    virtualHosts."goose-ipmi.${network.domain}" = {
+      forceSSL = true;
+      enableACME = true;
+      acmeRoot = null;
+      locations."/" = {
+        proxyPass = "https://${network.hosts.goose-ipmi.ip}/";
+        proxyWebsockets = true;
+        extraConfig = ''
+          proxy_ssl_verify off;
+        '';
+      };
+    };
+
     virtualHosts."cctax-couch.${network.domain}" = {
       forceSSL = true;
       enableACME = true;

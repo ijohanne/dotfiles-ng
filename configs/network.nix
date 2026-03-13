@@ -25,7 +25,7 @@ let
       ip6 = "${ulaPrefix}:254::1";
       dns = [ "r0" "goose" ];
     };
-    goose-ipmi = { ip = "10.255.254.210"; dns = [ "r0.ipmi" ]; };
+    goose-ipmi = { ip = "10.255.254.210"; dns = [ "goose-ipmi-direct" "r0.ipmi" ]; };
 
     # --- Servers ---
     pakhet        = { ip = "10.255.101.200"; ip6 = "${ulaPrefix}:101::200"; mac = "58:9c:fc:0e:56:98"; dnat = [
@@ -51,8 +51,8 @@ let
     amon          = { ip = "10.255.101.241"; ip6 = "${ulaPrefix}:101::241"; mac = "dc:a6:32:60:1c:82"; };
 
     # --- Infrastructure ---
-    cloudkey      = { ip = "10.255.254.240"; mac = "d0:21:f9:64:97:b3"; dns = [ "cloudkey" ]; };
-    fatty-ipmi    = { ip = "10.255.254.211"; mac = "04:42:1a:1c:6c:c1"; dns = [ "fatty.ipmi" ]; };
+    cloudkey      = { ip = "10.255.254.240"; mac = "d0:21:f9:64:97:b3"; dns = [ "cloudkey-direct" ]; };
+    fatty-ipmi    = { ip = "10.255.254.211"; mac = "04:42:1a:1c:6c:c1"; dns = [ "fatty-ipmi-direct" "fatty.ipmi" ]; };
     unvr          = { ip = "10.255.200.253"; mac = "e4:38:83:74:5d:a1"; };
 
     # --- Access Points (mgmt VLAN, static IPs set via controller) ---
@@ -124,6 +124,9 @@ let
     { name = "k8s-worker-00.local"; ip = hosts.k8s-worker-00.ip; }
     { name = "k8s-worker-01.local"; ip = hosts.k8s-worker-01.ip; }
     { name = "k8s-worker-02.local"; ip = hosts.k8s-worker-02.ip; }
+    { name = "cloudkey";   ip = hosts.pakhet.ip; }
+    { name = "fatty-ipmi"; ip = hosts.pakhet.ip; }
+    { name = "goose-ipmi"; ip = hosts.pakhet.ip; }
   ];
 
   # --- Helper functions ---
