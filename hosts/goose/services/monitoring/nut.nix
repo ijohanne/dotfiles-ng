@@ -5,10 +5,17 @@
     {
       job_name = "nut";
       honor_labels = true;
-      params.target = [ "127.0.0.1:3493" ];
-      static_configs = [{
-        targets = [ "${network.hosts.fatty.ip}:9995" "${network.hosts.chronos.ip}:9995" ];
-      }];
+      metrics_path = "/ups_metrics";
+      static_configs = [
+        {
+          targets = [ "${network.hosts.fatty.ip}:9199" ];
+          labels = { instance = "fatty"; };
+        }
+        {
+          targets = [ "${network.hosts.chronos-wired.ip}:9199" ];
+          labels = { instance = "chronos"; };
+        }
+      ];
     }
   ];
 }
