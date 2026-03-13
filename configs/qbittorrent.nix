@@ -20,6 +20,9 @@
       };
       Preferences = {
         "WebUI\\Address" = "127.0.0.1";
+        # PBKDF2-SHA512 hash of the plaintext password in secrets/anubis.yaml -> qbittorrent/webui_password
+        # If you change the password in sops, regenerate this hash:
+        #   python3 -c "import hashlib,secrets,base64; p='NEW_PASSWORD'; s=secrets.token_bytes(16); dk=hashlib.pbkdf2_hmac('sha512',p.encode(),s,100000,dklen=64); print(f'@ByteArray({base64.b64encode(s).decode()}:{base64.b64encode(dk).decode()})')"
         "WebUI\\Password_PBKDF2" = "@ByteArray(BehgM5UHfJ1+VpdszKvAhg==:mS54W9XFlq360CHikevuiAIdpCYk37u2dbsLUNAONMW6dL6WXs/lH5lIE6T7hWlH6WlVEIC2RKRHHBUku6y8tA==)";
         "Connection\\UPnP" = false;
       };
