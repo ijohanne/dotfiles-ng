@@ -69,5 +69,15 @@
         }
       ];
     }
+    {
+      job_name = "bhyve";
+      honor_labels = true;
+      static_configs = [
+        {
+          targets = [ "${network.hosts.fatty.ip}:9288" ];
+          labels = { instance = "fatty"; };
+        }
+      ];
+    }
   ];
 }
