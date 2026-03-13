@@ -5,7 +5,7 @@ keys:
   - &macbook age1vc68fqwnlflkcz7vnpv43azqr50dtpcztxrlaudsux7y6qyj8ysqcyugwg
   - &goose age1w3txsuslrkv7m8jak3lqkwyu6624p55ewrjyprwzdzwxpfgjkvxsh9y0dz
   - &khosu age1t7cj3yeyge87wk4fcljur5wv0fap68fyqjrf8fzk7vppv2v5qfmqpuhzfy
-  - &anubis age1uf28u2sa4my7hw7wjtt3xhkh587v0pyrk0z7pk9gk8tykjg06c8qvg54pv
+  - &anubis age1r0phf8m20r0jcypw4f7c2r7nh54rr32audrld5ssky48ck8gpuzs47d5ds
 
 creation_rules:
   - path_regex: secrets/goose\.(yaml|json|env|ini)$
