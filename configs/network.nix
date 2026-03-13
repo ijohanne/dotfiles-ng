@@ -226,7 +226,7 @@ let
 
   mkDnatRules = { extIfaces, oif ? "wired" }:
     let
-      hostRules = lib.mapAttrsToList (_: host:
+      hostRules = lib.mapAttrsToList (name: host:
         let
           byProto = lib.groupBy (r: r.proto) host.dnat;
         in lib.concatLists (lib.mapAttrsToList (proto: rules:
@@ -238,14 +238,14 @@ let
             batchPorts = map (r: r.port) batch;
           in
           (lib.optionals (batch != []) [{
-            forward = "meta iifname ${extIfaces} oifname \"${oif}\" ip daddr ${host.ip} ${proto} dport ${portSet batchPorts} ct state new counter accept";
-            prerouting = "meta iifname ${extIfaces} ${proto} dport ${portSet batchPorts} counter dnat ${host.ip};";
-            preroutingLocal = "${proto} dport ${portSet batchPorts} fib daddr type local counter dnat ip to ${host.ip};";
+            forward = "meta iifname ${extIfaces} oifname \"${oif}\" ip daddr ${host.ip} ${proto} dport ${portSet batchPorts} ct state new counter accept comment \"dnat ${name} ${proto}\"";
+            prerouting = "meta iifname ${extIfaces} ${proto} dport ${portSet batchPorts} counter dnat ${host.ip} comment \"dnat ${name} ${proto}\"";
+            preroutingLocal = "${proto} dport ${portSet batchPorts} fib daddr type local counter dnat ip to ${host.ip} comment \"dnat-local ${name} ${proto}\"";
           }])
           ++ map (r: {
-            forward = "meta iifname ${extIfaces} oifname \"${oif}\" ip daddr ${host.ip} ${proto} dport ${toString r.toPort} ct state new counter accept";
-            prerouting = "meta iifname ${extIfaces} ${proto} dport ${toString r.port} counter dnat ${host.ip}:${toString r.toPort};";
-            preroutingLocal = "${proto} dport ${toString r.port} fib daddr type local counter dnat ip to ${host.ip}:${toString r.toPort};";
+            forward = "meta iifname ${extIfaces} oifname \"${oif}\" ip daddr ${host.ip} ${proto} dport ${toString r.toPort} ct state new counter accept comment \"dnat ${name} ${proto}:${toString r.port}->${toString r.toPort}\"";
+            prerouting = "meta iifname ${extIfaces} ${proto} dport ${toString r.port} counter dnat ${host.ip}:${toString r.toPort} comment \"dnat ${name} ${proto}:${toString r.port}->${toString r.toPort}\"";
+            preroutingLocal = "${proto} dport ${toString r.port} fib daddr type local counter dnat ip to ${host.ip}:${toString r.toPort} comment \"dnat-local ${name} ${proto}:${toString r.port}->${toString r.toPort}\"";
           }) remap
         ) byProto)
       ) hostsWithDnat;
