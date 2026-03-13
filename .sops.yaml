@@ -26,6 +26,7 @@ creation_rules:
     key_groups:
       - age:
           - *ij
+          - *mkj
           - *anubis
 
   - path_regex: secrets/pakhet\.(yaml|json|env|ini)$
@@ -39,7 +40,6 @@ creation_rules:
     key_groups:
       - age:
           - *ij
-          - *mkj
           - *macbook
 
   - path_regex: secrets/shared\.(yaml|json|env|ini)$
