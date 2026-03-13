@@ -83,6 +83,12 @@ in
     };
     stateVersion = 3;
     certificateScheme = "acme-nginx";
+    certificateDomains = [
+      "r0.est.unixpimps.net"
+      "pop3.unixpimps.net"
+      "imap.unixpimps.net"
+      "smtp.unixpimps.net"
+    ];
     borgbackup = {
       enable = true;
       repoLocation = "/var/borgbackup/mail";
