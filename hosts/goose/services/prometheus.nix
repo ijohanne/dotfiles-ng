@@ -32,6 +32,7 @@
     enable = true;
     settings = {
       analytics.reporting_enabled = false;
+      news.news_feed_enabled = false;
       "auth.anonymous" = {
         org_role = "Editor";
         enable = true;
@@ -41,6 +42,7 @@
         http_port = 2342;
         http_addr = network.hosts.goose.ips.mgnt;
       };
+      dashboards.default_home_dashboard_path = "${./grafana-dashboards/node-exporter.json}";
     };
     provision = {
       enable = true;
