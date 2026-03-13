@@ -409,13 +409,13 @@
           "mode": "multi"
         }
       },
-      "title": "Logged Drops (nft-*-drop prefixed rules)",
-      "description": "Final catch-all drop rules with log prefix \u2014 unexpected traffic hitting policy default",
+      "title": "All Drops by Chain",
+      "description": "All rules with drop action \u2014 catch-all and explicit drops",
       "type": "timeseries",
       "targets": [
         {
-          "expr": "rate(nftables_rule_packets{instance=\"$instance\",comment=~\".*nft-.*-drop.*\"}[$__rate_interval])",
-          "legendFormat": "{{chain}} \u2014 {{comment}}",
+          "expr": "rate(nftables_rule_packets{instance=\"$instance\",action=\"drop\"}[$__rate_interval])",
+          "legendFormat": "{{family}}/{{chain}} handle={{handle}}",
           "refId": "A"
         }
       ]
@@ -673,7 +673,10 @@
           "custom": {
             "lineWidth": 1,
             "fillOpacity": 10,
-            "spanNulls": false
+            "spanNulls": false,
+            "stacking": {
+              "mode": "normal"
+            }
           },
           "unit": "pps"
         }
@@ -698,7 +701,7 @@
           "mode": "multi"
         }
       },
-      "title": "NAT Prerouting \u2014 Packets (DNAT)",
+      "title": "NAT Prerouting \u2014 Packets by Rule",
       "type": "timeseries",
       "targets": [
         {
@@ -721,7 +724,10 @@
           "custom": {
             "lineWidth": 1,
             "fillOpacity": 10,
-            "spanNulls": false
+            "spanNulls": false,
+            "stacking": {
+              "mode": "normal"
+            }
           },
           "unit": "pps"
         }
@@ -746,7 +752,7 @@
           "mode": "multi"
         }
       },
-      "title": "NAT Postrouting \u2014 Packets (Masquerade)",
+      "title": "NAT Postrouting \u2014 Packets by Rule",
       "type": "timeseries",
       "targets": [
         {
@@ -813,7 +819,7 @@
       "type": "timeseries",
       "targets": [
         {
-          "expr": "rate(nftables_rule_packets{instance=\"$instance\",chain=\"input\",table!=\"filter\"}[$__rate_interval]) > 0",
+          "expr": "rate(nftables_rule_packets{instance=\"$instance\",chain=\"input\",family=\"ip6\"}[$__rate_interval]) > 0",
           "legendFormat": "{{table}}/{{chain}} {{action}} {{comment}}",
           "refId": "A"
         }
@@ -864,7 +870,7 @@
       "type": "timeseries",
       "targets": [
         {
-          "expr": "rate(nftables_rule_packets{instance=\"$instance\",chain=\"forward\",table!=\"filter\"}[$__rate_interval]) > 0",
+          "expr": "rate(nftables_rule_packets{instance=\"$instance\",chain=\"forward\",family=\"ip6\"}[$__rate_interval]) > 0",
           "legendFormat": "{{table}}/{{chain}} {{action}} {{comment}}",
           "refId": "A"
         }
@@ -1173,6 +1179,15 @@
     "list": [
       {
         "current": {},
+        "includeAll": false,
+        "multi": false,
+        "name": "datasource",
+        "query": "prometheus",
+        "refresh": 1,
+        "type": "datasource"
+      },
+      {
+        "current": {},
         "datasource": {
           "type": "prometheus",
           "uid": "${datasource}"
@@ -1188,15 +1203,6 @@
         "refresh": 2,
         "sort": 1,
         "type": "query"
-      },
-      {
-        "current": {},
-        "includeAll": false,
-        "multi": false,
-        "name": "datasource",
-        "query": "prometheus",
-        "refresh": 1,
-        "type": "datasource"
       }
     ]
   },

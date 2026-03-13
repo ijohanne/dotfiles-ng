@@ -146,18 +146,18 @@ in
         table ip nat {
             chain prerouting {
               type nat hook prerouting priority -100; policy accept;
-              iifname "${interfaces.external}" ip saddr 172.26.0.0/16 ip daddr != 224.0.0.0/4 dnat to ${network.hosts.livingroom-movistar-stb.ip}
-              iifname "${interfaces.external}" ip saddr 172.23.0.0/16 ip daddr != 224.0.0.0/4 dnat to ${network.hosts.livingroom-movistar-stb.ip}
+              iifname "${interfaces.external}" ip saddr 172.26.0.0/16 ip daddr != 224.0.0.0/4 counter dnat to ${network.hosts.livingroom-movistar-stb.ip}
+              iifname "${interfaces.external}" ip saddr 172.23.0.0/16 ip daddr != 224.0.0.0/4 counter dnat to ${network.hosts.livingroom-movistar-stb.ip}
               ${dnat.prerouting}
               ${dnat.preroutingLocal}
             }
 
             chain postrouting {
               type nat hook postrouting priority filter; policy accept;
-              oifname "ppp0" masquerade
-              oifname "${interfaces.external}" masquerade
-              oifname "mobile" masquerade
-              iifname "wired" oifname "wired" ct status dnat masquerade
+              oifname "ppp0" counter masquerade
+              oifname "${interfaces.external}" counter masquerade
+              oifname "mobile" counter masquerade
+              iifname "wired" oifname "wired" ct status dnat counter masquerade
             }
         }
       '';

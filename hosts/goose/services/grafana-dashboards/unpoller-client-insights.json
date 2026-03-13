@@ -1586,7 +1586,7 @@
         "type": "prometheus",
         "uid": "${datasource}"
       },
-      "description": "Bandwidth usage per wireless devices as reported by the UAPs. Rx is on the negative axis. Does not include amazon devices.",
+      "description": "Bandwidth usage per wireless devices as reported by the UAPs. Rx is on the negative axis. Does not include IoT/smart home devices.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1732,7 +1732,7 @@
         "type": "prometheus",
         "uid": "${datasource}"
       },
-      "description": "Wired TX / RX bytes per second (calculated in 30 second buckets). Rx is on the negative axis. Does not include amazon and camera devices. Unaffected by the AP setting.",
+      "description": "Wired TX / RX bytes per second (calculated in 30 second buckets). Rx is on the negative axis. Does not include IoT/smart home and camera devices. Unaffected by the AP setting.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1879,7 +1879,7 @@
         "type": "prometheus",
         "uid": "${datasource}"
       },
-      "description": "Amazon Devices TX / RX bytes per second. Rx is on the negative axis. My home network has a ton of Amazon devices, so I broke them out separately. If you don't have Amazon devices, or they have different names, you can edit the query to use a different name. e = wired, w = wireless",
+      "description": "IoT / Smart Home devices TX / RX bytes per second. Rx is on the negative axis. e = wired, w = wireless",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1979,7 +1979,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum by ($Identifier) (rate(unpoller_client_transmit_bytes_total{name=~\"^amazon.*\", name=~\"$Wireless\", site_name=~\"$Site\", ap_name=~\"$AP\"}[$__interval]))",
+          "expr": "sum by ($Identifier) (rate(unpoller_client_transmit_bytes_total{name=~\"^(prusa.*|SonosZP.*|Ring.*|huesyncbox.*|Denon.*|lgwebostv.*|anovaoven.*|tado.*|GARDENA.*|twinkly.*)\", name=~\"$Wireless\", site_name=~\"$Site\", ap_name=~\"$AP\"}[$__interval]))",
           "hide": false,
           "interval": "$Smooth",
           "legendFormat": "w {{name}} {{mac}} Tx",
@@ -1990,7 +1990,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum by ($Identifier) (rate(unpoller_client_receive_bytes_total{name=~\"^amazon.*\", name=~\"$Wireless\", site_name=~\"$Site\", ap_name=~\"$AP\"}[$__interval]))",
+          "expr": "sum by ($Identifier) (rate(unpoller_client_receive_bytes_total{name=~\"^(prusa.*|SonosZP.*|Ring.*|huesyncbox.*|Denon.*|lgwebostv.*|anovaoven.*|tado.*|GARDENA.*|twinkly.*)\", name=~\"$Wireless\", site_name=~\"$Site\", ap_name=~\"$AP\"}[$__interval]))",
           "hide": false,
           "interval": "$Smooth",
           "legendFormat": "w {{name}} {{mac}} Rx",
@@ -2001,7 +2001,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum by ($Identifier) (rate(unpoller_client_transmit_bytes_total{name=~\"^amazon.*\", name=~\"$Wired\", site_name=~\"$Site\", sw_name=~\"$Switch\"}[$__interval]))",
+          "expr": "sum by ($Identifier) (rate(unpoller_client_transmit_bytes_total{name=~\"^(prusa.*|SonosZP.*|Ring.*|huesyncbox.*|Denon.*|lgwebostv.*|anovaoven.*|tado.*|GARDENA.*|twinkly.*)\", name=~\"$Wired\", site_name=~\"$Site\", sw_name=~\"$Switch\"}[$__interval]))",
           "hide": false,
           "interval": "$Smooth",
           "legendFormat": "e {{name}} {{mac}} Tx",
@@ -2012,14 +2012,14 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum by ($Identifier) (rate(unpoller_client_receive_bytes_total{name=~\"^amazon.*\", name=~\"$Wired\", site_name=~\"$Site\", sw_name=~\"$Switch\"}[$__interval]))",
+          "expr": "sum by ($Identifier) (rate(unpoller_client_receive_bytes_total{name=~\"^(prusa.*|SonosZP.*|Ring.*|huesyncbox.*|Denon.*|lgwebostv.*|anovaoven.*|tado.*|GARDENA.*|twinkly.*)\", name=~\"$Wired\", site_name=~\"$Site\", sw_name=~\"$Switch\"}[$__interval]))",
           "hide": false,
           "interval": "$Smooth",
           "legendFormat": "e {{name}} {{mac}} Rx",
           "refId": "D"
         }
       ],
-      "title": "Client Bandwidth / Echos & FireTVs",
+      "title": "Client Bandwidth / IoT & Smart Home",
       "type": "timeseries"
     },
     {
