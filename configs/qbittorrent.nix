@@ -20,44 +20,11 @@
       };
       Preferences = {
         "WebUI\\Address" = "127.0.0.1";
+        "WebUI\\Password_PBKDF2" = "@ByteArray(BehgM5UHfJ1+VpdszKvAhg==:mS54W9XFlq360CHikevuiAIdpCYk37u2dbsLUNAONMW6dL6WXs/lH5lIE6T7hWlH6WlVEIC2RKRHHBUku6y8tA==)";
         "Connection\\UPnP" = false;
       };
     };
   };
-
-  systemd.services.qbittorrent.preStart = let
-    setPassword = pkgs.writeScript "qbt-set-password" ''
-      #!${pkgs.python3}/bin/python3
-      import configparser, os, hashlib, secrets
-
-      conf_path = "/var/lib/qBittorrent/qBittorrent/config/qBittorrent.conf"
-      pw_file = "${config.sops.secrets."qbittorrent/webui_password".path}"
-
-      password = open(pw_file).read().strip()
-      salt = secrets.token_bytes(16)
-      dk = hashlib.pbkdf2_hmac("sha512", password.encode("utf-8"), salt, 100000, dklen=64)
-      import base64
-      salt_b64 = base64.b64encode(salt).decode()
-      dk_b64 = base64.b64encode(dk).decode()
-      pbkdf2_str = f"@ByteArray({salt_b64}:{dk_b64})"
-
-      os.makedirs(os.path.dirname(conf_path), exist_ok=True)
-
-      cfg = configparser.ConfigParser()
-      cfg.optionxform = str
-      if os.path.exists(conf_path):
-          cfg.read(conf_path)
-
-      if "Preferences" not in cfg:
-          cfg["Preferences"] = {}
-      cfg["Preferences"]["WebUI\\Password_PBKDF2"] = pbkdf2_str
-
-      with open(conf_path, "w") as f:
-          cfg.write(f, space_around_delimiters=False)
-    '';
-  in ''
-    ${setPassword}
-  '';
 
   systemd.tmpfiles.rules = [
     "d /data/torrents          0755 qbittorrent qbittorrent -"
