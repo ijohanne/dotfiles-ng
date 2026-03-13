@@ -115,6 +115,11 @@
       url = "github:ijohanne/perlpimpnet";
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
+
+    proton-port-sync = {
+      url = "github:ijohanne/proton-port-sync";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
+    };
   };
 
   outputs =
@@ -143,6 +148,7 @@
       unixpimpsnet,
       themailer-wrapper,
       perlpimpnet,
+      proton-port-sync,
       ...
     }@inputs:
     let
@@ -269,6 +275,18 @@
               ${users.mj.username} = [ ./hosts/goose/home-mj.nix ];
             };
           };
+        };
+
+        anubis = mkNixosHost {
+          pkgsLib = nixpkgs-stable.lib;
+          system = "x86_64-linux";
+          modules = [
+            disko.nixosModules.disko
+            sops-nix.nixosModules.sops
+            proton-port-sync.nixosModules.default
+            ./hosts/anubis/disko.nix
+            ./hosts/anubis/configuration.nix
+          ];
         };
 
         khosu = mkNixosHost {
@@ -406,6 +424,47 @@
           ${pkgs.openssh}/bin/ssh-keyscan "$1" 2>/dev/null \
             | ${pkgs.ssh-to-age}/bin/ssh-to-age 2>/dev/null
         '';
+        jnlp-jdk = if pkgs.stdenv.isDarwin then pkgs.zulu8 else pkgs.jdk8;
+        jnlp-run = pkgs.writeShellScriptBin "jnlp-run" ''
+          export PATH="${pkgs.lib.makeBinPath [ jnlp-jdk pkgs.xmlstarlet pkgs.curl pkgs.coreutils ]}"
+
+          if [ -z "$1" ]; then
+            echo "Usage: jnlp-run <file.jnlp>" >&2
+            exit 1
+          fi
+
+          jnlp="$1"
+
+          codebase=$(xml sel -t -v '/jnlp/@codebase' "$jnlp")
+          jar_href=$(xml sel -t -v '/jnlp/resources/jar/@href' "$jnlp")
+          jar_url="''${codebase}/''${jar_href}"
+
+          os=$(uname -s)
+          arch=$(uname -m)
+          case "''${os}-''${arch}" in
+            Linux-x86_64)  native_href=$(xml sel -t -v '//resources[@os="Linux" and (@arch="x86_64" or @arch="amd64")]/nativelib/@href' "$jnlp" 2>/dev/null) ;;
+            Linux-i*86)    native_href=$(xml sel -t -v '//resources[@os="Linux" and (@arch="x86" or @arch="i386")]/nativelib/@href' "$jnlp" 2>/dev/null) ;;
+            *)             native_href="" ;;
+          esac
+
+          mapfile -t args < <(xml sel -t -v '/jnlp/application-desc/argument' -n "$jnlp")
+
+          tmpdir=$(mktemp -d)
+          trap 'rm -rf "$tmpdir"' EXIT
+
+          echo "Downloading $jar_url ..."
+          curl -ksSL -o "$tmpdir/app.jar" "$jar_url"
+
+          if [ -n "$native_href" ]; then
+            native_url="''${codebase}/''${native_href}"
+            echo "Downloading native lib $native_url ..."
+            curl -ksSL -o "$tmpdir/native.jar" "$native_url"
+            (cd "$tmpdir" && jar xf native.jar)
+          fi
+
+          echo "Launching with $(java -version 2>&1 | head -1) ..."
+          exec java -Djava.library.path="$tmpdir" -jar "$tmpdir/app.jar" "''${args[@]}"
+        '';
         pkgsWithRust = import nixpkgs {
           inherit system;
           overlays = [ rust-overlay.overlays.default ];
@@ -442,6 +501,7 @@
             ssh-to-age-remote
             nix-repl-unstable
             nix-repl-stable
+            jnlp-run
           ] ++ [
             rustToolchain
             pkgsWithRust.rust-bin.stable.latest.rust-analyzer
@@ -454,6 +514,7 @@
             echo "  nix-repl-stable       nixpkgs stable repl"
             echo "  bd ready              available issues"
             echo "  bd list               all issues"
+            echo "  jnlp-run <file.jnlp>  launch Kimsufi IP KVM"
             echo "  sops <file>           edit encrypted secret"
             echo "  ssh-to-age-remote     convert SSH host key to age"
             echo "  nix flake check       validate all configs"

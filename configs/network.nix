@@ -109,6 +109,7 @@ let
     wg-peer-7    = { ip = "10.100.0.7"; };
     wg-khosu     = { ip = "10.100.0.8"; dns = [ "wg-khosu" ]; };
     wg-ians-iphone = { ip = "10.100.0.9"; dns = [ "wg-ians-iphone" ]; };
+    wg-anubis      = { ip = "10.100.0.10"; dns = [ "wg-anubis" ]; };
 
     # --- Kubernetes ---
     k8s-master-00 = { ip = "10.255.101.234"; ip6 = "${ulaPrefix}:101::234"; mac = "d8:43:ae:1a:1a:5c"; };

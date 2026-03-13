@@ -17,5 +17,6 @@
     (import ./hue.nix { inherit network; })
     ./telegraf.nix
     (import ./tplink-p110.nix { inherit network; })
+    (import ./proton-port-sync.nix { inherit network; })
   ];
 }

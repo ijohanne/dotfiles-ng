@@ -44,6 +44,11 @@
           publicKey = "8e+Mc7lPSxjsxuE09Rto4lTtVsZKbI687h5mFMX/Yjo=";
           allowedIPs = [ "${network.hosts.wg-ians-iphone.ip}/32" ];
         }
+        {
+          # anubis (torrent box, backhaul)
+          publicKey = "qlI2m68iQCaoGIaa7wU41IyTTWg0fsRjkD4OmWcYzFc=";
+          allowedIPs = [ "${network.hosts.wg-anubis.ip}/32" ];
+        }
       ];
     };
   };

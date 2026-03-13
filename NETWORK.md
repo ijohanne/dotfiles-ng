@@ -73,6 +73,12 @@ Site: **Estepona, Spain** — domain `est.es.unixpimps.net`
                FreeBSD 14.7 server
                bhyve VMs: pakhet, thoth, horus,
                           cctax-node, cctax-couch
+
+    anubis --- Kimsufi dedicated server (OVH Eco, 5.196.77.4)
+               NixOS torrent host
+               WireGuard backhaul to goose (wg1, 10.100.0.10)
+               ProtonVPN P2P tunnel (wg0)
+               qBittorrent + nginx + proton-port-sync
 ```
 
 ### Trunk Links (LACP Aggregates)
