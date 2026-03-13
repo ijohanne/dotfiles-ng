@@ -682,14 +682,14 @@
             },
             {
               "datasource": { "type": "prometheus", "uid": "${datasource}" },
-              "expr": "node_disk_read_kbps{instance=~\"$instance\"} * 1024",
-              "legendFormat": "{{device}} read",
+              "expr": "gstat_read_kilobytes_per_second{instance=~\"$instance\"} * 1024",
+              "legendFormat": "{{name}} read",
               "refId": "C"
             },
             {
               "datasource": { "type": "prometheus", "uid": "${datasource}" },
-              "expr": "-node_disk_write_kbps{instance=~\"$instance\"} * 1024",
-              "legendFormat": "{{device}} write",
+              "expr": "-gstat_write_kilobytes_per_second{instance=~\"$instance\"} * 1024",
+              "legendFormat": "{{name}} write",
               "refId": "D"
             }
           ],
@@ -746,14 +746,14 @@
             },
             {
               "datasource": { "type": "prometheus", "uid": "${datasource}" },
-              "expr": "node_disk_reads_total{instance=~\"$instance\"}",
-              "legendFormat": "{{device}} reads",
+              "expr": "gstat_read_operations_per_second{instance=~\"$instance\"}",
+              "legendFormat": "{{name}} reads",
               "refId": "C"
             },
             {
               "datasource": { "type": "prometheus", "uid": "${datasource}" },
-              "expr": "-node_disk_writes_total{instance=~\"$instance\"}",
-              "legendFormat": "{{device}} writes",
+              "expr": "-gstat_write_operations_per_second{instance=~\"$instance\"}",
+              "legendFormat": "{{name}} writes",
               "refId": "D"
             }
           ],

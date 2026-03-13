@@ -43,19 +43,29 @@
       static_configs = [
         {
           targets = [ "127.0.0.1:${toString config.services.prometheus.exporters.node.port}" ];
-          labels = { instance = "goose"; };
+          labels = { instance = "goose"; os = "linux"; };
         }
         {
           targets = [ "${network.hosts.fatty.ip}:9100" ];
-          labels = { instance = "fatty"; };
+          labels = { instance = "fatty"; os = "freebsd"; };
         }
         {
           targets = [ "${network.hosts.pakhet.ip}:9100" ];
-          labels = { instance = "pakhet"; };
+          labels = { instance = "pakhet"; os = "linux"; };
         }
         {
           targets = [ "${network.hosts.wg-khosu.ip}:9100" ];
-          labels = { instance = "khosu"; };
+          labels = { instance = "khosu"; os = "linux"; };
+        }
+      ];
+    }
+    {
+      job_name = "gstat";
+      honor_labels = true;
+      static_configs = [
+        {
+          targets = [ "${network.hosts.fatty.ip}:9248" ];
+          labels = { instance = "fatty"; };
         }
       ];
     }
