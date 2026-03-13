@@ -1721,11 +1721,11 @@
         "rust-overlay": "rust-overlay_5"
       },
       "locked": {
-        "lastModified": 1773436893,
-        "narHash": "sha256-FsuZUgQhDBLu3ZygLrXcFbFkdtkZPSJ2ma+i5TIbJD4=",
+        "lastModified": 1773445596,
+        "narHash": "sha256-ISaaE4GjJPJ6BQ6UDYmEEBDV8b+RZtOj9rkeYYXO0zU=",
         "owner": "ijohanne",
         "repo": "proton-port-sync",
-        "rev": "259ddbc400c59d3bcc590d2eb8c4d652b6c5d2ca",
+        "rev": "d9d0b384e3c74a00fbe3fe23a617d9feec614f1a",
         "type": "github"
       },
       "original": {

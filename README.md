@@ -15,7 +15,8 @@ Nix-based dotfiles for managing macOS and Linux configurations.
 - [Installation](#installation)
   - [macOS Setup](#macos-setup)
   - [Linux Desktop Setup](#linux-desktop-setup)
-  - [Khosu (VPS)](#khosu-vps)
+  - [Anubis (OVH Kimsufi)](#anubis-ovh-kimsufi)
+  - [Khosu (netcup VPS)](#khosu-netcup-vps)
   - [Goose (Router)](#goose-router)
   - [Pakhet (Application Server)](#pakhet-application-server)
   - [bhyve VM Images](#bhyve-vm-images)
@@ -35,6 +36,7 @@ Nix-based dotfiles for managing macOS and Linux configurations.
 - **macbook** — macOS (aarch64-darwin)
 - **ij-desktop** — Linux (x86_64-linux)
 - **goose** — NixOS router/firewall (x86_64-linux)
+- **anubis** — NixOS torrent host on OVH Kimsufi (x86_64-linux)
 - **khosu** — NixOS mail relay VPS on netcup (x86_64-linux)
 - **pakhet** — NixOS application server (x86_64-linux)
 - **bhyve-image** — Minimal bhyve VM image (x86_64-linux)
@@ -90,6 +92,10 @@ sudo nixos-rebuild switch --flake .#goose
 
 # pakhet (application server)
 sudo nixos-rebuild switch --flake .#pakhet
+
+# anubis (torrent host — deploy from local, see Installation section)
+nix shell nixpkgs#nixos-rebuild -c nixos-rebuild switch \
+  --flake .#anubis --target-host root@5.196.77.4
 
 # khosu (mail relay VPS)
 sudo nixos-rebuild switch --flake .#khosu
@@ -210,19 +216,76 @@ The Linux desktop uses disko for declarative disk partitioning with LUKS encrypt
    sudo nixos-rebuild switch --flake .#ij-desktop
    ```
 
-### Khosu (VPS)
+### Anubis (OVH Kimsufi)
 
-Khosu is a netcup VPS using disko for disk partitioning. It can be installed from scratch using [nixos-anywhere](https://github.com/nix-community/nixos-anywhere).
+Anubis is a dedicated server on OVH Kimsufi (OVH Eco). It uses disko with mdadm RAID across two disks and is installed via [nixos-anywhere](https://github.com/nix-community/nixos-anywhere).
 
 #### Prerequisites
 
-- A netcup VPS with rescue/KVM console access
+- An OVH Kimsufi dedicated server
+- Boot the server into OVH rescue mode (which provides SSH root access)
+- Ensure you can SSH as root to the server IP (`5.196.77.4`)
+
+#### Installation
+
+1. From your local machine:
+   ```bash
+   nix run github:nix-community/nixos-anywhere -- \
+     --flake .#anubis \
+     --phases kexec,disko,install \
+     root@5.196.77.4
+   ```
+
+   **`--phases kexec,disko,install` (no reboot) is mandatory on Kimsufi.** See the warning section below.
+
+2. After nixos-anywhere completes, note the age key it prints. Update `.sops.yaml` with this key and re-encrypt secrets:
+   ```bash
+   sops updatekeys secrets/anubis.yaml
+   ```
+
+3. In the OVH panel, change netboot from "rescue" to "Boot from the hard disk".
+
+4. Reboot the server from the OVH panel.
+
+5. Once NixOS boots, push the updated secrets:
+   ```bash
+   nix shell nixpkgs#nixos-rebuild -c nixos-rebuild switch \
+     --flake .#anubis --target-host root@5.196.77.4
+   ```
+
+#### Disk Layout
+
+Defined in `hosts/anubis/disko.nix`:
+- 2x 4TB HGST disks (by-id references)
+- 512MB EFI System Partition (EF00) on each disk
+- mdadm RAID-0 across both disks for root (ext4)
+- GRUB EFI with `mirroredBoots` to both ESPs
+
+#### OVH Kimsufi Warnings
+
+Kimsufi servers have no KVM/IPMI — if the system doesn't boot, rescue mode is your only recovery option. These lessons are hard-won:
+
+- **Always use `--phases kexec,disko,install`** — never let nixos-anywhere reboot the server. Kimsufi rescue mode is netboot-based: every reboot returns to rescue until you explicitly change the boot device in the OVH panel. If nixos-anywhere reboots, you'll land back in rescue instead of NixOS.
+- **Disable OVH monitoring before kexec** — the kexec step can trigger OVH's automated monitoring, which logs an "intervention" that temporarily blocks netboot changes in the panel. Disable monitoring in the OVH panel first.
+- **`boot.swraid.enable = true` is required for mdadm** — disko creates the RAID arrays but does not set this option. Without it, the initrd won't assemble the arrays and the system won't boot.
+- **The age key changes on every nixos-anywhere run** — always update `.sops.yaml` and run `sops updatekeys` after install, before the first real boot.
+- **Verify critical boot config before deploying** — use `nix eval .#nixosConfigurations.anubis.config.boot.swraid.enable` and similar checks. Each failed boot costs significant time since you must re-enter rescue mode and re-run nixos-anywhere.
+- **UEFI, not BIOS** — Kimsufi servers use UEFI boot. Use EF00 (ESP) partitions, not EF02 (BIOS boot).
+
+### Khosu (netcup VPS)
+
+Khosu is a VPS on netcup running as a mail relay. It uses disko for disk partitioning and is installed via [nixos-anywhere](https://github.com/nix-community/nixos-anywhere).
+
+#### Prerequisites
+
+- A netcup VPS (KVM-based, virtio disk at `/dev/vda`)
+- Access to the netcup SCP (Server Control Panel) for VNC console and rescue
 - Boot the VPS into a NixOS installer ISO or any Linux with SSH and root access
 - Ensure you can SSH as root to the VPS IP (`159.195.24.170`)
 
 #### Installation
 
-1. From your local machine (macbook or any host with nix and flakes):
+1. From your local machine:
    ```bash
    nix run github:nix-community/nixos-anywhere -- --flake .#khosu root@159.195.24.170
    ```
@@ -231,8 +294,9 @@ Khosu is a netcup VPS using disko for disk partitioning. It can be installed fro
    - Partition the disk using `hosts/khosu/disko.nix` (GPT with BIOS boot + ext4 root on `/dev/vda`)
    - Install NixOS with the khosu configuration
    - Set up GRUB bootloader
+   - Reboot automatically
 
-2. After installation completes, the VPS will reboot. SSH in and deploy:
+2. After installation completes, the VPS will reboot into NixOS. Deploy:
    ```bash
    ssh khosu.unixpimps.net deploy-khosu
    ```
@@ -242,6 +306,16 @@ Khosu is a netcup VPS using disko for disk partitioning. It can be installed fro
 Defined in `hosts/khosu/disko.nix`:
 - 1MB BIOS boot partition (EF02, for GRUB on GPT)
 - Remaining space as ext4 root
+
+#### netcup Notes
+
+netcup is more straightforward than OVH Kimsufi:
+
+- **Automatic reboot is safe** — unlike Kimsufi, netcup doesn't have netboot. The VPS boots from its virtual disk by default, so nixos-anywhere can reboot without issues (no need for `--phases`).
+- **VNC console available** — the SCP provides a VNC console for debugging boot issues, so you're not flying blind.
+- **BIOS boot, not UEFI** — netcup KVM VPSes use BIOS boot. Use an EF02 partition (not EF00/ESP) with GRUB.
+- **virtio disk** — the disk is always `/dev/vda` via virtio-blk. Use `/dev/vda` in disko, not by-id paths.
+- **Rescue via ISO mount** — if the VPS doesn't boot, you can mount a rescue ISO from the SCP media panel and access the disk from there.
 
 ### Goose (Router)
 
