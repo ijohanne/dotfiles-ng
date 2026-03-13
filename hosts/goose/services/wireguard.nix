@@ -39,6 +39,11 @@
           publicKey = "5Z+G9RwfwJXFFy9E/nFg6eRi416G+J3eWwptkxXXZzY=";
           allowedIPs = [ "${network.hosts.wg-khosu.ip}/32" ];
         }
+        {
+          # Ian's iPhone
+          publicKey = "8e+Mc7lPSxjsxuE09Rto4lTtVsZKbI687h5mFMX/Yjo=";
+          allowedIPs = [ "${network.hosts.wg-ians-iphone.ip}/32" ];
+        }
       ];
     };
   };
