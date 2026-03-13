@@ -26,19 +26,20 @@
   };
 
   systemd.services.qbittorrent.preStart = let
-    python = pkgs.python3.withPackages (ps: [ ps.passlib ]);
     setPassword = pkgs.writeScript "qbt-set-password" ''
-      #!${python}/bin/python3
+      #!${pkgs.python3}/bin/python3
       import configparser, os, hashlib, secrets
-      from passlib.crypto.digest import pbkdf2_hmac
 
       conf_path = "/var/lib/qBittorrent/qBittorrent/config/qBittorrent.conf"
       pw_file = "${config.sops.secrets."qbittorrent/webui_password".path}"
 
       password = open(pw_file).read().strip()
       salt = secrets.token_bytes(16)
-      dk = pbkdf2_hmac("sha512", password.encode(), salt, 100000, 64)
-      pbkdf2_str = f"@ByteArray({salt.hex()}:{dk.hex()})"
+      dk = hashlib.pbkdf2_hmac("sha512", password.encode("utf-8"), salt, 100000, dklen=64)
+      import base64
+      salt_b64 = base64.b64encode(salt).decode()
+      dk_b64 = base64.b64encode(dk).decode()
+      pbkdf2_str = f"@ByteArray({salt_b64}:{dk_b64})"
 
       os.makedirs(os.path.dirname(conf_path), exist_ok=True)
 
