@@ -25,6 +25,7 @@
     ./shouldidrinktoday.nix
     ./unixpimpsnet.nix
     ./mailserver.nix
+    ./mail-autoconfig.nix
     ./plausible.nix
     ./perlpimpnet.nix
     (import ./node-exporter.nix { inherit network; })
