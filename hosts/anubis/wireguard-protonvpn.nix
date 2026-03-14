@@ -1,11 +1,11 @@
 { config, pkgs, lib, ... }:
 
 let
-  torrent = import ../lib/torrent.nix;
+  wgIP = "10.2.0.2";
   table = 51820;
 in {
   networking.wireguard.interfaces.wg0 = {
-    ips = [ "${torrent.wgIP}/32" ];
+    ips = [ "${wgIP}/32" ];
     listenPort = 51820;
     privateKeyFile = config.sops.secrets."protonvpn/private_key".path;
     table = toString table;
@@ -20,11 +20,11 @@ in {
     ];
 
     postSetup = ''
-      ${pkgs.iproute2}/bin/ip rule add from ${torrent.wgIP} table ${toString table} priority 100
+      ${pkgs.iproute2}/bin/ip rule add from ${wgIP} table ${toString table} priority 100
       ${pkgs.iproute2}/bin/ip rule add to 10.2.0.1/32 table ${toString table} priority 90
     '';
     postShutdown = ''
-      ${pkgs.iproute2}/bin/ip rule del from ${torrent.wgIP} table ${toString table} priority 100 2>/dev/null || true
+      ${pkgs.iproute2}/bin/ip rule del from ${wgIP} table ${toString table} priority 100 2>/dev/null || true
       ${pkgs.iproute2}/bin/ip rule del to 10.2.0.1/32 table ${toString table} priority 90 2>/dev/null || true
     '';
   };

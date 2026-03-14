@@ -3,12 +3,14 @@
 { config, pkgs, lib, ... }:
 
 let
-  torrent = import ../lib/torrent.nix;
-  allowedRanges = torrent.backhaulAllowedRanges;
+  allowedRanges = [
+    "10.255.0.0/16"
+    "10.100.0.0/24"
+  ];
 in {
   security.acme = {
     acceptTerms = true;
-    defaults.email = torrent.acmeEmail;
+    defaults.email = "sysops@unixpimps.net";
     defaults = {
       dnsProvider = "cloudflare";
       dnsPropagationCheck = true;
@@ -22,7 +24,7 @@ in {
     recommendedTlsSettings = true;
     recommendedOptimisation = true;
 
-    virtualHosts."${torrent.domain}" = {
+    virtualHosts."wg-anubis.est.unixpimps.net" = {
       listen = [
         { addr = network.hosts.wg-anubis.ip; port = 443; ssl = true; }
       ];

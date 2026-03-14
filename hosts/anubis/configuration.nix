@@ -1,7 +1,6 @@
 { config, pkgs, lib, inputs, self, users, user, ... }:
 
 let
-  torrent = import ../../lib/torrent.nix;
   network = import ../../configs/network.nix { inherit lib; };
   deploy = import ../../configs/deploy { inherit pkgs; };
 in
@@ -59,12 +58,12 @@ in
 
   services.proton-port-sync = {
     enable = true;
-    gateway = torrent.protonGateway;
+    gateway = "10.2.0.1";
     qbtUser = "admin";
     qbtPasswordFile = config.sops.secrets."qbittorrent/webui_password".path;
     metrics = {
       enable = true;
-      address = torrent.backhaulIP;
+      address = "10.100.0.10";
       port = 9834;
     };
   };
