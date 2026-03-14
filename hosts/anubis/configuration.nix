@@ -3,6 +3,7 @@
 let
   torrent = import ../../lib/torrent.nix;
   network = import ../../configs/network.nix { inherit lib; };
+  deploy = import ../../configs/deploy { inherit pkgs; };
 in
 {
   imports = [
@@ -79,6 +80,13 @@ in
   };
   boot.loader.efi.canTouchEfiVariables = true;
   boot.swraid.enable = true;
+
+  environment.systemPackages = with pkgs; [
+    (deploy.mkDeployScript {
+      name = "deploy-anubis";
+      host = "anubis";
+    })
+  ];
 
   time.timeZone = "Europe/Paris";
 

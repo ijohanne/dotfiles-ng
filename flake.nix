@@ -286,7 +286,17 @@
             proton-port-sync.nixosModules.default
             ./hosts/anubis/disko.nix
             ./hosts/anubis/configuration.nix
-          ];
+          ] ++ mkHomeManagerModule {
+            homeManagerModule = home-manager-stable.nixosModules.home-manager;
+            extraSpecialArgs = { pkgs-unstable = mkPkgsUnstable "x86_64-linux"; };
+            hmUsers = {
+              ${users.ij.username} = [
+                ./hosts/anubis/home-ij.nix
+                inputs.nixvim.homeModules.nixvim
+              ];
+              ${users.mj.username} = [ ./hosts/anubis/home-mj.nix ];
+            };
+          };
         };
 
         khosu = mkNixosHost {
