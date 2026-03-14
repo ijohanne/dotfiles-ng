@@ -161,6 +161,7 @@
       mode = "0755";
       text = ''
         #!/bin/sh
+        /run/current-system/sw/bin/nft 'add flowtable ip filter fastnat { devices = { ppp0 }; }'
         /run/current-system/sw/bin/systemctl restart unbound.service
         /run/current-system/sw/bin/systemctl restart prometheus-smokeping-exporter.service
         /run/current-system/sw/bin/systemctl start cloudflare-dyndns.service
