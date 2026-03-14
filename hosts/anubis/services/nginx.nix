@@ -43,6 +43,12 @@ in {
         proxyWebsockets = true;
       };
 
+      locations."/files" = {
+        extraConfig = ''
+          rewrite ^/files$ /files/ last;
+        '';
+      };
+
       locations."/files/" = {
         alias = "/data/torrents/complete/";
         extraConfig = ''
