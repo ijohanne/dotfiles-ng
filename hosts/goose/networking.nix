@@ -1,6 +1,6 @@
 { interfaces, network }:
 
-{ lib, ... }:
+{ lib, pkgs, ... }:
 {
   boot.kernel.sysctl = {
     "net.ipv4.conf.all.forwarding" = true;
@@ -205,6 +205,11 @@
       };
     '';
   };
+
+  networking.localCommands = ''
+    ${pkgs.ethtool}/bin/ethtool -K enp5s0f0np0 hw-tc-offload off 2>/dev/null || true
+    ${pkgs.ethtool}/bin/ethtool -K enp5s0f1np1 hw-tc-offload off 2>/dev/null || true
+  '';
 
   services.lldpd.enable = true;
 }

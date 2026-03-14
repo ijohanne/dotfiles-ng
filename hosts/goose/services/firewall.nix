@@ -60,6 +60,7 @@ in
             chain forward {
               meta oiftype ppp tcp flags syn tcp option maxseg size set 1452 counter comment "ppp mss clamp"
               type filter hook forward priority filter; policy drop;
+              ip protocol { tcp, udp } ct state established flow add @fastnat counter comment "flow offload"
               ct state invalid counter drop comment "invalid state"
               ip saddr ${network.hosts.livingroom-movistar-stb.ip} ip daddr 80.58.63.218 counter reject with icmp host-unreachable comment "stb acs block"
               iifname { "guest", "wifi", "wired", "mgnt", "${interfaces.external}", "wg0" } oifname {
@@ -95,7 +96,7 @@ in
 
             flowtable fastnat {
               hook ingress priority filter
-              devices = { wifi, wired, camera, mgnt }
+              devices = { ${interfaces.internal} }
             }
         }
 
