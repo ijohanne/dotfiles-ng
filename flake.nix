@@ -288,6 +288,7 @@
             ./hosts/anubis/configuration.nix
           ] ++ mkHomeManagerModule {
             homeManagerModule = home-manager-stable.nixosModules.home-manager;
+            backupFileExtension = "bak";
             extraSpecialArgs = { pkgs-unstable = mkPkgsUnstable "x86_64-linux"; };
             hmUsers = {
               ${users.ij.username} = [
