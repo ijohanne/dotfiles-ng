@@ -8,10 +8,10 @@ in
   imports = [
     ../../configs/server.nix
     ./hardware-configuration.nix
-    ../../configs/wireguard-protonvpn.nix
-    (import ../../configs/wireguard-backhaul.nix { inherit network; })
-    ../../configs/qbittorrent.nix
-    (import ../../configs/nginx-torrent.nix { inherit network; })
+    ./wireguard-protonvpn.nix
+    (import ./wireguard-backhaul.nix { inherit network; })
+    ./qbittorrent.nix
+    (import ./nginx-torrent.nix { inherit network; })
   ];
 
   networking = {
