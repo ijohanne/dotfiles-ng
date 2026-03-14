@@ -8,10 +8,7 @@ in
   imports = [
     ../../configs/server.nix
     ./hardware-configuration.nix
-    ./wireguard-protonvpn.nix
-    (import ./wireguard-backhaul.nix { inherit network; })
-    ./qbittorrent.nix
-    (import ./nginx-torrent.nix { inherit network; })
+    (import ./services { inherit network; })
   ];
 
   networking = {
@@ -53,18 +50,6 @@ in
       "backhaul/private_key" = { };
       "qbittorrent/webui_password" = { owner = "qbittorrent"; };
       "acme/cloudflare_api_key" = { owner = "acme"; };
-    };
-  };
-
-  services.proton-port-sync = {
-    enable = true;
-    gateway = "10.2.0.1";
-    qbtUser = "admin";
-    qbtPasswordFile = config.sops.secrets."qbittorrent/webui_password".path;
-    metrics = {
-      enable = true;
-      address = "10.100.0.10";
-      port = 9834;
     };
   };
 
