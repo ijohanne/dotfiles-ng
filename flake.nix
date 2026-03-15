@@ -120,6 +120,10 @@
       url = "github:ijohanne/proton-port-sync";
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
+
+    vardrun = {
+      url = "github:ijohanne/vardrun";
+    };
   };
 
   outputs =
@@ -149,6 +153,7 @@
       themailer-wrapper,
       perlpimpnet,
       proton-port-sync,
+      vardrun,
       ...
     }@inputs:
     let
@@ -234,6 +239,7 @@
             unixpimpsnet.nixosModules.default
             themailer-wrapper.nixosModules.default
             perlpimpnet.nixosModules.default
+            vardrun.nixosModules.default
             {
               nixpkgs.overlays = [
                 screeny.overlays.default

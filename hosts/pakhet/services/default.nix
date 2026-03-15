@@ -28,6 +28,7 @@
     ./mail-autoconfig.nix
     ./plausible.nix
     ./perlpimpnet.nix
+    ./vardrun.nix
     (import ./node-exporter.nix { inherit network; })
   ];
 
@@ -154,6 +155,43 @@
     mode = "0400";
     owner = "mercy";
     group = "mercy";
+  };
+
+  # Vardrun secrets
+  sops.secrets.vardrun_jwt_secret = {
+    mode = "0400";
+    owner = "beads";
+    group = "beads";
+  };
+
+  sops.secrets.vardrun_pat_encryption_key = {
+    mode = "0400";
+    owner = "beads";
+    group = "beads";
+  };
+
+  sops.secrets.vardrun_secret_key_base = {
+    mode = "0400";
+    owner = "beads";
+    group = "beads";
+  };
+
+  sops.secrets.vardrun_global_pat = {
+    mode = "0400";
+    owner = "beads";
+    group = "beads";
+  };
+
+  sops.secrets.vardrun_ij_password = {
+    mode = "0400";
+    owner = "beads";
+    group = "beads";
+  };
+
+  sops.secrets.vardrun_mj_password = {
+    mode = "0400";
+    owner = "beads";
+    group = "beads";
   };
 
   # Plausible secrets

@@ -33,7 +33,9 @@
     stateVersion = lib.mkDefault "22.05";
     username = user.username;
     homeDirectory = if pkgs.stdenv.isDarwin then "/Users/${user.username}" else "/home/${user.username}";
-    packages = lib.optionals (desktop && !pkgs.stdenv.isDarwin) (with pkgs; [
+    packages = [
+      inputs.vardrun.packages.${pkgs.system}.vardrun-cli
+    ] ++ lib.optionals (desktop && !pkgs.stdenv.isDarwin) (with pkgs; [
       google-chrome
       mattermost-desktop
       docker

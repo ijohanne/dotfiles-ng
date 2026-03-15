@@ -22,6 +22,29 @@
         "type": "github"
       }
     },
+    "beads_2": {
+      "inputs": {
+        "flake-utils": "flake-utils_13",
+        "nixpkgs": [
+          "vardrun",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1770525446,
+        "narHash": "sha256-mqtHYUlx69EAZV6EsVffYFXz5E8mg6hojJpT79uoujc=",
+        "owner": "steveyegge",
+        "repo": "beads",
+        "rev": "f76870b9ca2dc3101b8bdb99603ce27d5449c83b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "steveyegge",
+        "ref": "v0.49.5",
+        "repo": "beads",
+        "type": "github"
+      }
+    },
     "blobs": {
       "flake": false,
       "locked": {
@@ -465,6 +488,42 @@
     "flake-utils_12": {
       "inputs": {
         "systems": "systems_17"
+      },
+      "locked": {
+        "lastModified": 1731533236,
+        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "flake-utils_13": {
+      "inputs": {
+        "systems": "systems_18"
+      },
+      "locked": {
+        "lastModified": 1731533236,
+        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "flake-utils_14": {
+      "inputs": {
+        "systems": "systems_19"
       },
       "locked": {
         "lastModified": 1731533236,
@@ -1446,6 +1505,22 @@
         "type": "github"
       }
     },
+    "nixpkgs_12": {
+      "locked": {
+        "lastModified": 1773282481,
+        "narHash": "sha256-b/GV2ysM8mKHhinse2wz+uP37epUrSE+sAKXy/xvBY4=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "fe416aaedd397cacb33a610b33d60ff2b431b127",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs_2": {
       "locked": {
         "lastModified": 1772598333,
@@ -1760,7 +1835,8 @@
         "shouldidrinktoday": "shouldidrinktoday",
         "sops-nix": "sops-nix",
         "themailer-wrapper": "themailer-wrapper",
-        "unixpimpsnet": "unixpimpsnet"
+        "unixpimpsnet": "unixpimpsnet",
+        "vardrun": "vardrun"
       }
     },
     "rust-overlay": {
@@ -2166,6 +2242,36 @@
         "type": "github"
       }
     },
+    "systems_18": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
+    "systems_19": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
     "systems_2": {
       "locked": {
         "lastModified": 1681028828,
@@ -2445,6 +2551,26 @@
       "original": {
         "owner": "ijohanne",
         "repo": "unixpimpsnet",
+        "type": "github"
+      }
+    },
+    "vardrun": {
+      "inputs": {
+        "beads": "beads_2",
+        "flake-utils": "flake-utils_14",
+        "nixpkgs": "nixpkgs_12"
+      },
+      "locked": {
+        "lastModified": 1773610791,
+        "narHash": "sha256-LFiL/6Kq5pjVGqCLOYQGBerAuOpm//Z8CF8sJ9uNcYo=",
+        "owner": "ijohanne",
+        "repo": "vardrun",
+        "rev": "abaf4b227b02bd7c5c0a09f15655690ce4688be5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ijohanne",
+        "repo": "vardrun",
         "type": "github"
       }
     }
