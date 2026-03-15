@@ -1944,11 +1944,11 @@
         "rust-overlay": "rust-overlay_7"
       },
       "locked": {
-        "lastModified": 1773492291,
-        "narHash": "sha256-ULWQyVdHkQK9Ayj5UQ4Ii4o7+4mGJPzx4nL5VEg/l90=",
+        "lastModified": 1773535242,
+        "narHash": "sha256-zo3UFoLMl7grvv1BB+w6vH6ptdxkNXsJjolmZeTwd4Y=",
         "owner": "ijohanne",
         "repo": "screeny",
-        "rev": "ff2fde7c9ffabd54f9cc58c27f6582430a723d15",
+        "rev": "0fb7880777098882da03f4ce497857377de7f5be",
         "type": "github"
       },
       "original": {
