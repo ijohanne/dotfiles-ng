@@ -2561,11 +2561,11 @@
         "nixpkgs": "nixpkgs_12"
       },
       "locked": {
-        "lastModified": 1773622643,
-        "narHash": "sha256-iyHEf+u446pBTi1f7zZf9OMu+KWLDQD+XYJ4c9qqqiI=",
+        "lastModified": 1773623206,
+        "narHash": "sha256-OezpV4UnQ9BgtHvlPBkoQUzYJVAFHvLsZHusNGsMPkY=",
         "owner": "ijohanne",
         "repo": "vardrun",
-        "rev": "d68dcb0dcfdf9e0d11f0acbc3bdfe2be2bfd1318",
+        "rev": "1c265eaa81b794fa4a8982c2b7e84d070f63a5ef",
         "type": "github"
       },
       "original": {
