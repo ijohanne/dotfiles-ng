@@ -23,11 +23,6 @@
           passwordHashFile = config.sops.secrets.vardrun_ij_password.path;
           isAdmin = true;
         }
-        {
-          username = "mkj";
-          passwordHashFile = config.sops.secrets.vardrun_mj_password.path;
-          isAdmin = true;
-        }
       ];
 
       nginxHelper = {
