@@ -58,7 +58,7 @@ darwin-rebuild switch --flake .#macbook
 sudo nixos-rebuild switch --flake .#ij-desktop
 ```
 
-### Remote hosts (goose, pakhet, khosu)
+### Remote hosts (goose, pakhet, khosu, anubis)
 
 These hosts pull the flake from GitHub via `deploy-<hostname>` wrappers. Changes **must be pushed first**.
 
@@ -67,9 +67,23 @@ git push
 ssh r0.est.unixpimps.net deploy-goose        # goose (router)
 ssh pakhet.est.unixpimps.net deploy-pakhet    # pakhet (server)
 ssh khosu.unixpimps.net deploy-khosu          # khosu (VPS)
+ssh anubis.unixpimps.net deploy-anubis        # anubis (Kimsufi)
 ```
 
 The `deploy-<hostname>` wrapper checks for a local checkout under any user's `~/git/dotfiles-ng`, runs `git add -A` and builds from it if found, otherwise fetches from GitHub. See @NETWORK.md for IPs.
+
+#### Alternative: `nixos-rebuild` with `--target-host` and `--build-host`
+
+For first-time deploys or when the remote host can't fetch private flake inputs yet, use `nix run nixpkgs#nixos-rebuild` from any machine. Build on a host that has `nix_builder_access_tokens` (e.g. pakhet):
+
+```bash
+nix run nixpkgs#nixos-rebuild -- switch \
+  --flake .#<hostname> \
+  --target-host root@<target> \
+  --build-host root@pakhet.est.unixpimps.net
+```
+
+All remote hosts have `nix_builder_access_tokens` configured via sops for fetching private GitHub flake inputs. For a brand new host, bootstrap the first deploy using `--build-host` pointed at an existing host that already has the tokens decrypted.
 
 ### Test builds (without activating)
 
