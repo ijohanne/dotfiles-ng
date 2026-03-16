@@ -111,6 +111,9 @@ in
   networking = {
     hostName = "goose";
     useDHCP = false;
+    extraHosts = ''
+      ${network.hosts.pakhet.ip} vardrun.unixpimps.net
+    '';
   };
 
   time.timeZone = "Europe/Madrid";
