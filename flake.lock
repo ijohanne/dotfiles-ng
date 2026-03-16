@@ -1,28 +1,5 @@
 {
   "nodes": {
-    "beads": {
-      "inputs": {
-        "flake-utils": "flake-utils_12",
-        "nixpkgs": [
-          "vardrun",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1770525446,
-        "narHash": "sha256-mqtHYUlx69EAZV6EsVffYFXz5E8mg6hojJpT79uoujc=",
-        "owner": "steveyegge",
-        "repo": "beads",
-        "rev": "f76870b9ca2dc3101b8bdb99603ce27d5449c83b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "steveyegge",
-        "ref": "v0.49.5",
-        "repo": "beads",
-        "type": "github"
-      }
-    },
     "blobs": {
       "flake": false,
       "locked": {
@@ -466,24 +443,6 @@
     "flake-utils_12": {
       "inputs": {
         "systems": "systems_17"
-      },
-      "locked": {
-        "lastModified": 1731533236,
-        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "type": "github"
-      }
-    },
-    "flake-utils_13": {
-      "inputs": {
-        "systems": "systems_18"
       },
       "locked": {
         "lastModified": 1731533236,
@@ -2201,21 +2160,6 @@
         "type": "github"
       }
     },
-    "systems_18": {
-      "locked": {
-        "lastModified": 1681028828,
-        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
-        "owner": "nix-systems",
-        "repo": "default",
-        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-systems",
-        "repo": "default",
-        "type": "github"
-      }
-    },
     "systems_2": {
       "locked": {
         "lastModified": 1681028828,
@@ -2500,16 +2444,15 @@
     },
     "vardrun": {
       "inputs": {
-        "beads": "beads",
-        "flake-utils": "flake-utils_13",
+        "flake-utils": "flake-utils_12",
         "nixpkgs": "nixpkgs_12"
       },
       "locked": {
-        "lastModified": 1773677890,
-        "narHash": "sha256-Wu1oE7ZvMqFx8ZPcrdYXyIT4Ddk5+BjQA3w9XplgqzM=",
+        "lastModified": 1773688517,
+        "narHash": "sha256-N9lDAX1RjE66wPnmiprtCmF8mCBKBd5lA/oQVnJIqG0=",
         "owner": "ijohanne",
         "repo": "vardrun",
-        "rev": "f83d7eecc1955eac97e78badf8cf36a32a963e02",
+        "rev": "1ae520b62e28fba5de359171873390b14cb94236",
         "type": "github"
       },
       "original": {
