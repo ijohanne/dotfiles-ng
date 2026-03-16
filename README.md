@@ -93,12 +93,16 @@ sudo nixos-rebuild switch --flake .#goose
 # pakhet (application server)
 sudo nixos-rebuild switch --flake .#pakhet
 
-# anubis (torrent host — deploy from local, see Installation section)
-nix shell nixpkgs#nixos-rebuild -c nixos-rebuild switch \
-  --flake .#anubis --target-host root@5.196.77.4
+# Remote hosts (build on pakhet which has access tokens for private flakes)
+nix run nixpkgs#nixos-rebuild -- switch \
+  --flake .#anubis \
+  --target-host root@anubis.unixpimps.net \
+  --build-host root@pakhet.est.unixpimps.net
 
-# khosu (mail relay VPS)
-sudo nixos-rebuild switch --flake .#khosu
+nix run nixpkgs#nixos-rebuild -- switch \
+  --flake .#khosu \
+  --target-host root@khosu.unixpimps.net \
+  --build-host root@pakhet.est.unixpimps.net
 ```
 
 ## Installation
@@ -228,7 +232,7 @@ Anubis is a dedicated server on OVH Kimsufi (OVH Eco). It uses disko with mdadm 
 
 #### Installation
 
-1. From your local machine:
+1. From your local machine (requires `nix_builder_access_tokens` configured locally for private flake inputs):
    ```bash
    nix run github:nix-community/nixos-anywhere -- \
      --flake .#anubis \
@@ -247,10 +251,12 @@ Anubis is a dedicated server on OVH Kimsufi (OVH Eco). It uses disko with mdadm 
 
 4. Reboot the server from the OVH panel.
 
-5. Once NixOS boots, push the updated secrets:
+5. Once NixOS boots, push the updated secrets and deploy (build on pakhet which has `nix_builder_access_tokens` for private flake inputs):
    ```bash
-   nix shell nixpkgs#nixos-rebuild -c nixos-rebuild switch \
-     --flake .#anubis --target-host root@5.196.77.4
+   nix run nixpkgs#nixos-rebuild -- switch \
+     --flake .#anubis \
+     --target-host root@anubis.unixpimps.net \
+     --build-host root@pakhet.est.unixpimps.net
    ```
 
 #### Disk Layout
@@ -291,7 +297,7 @@ Khosu is a VPS on netcup running as a mail relay. It uses disko for disk partiti
 
 #### Installation
 
-1. From your local machine:
+1. From your local machine (requires `nix_builder_access_tokens` configured locally for private flake inputs):
    ```bash
    nix run github:nix-community/nixos-anywhere -- --flake .#khosu root@159.195.24.170
    ```
@@ -302,10 +308,14 @@ Khosu is a VPS on netcup running as a mail relay. It uses disko for disk partiti
    - Set up GRUB bootloader
    - Reboot automatically
 
-2. After installation completes, the VPS will reboot into NixOS. Deploy:
+2. After installation completes, the VPS will reboot into NixOS. For the first deploy (before sops has decrypted `nix_builder_access_tokens` on the host), build on pakhet:
    ```bash
-   ssh khosu.unixpimps.net deploy-khosu
+   nix run nixpkgs#nixos-rebuild -- switch \
+     --flake .#khosu \
+     --target-host root@khosu.unixpimps.net \
+     --build-host root@pakhet.est.unixpimps.net
    ```
+   Subsequent deploys can use `ssh khosu.unixpimps.net deploy-khosu`.
 
 #### Disk Layout
 
@@ -880,6 +890,12 @@ sops -d secrets/macbook.yaml
    # config.sops.secrets.my_api_key.path
    # Which resolves to: /run/secrets/my_api_key
    ```
+
+#### Private Flake Access Tokens
+
+All remote hosts have `nix_builder_access_tokens` in their sops secrets, which provides GitHub PATs for fetching private flake inputs. This is configured via `nix.extraOptions` with `!include`.
+
+**Bootstrap problem:** A new host can't decrypt its `nix_builder_access_tokens` until it has been deployed with the sops config, but it can't build the config without the tokens. Solution: use `--build-host root@pakhet.est.unixpimps.net` for the first deploy, since pakhet already has decrypted tokens.
 
 #### Adding a New Host
 
