@@ -188,12 +188,6 @@
     group = "beads_dashboard_production";
   };
 
-  sops.secrets.vardrun_mj_password = {
-    mode = "0400";
-    owner = "beads_dashboard_production";
-    group = "beads_dashboard_production";
-  };
-
   # Plausible secrets
   sops.secrets.plausible_secret_key_base = { };
 
