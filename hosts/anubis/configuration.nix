@@ -50,6 +50,7 @@ in
       "backhaul/private_key" = { };
       "qbittorrent/webui_password" = { owner = "qbittorrent"; };
       "acme/cloudflare_api_key" = { owner = "acme"; };
+      nix_builder_access_tokens = { };
     };
   };
 
@@ -71,6 +72,10 @@ in
       host = "anubis";
     })
   ];
+
+  nix.extraOptions = ''
+    !include ${config.sops.secrets.nix_builder_access_tokens.path}
+  '';
 
   time.timeZone = "Europe/Paris";
 

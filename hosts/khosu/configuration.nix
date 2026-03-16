@@ -49,6 +49,12 @@ in
     })
   ];
 
+  sops.secrets.nix_builder_access_tokens = { };
+
+  nix.extraOptions = ''
+    !include ${config.sops.secrets.nix_builder_access_tokens.path}
+  '';
+
   sops = {
     defaultSopsFile = ../../secrets/khosu.yaml;
     age = {

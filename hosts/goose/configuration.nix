@@ -134,6 +134,10 @@ in
     })
   ];
 
+  nix.extraOptions = ''
+    !include ${config.sops.secrets.nix_builder_access_tokens.path}
+  '';
+
   nix.gc.options = lib.mkForce "--delete-older-than 30d";
 
   systemd.services.wan-failover = {
@@ -151,6 +155,8 @@ in
       OnUnitActiveSec = "1min";
     };
   };
+
+  sops.secrets.nix_builder_access_tokens = { };
 
   sops = {
     defaultSopsFile = ../../secrets/goose.yaml;
