@@ -7,7 +7,8 @@
     instances.production = {
       host = "vardrun.unixpimps.net";
       port = 4000;
-      metricsPort = 4001;
+      metricsPort = 4002;
+      grpc.port = 4003;
       listenAddress = "0.0.0.0";
       autoMigrate = true;
 
