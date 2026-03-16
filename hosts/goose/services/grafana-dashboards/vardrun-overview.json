@@ -91,7 +91,7 @@
       "gridPos": { "h": 4, "w": 4, "x": 16, "y": 1 },
       "id": 5,
       "options": { "colorMode": "value", "graphMode": "area", "reduceOptions": { "calcs": ["lastNotNull"] } },
-      "targets": [{ "expr": "prom_ex_beam_memory_allocated_bytes", "legendFormat": "" }],
+      "targets": [{ "expr": "beads_dashboard_prom_ex_beam_memory_allocated_bytes", "legendFormat": "" }],
       "title": "BEAM Memory",
       "type": "stat"
     },
@@ -101,7 +101,7 @@
       "gridPos": { "h": 4, "w": 4, "x": 20, "y": 1 },
       "id": 6,
       "options": { "colorMode": "value", "graphMode": "area", "reduceOptions": { "calcs": ["lastNotNull"] } },
-      "targets": [{ "expr": "prom_ex_beam_process_count", "legendFormat": "" }],
+      "targets": [{ "expr": "beads_dashboard_prom_ex_beam_stats_process_count", "legendFormat": "" }],
       "title": "BEAM Processes",
       "type": "stat"
     },
@@ -359,7 +359,7 @@
       "gridPos": { "h": 8, "w": 12, "x": 0, "y": 60 },
       "id": 70,
       "targets": [
-        { "expr": "rate(prom_ex_phoenix_http_request_duration_milliseconds_count[$__rate_interval])", "legendFormat": "{{route}} ({{status}})" }
+        { "expr": "rate(beads_dashboard_prom_ex_phoenix_http_request_duration_milliseconds_count[$__rate_interval])", "legendFormat": "{{path}} ({{status}})" }
       ],
       "title": "HTTP Request Rate by Route",
       "type": "timeseries"
@@ -369,8 +369,8 @@
       "gridPos": { "h": 8, "w": 12, "x": 12, "y": 60 },
       "id": 71,
       "targets": [
-        { "expr": "histogram_quantile(0.50, rate(prom_ex_phoenix_http_request_duration_milliseconds_bucket[$__rate_interval]))", "legendFormat": "p50 {{route}}" },
-        { "expr": "histogram_quantile(0.95, rate(prom_ex_phoenix_http_request_duration_milliseconds_bucket[$__rate_interval]))", "legendFormat": "p95 {{route}}" }
+        { "expr": "histogram_quantile(0.50, rate(beads_dashboard_prom_ex_phoenix_http_request_duration_milliseconds_bucket[$__rate_interval]))", "legendFormat": "p50 {{path}}" },
+        { "expr": "histogram_quantile(0.95, rate(beads_dashboard_prom_ex_phoenix_http_request_duration_milliseconds_bucket[$__rate_interval]))", "legendFormat": "p95 {{path}}" }
       ],
       "title": "HTTP Latency p50/p95 by Route",
       "type": "timeseries"
@@ -388,11 +388,11 @@
       "gridPos": { "h": 8, "w": 8, "x": 0, "y": 69 },
       "id": 80,
       "targets": [
-        { "expr": "prom_ex_beam_memory_allocated_bytes", "legendFormat": "total" },
-        { "expr": "prom_ex_beam_memory_processes_bytes", "legendFormat": "processes" },
-        { "expr": "prom_ex_beam_memory_ets_bytes", "legendFormat": "ets" },
-        { "expr": "prom_ex_beam_memory_binary_bytes", "legendFormat": "binary" },
-        { "expr": "prom_ex_beam_memory_atom_bytes", "legendFormat": "atom" }
+        { "expr": "beads_dashboard_prom_ex_beam_memory_allocated_bytes", "legendFormat": "total" },
+        { "expr": "beads_dashboard_prom_ex_beam_memory_processes_total_bytes", "legendFormat": "processes" },
+        { "expr": "beads_dashboard_prom_ex_beam_memory_ets_total_bytes", "legendFormat": "ets" },
+        { "expr": "beads_dashboard_prom_ex_beam_memory_binary_total_bytes", "legendFormat": "binary" },
+        { "expr": "beads_dashboard_prom_ex_beam_memory_atom_total_bytes", "legendFormat": "atom" }
       ],
       "title": "BEAM Memory by Type",
       "type": "timeseries"
@@ -402,7 +402,7 @@
       "gridPos": { "h": 8, "w": 8, "x": 8, "y": 69 },
       "id": 81,
       "targets": [
-        { "expr": "prom_ex_beam_process_count", "legendFormat": "Processes" }
+        { "expr": "beads_dashboard_prom_ex_beam_stats_process_count", "legendFormat": "Processes" }
       ],
       "title": "BEAM Process Count",
       "type": "timeseries"
@@ -412,9 +412,9 @@
       "gridPos": { "h": 8, "w": 8, "x": 16, "y": 69 },
       "id": 82,
       "targets": [
-        { "expr": "prom_ex_beam_run_queue_length_total", "legendFormat": "total" },
-        { "expr": "prom_ex_beam_run_queue_length_cpu", "legendFormat": "cpu" },
-        { "expr": "prom_ex_beam_run_queue_length_io", "legendFormat": "io" }
+        { "expr": "sum(beads_dashboard_prom_ex_beam_stats_run_queue_count)", "legendFormat": "total" },
+        { "expr": "beads_dashboard_prom_ex_beam_stats_run_queue_count{type=\"normal\"}", "legendFormat": "cpu" },
+        { "expr": "beads_dashboard_prom_ex_beam_stats_run_queue_count{type=\"dirty\"}", "legendFormat": "io" }
       ],
       "title": "BEAM Run Queue Lengths",
       "type": "timeseries"
@@ -422,7 +422,7 @@
   ],
   "refresh": "30s",
   "schemaVersion": 39,
-  "tags": ["beads", "vardrun"],
+  "tags": ["vardrun"],
   "templating": {
     "list": [
       {
@@ -453,7 +453,7 @@
   "time": { "from": "now-1h", "to": "now" },
   "timepicker": {},
   "timezone": "",
-  "title": "Beads Overview",
-  "uid": "beads-overview",
+  "title": "Vardrun Overview",
+  "uid": "vardrun-overview",
   "version": 1
 }
