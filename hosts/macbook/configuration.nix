@@ -93,14 +93,7 @@ in
     };
 
     taps = [
-      "assimelha/tap"
-      "dicklesworthstone/tap"
       "steipete/tap"
-    ];
-
-    brews = [
-      "assimelha/tap/bdui"
-      "dicklesworthstone/tap/bv"
     ];
 
     casks = [

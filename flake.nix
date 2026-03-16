@@ -82,11 +82,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    beads = {
-      url = "github:steveyegge/beads/v0.49.5";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     ijohanne-nur = {
       url = "github:ijohanne/nur-packages";
     };
@@ -145,7 +140,7 @@
       grpc-proxier,
       pdf-detective,
       claude-code-nix,
-      beads,
+
       ijohanne-nur,
       nixos-mailserver,
       shouldidrinktoday,
@@ -420,12 +415,6 @@
     // flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
-        bd = beads.packages.${system}.default;
-        bd-init = pkgs.writeShellScriptBin "bd-init" ''
-          set -euo pipefail
-          ${bd}/bin/bd init --branch beads-sync "$@"
-          rm -f AGENTS.md
-        '';
         nix-repl-unstable = pkgs.writeShellScriptBin "nix-repl-unstable" ''
           exec nix repl --expr "import (builtins.getFlake \"${nixpkgs}\") { system = \"${system}\"; config.allowUnfree = true; }"
         '';
@@ -513,8 +502,6 @@
             sops
             age
             nix-output-monitor
-            bd
-            bd-init
             ssh-to-age-remote
             nix-repl-unstable
             nix-repl-stable
@@ -529,8 +516,6 @@
             echo "─────────────────────────────────────────────"
             echo "  nix-repl-unstable     nixpkgs unstable repl"
             echo "  nix-repl-stable       nixpkgs stable repl"
-            echo "  bd ready              available issues"
-            echo "  bd list               all issues"
             echo "  jnlp-run <file.jnlp>  launch Kimsufi IP KVM"
             echo "  sops <file>           edit encrypted secret"
             echo "  ssh-to-age-remote     convert SSH host key to age"

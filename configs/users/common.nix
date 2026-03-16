@@ -39,6 +39,5 @@
     yubikey-agent
     age-plugin-yubikey
     inputs.claude-code-nix.packages.${pkgs.system}.claude-code
-    inputs.beads.packages.${pkgs.system}.default
   ];
 }
