@@ -157,35 +157,66 @@
     group = "mercy";
   };
 
-  # Vardrun secrets
-  sops.secrets.vardrun_jwt_secret = {
+  # Vardrun unixpimps secrets
+  sops.secrets.vardrun_unixpimps_jwt_secret = {
     mode = "0400";
-    owner = "beads_dashboard_production";
-    group = "beads_dashboard_production";
+    owner = "beads_dashboard_unixpimps";
+    group = "beads_dashboard_unixpimps";
   };
 
-  sops.secrets.vardrun_pat_encryption_key = {
+  sops.secrets.vardrun_unixpimps_pat_encryption_key = {
     mode = "0400";
-    owner = "beads_dashboard_production";
-    group = "beads_dashboard_production";
+    owner = "beads_dashboard_unixpimps";
+    group = "beads_dashboard_unixpimps";
   };
 
-  sops.secrets.vardrun_secret_key_base = {
+  sops.secrets.vardrun_unixpimps_secret_key_base = {
     mode = "0400";
-    owner = "beads_dashboard_production";
-    group = "beads_dashboard_production";
+    owner = "beads_dashboard_unixpimps";
+    group = "beads_dashboard_unixpimps";
   };
 
-  sops.secrets.vardrun_global_pat = {
+  sops.secrets.vardrun_unixpimps_global_pat = {
     mode = "0400";
-    owner = "beads_dashboard_production";
-    group = "beads_dashboard_production";
+    owner = "beads_dashboard_unixpimps";
+    group = "beads_dashboard_unixpimps";
   };
 
-  sops.secrets.vardrun_ij_password = {
+  sops.secrets.vardrun_unixpimps_ij_password = {
     mode = "0400";
-    owner = "beads_dashboard_production";
-    group = "beads_dashboard_production";
+    owner = "beads_dashboard_unixpimps";
+    group = "beads_dashboard_unixpimps";
+  };
+
+  # Vardrun opsplaza secrets
+  sops.secrets.vardrun_opsplaza_jwt_secret = {
+    mode = "0400";
+    owner = "beads_dashboard_opsplaza";
+    group = "beads_dashboard_opsplaza";
+  };
+
+  sops.secrets.vardrun_opsplaza_pat_encryption_key = {
+    mode = "0400";
+    owner = "beads_dashboard_opsplaza";
+    group = "beads_dashboard_opsplaza";
+  };
+
+  sops.secrets.vardrun_opsplaza_secret_key_base = {
+    mode = "0400";
+    owner = "beads_dashboard_opsplaza";
+    group = "beads_dashboard_opsplaza";
+  };
+
+  sops.secrets.vardrun_opsplaza_global_pat = {
+    mode = "0400";
+    owner = "beads_dashboard_opsplaza";
+    group = "beads_dashboard_opsplaza";
+  };
+
+  sops.secrets.vardrun_opsplaza_ij_password = {
+    mode = "0400";
+    owner = "beads_dashboard_opsplaza";
+    group = "beads_dashboard_opsplaza";
   };
 
   # Plausible secrets
