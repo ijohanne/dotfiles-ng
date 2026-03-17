@@ -21,6 +21,10 @@
       pkgs.nginxModules.geoip2
     ];
     appendHttpConfig = ''
+      proxy_headers_hash_max_size 1024;
+      proxy_headers_hash_bucket_size 128;
+
+
       geoip2 /var/lib/geoip-databases/GeoLite2-Country.mmdb {
         auto_reload 5m;
         $geoip2_metadata_country_build metadata build_epoch;
