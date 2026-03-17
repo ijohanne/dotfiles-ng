@@ -18,6 +18,8 @@
     "net.core.default_qdisc" = "fq";
     "net.ipv4.tcp_no_metrics_save" = 1;
     "net.core.netdev_max_backlog" = 250000;
+    "net.netfilter.nf_flowtable_tcp_timeout" = 300;
+    "net.netfilter.nf_flowtable_udp_timeout" = 30;
   };
 
   networking = {
