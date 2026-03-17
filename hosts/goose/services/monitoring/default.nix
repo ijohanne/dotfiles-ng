@@ -19,5 +19,6 @@
     (import ./tplink-p110.nix { inherit network; })
     (import ./proton-port-sync.nix { inherit network; })
     (import ./vardrun.nix { inherit network; })
+    (import ./nginx.nix { inherit network; })
   ];
 }

@@ -58,6 +58,11 @@
     '';
   };
 
+  services.prometheus.exporters.nginx = {
+    enable = true;
+    scrapeUri = "http://127.0.0.1/nginx_status";
+  };
+
   networking.firewall.allowedTCPPorts = [
     80
     443
@@ -67,5 +72,6 @@
     4002
     4012
     9090
+    9113
   ];
 }
