@@ -103,7 +103,7 @@
       "options": { "colorMode": "value", "graphMode": "none", "reduceOptions": { "calcs": ["lastNotNull"] }, "textMode": "value" },
       "title": "Databases",
       "type": "stat",
-      "targets": [ { "expr": "count(pg_db_size_bytes{instance=\"$instance\", datname!~\"template.*\"})", "refId": "A" } ]
+      "targets": [ { "expr": "count(pg_size_bytes{instance=\"$instance\", datname!~\"template.*\"})", "refId": "A" } ]
     },
     {
       "datasource": { "type": "prometheus", "uid": "${datasource}" },
@@ -118,7 +118,7 @@
       "options": { "colorMode": "value", "graphMode": "area", "reduceOptions": { "calcs": ["lastNotNull"] }, "textMode": "value" },
       "title": "Total DB Size",
       "type": "stat",
-      "targets": [ { "expr": "sum(pg_db_size_bytes{instance=\"$instance\", datname!~\"template.*\"})", "refId": "A" } ]
+      "targets": [ { "expr": "sum(pg_size_bytes{instance=\"$instance\", datname!~\"template.*\"})", "refId": "A" } ]
     },
     {
       "datasource": { "type": "prometheus", "uid": "${datasource}" },
@@ -386,7 +386,7 @@
       "title": "Database Sizes",
       "type": "bargauge",
       "targets": [
-        { "expr": "pg_db_size_bytes{instance=\"$instance\", datname!~\"template.*\"}", "refId": "A", "legendFormat": "{{datname}}" }
+        { "expr": "pg_size_bytes{instance=\"$instance\", datname!~\"template.*\"}", "refId": "A", "legendFormat": "{{datname}}" }
       ]
     },
     {
@@ -403,7 +403,7 @@
       "title": "Database Size Over Time",
       "type": "timeseries",
       "targets": [
-        { "expr": "pg_db_size_bytes{instance=\"$instance\", datname!~\"template.*\"}", "refId": "A", "legendFormat": "{{datname}}" }
+        { "expr": "pg_size_bytes{instance=\"$instance\", datname!~\"template.*\"}", "refId": "A", "legendFormat": "{{datname}}" }
       ]
     },
     {
@@ -427,7 +427,7 @@
       "title": "WAL Generation Rate",
       "type": "timeseries",
       "targets": [
-        { "expr": "rate(pg_wal_lsn{instance=\"$instance\"}[$__rate_interval])", "refId": "A", "legendFormat": "WAL bytes/s" }
+        { "expr": "rate(pg_wal_bytes{instance=\"$instance\"}[$__rate_interval])", "refId": "A", "legendFormat": "WAL bytes/s" }
       ]
     },
     {
@@ -444,8 +444,8 @@
       "title": "Checkpoints / sec",
       "type": "timeseries",
       "targets": [
-        { "expr": "rate(pg_checkpoint_timed{instance=\"$instance\"}[$__rate_interval])", "refId": "A", "legendFormat": "timed" },
-        { "expr": "rate(pg_checkpoint_requested{instance=\"$instance\"}[$__rate_interval])", "refId": "B", "legendFormat": "requested" }
+        { "expr": "rate(pg_checkpointer_timed{instance=\"$instance\"}[$__rate_interval])", "refId": "A", "legendFormat": "timed" },
+        { "expr": "rate(pg_checkpointer_req{instance=\"$instance\"}[$__rate_interval])", "refId": "B", "legendFormat": "requested" }
       ]
     },
     {
@@ -462,8 +462,8 @@
       "title": "Checkpoint Duration",
       "type": "timeseries",
       "targets": [
-        { "expr": "rate(pg_checkpoint_write_time{instance=\"$instance\"}[$__rate_interval]) / 1000", "refId": "A", "legendFormat": "write time" },
-        { "expr": "rate(pg_checkpoint_sync_time{instance=\"$instance\"}[$__rate_interval]) / 1000", "refId": "B", "legendFormat": "sync time" }
+        { "expr": "rate(pg_checkpointer_write_time{instance=\"$instance\"}[$__rate_interval]) / 1000", "refId": "A", "legendFormat": "write time" },
+        { "expr": "rate(pg_checkpointer_sync_time{instance=\"$instance\"}[$__rate_interval]) / 1000", "refId": "B", "legendFormat": "sync time" }
       ]
     },
     {
@@ -537,15 +537,15 @@
       "title": "Autovacuum Workers Active",
       "type": "timeseries",
       "targets": [
-        { "expr": "pg_vacuuming_count{instance=\"$instance\"}", "refId": "A", "legendFormat": "vacuuming" },
-        { "expr": "pg_indexing_count{instance=\"$instance\"}", "refId": "B", "legendFormat": "indexing" }
+        { "expr": "sum(rate(pg_table_autovacuum_count{instance=\"$instance\"}[$__rate_interval]))", "refId": "A", "legendFormat": "autovacuum" },
+        { "expr": "sum(rate(pg_table_autoanalyze_count{instance=\"$instance\"}[$__rate_interval]))", "refId": "B", "legendFormat": "autoanalyze" }
       ]
     },
     {
       "collapsed": false,
       "gridPos": { "h": 1, "w": 24, "x": 0, "y": 85 },
       "id": 190,
-      "title": "Temp Files & Index Bloat",
+      "title": "Temp Files & Table Sizes",
       "type": "row"
     },
     {
@@ -569,48 +569,51 @@
       "datasource": { "type": "prometheus", "uid": "${datasource}" },
       "fieldConfig": {
         "defaults": {
-          "unit": "percentunit",
-          "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": null }, { "color": "yellow", "value": 0.3 }, { "color": "red", "value": 0.5 } ] }
+          "unit": "bytes",
+          "thresholds": { "mode": "absolute", "steps": [ { "color": "blue", "value": null } ] }
         }
       },
       "gridPos": { "h": 8, "w": 12, "x": 12, "y": 86 },
       "id": 91,
       "options": { "displayMode": "gradient", "orientation": "horizontal", "reduceOptions": { "calcs": ["lastNotNull"] } },
-      "title": "Table Bloat Ratio (top 10)",
+      "title": "Top Tables by Size",
       "type": "bargauge",
       "targets": [
-        { "expr": "topk(10, pg_table_bloat_ratio{instance=\"$instance\"})", "refId": "A", "legendFormat": "{{datname}}.{{nspname}}.{{relname}}" }
+        { "expr": "topk(10, pg_table_size_bytes{instance=\"$instance\"})", "refId": "A", "legendFormat": "{{datname}}.{{nspname}}.{{relname}}" }
       ]
     },
     {
       "collapsed": false,
       "gridPos": { "h": 1, "w": 24, "x": 0, "y": 94 },
       "id": 200,
-      "title": "Replication Slots",
+      "title": "Sessions & WAL Archiver",
       "type": "row"
     },
     {
       "datasource": { "type": "prometheus", "uid": "${datasource}" },
       "fieldConfig": {
         "defaults": {
-          "unit": "bytes",
+          "unit": "ops",
           "custom": { "fillOpacity": 10 }
         }
       },
       "gridPos": { "h": 8, "w": 12, "x": 0, "y": 95 },
       "id": 95,
-      "options": { "legend": { "displayMode": "table", "calcs": ["lastNotNull", "max"] }, "tooltip": { "mode": "multi" } },
-      "title": "Replication Slot Retained WAL",
+      "options": { "legend": { "displayMode": "table", "calcs": ["mean", "max"] }, "tooltip": { "mode": "multi" } },
+      "title": "Sessions / sec",
       "type": "timeseries",
       "targets": [
-        { "expr": "pg_slot_retained_bytes{instance=\"$instance\"}", "refId": "A", "legendFormat": "{{slot_name}}" }
+        { "expr": "sum(rate(pg_db_sessions{instance=\"$instance\"}[$__rate_interval]))", "refId": "A", "legendFormat": "total" },
+        { "expr": "sum(rate(pg_db_sessions_abandoned{instance=\"$instance\"}[$__rate_interval]))", "refId": "B", "legendFormat": "abandoned" },
+        { "expr": "sum(rate(pg_db_sessions_fatal{instance=\"$instance\"}[$__rate_interval]))", "refId": "C", "legendFormat": "fatal" },
+        { "expr": "sum(rate(pg_db_sessions_killed{instance=\"$instance\"}[$__rate_interval]))", "refId": "D", "legendFormat": "killed" }
       ]
     },
     {
       "datasource": { "type": "prometheus", "uid": "${datasource}" },
       "fieldConfig": {
         "defaults": {
-          "unit": "bytes",
+          "unit": "ops",
           "custom": { "fillOpacity": 10 }
         }
       },
@@ -620,7 +623,7 @@
       "title": "WAL Archiver",
       "type": "timeseries",
       "targets": [
-        { "expr": "rate(pg_archiver_archived_count{instance=\"$instance\"}[$__rate_interval])", "refId": "A", "legendFormat": "archived/s" },
+        { "expr": "rate(pg_archiver_finish_count{instance=\"$instance\"}[$__rate_interval])", "refId": "A", "legendFormat": "archived/s" },
         { "expr": "rate(pg_archiver_failed_count{instance=\"$instance\"}[$__rate_interval])", "refId": "B", "legendFormat": "failed/s" }
       ]
     }
