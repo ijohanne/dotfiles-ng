@@ -1,7 +1,7 @@
 { config, inputs, ... }:
 
 {
-  services.beadsDashboard = {
+  services.vardrun = {
     package = inputs.vardrun.packages.x86_64-linux.default;
 
     instances.unixpimps = {

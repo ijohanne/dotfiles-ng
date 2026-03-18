@@ -160,63 +160,63 @@
   # Vardrun unixpimps secrets
   sops.secrets.vardrun_unixpimps_jwt_secret = {
     mode = "0400";
-    owner = "beads_dashboard_unixpimps";
-    group = "beads_dashboard_unixpimps";
+    owner = "vardrun_unixpimps";
+    group = "vardrun_unixpimps";
   };
 
   sops.secrets.vardrun_unixpimps_pat_encryption_key = {
     mode = "0400";
-    owner = "beads_dashboard_unixpimps";
-    group = "beads_dashboard_unixpimps";
+    owner = "vardrun_unixpimps";
+    group = "vardrun_unixpimps";
   };
 
   sops.secrets.vardrun_unixpimps_secret_key_base = {
     mode = "0400";
-    owner = "beads_dashboard_unixpimps";
-    group = "beads_dashboard_unixpimps";
+    owner = "vardrun_unixpimps";
+    group = "vardrun_unixpimps";
   };
 
   sops.secrets.vardrun_unixpimps_global_pat = {
     mode = "0400";
-    owner = "beads_dashboard_unixpimps";
-    group = "beads_dashboard_unixpimps";
+    owner = "vardrun_unixpimps";
+    group = "vardrun_unixpimps";
   };
 
   sops.secrets.vardrun_unixpimps_ij_password = {
     mode = "0400";
-    owner = "beads_dashboard_unixpimps";
-    group = "beads_dashboard_unixpimps";
+    owner = "vardrun_unixpimps";
+    group = "vardrun_unixpimps";
   };
 
   # Vardrun opsplaza secrets
   sops.secrets.vardrun_opsplaza_jwt_secret = {
     mode = "0400";
-    owner = "beads_dashboard_opsplaza";
-    group = "beads_dashboard_opsplaza";
+    owner = "vardrun_opsplaza";
+    group = "vardrun_opsplaza";
   };
 
   sops.secrets.vardrun_opsplaza_pat_encryption_key = {
     mode = "0400";
-    owner = "beads_dashboard_opsplaza";
-    group = "beads_dashboard_opsplaza";
+    owner = "vardrun_opsplaza";
+    group = "vardrun_opsplaza";
   };
 
   sops.secrets.vardrun_opsplaza_secret_key_base = {
     mode = "0400";
-    owner = "beads_dashboard_opsplaza";
-    group = "beads_dashboard_opsplaza";
+    owner = "vardrun_opsplaza";
+    group = "vardrun_opsplaza";
   };
 
   sops.secrets.vardrun_opsplaza_global_pat = {
     mode = "0400";
-    owner = "beads_dashboard_opsplaza";
-    group = "beads_dashboard_opsplaza";
+    owner = "vardrun_opsplaza";
+    group = "vardrun_opsplaza";
   };
 
   sops.secrets.vardrun_opsplaza_ij_password = {
     mode = "0400";
-    owner = "beads_dashboard_opsplaza";
-    group = "beads_dashboard_opsplaza";
+    owner = "vardrun_opsplaza";
+    group = "vardrun_opsplaza";
   };
 
   # Plausible secrets
