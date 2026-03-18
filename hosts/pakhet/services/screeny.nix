@@ -17,7 +17,7 @@
       frontendPackage = inputs.screeny.packages.x86_64-linux.screeny-frontend;
 
       backend = {
-        package = inputs.screeny.packages.x86_64-linux.screeny-backend;
+        package = inputs.screeny.packages.x86_64-linux.screeny-backend-postgres;
         host = "0.0.0.0";
         port = 3002;
         databaseType = "postgres";
@@ -59,7 +59,7 @@
       frontendPackage = inputs.screeny.packages.x86_64-linux.screeny-frontend;
 
       backend = {
-        package = inputs.screeny.packages.x86_64-linux.screeny-backend;
+        package = inputs.screeny.packages.x86_64-linux.screeny-backend-postgres;
         host = "0.0.0.0";
         port = 3006;
         databaseType = "postgres";
@@ -89,7 +89,7 @@
       frontendPackage = inputs.screeny.packages.x86_64-linux.screeny-frontend;
 
       backend = {
-        package = inputs.screeny.packages.x86_64-linux.screeny-backend;
+        package = inputs.screeny.packages.x86_64-linux.screeny-backend-postgres;
         host = "0.0.0.0";
         port = 3004;
         databaseType = "postgres";
@@ -113,7 +113,7 @@
 
     geoip = {
       enable = true;
-      package = inputs.screeny.packages.x86_64-linux.screeny-backend;
+      package = inputs.screeny.packages.x86_64-linux.screeny-backend-postgres;
       licenseKeyFile = config.sops.templates."screeny-maxmind-env".path;
     };
 
