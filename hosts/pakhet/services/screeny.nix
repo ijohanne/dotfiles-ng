@@ -11,13 +11,13 @@
   };
 
   services.screeny = {
-    frontendPackage = inputs.screeny.packages.x86_64-linux.screeny-frontend;
-
     instances.k111-agw = {
       domain = "screeny.unixpimps.net";
       clanType = "main";
+      frontendPackage = inputs.screeny.packages.x86_64-linux.screeny-frontend;
 
       backend = {
+        package = inputs.screeny.packages.x86_64-linux.screeny-backend;
         host = "0.0.0.0";
         port = 3002;
         databaseType = "postgres";
@@ -56,8 +56,10 @@
     instances.k111-test = {
       domain = "screeny-test.unixpimps.net";
       clanType = "main";
+      frontendPackage = inputs.screeny.packages.x86_64-linux.screeny-frontend;
 
       backend = {
+        package = inputs.screeny.packages.x86_64-linux.screeny-backend;
         host = "0.0.0.0";
         port = 3006;
         databaseType = "postgres";
@@ -84,8 +86,10 @@
     instances.k131-god = {
       domain = "screeny-god.unixpimps.net";
       clanType = "main";
+      frontendPackage = inputs.screeny.packages.x86_64-linux.screeny-frontend;
 
       backend = {
+        package = inputs.screeny.packages.x86_64-linux.screeny-backend;
         host = "0.0.0.0";
         port = 3004;
         databaseType = "postgres";
@@ -107,13 +111,9 @@
       };
     };
 
-    microEvents = {
-      enable = true;
-      package = inputs.screeny.packages.x86_64-linux.screeny-backend-sqlite;
-    };
-
     geoip = {
       enable = true;
+      package = inputs.screeny.packages.x86_64-linux.screeny-backend;
       licenseKeyFile = config.sops.templates."screeny-maxmind-env".path;
     };
 

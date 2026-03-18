@@ -235,11 +235,6 @@
             themailer-wrapper.nixosModules.default
             perlpimpnet.nixosModules.default
             vardrun.nixosModules.default
-            {
-              nixpkgs.overlays = [
-                screeny.overlays.default
-              ];
-            }
             ./hosts/pakhet/configuration.nix
           ] ++ mkHomeManagerModule {
             homeManagerModule = home-manager-stable.nixosModules.home-manager;
