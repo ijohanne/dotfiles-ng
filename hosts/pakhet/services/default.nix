@@ -30,6 +30,7 @@
     ./perlpimpnet.nix
     ./vardrun.nix
     (import ./node-exporter.nix { inherit network; })
+    ./pg-exporter.nix
   ];
 
   sops.secrets.nix_builder_access_tokens = { };

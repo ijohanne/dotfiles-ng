@@ -226,6 +226,7 @@
           modules = [
             sops-nix.nixosModules.sops
             nixos-mailserver.nixosModules.default
+            ijohanne-nur.nixosModules.pg-exporter
             screeny.nixosModules.default
             mercy.nixosModules.default
             grpc-proxier.nixosModules.default

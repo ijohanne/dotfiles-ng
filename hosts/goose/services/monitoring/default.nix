@@ -20,5 +20,6 @@
     (import ./proton-port-sync.nix { inherit network; })
     (import ./vardrun.nix { inherit network; })
     (import ./nginx.nix { inherit network; })
+    (import ./postgres.nix { inherit network; })
   ];
 }
