@@ -1036,11 +1036,11 @@
         "ts3exporter": "ts3exporter"
       },
       "locked": {
-        "lastModified": 1773868512,
-        "narHash": "sha256-6hwqJACoGWQybZ30QKj/FQrTz/7jsdE+Ovz/y6+LpvY=",
+        "lastModified": 1773868763,
+        "narHash": "sha256-EfsRMxA1y2QsKHpbFuW2mwyzYDjgXNVhCJRZdutYZVQ=",
         "owner": "ijohanne",
         "repo": "nur-packages",
-        "rev": "f12ed279ffa7afb0ffcd7d82b9f7513b56edd924",
+        "rev": "c024ca67f1bffc20e38a1a3221bb895bc67e3bf9",
         "type": "github"
       },
       "original": {

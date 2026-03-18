@@ -8,6 +8,7 @@
     port = 9630;
     listenAddress = "0.0.0.0";
     autoDiscovery = true;
+    user = "postgres";
     environmentFile = config.sops.secrets.pg-exporter-env.path;
 
     defaultCollectors = true;
