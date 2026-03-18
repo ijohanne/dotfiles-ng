@@ -410,6 +410,7 @@
     // flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
+        pkgs-stable = nixpkgs-stable.legacyPackages.${system};
         nix-repl-unstable = pkgs.writeShellScriptBin "nix-repl-unstable" ''
           exec nix repl --expr "import (builtins.getFlake \"${nixpkgs}\") { system = \"${system}\"; config.allowUnfree = true; }"
         '';
@@ -478,14 +479,182 @@
           cargoLock.lockFile = ./tools/setup-template/Cargo.lock;
           nativeBuildInputs = [ rustToolchain ];
         };
+
+        pgUpgradeScripts = pkgs.lib.optionalAttrs (system == "x86_64-linux") (
+          let
+            pg14 = pkgs-stable.postgresql_14;
+            pg18 = pkgs-stable.postgresql_18;
+            oldDir = "/var/lib/postgresql/14";
+            newDir = "/var/lib/postgresql/18";
+          in
+          {
+            postgresql-upgrade-14-18-step1 = pkgs.writeShellScriptBin "postgresql-upgrade-14-18-step1" ''
+              set -euo pipefail
+
+              echo "=== Step 1: Backup and preflight check ==="
+
+              [[ $EUID -eq 0 ]] || { echo "Run as root"; exit 1; }
+
+              echo "Checking current checksum status..."
+              sudo -u postgres ${pg14}/bin/pg_controldata ${oldDir} | grep -i checksum
+
+              echo ""
+              echo "Checking for MD5 passwords..."
+              sudo -u postgres ${pg14}/bin/psql -c "SELECT rolname, CASE WHEN rolpassword LIKE 'md5%' THEN 'MD5 (migrate to SCRAM!)' ELSE 'OK' END AS auth FROM pg_authid WHERE rolpassword IS NOT NULL;"
+
+              echo ""
+              echo "Checking for expression indexes..."
+              sudo -u postgres ${pg14}/bin/psql -At -c "SELECT schemaname || '.' || indexname || ': ' || indexdef FROM pg_indexes WHERE indexdef ~ '\\(.*\\('" 2>/dev/null || true
+
+              echo ""
+              echo "Checking for FTS indexes..."
+              sudo -u postgres ${pg14}/bin/psql -At -c "SELECT schemaname || '.' || indexname FROM pg_indexes WHERE indexdef LIKE '%tsvector%' OR indexdef LIKE '%gin%' OR indexdef LIKE '%gist%'" 2>/dev/null || true
+
+              echo ""
+              echo "Taking pg_dumpall backup..."
+              mkdir -p /var/backup
+              sudo -u postgres ${pg14}/bin/pg_dumpall > "/var/backup/postgresql-14-pre-upgrade-$(date +%Y%m%d).sql"
+              echo "Backup saved to /var/backup/"
+
+              echo ""
+              echo "Listing databases for reference..."
+              sudo -u postgres ${pg14}/bin/psql -l
+
+              echo ""
+              echo "Stopping PostgreSQL..."
+              systemctl stop postgresql.service
+
+              echo "Creating socket directory..."
+              mkdir -p /var/run/postgresql
+              chown postgres:postgres /var/run/postgresql
+
+              checksum_status=$(sudo -u postgres ${pg14}/bin/pg_controldata ${oldDir} | grep "Data page checksum" | awk '{print $NF}')
+              initdb_flags=""
+              if [ "$checksum_status" = "0" ] || echo "$checksum_status" | grep -qi "off\|disabled"; then
+                echo "Old cluster has checksums DISABLED — passing --no-data-checksums to initdb"
+                initdb_flags="--no-data-checksums"
+              fi
+
+              echo "Initializing new data directory..."
+              sudo -u postgres ${pg18}/bin/initdb $initdb_flags -D ${newDir}
+
+              echo "Running pg_upgrade --check (dry run)..."
+              cd /var/lib/postgresql
+              sudo -u postgres ${pg18}/bin/pg_upgrade \
+                --socketdir=/var/run/postgresql \
+                --old-bindir=${pg14}/bin \
+                --new-bindir=${pg18}/bin \
+                --old-datadir=${oldDir} \
+                --new-datadir=${newDir} \
+                --check
+
+              echo ""
+              echo "=== Preflight passed. Proceed to step 2. ==="
+              echo "NOTE: PostgreSQL is stopped. If aborting, run: rm -rf ${newDir} && systemctl start postgresql.service"
+            '';
+
+            postgresql-upgrade-14-18-step2 = pkgs.writeShellScriptBin "postgresql-upgrade-14-18-step2" ''
+              set -euo pipefail
+
+              echo "=== Step 2: Run pg_upgrade ==="
+
+              [[ $EUID -eq 0 ]] || { echo "Run as root"; exit 1; }
+
+              echo "Ensuring PostgreSQL is stopped..."
+              systemctl stop postgresql.service 2>/dev/null || true
+
+              mkdir -p /var/run/postgresql
+              chown postgres:postgres /var/run/postgresql
+
+              echo "Running pg_upgrade..."
+              cd /var/lib/postgresql
+              sudo -u postgres ${pg18}/bin/pg_upgrade \
+                --socketdir=/var/run/postgresql \
+                --old-bindir=${pg14}/bin \
+                --new-bindir=${pg18}/bin \
+                --old-datadir=${oldDir} \
+                --new-datadir=${newDir}
+
+              echo ""
+              echo "=== pg_upgrade completed. ==="
+              echo ""
+              echo "Next steps:"
+              echo "  1. Update hosts/pakhet/services/postgresql.nix to set package = pkgs.postgresql_18"
+              echo "  2. Commit, push, deploy-pakhet"
+              echo "  3. Run step 3 for post-upgrade verification"
+            '';
+
+            postgresql-upgrade-14-18-step3 = pkgs.writeShellScriptBin "postgresql-upgrade-14-18-step3" ''
+              set -euo pipefail
+
+              echo "=== Step 3: Post-upgrade verification ==="
+
+              [[ $EUID -eq 0 ]] || { echo "Run as root"; exit 1; }
+
+              echo "Checking PostgreSQL service status..."
+              systemctl status postgresql.service --no-pager
+
+              echo ""
+              echo "Checking PostgreSQL version..."
+              sudo -u postgres ${pg18}/bin/psql -c "SELECT version();"
+
+              echo ""
+              echo "Listing databases..."
+              sudo -u postgres ${pg18}/bin/psql -l
+
+              if [ -f /var/lib/postgresql/update_extensions.sql ]; then
+                echo ""
+                echo "Applying extension updates..."
+                sudo -u postgres ${pg18}/bin/psql -f /var/lib/postgresql/update_extensions.sql
+              fi
+
+              echo ""
+              echo "Reindexing all databases (required for FTS collation changes in PG18)..."
+              for db in $(sudo -u postgres ${pg18}/bin/psql -At -c "SELECT datname FROM pg_database WHERE datistemplate = false;"); do
+                echo "  Reindexing $db..."
+                sudo -u postgres ${pg18}/bin/reindexdb "$db" || echo "  WARNING: reindex of $db failed"
+              done
+
+              echo ""
+              echo "Checking for MD5 passwords (deprecated in PG18)..."
+              sudo -u postgres ${pg18}/bin/psql -c "SELECT rolname, CASE WHEN rolpassword LIKE 'md5%' THEN 'MD5 — MIGRATE TO SCRAM!' ELSE 'SCRAM (ok)' END AS auth FROM pg_authid WHERE rolpassword IS NOT NULL;"
+
+              echo ""
+              echo "Running ANALYZE on all databases..."
+              sudo -u postgres ${pg18}/bin/vacuumdb --all --analyze-only
+
+              echo ""
+              echo "Checking all dependent services are healthy..."
+              for svc in screeny-k111-agw screeny-k111-test screeny-k131-god screeny-geoip vardrun-unixpimps vardrun-opsplaza plausible; do
+                status=$(systemctl is-active "$svc" 2>/dev/null || echo "not found")
+                printf "  %-25s %s\n" "$svc" "$status"
+              done
+
+              echo ""
+              echo "=== Verification complete ==="
+              echo ""
+              echo "If everything looks good:"
+              echo "  1. Remove old data directory: rm -rf ${oldDir}"
+              echo "  2. Delete pg_upgrade logs/scripts in /var/lib/postgresql/ (delete_old_cluster.sh, etc.)"
+              echo "  3. If MD5 passwords were found, migrate them to SCRAM-SHA-256"
+            '';
+          }
+        );
       in
       {
-        packages.setup-template = setup-template;
+        packages = {
+          setup-template = setup-template;
+        } // pgUpgradeScripts;
 
-        apps.setup-template = {
+        apps = {
+          setup-template = {
+            type = "app";
+            program = "${setup-template}/bin/setup-template";
+          };
+        } // builtins.mapAttrs (name: pkg: {
           type = "app";
-          program = "${setup-template}/bin/setup-template";
-        };
+          program = "${pkg}/bin/${name}";
+        }) pgUpgradeScripts;
 
         checks.setup-template = setup-template.overrideAttrs (old: {
           doCheck = true;
