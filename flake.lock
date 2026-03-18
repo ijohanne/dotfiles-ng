@@ -1029,17 +1029,18 @@
         "nvim-tree-docs": "nvim-tree-docs",
         "oh-my-fish-plugin-foreign-env": "oh-my-fish-plugin-foreign-env",
         "oh-my-fish-plugin-ssh": "oh-my-fish-plugin-ssh",
+        "pg-exporter": "pg-exporter",
         "prometheus-tplink-p110-exporter": "prometheus-tplink-p110-exporter",
         "sddm-chili": "sddm-chili",
         "sddm-sugar-dark": "sddm-sugar-dark",
         "ts3exporter": "ts3exporter"
       },
       "locked": {
-        "lastModified": 1773349515,
-        "narHash": "sha256-kc2Lp9WBLhfIKIhGV0zXrqKfO6H2wI3x2nxPD8p2OeM=",
+        "lastModified": 1773868512,
+        "narHash": "sha256-6hwqJACoGWQybZ30QKj/FQrTz/7jsdE+Ovz/y6+LpvY=",
         "owner": "ijohanne",
         "repo": "nur-packages",
-        "rev": "fd092e304443d0eb71ee92eab28db5b8cb5711de",
+        "rev": "f12ed279ffa7afb0ffcd7d82b9f7513b56edd924",
         "type": "github"
       },
       "original": {
@@ -1683,6 +1684,23 @@
       "original": {
         "owner": "ijohanne",
         "repo": "perlpimpnet",
+        "type": "github"
+      }
+    },
+    "pg-exporter": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1770896005,
+        "narHash": "sha256-MnnxYXb6fwo9hjTCxpAlSon1d9m3O/OmjsasDSyJYtg=",
+        "owner": "pgsty",
+        "repo": "pg_exporter",
+        "rev": "c75dd09e84a205f70856bea8ce0062c081838026",
+        "type": "github"
+      },
+      "original": {
+        "owner": "pgsty",
+        "ref": "v1.2.0",
+        "repo": "pg_exporter",
         "type": "github"
       }
     },
