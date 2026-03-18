@@ -1,5 +1,8 @@
 { config, inputs, ... }:
 
+let
+  geoipDb = "/var/lib/geoip-databases/GeoLite2-Country.mmdb";
+in
 {
   services.vardrun = {
     package = inputs.vardrun.packages.x86_64-linux.default;
@@ -16,6 +19,11 @@
       jwtSecretFile = config.sops.secrets.vardrun_unixpimps_jwt_secret.path;
       repoSecretKeyFile = config.sops.secrets.vardrun_unixpimps_pat_encryption_key.path;
       defaultPatFile = config.sops.secrets.vardrun_unixpimps_global_pat.path;
+
+      geoip = {
+        enable = true;
+        databaseFile = geoipDb;
+      };
 
       users = [
         {
@@ -44,6 +52,11 @@
       repoSecretKeyFile = config.sops.secrets.vardrun_opsplaza_pat_encryption_key.path;
       defaultPatFile = config.sops.secrets.vardrun_opsplaza_global_pat.path;
 
+      geoip = {
+        enable = true;
+        databaseFile = geoipDb;
+      };
+
       users = [
         {
           username = "ij";
@@ -58,4 +71,7 @@
       };
     };
   };
+
+  systemd.services.vardrun-unixpimps.after = [ "geoip-updater-setup.service" ];
+  systemd.services.vardrun-opsplaza.after = [ "geoip-updater-setup.service" ];
 }
