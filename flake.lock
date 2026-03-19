@@ -2466,15 +2466,15 @@
         "nixpkgs": "nixpkgs_12"
       },
       "locked": {
-        "lastModified": 1773861902,
-        "narHash": "sha256-/BXVKe552RrNEpj3HREULGGJ040VDnAOKqEYHqtIHMs=",
-        "owner": "ijohanne",
+        "lastModified": 1773921951,
+        "narHash": "sha256-S1FGRftrpDeDNlUjdG0ERNB32KFTVGj4GwlxFnXvN9U=",
+        "owner": "uptimeplaza",
         "repo": "vardrun",
-        "rev": "6fd3d12b2037e3fb563917f329ee3d2835455b0e",
+        "rev": "1e5a6d96e57e63f2166b0476071e45cbe7dcb4f4",
         "type": "github"
       },
       "original": {
-        "owner": "ijohanne",
+        "owner": "uptimeplaza",
         "repo": "vardrun",
         "type": "github"
       }

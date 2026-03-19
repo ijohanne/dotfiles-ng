@@ -117,7 +117,7 @@
     };
 
     vardrun = {
-      url = "github:ijohanne/vardrun";
+      url = "github:uptimeplaza/vardrun";
     };
   };
 
