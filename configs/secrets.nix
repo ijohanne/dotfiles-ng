@@ -23,6 +23,9 @@ in
         mode = "0600";
       };
       nix_builder_access_tokens = { };
+      gitea_homebrew_api_token = {
+        owner = user.username;
+      };
     };
   };
 

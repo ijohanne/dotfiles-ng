@@ -61,6 +61,9 @@
         end
         set -g fish_greeting ""
         set -gx SOPS_AGE_KEY_FILE "$HOME/.config/sops/age/keys.txt"
+        if test -f /run/secrets/gitea_homebrew_api_token
+            set -gx GITEA_HOMEBREW_API_TOKEN (cat /run/secrets/gitea_homebrew_api_token)
+        end
       ''
     ]
     ++ lib.optionals desktop [
