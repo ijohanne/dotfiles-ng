@@ -119,6 +119,10 @@
     vardrun = {
       url = "github:uptimeplaza/vardrun";
     };
+
+    leita = {
+      url = "github:uptimeplaza/leita";
+    };
   };
 
   outputs =
@@ -149,6 +153,7 @@
       perlpimpnet,
       proton-port-sync,
       vardrun,
+      leita,
       ...
     }@inputs:
     let
