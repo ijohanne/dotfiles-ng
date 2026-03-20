@@ -1157,11 +1157,11 @@
         "pre-commit-hooks": "pre-commit-hooks"
       },
       "locked": {
-        "lastModified": 1774004032,
-        "narHash": "sha256-IVDLhrW6E1xoj3Q7YlaRKHrea7FLi1ZrGDT4geEfT+U=",
+        "lastModified": 1774004810,
+        "narHash": "sha256-uUyUYQ9nwrQpyjfdQLUeoTyKsryY2idmC4kUUIpqej8=",
         "owner": "uptimeplaza",
         "repo": "leita",
-        "rev": "0444f4f7c5fcfd689f402c0306b323632584bd61",
+        "rev": "20c79ef3c751a9e6a146105db0dfb8334537e057",
         "type": "github"
       },
       "original": {
