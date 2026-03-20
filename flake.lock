@@ -1157,11 +1157,11 @@
         "pre-commit-hooks": "pre-commit-hooks"
       },
       "locked": {
-        "lastModified": 1774006176,
-        "narHash": "sha256-JBtAEggdTmhO/PCzU/kKrNf0nSzDRBT1hyTiURhkCLY=",
+        "lastModified": 1774020246,
+        "narHash": "sha256-5juR4l6uT4Ajjkdv2D6osU9k40mtsOybaJPI4pvXNso=",
         "owner": "uptimeplaza",
         "repo": "leita",
-        "rev": "e16ecb7f008ba56d8f845f431d2cc78b9c51d098",
+        "rev": "4666909d575da412e3e08aa5c4915906d74b777e",
         "type": "github"
       },
       "original": {
@@ -2610,11 +2610,11 @@
         "nixpkgs": "nixpkgs_14"
       },
       "locked": {
-        "lastModified": 1773921951,
-        "narHash": "sha256-S1FGRftrpDeDNlUjdG0ERNB32KFTVGj4GwlxFnXvN9U=",
+        "lastModified": 1774022252,
+        "narHash": "sha256-I0gbn+Yp9xsLGxqo27fHeR4OX3UQMghsG1/zB6YAv+g=",
         "owner": "uptimeplaza",
         "repo": "vardrun",
-        "rev": "1e5a6d96e57e63f2166b0476071e45cbe7dcb4f4",
+        "rev": "1bed9c327ab6d8c4774511e942b997766757644b",
         "type": "github"
       },
       "original": {
