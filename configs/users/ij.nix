@@ -18,6 +18,10 @@
     (import ../programs/procs {})
     ../programs/neovim
     ../programs/lorri
+    ../programs/agent-skills-cli
+    ../programs/leita
+    ../programs/vardrun
+    ../programs/callis
   ] ++ (if desktop then [
     (import ../programs/ghostty {})
     (import ../programs/ssh { desktop = true; })
@@ -33,9 +37,7 @@
     stateVersion = lib.mkDefault "22.05";
     username = user.username;
     homeDirectory = if pkgs.stdenv.isDarwin then "/Users/${user.username}" else "/home/${user.username}";
-    packages = [
-      inputs.vardrun.packages.${pkgs.system}.vardrun-cli
-    ] ++ lib.optionals (desktop && !pkgs.stdenv.isDarwin) (with pkgs; [
+    packages = lib.optionals (desktop && !pkgs.stdenv.isDarwin) (with pkgs; [
       google-chrome
       mattermost-desktop
       docker

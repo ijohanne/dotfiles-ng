@@ -123,6 +123,10 @@
     leita = {
       url = "github:uptimeplaza/leita";
     };
+
+    callis = {
+      url = "github:ijohanne/callis";
+    };
   };
 
   outputs =
@@ -154,6 +158,7 @@
       proton-port-sync,
       vardrun,
       leita,
+      callis,
       ...
     }@inputs:
     let

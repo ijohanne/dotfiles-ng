@@ -33,7 +33,6 @@
     gping
     httpie
     glow
-    inputs.leita.packages.${pkgs.system}.leita
   ] ++ lib.optionals desktop [
     nerd-fonts.jetbrains-mono
     yubikey-manager
