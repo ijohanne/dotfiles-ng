@@ -109,11 +109,11 @@
         "pre-commit-hooks": "pre-commit-hooks"
       },
       "locked": {
-        "lastModified": 1774181488,
-        "narHash": "sha256-G3eOe+6jXrI6tfGUrec0fJ5xy1b3RSOZ59s0YL4Lo5s=",
+        "lastModified": 1774182872,
+        "narHash": "sha256-f0q+7hz+B9Ybwsjs2jl+rop4oaELLZyTM6NuxnLMkHI=",
         "owner": "ijohanne",
         "repo": "callis",
-        "rev": "d6e482e19d74bb0f27797c1fe302be9d27c517b9",
+        "rev": "1f13b825a9b035dc2e223bf2fd5fb2e13be977c7",
         "type": "github"
       },
       "original": {
