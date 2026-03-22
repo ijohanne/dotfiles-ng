@@ -452,11 +452,7 @@
         }
       ) darwinHosts;
 
-      checks = {
-        aarch64-darwin = {
-          darwin = self.darwinConfigurations.macbook.system;
-        };
-      };
+      checks = { };
     }
     // flake-utils.lib.eachDefaultSystem (system:
       let
@@ -707,9 +703,36 @@
           program = "${pkg}/bin/${name}";
         }) pgUpgradeScripts;
 
-        checks.setup-template = setup-template.overrideAttrs (old: {
-          doCheck = true;
-        });
+        checks =
+          {
+            setup-template = setup-template.overrideAttrs (_: {
+              doCheck = true;
+            });
+          }
+          // lib.optionalAttrs (system == "aarch64-darwin") {
+            darwin = self.darwinConfigurations.macbook.system;
+            ij-desktop = self.nixosConfigurations.ij-desktop.config.system.build.toplevel;
+            goose = self.nixosConfigurations.goose.config.system.build.toplevel;
+            pakhet = self.nixosConfigurations.pakhet.config.system.build.toplevel;
+            bhyve = self.images.bhyve;
+            bhyve-server = self.images.bhyve-server;
+            rpi4-stable = self.images.rpi4-stable;
+            rtsp-dev-vm = self.images.rtsp-dev-vm;
+          }
+          // lib.optionalAttrs (system == "x86_64-linux") {
+            ij-desktop = self.nixosConfigurations.ij-desktop.config.system.build.toplevel;
+            goose = self.nixosConfigurations.goose.config.system.build.toplevel;
+            pakhet = self.nixosConfigurations.pakhet.config.system.build.toplevel;
+            bhyve = self.images.bhyve;
+            bhyve-server = self.images.bhyve-server;
+            rpi4-stable = self.images.rpi4-stable;
+            rtsp-dev-vm = self.images.rtsp-dev-vm;
+          }
+          // lib.optionalAttrs (system == "aarch64-linux") {
+            rpi4-stable = self.images.rpi4-stable;
+            rpi4-unstable = self.images.rpi4-unstable;
+            rtsp-dev-vm = self.images.rtsp-dev-vm;
+          };
 
         devShells.default = pkgs.mkShell {
           packages = with pkgs; [
