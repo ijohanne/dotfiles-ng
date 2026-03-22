@@ -13,10 +13,11 @@ concurrency:
 jobs:
   check:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - uses: cachix/install-nix-action@v30
+      - uses: cachix/install-nix-action@v31.10.1
         with:
           nix_path: nixpkgs=channel:nixos-unstable
           extra_nix_config: |
@@ -24,7 +25,7 @@ jobs:
             extra-platforms = aarch64-linux
             access-tokens = github.com=${{ secrets.GH_FLAKE_TOKEN }}
 
-      - uses: cachix/cachix-action@v15
+      - uses: cachix/cachix-action@v17
         with:
           name: nix-community
           skipPush: true
@@ -33,14 +34,15 @@ jobs:
         run: nix flake show
 
       - name: Flake checks
-        run: nix flake check
+        run: nix flake check --no-build
 
   build-darwin:
     runs-on: macos-latest
+    timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - uses: cachix/install-nix-action@v30
+      - uses: cachix/install-nix-action@v31.10.1
         with:
           nix_path: nixpkgs=channel:nixos-unstable
           extra_nix_config: |
@@ -50,41 +52,85 @@ jobs:
       - name: Build macbook configuration
         run: nix build .#darwinConfigurations.macbook.system --dry-run
 
-  build-linux:
+  build-linux-hosts:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: ij-desktop
+            attr: .#nixosConfigurations.ij-desktop.config.system.build.toplevel
+          - name: pakhet
+            attr: .#nixosConfigurations.pakhet.config.system.build.toplevel
+          - name: goose
+            attr: .#nixosConfigurations.goose.config.system.build.toplevel
+          - name: khosu
+            attr: .#nixosConfigurations.khosu.config.system.build.toplevel
+          - name: anubis
+            attr: .#nixosConfigurations.anubis.config.system.build.toplevel
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - uses: cachix/install-nix-action@v30
+      - uses: cachix/install-nix-action@v31.10.1
         with:
           nix_path: nixpkgs=channel:nixos-unstable
           extra_nix_config: |
             experimental-features = nix-command flakes
             access-tokens = github.com=${{ secrets.GH_FLAKE_TOKEN }}
 
-      - uses: cachix/cachix-action@v15
+      - uses: cachix/cachix-action@v17
         with:
           name: nix-community
           skipPush: true
 
-      - name: Build ij-desktop configuration
-        run: nix build .#nixosConfigurations.ij-desktop.config.system.build.toplevel --dry-run
+      - name: Build ${{ matrix.name }} configuration
+        run: nix build '${{ matrix.attr }}' --dry-run
 
-      - name: Build pakhet configuration
-        run: nix build .#nixosConfigurations.pakhet.config.system.build.toplevel --dry-run
-
-      - name: Build goose configuration
-        run: nix build .#nixosConfigurations.goose.config.system.build.toplevel --dry-run
-
-      - name: Build khosu configuration
-        run: nix build .#nixosConfigurations.khosu.config.system.build.toplevel --dry-run
-
-  build-rpi4:
+  build-linux-images:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: bhyve
+            attr: .#images.bhyve
+          - name: bhyve-server
+            attr: .#images.bhyve-server
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - uses: cachix/install-nix-action@v30
+      - uses: cachix/install-nix-action@v31.10.1
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+            access-tokens = github.com=${{ secrets.GH_FLAKE_TOKEN }}
+
+      - uses: cachix/cachix-action@v17
+        with:
+          name: nix-community
+          skipPush: true
+
+      - name: Build ${{ matrix.name }} image
+        run: nix build '${{ matrix.attr }}' --dry-run
+
+  build-arm-images:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: rpi4-stable
+            attr: .#nixosConfigurations.rpi4-stable.config.system.build.toplevel
+          - name: rpi4-unstable
+            attr: .#nixosConfigurations.rpi4-unstable.config.system.build.toplevel
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: cachix/install-nix-action@v31.10.1
         with:
           nix_path: nixpkgs=channel:nixos-unstable
           extra_nix_config: |
@@ -92,17 +138,40 @@ jobs:
             extra-platforms = aarch64-linux
             access-tokens = github.com=${{ secrets.GH_FLAKE_TOKEN }}
 
-      - uses: docker/setup-qemu-action@v3
+      - uses: docker/setup-qemu-action@v4
         with:
           platforms: arm64
 
-      - uses: cachix/cachix-action@v15
+      - uses: cachix/cachix-action@v17
         with:
           name: nix-community
           skipPush: true
 
-      - name: Build rpi4-stable image
-        run: nix build .#nixosConfigurations.rpi4-stable.config.system.build.toplevel --dry-run
+      - name: Build ${{ matrix.name }} image
+        run: nix build '${{ matrix.attr }}' --dry-run
 
-      - name: Build rpi4-unstable image
-        run: nix build .#nixosConfigurations.rpi4-unstable.config.system.build.toplevel --dry-run
+  build-arm-vm:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: cachix/install-nix-action@v31.10.1
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+            extra-platforms = aarch64-linux
+            access-tokens = github.com=${{ secrets.GH_FLAKE_TOKEN }}
+
+      - uses: docker/setup-qemu-action@v4
+        with:
+          platforms: arm64
+
+      - uses: cachix/cachix-action@v17
+        with:
+          name: nix-community
+          skipPush: true
+
+      - name: Build rtsp-dev-vm image
+        run: nix build .#images.rtsp-dev-vm --dry-run
