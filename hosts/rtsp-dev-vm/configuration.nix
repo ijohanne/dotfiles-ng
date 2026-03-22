@@ -8,7 +8,8 @@ in
 
 {
   imports = [
-    (modulesPath + "/profiles/qemu-guest.nix")
+    ../../configs/profiles/base-system.nix
+    ../../configs/profiles/qemu-guest.nix
   ];
 
   networking = {
@@ -70,15 +71,7 @@ in
 
   boot.loader.grub.device = "/dev/vda";
 
-  time.timeZone = "Europe/Madrid";
-
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  nixpkgs.config.allowUnfree = true;
-
   environment.systemPackages = with pkgs; [
-    vim
-    htop
-    git
     tcpreplay
     tcpdump
     conntrack-tools
@@ -86,20 +79,6 @@ in
     wireshark-cli
     config.boot.kernelPackages.kernel.dev
   ];
-
-  services.openssh = {
-    enable = true;
-    settings = {
-      PermitRootLogin = "prohibit-password";
-      PasswordAuthentication = false;
-    };
-  };
-
-  security.sudo = {
-    enable = true;
-    execWheelOnly = true;
-    wheelNeedsPassword = false;
-  };
 
   users.users.root = {
     initialHashedPassword = "";

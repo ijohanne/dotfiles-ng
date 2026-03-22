@@ -1,24 +1,13 @@
 { pkgs, lib, users, ... }:
 
 {
-  services.openssh = {
-    enable = true;
-    settings = {
-      PermitRootLogin = "prohibit-password";
-      PasswordAuthentication = false;
-    };
-    extraConfig = ''
-      StreamLocalBindUnlink yes
-    '';
-  };
+  imports = [
+    ./profiles/base-system.nix
+  ];
 
-  services.xserver.enable = false;
-
-  security.sudo = {
-    enable = true;
-    execWheelOnly = true;
-    wheelNeedsPassword = false;
-  };
+  services.openssh.extraConfig = ''
+    StreamLocalBindUnlink yes
+  '';
 
   security.pam.loginLimits = [
     { domain = "*"; type = "soft"; item = "nofile"; value = "8192"; }
@@ -27,11 +16,8 @@
 
   environment.systemPackages = with pkgs; [
     ripgrep
-    vim
     nixpkgs-fmt
-    htop
     fish
-    git
     sops
     age
   ];
@@ -61,7 +47,6 @@
   };
 
   nix.settings = {
-    experimental-features = [ "nix-command" "flakes" ];
     max-jobs = lib.mkDefault 64;
     substituters = [ "https://ijohanne.cachix.org" ];
     trusted-public-keys = [ "ijohanne.cachix.org-1:oDy0m6h+CimPEcaUPaTZpEyVk6FVFpYPAXrrA9L5i9M=" ];
@@ -72,6 +57,4 @@
     dates = "weekly";
     options = "--delete-older-than 180d";
   };
-
-  nixpkgs.config.allowUnfree = true;
 }
