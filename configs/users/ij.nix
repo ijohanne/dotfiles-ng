@@ -31,9 +31,9 @@ in
     ../programs/zed
     ../dev/languages
   ] else [
-    ../dev/languages/nix.nix
-    ../dev/languages/lua.nix
-    ../dev/languages/markdown.nix
+    ../dev/languages/nix
+    ../dev/languages/lua
+    ../dev/languages/markdown
   ]);
 
   home = {

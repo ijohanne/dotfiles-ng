@@ -2,10 +2,10 @@
 
 {
   imports = [
-    ./rust.nix
-    ./nix.nix
-    ./lua.nix
-    ./markdown.nix
-    ./flutter.nix
+    ./rust
+    ./nix
+    ./lua
+    ./markdown
+    ./flutter
   ];
 }

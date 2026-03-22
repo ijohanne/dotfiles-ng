@@ -465,6 +465,7 @@
       let
         pkgs = nixpkgs.legacyPackages.${system};
         pkgs-stable = nixpkgs-stable.legacyPackages.${system};
+        formatter = pkgs.nixpkgs-fmt;
         nix-repl-unstable = pkgs.writeShellScriptBin "nix-repl-unstable" ''
           exec nix repl --expr "import (builtins.getFlake \"${nixpkgs}\") { system = \"${system}\"; config.allowUnfree = true; }"
         '';
@@ -694,29 +695,9 @@
             '';
           }
         );
-      in
-      {
-        packages = {
-          setup-template = setup-template;
-        } // pgUpgradeScripts;
 
-        apps = {
-          setup-template = {
-            type = "app";
-            program = "${setup-template}/bin/setup-template";
-          };
-        } // builtins.mapAttrs (name: pkg: {
-          type = "app";
-          program = "${pkg}/bin/${name}";
-        }) pgUpgradeScripts;
-
-        checks =
-          {
-            setup-template = setup-template.overrideAttrs (_: {
-              doCheck = true;
-            });
-          }
-          // lib.optionalAttrs (system == "aarch64-darwin") {
+        representativeChecks =
+          lib.optionalAttrs (system == "aarch64-darwin") {
             darwin = self.darwinConfigurations.macbook.system;
             ij-desktop = self.nixosConfigurations.ij-desktop.config.system.build.toplevel;
             goose = self.nixosConfigurations.goose.config.system.build.toplevel;
@@ -741,9 +722,36 @@
             rtsp-dev-vm = self.images.rtsp-dev-vm;
           };
 
+        checks =
+          {
+            setup-template = setup-template.overrideAttrs (_: {
+              doCheck = true;
+            });
+          }
+          // representativeChecks;
+      in
+      {
+        inherit formatter;
+
+        packages = {
+          setup-template = setup-template;
+        } // pgUpgradeScripts;
+
+        apps = {
+          setup-template = {
+            type = "app";
+            program = "${setup-template}/bin/setup-template";
+          };
+        } // builtins.mapAttrs (name: pkg: {
+          type = "app";
+          program = "${pkg}/bin/${name}";
+        }) pgUpgradeScripts;
+
+        inherit checks;
+
         devShells.default = pkgs.mkShell {
           packages = with pkgs; [
-            nixpkgs-fmt
+            formatter
             sops
             age
             nix-output-monitor
