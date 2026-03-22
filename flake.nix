@@ -221,8 +221,8 @@
             ./hosts/pakhet/configuration.nix
           ];
           hmUsers = {
-            ${users.ij.username} = hmUser [ ./hosts/pakhet/home-ij.nix ] true;
-            ${users.mj.username} = hmUser [ ./hosts/pakhet/home-mj.nix ] false;
+            ${users.ij.username} = hmUser [ (import ./configs/users/ij.nix { }) ] true;
+            ${users.mj.username} = hmUser [ ./configs/users/mj.nix ] false;
           };
         };
 
@@ -240,8 +240,8 @@
           ];
           backupFileExtension = "bak";
           hmUsers = {
-            ${users.ij.username} = hmUser [ ./hosts/goose/home-ij.nix ] true;
-            ${users.mj.username} = hmUser [ ./hosts/goose/home-mj.nix ] false;
+            ${users.ij.username} = hmUser [ (import ./configs/users/ij.nix { }) ] true;
+            ${users.mj.username} = hmUser [ ./configs/users/mj.nix ] false;
           };
         };
 
@@ -258,8 +258,8 @@
           ];
           backupFileExtension = "bak";
           hmUsers = {
-            ${users.ij.username} = hmUser [ ./hosts/anubis/home-ij.nix ] true;
-            ${users.mj.username} = hmUser [ ./hosts/anubis/home-mj.nix ] false;
+            ${users.ij.username} = hmUser [ (import ./configs/users/ij.nix { }) ] true;
+            ${users.mj.username} = hmUser [ ./configs/users/mj.nix ] false;
           };
         };
 
@@ -274,8 +274,8 @@
             ./hosts/khosu/configuration.nix
           ];
           hmUsers = {
-            ${users.ij.username} = hmUser [ ./hosts/khosu/home-ij.nix ] true;
-            ${users.mj.username} = hmUser [ ./hosts/khosu/home-mj.nix ] false;
+            ${users.ij.username} = hmUser [ (import ./configs/users/ij.nix { }) ] true;
+            ${users.mj.username} = hmUser [ ./configs/users/mj.nix ] false;
           };
         };
 
@@ -303,8 +303,8 @@
             ./hosts/bhyve-image/configuration-server.nix
           ];
           hmUsers = {
-            ${users.ij.username} = hmUser [ ./hosts/bhyve-image/home-ij.nix ] true;
-            ${users.mj.username} = hmUser [ ./hosts/bhyve-image/home-mj.nix ] false;
+            ${users.ij.username} = hmUser [ (import ./configs/users/ij.nix { }) ] true;
+            ${users.mj.username} = hmUser [ ./configs/users/mj.nix ] false;
           };
           imageName = "bhyve-server";
           imageBuilder = "diskoImages";
