@@ -13,12 +13,13 @@
     pkgs.writeShellScriptBin name ''
       set -euo pipefail
 
-      if [ "''${1:-}" != "--no-local" ]; then
-        for dir in ${builtins.concatStringsSep " " localCheckoutGlobs}; do
-          if [ -d "$dir/.git" ]; then
-            git -C "$dir" add -A
-            exec sudo nixos-rebuild switch --flake "$dir#${host}"
-          fi
+        if [ "''${1:-}" != "--no-local" ]; then
+          for dir in ${builtins.concatStringsSep " " localCheckoutGlobs}; do
+            if [ -d "$dir/.git" ]; then
+              # Intentionally stage all local changes before rebuilding from a local checkout.
+              git -C "$dir" add -A
+              exec sudo nixos-rebuild switch --flake "$dir#${host}"
+            fi
         done
       fi
 
@@ -59,6 +60,7 @@
         done
 
         if [ -n "$selected" ]; then
+          # Intentionally stage all local changes before rebuilding from a local checkout.
           ${if gitAdd then "git -C \"$selected\" add -A" else ":"}
           exec ${if useSudo then "sudo " else ""}${rebuildCmd} "$selected#${host}"
         fi

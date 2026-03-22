@@ -62,6 +62,10 @@ sudo nixos-rebuild switch --flake .#ij-desktop
 
 These hosts pull the flake from GitHub via `deploy-<hostname>` wrappers. Changes **must be pushed first**.
 
+When a matching local checkout is found, the deploy helper intentionally runs `git add -A`
+before rebuilding from that checkout. Use `--no-local` to skip the local-checkout path and
+build from GitHub instead.
+
 ```bash
 git push
 ssh r0.est.unixpimps.net deploy-goose        # goose (router)
@@ -70,7 +74,7 @@ ssh khosu.unixpimps.net deploy-khosu          # khosu (VPS)
 ssh anubis.unixpimps.net deploy-anubis        # anubis (Kimsufi)
 ```
 
-The `deploy-<hostname>` wrapper checks for a local checkout under any user's `~/git/dotfiles-ng`, runs `git add -A` and builds from it if found, otherwise fetches from GitHub. See @NETWORK.md for IPs.
+The `deploy-<hostname>` wrapper checks for a local checkout under any user's `~/git/dotfiles-ng`, intentionally runs `git add -A`, and builds from it if found. Pass `--no-local` to skip that behavior and rebuild directly from GitHub instead. See @NETWORK.md for IPs.
 
 #### Alternative: `nixos-rebuild` with `--target-host` and `--build-host`
 

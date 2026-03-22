@@ -377,6 +377,9 @@ Goose is a physical x86_64 AMD machine acting as the network router/gateway. It 
    deploy-goose
    ```
 
+   `deploy-goose` intentionally runs `git add -A` first when it finds a local checkout to
+   rebuild from. Pass `--no-local` to skip the local-checkout path and deploy from GitHub.
+
 ### Pakhet (Application Server)
 
 Pakhet is a bhyve VM running on fatty (FreeBSD host). It uses GRUB with a simple ext4 root on `/dev/sda`.
@@ -408,6 +411,9 @@ Pakhet is a bhyve VM running on fatty (FreeBSD host). It uses GRUB with a simple
    ```bash
    deploy-pakhet
    ```
+
+   `deploy-pakhet` intentionally runs `git add -A` first when it finds a local checkout to
+   rebuild from. Pass `--no-local` to skip the local-checkout path and deploy from GitHub.
 
 ### bhyve VM Images
 
