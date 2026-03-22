@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "skills": [
+    {
+      "name": "git-commit",
+      "source": "marketplace:github/git-commit",
+      "version": "c6a75d7e0923",
+      "agents": [
+        "claude",
+        "opencode"
+      ],
+      "global": false,
+      "installed_at": "2026-03-22T14:58:04.961009+00:00",
+      "updated_at": "2026-03-22T14:58:04.961009+00:00"
+    }
+  ]
+}
