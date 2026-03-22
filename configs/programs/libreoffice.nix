@@ -1,0 +1,1 @@
+{ nixPackage = "libreoffice"; brewCask = "libreoffice"; }

@@ -1,0 +1,1 @@
+{ nixPackage = "discord"; brewCask = "discord"; }

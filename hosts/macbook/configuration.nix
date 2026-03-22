@@ -4,6 +4,7 @@ let
   deploy = import ../../configs/deploy { inherit pkgs; };
   network = import ../../configs/network.nix { inherit lib; };
   pakhetIp = network.hosts.pakhet.ip;
+  desktopApps = import ../../configs/programs/desktop-apps.nix;
 in
 {
   imports = [
@@ -96,23 +97,8 @@ in
       upgrade = true;
     };
 
-    taps = [
-      "steipete/tap"
-    ];
-
-    casks = [
-      "google-chrome"
-      "slack"
-      "mattermost"
-      "libreoffice"
-      "discord"
-      "docker-desktop"
-      "proton-drive"
-      "proton-mail"
-      "proton-pass"
-      "protonvpn"
-      "notion"
-    ];
+    casks =
+      builtins.filter (x: x != null) (map (app: app.brewCask or null) desktopApps);
 
     masApps = {
       "WhatsApp" = 310633997;

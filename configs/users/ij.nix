@@ -2,6 +2,9 @@
 
 { pkgs, lib, user, inputs, ... }:
 
+let
+  desktopApps = import ../programs/desktop-apps.nix;
+in
 {
   imports = [
     (import ./common.nix { inherit desktop; })
@@ -37,17 +40,11 @@
     stateVersion = lib.mkDefault "22.05";
     username = user.username;
     homeDirectory = if pkgs.stdenv.isDarwin then "/Users/${user.username}" else "/home/${user.username}";
-    packages = lib.optionals (desktop && !pkgs.stdenv.isDarwin) (with pkgs; [
-      google-chrome
-      mattermost-desktop
-      docker
-      slack
-      libreoffice
-      discord
-      notion-app-enhanced
-    ]) ++ lib.optionals desktop (with pkgs; [
-      opencode
-    ]);
+    packages = lib.optionals desktop (
+      map (app: pkgs.${app.nixPackage}) (
+        builtins.filter (app: app ? nixPackage && (!pkgs.stdenv.isDarwin || !(app ? brewCask))) desktopApps
+      )
+    );
   };
 
   home.activation.importGpgKey = lib.hm.dag.entryBefore [ "writeBoundary" ] ''
