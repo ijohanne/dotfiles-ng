@@ -1,7 +1,6 @@
 { inputs, config, pkgs, lib, user, ... }:
 
 let
-  deploy = import ../../configs/deploy { inherit pkgs; };
   network = import ../../configs/network.nix { inherit lib; };
 in
 {
@@ -11,6 +10,10 @@ in
 
   imports = [
     ../../configs/server.nix
+    (import ../../configs/managed-remote-host.nix {
+      host = "khosu";
+      sopsFile = ../../secrets/khosu.yaml;
+    })
     ./hardware-configuration.nix
     ./services
   ];
@@ -45,30 +48,6 @@ in
   time.timeZone = "Europe/Madrid";
 
   # GRUB device is set automatically by disko via the EF02 partition
-
-  environment.systemPackages = with pkgs; [
-    (deploy.mkDeployScript {
-      name = "deploy-khosu";
-      host = "khosu";
-    })
-  ];
-
-  sops.secrets.nix_builder_access_tokens = { };
-
-  nix.extraOptions = ''
-    !include ${config.sops.secrets.nix_builder_access_tokens.path}
-  '';
-
-  sops = {
-    defaultSopsFile = ../../secrets/khosu.yaml;
-    age = {
-      sshKeyPaths = [
-        "/etc/ssh/ssh_host_ed25519_key"
-      ];
-      keyFile = "/var/lib/sops-nix/key.txt";
-      generateKey = true;
-    };
-  };
 
   system.stateVersion = "25.11";
 }

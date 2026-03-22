@@ -26,7 +26,6 @@
     ./pg-exporter.nix
   ];
 
-  sops.secrets.nix_builder_access_tokens = { };
   sops.secrets.cloudflare_api_key = { };
 
   sops.secrets.opsplaza_smtp_pass = { };

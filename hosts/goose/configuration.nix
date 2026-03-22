@@ -2,7 +2,6 @@
 
 let
   network = import ../../configs/network.nix { inherit lib; };
-  deploy = import ../../configs/deploy { inherit pkgs; };
 
   interfaces = {
     external = "br-wan";
@@ -107,6 +106,10 @@ in
 
   imports = [
     ../../configs/server.nix
+    (import ../../configs/managed-remote-host.nix {
+      host = "goose";
+      sopsFile = ../../secrets/goose.yaml;
+    })
     ./hardware-configuration.nix
     ./networking.nix
     ./services
@@ -135,15 +138,7 @@ in
     fping
     sms
     test_main_wan_uplink
-    (deploy.mkDeployScript {
-      name = "deploy-goose";
-      host = "goose";
-    })
   ];
-
-  nix.extraOptions = ''
-    !include ${config.sops.secrets.nix_builder_access_tokens.path}
-  '';
 
   nix.gc.options = lib.mkForce "--delete-older-than 30d";
 
@@ -160,19 +155,6 @@ in
     timerConfig = {
       OnBootSec = "2min";
       OnUnitActiveSec = "1min";
-    };
-  };
-
-  sops.secrets.nix_builder_access_tokens = { };
-
-  sops = {
-    defaultSopsFile = ../../secrets/goose.yaml;
-    age = {
-      sshKeyPaths = [
-        "/etc/ssh/ssh_host_ed25519_key"
-      ];
-      keyFile = "/var/lib/sops-nix/key.txt";
-      generateKey = true;
     };
   };
 

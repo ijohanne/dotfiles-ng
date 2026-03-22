@@ -2,7 +2,6 @@
 
 let
   network = import ../../configs/network.nix { inherit lib; };
-  deploy = import ../../configs/deploy { inherit pkgs; };
 in
 {
   _module.args = {
@@ -11,6 +10,10 @@ in
 
   imports = [
     ../../configs/server.nix
+    (import ../../configs/managed-remote-host.nix {
+      host = "pakhet";
+      sopsFile = ../../secrets/pakhet.yaml;
+    })
     ./hardware-configuration.nix
     ./services
   ];
@@ -27,28 +30,9 @@ in
 
   time.timeZone = "Europe/Madrid";
 
-  nix.extraOptions = ''
-    !include ${config.sops.secrets.nix_builder_access_tokens.path}
-  '';
-
   environment.systemPackages = with pkgs; [
     (writeShellScriptBin "ping6" ''exec ping -6 "$@"'')
-    (deploy.mkDeployScript {
-      name = "deploy-pakhet";
-      host = "pakhet";
-    })
   ];
-
-  sops = {
-    defaultSopsFile = ../../secrets/pakhet.yaml;
-    age = {
-      sshKeyPaths = [
-        "/etc/ssh/ssh_host_ed25519_key"
-      ];
-      keyFile = "/var/lib/sops-nix/key.txt";
-      generateKey = true;
-    };
-  };
 
   system.stateVersion = "22.05";
 }

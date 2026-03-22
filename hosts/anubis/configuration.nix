@@ -2,7 +2,6 @@
 
 let
   network = import ../../configs/network.nix { inherit lib; };
-  deploy = import ../../configs/deploy { inherit pkgs; };
 in
 {
   _module.args = {
@@ -11,6 +10,10 @@ in
 
   imports = [
     ../../configs/server.nix
+    (import ../../configs/managed-remote-host.nix {
+      host = "anubis";
+      sopsFile = ../../secrets/anubis.yaml;
+    })
     ./hardware-configuration.nix
     ./services
   ];
@@ -42,20 +45,11 @@ in
     };
   };
 
-  sops = {
-    defaultSopsFile = ../../secrets/anubis.yaml;
-    age = {
-      sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-      keyFile = "/var/lib/sops-nix/key.txt";
-      generateKey = true;
-    };
-    secrets = {
-      "protonvpn/private_key" = { };
-      "backhaul/private_key" = { };
-      "qbittorrent/webui_password" = { owner = "qbittorrent"; };
-      "acme/cloudflare_api_key" = { owner = "acme"; };
-      nix_builder_access_tokens = { };
-    };
+  sops.secrets = {
+    "protonvpn/private_key" = { };
+    "backhaul/private_key" = { };
+    "qbittorrent/webui_password" = { owner = "qbittorrent"; };
+    "acme/cloudflare_api_key" = { owner = "acme"; };
   };
 
   boot.loader.systemd-boot.enable = false;
@@ -69,17 +63,6 @@ in
   };
   boot.loader.efi.canTouchEfiVariables = true;
   boot.swraid.enable = true;
-
-  environment.systemPackages = with pkgs; [
-    (deploy.mkDeployScript {
-      name = "deploy-anubis";
-      host = "anubis";
-    })
-  ];
-
-  nix.extraOptions = ''
-    !include ${config.sops.secrets.nix_builder_access_tokens.path}
-  '';
 
   time.timeZone = "Europe/Paris";
 
