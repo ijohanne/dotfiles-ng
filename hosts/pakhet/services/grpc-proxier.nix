@@ -1,6 +1,4 @@
-{ network, ... }:
-
-{ config, ... }:
+{ network, config, ... }:
 
 {
   services.grpc-proxier = {

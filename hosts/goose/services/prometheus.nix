@@ -1,6 +1,4 @@
-{ network, ... }:
-
-{ config, pkgs, ... }:
+{ network, config, pkgs, ... }:
 
 {
   services.prometheus = {

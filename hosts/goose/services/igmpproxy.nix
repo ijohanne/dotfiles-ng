@@ -1,6 +1,4 @@
-{ interfaces, ... }:
-
-{ pkgs, ... }:
+{ interfaces, pkgs, ... }:
 
 let
   confFile = pkgs.writeText "igmpproxy.conf" ''

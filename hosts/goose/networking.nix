@@ -1,6 +1,4 @@
-{ interfaces, network }:
-
-{ lib, pkgs, ... }:
+{ interfaces, network, lib, pkgs, ... }:
 {
   boot.kernel.sysctl = {
     "net.ipv4.conf.all.forwarding" = true;

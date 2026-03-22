@@ -1,6 +1,4 @@
-{ network, ... }:
-
-{ config, ... }:
+{ network, config, ... }:
 
 {
   services.prometheus-tplink-p110-exporter = {

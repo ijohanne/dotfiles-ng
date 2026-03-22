@@ -1,6 +1,4 @@
-{ interfaces, network, ... }:
-
-{ pkgs, ... }:
+{ interfaces, network, pkgs, ... }:
 
 {
   services.bird = {

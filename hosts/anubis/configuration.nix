@@ -5,10 +5,14 @@ let
   deploy = import ../../configs/deploy { inherit pkgs; };
 in
 {
+  _module.args = {
+    inherit network;
+  };
+
   imports = [
     ../../configs/server.nix
     ./hardware-configuration.nix
-    (import ./services { inherit network; })
+    ./services
   ];
 
   networking = {

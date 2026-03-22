@@ -1,6 +1,4 @@
-{ network, ... }:
-
-{ config, pkgs, ... }:
+{ network, config, pkgs, ... }:
 
 let
   wgIP = "10.2.0.2";

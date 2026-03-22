@@ -101,11 +101,15 @@ let
   };
 in
 {
+  _module.args = {
+    inherit interfaces network;
+  };
+
   imports = [
     ../../configs/server.nix
     ./hardware-configuration.nix
-    (import ./networking.nix { inherit interfaces network; })
-    (import ./services { inherit interfaces network; })
+    ./networking.nix
+    ./services
   ];
 
   networking = {

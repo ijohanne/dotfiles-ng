@@ -5,10 +5,14 @@ let
   network = import ../../configs/network.nix { inherit lib; };
 in
 {
+  _module.args = {
+    inherit network;
+  };
+
   imports = [
     ../../configs/server.nix
     ./hardware-configuration.nix
-    (import ./services { inherit network; })
+    ./services
   ];
 
   networking = {

@@ -1,19 +1,17 @@
-{ interfaces, network, ... }:
-
-{ config, ... }:
+{ interfaces, network, config, ... }:
 
 {
   imports = [
-    (import ./dns.nix { inherit network; })
-    (import ./firewall.nix { inherit interfaces network; })
+    ./dns.nix
+    ./firewall.nix
     ./avahi.nix
-    (import ./igmpproxy.nix { inherit interfaces; })
-    (import ./bird.nix { inherit interfaces network; })
-    (import ./kea.nix { inherit network; })
-    (import ./wireguard.nix { inherit network; })
+    ./igmpproxy.nix
+    ./bird.nix
+    ./kea.nix
+    ./wireguard.nix
     ./multicast-relay.nix
-    (import ./monitoring { inherit network; })
-    (import ./prometheus.nix { inherit network; })
+    ./monitoring
+    ./prometheus.nix
     ./cloudflare.nix
   ];
 

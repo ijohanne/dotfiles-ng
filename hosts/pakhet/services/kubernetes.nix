@@ -1,6 +1,4 @@
-{ network, ... }:
-
-{ config, ... }:
+{ network, config, ... }:
 
 {
   services.nginx.virtualHosts."k8s.unixpimps.net" = {

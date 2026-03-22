@@ -1,6 +1,4 @@
-{ network, ... }:
-
-{ config, pkgs, lib, ... }:
+{ network, config, pkgs, lib, ... }:
 
 let
   allowedRanges = [

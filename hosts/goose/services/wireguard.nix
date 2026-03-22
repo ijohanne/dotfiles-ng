@@ -1,7 +1,5 @@
 { network, ... }:
 
-{ ... }:
-
 {
   networking.wireguard.interfaces = {
     wg0 = {

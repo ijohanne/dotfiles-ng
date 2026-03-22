@@ -1,11 +1,9 @@
 { network, ... }:
 
-{ ... }:
-
 {
   imports = [
-    (import ./wireguard.nix { inherit network; })
-    (import ./nginx.nix { inherit network; })
+    ./wireguard.nix
+    ./nginx.nix
     ./qbittorrent.nix
     ./proton-port-sync.nix
   ];

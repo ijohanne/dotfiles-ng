@@ -1,11 +1,4 @@
-{ network, ... }:
-
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}:
+{ network, config, pkgs, lib, ... }:
 
 {
   imports = [
@@ -16,11 +9,11 @@
     ./geoip-updater.nix
     ./pastebin.nix
     ./backup.nix
-    (import ./estepona.nix { inherit network; })
-    (import ./kubernetes.nix { inherit network; })
+    ./estepona.nix
+    ./kubernetes.nix
     ./screeny.nix
     ./mercy.nix
-    (import ./grpc-proxier.nix { inherit network; })
+    ./grpc-proxier.nix
     ./pdf-detective.nix
     ./shouldidrinktoday.nix
     ./unixpimpsnet.nix
@@ -29,7 +22,7 @@
     ./plausible.nix
     ./perlpimpnet.nix
     ./vardrun.nix
-    (import ./node-exporter.nix { inherit network; })
+    ./node-exporter.nix
     ./pg-exporter.nix
   ];
 

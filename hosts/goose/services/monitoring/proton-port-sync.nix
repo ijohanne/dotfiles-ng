@@ -1,7 +1,5 @@
 { network, ... }:
 
-{ ... }:
-
 {
   services.prometheus.scrapeConfigs = [
     {

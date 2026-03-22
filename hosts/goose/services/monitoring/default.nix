@@ -2,24 +2,24 @@
 
 {
   imports = [
-    (import ./node.nix { inherit network; })
+    ./node.nix
     ./nftables.nix
     ./smokeping.nix
-    (import ./zfs.nix { inherit network; })
-    (import ./nut.nix { inherit network; })
-    (import ./ipmi.nix { inherit network; })
-    (import ./screeny.nix { inherit network; })
-    (import ./grpc-proxier.nix { inherit network; })
-    (import ./pdfdetective.nix { inherit network; })
+    ./zfs.nix
+    ./nut.nix
+    ./ipmi.nix
+    ./screeny.nix
+    ./grpc-proxier.nix
+    ./pdfdetective.nix
     ./unbound.nix
     ./wireguard.nix
-    (import ./unpoller.nix { inherit network; })
-    (import ./hue.nix { inherit network; })
+    ./unpoller.nix
+    ./hue.nix
     ./telegraf.nix
-    (import ./tplink-p110.nix { inherit network; })
-    (import ./proton-port-sync.nix { inherit network; })
-    (import ./vardrun.nix { inherit network; })
-    (import ./nginx.nix { inherit network; })
-    (import ./postgres.nix { inherit network; })
+    ./tplink-p110.nix
+    ./proton-port-sync.nix
+    ./vardrun.nix
+    ./nginx.nix
+    ./postgres.nix
   ];
 }

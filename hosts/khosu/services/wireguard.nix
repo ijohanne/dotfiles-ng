@@ -1,6 +1,4 @@
-{ network, ... }:
-
-{ config, ... }:
+{ network, config, ... }:
 
 {
   networking.wireguard.interfaces = {
