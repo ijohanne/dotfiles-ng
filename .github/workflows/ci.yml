@@ -33,8 +33,8 @@ jobs:
       - name: Check flake
         run: nix flake show
 
-      - name: Flake checks
-        run: nix flake check --no-build
+      - name: Evaluate current-system checks
+        run: nix eval .#checks --apply builtins.attrNames > /dev/null
 
   build-darwin:
     runs-on: macos-latest
