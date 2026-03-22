@@ -44,8 +44,9 @@
       slack
       libreoffice
       discord
-      opencode
       notion-app-enhanced
+    ]) ++ lib.optionals desktop (with pkgs; [
+      opencode
     ]);
   };
 
