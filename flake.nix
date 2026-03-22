@@ -189,6 +189,7 @@
           kind = "nixos";
           channel = "unstable";
           system = "x86_64-linux";
+          hmStateVersion = "23.05";
           modules = [
             disko.nixosModules.disko
             sops-nix.nixosModules.sops
@@ -343,6 +344,7 @@
           kind = "darwin";
           channel = "unstable";
           system = "aarch64-darwin";
+          hmStateVersion = "23.05";
           modules = [
             mac-app-util.darwinModules.default
             sops-nix.darwinModules.sops
@@ -403,10 +405,13 @@
                 {
                   inherit users inputs;
                   pkgs-unstable = mkPkgsUnstable system;
+                  hmStateVersion = extraSpecialArgs.hmStateVersion or "22.05";
                 }
-                // extraSpecialArgs;
+                // lib.removeAttrs extraSpecialArgs [ "hmStateVersion" ];
               users = lib.mapAttrs (username: hmUserConfig: {
-                imports = hmUserConfig.imports ++ lib.optional hmUserConfig.withNixvim inputs.nixvim.homeModules.nixvim ++ [
+                imports = [
+                  ./configs/users/home-defaults.nix
+                ] ++ hmUserConfig.imports ++ lib.optional hmUserConfig.withNixvim inputs.nixvim.homeModules.nixvim ++ [
                   { _module.args.user = users.${username}; }
                 ];
               }) hmUsers;
@@ -422,7 +427,9 @@
         ++ lib.optionals (host ? hmUsers) (mkHomeManagerModule {
           inherit (host) system kind channel hmUsers;
           backupFileExtension = host.backupFileExtension or null;
-          extraSpecialArgs = host.extraSpecialArgs or { };
+          extraSpecialArgs = (host.extraSpecialArgs or { }) // {
+            hmStateVersion = host.hmStateVersion or "22.05";
+          };
         });
     in
     {

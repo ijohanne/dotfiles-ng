@@ -5,8 +5,6 @@
     (import ../../configs/users/ij.nix { desktop = true; })
   ];
 
-  home.stateVersion = "23.05";
-
   home.file."Library/Application Support/com.mitchellh.ghostty/config".source =
     config.xdg.configFile."ghostty/config".source;
 

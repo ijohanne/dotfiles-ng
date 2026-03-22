@@ -37,9 +37,6 @@ in
   ]);
 
   home = {
-    stateVersion = lib.mkDefault "22.05";
-    username = user.username;
-    homeDirectory = if pkgs.stdenv.isDarwin then "/Users/${user.username}" else "/home/${user.username}";
     packages = lib.optionals desktop (
       map (app: pkgs.${app.nixPackage}) (
         builtins.filter (app: app ? nixPackage && (!pkgs.stdenv.isDarwin || !(app ? brewCask))) desktopApps
