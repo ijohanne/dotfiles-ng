@@ -23,6 +23,10 @@ in
     ];
   };
 
+  nix.extraOptions = ''
+    !include ${config.sops.secrets.nix_builder_access_tokens.path}
+  '';
+
   nix.gc = {
     automatic = true;
   };
