@@ -5,7 +5,5 @@
     pkgs-unstable.nixd
   ];
 
-  programs.nixvim.extraConfigLua = ''
-    vim.lsp.enable("nixd")
-  '';
+  programs.nixvim.lsp.servers.nixd.enable = true;
 }

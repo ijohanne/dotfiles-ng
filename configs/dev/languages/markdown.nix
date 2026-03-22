@@ -5,7 +5,5 @@
     pkgs-unstable.marksman
   ];
 
-  programs.nixvim.extraConfigLua = ''
-    vim.lsp.enable("marksman")
-  '';
+  programs.nixvim.lsp.servers.marksman.enable = true;
 }

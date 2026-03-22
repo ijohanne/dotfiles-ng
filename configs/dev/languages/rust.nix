@@ -7,6 +7,8 @@
   ];
 
   programs.nixvim = {
+    lsp.servers.rust_analyzer.enable = true;
+
     extraPlugins = with pkgs-unstable.vimPlugins; [
       crates-nvim
     ];
@@ -14,7 +16,6 @@
     treesitter.ensureInstalled = [ "rust" "toml" ];
 
     extraConfigLua = ''
-      vim.lsp.enable("rust_analyzer")
       require("crates").setup()
     '';
   };

@@ -6,10 +6,8 @@
   ];
 
   programs.nixvim = {
-    treesitter.ensureInstalled = [ "lua" ];
+    lsp.servers.lua_ls.enable = true;
 
-    extraConfigLua = ''
-      vim.lsp.enable("lua_ls")
-    '';
+    treesitter.ensureInstalled = [ "lua" ];
   };
 }
