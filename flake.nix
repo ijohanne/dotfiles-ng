@@ -162,7 +162,204 @@
       ...
     }@inputs:
     let
+      lib = nixpkgs.lib;
       users = import ./configs/users.nix;
+      hmUser = imports: withNixvim: {
+        inherit imports withNixvim;
+      };
+
+      channels = {
+        unstable = {
+          pkgsLib = nixpkgs.lib;
+          homeManagerModules = {
+            nixos = home-manager.nixosModules.home-manager;
+            darwin = home-manager.darwinModules.home-manager;
+          };
+        };
+        stable = {
+          pkgsLib = nixpkgs-stable.lib;
+          homeManagerModules = {
+            nixos = home-manager-stable.nixosModules.home-manager;
+          };
+        };
+      };
+
+      hosts = {
+        ij-desktop = {
+          kind = "nixos";
+          channel = "unstable";
+          system = "x86_64-linux";
+          modules = [
+            disko.nixosModules.disko
+            sops-nix.nixosModules.sops
+            ./hosts/ij-desktop/disko.nix
+            ./hosts/ij-desktop/configuration.nix
+          ];
+          hmUsers = {
+            ${users.ij.username} = hmUser [ ./hosts/ij-desktop/home.nix ] true;
+          };
+        };
+
+        pakhet = {
+          kind = "nixos";
+          channel = "stable";
+          system = "x86_64-linux";
+          modules = [
+            sops-nix.nixosModules.sops
+            nixos-mailserver.nixosModules.default
+            ijohanne-nur.nixosModules.pg-exporter
+            screeny.nixosModules.default
+            mercy.nixosModules.default
+            grpc-proxier.nixosModules.default
+            pdf-detective.nixosModules.default
+            shouldidrinktoday.nixosModules.default
+            unixpimpsnet.nixosModules.default
+            themailer-wrapper.nixosModules.default
+            perlpimpnet.nixosModules.default
+            vardrun.nixosModules.default
+            ./hosts/pakhet/configuration.nix
+          ];
+          hmUsers = {
+            ${users.ij.username} = hmUser [ ./hosts/pakhet/home-ij.nix ] true;
+            ${users.mj.username} = hmUser [ ./hosts/pakhet/home-mj.nix ] false;
+          };
+        };
+
+        goose = {
+          kind = "nixos";
+          channel = "stable";
+          system = "x86_64-linux";
+          modules = [
+            sops-nix.nixosModules.sops
+            ijohanne-nur.nixosModules.multicast-relay
+            ijohanne-nur.nixosModules.prometheus-hue-exporter
+            ijohanne-nur.nixosModules.prometheus-nftables-exporter
+            ijohanne-nur.nixosModules.prometheus-tplink-p110-exporter
+            ./hosts/goose/configuration.nix
+          ];
+          backupFileExtension = "bak";
+          hmUsers = {
+            ${users.ij.username} = hmUser [ ./hosts/goose/home-ij.nix ] true;
+            ${users.mj.username} = hmUser [ ./hosts/goose/home-mj.nix ] false;
+          };
+        };
+
+        anubis = {
+          kind = "nixos";
+          channel = "stable";
+          system = "x86_64-linux";
+          modules = [
+            disko.nixosModules.disko
+            sops-nix.nixosModules.sops
+            proton-port-sync.nixosModules.default
+            ./hosts/anubis/disko.nix
+            ./hosts/anubis/configuration.nix
+          ];
+          backupFileExtension = "bak";
+          hmUsers = {
+            ${users.ij.username} = hmUser [ ./hosts/anubis/home-ij.nix ] true;
+            ${users.mj.username} = hmUser [ ./hosts/anubis/home-mj.nix ] false;
+          };
+        };
+
+        khosu = {
+          kind = "nixos";
+          channel = "stable";
+          system = "x86_64-linux";
+          modules = [
+            disko.nixosModules.disko
+            sops-nix.nixosModules.sops
+            ./hosts/khosu/disko.nix
+            ./hosts/khosu/configuration.nix
+          ];
+          hmUsers = {
+            ${users.ij.username} = hmUser [ ./hosts/khosu/home-ij.nix ] true;
+            ${users.mj.username} = hmUser [ ./hosts/khosu/home-mj.nix ] false;
+          };
+        };
+
+        bhyve-image = {
+          kind = "nixos";
+          channel = "stable";
+          system = "x86_64-linux";
+          modules = [
+            disko.nixosModules.disko
+            ./hosts/bhyve-image/disko.nix
+            ./hosts/bhyve-image/configuration.nix
+          ];
+          imageName = "bhyve";
+          imageBuilder = "diskoImages";
+        };
+
+        bhyve-image-server = {
+          kind = "nixos";
+          channel = "stable";
+          system = "x86_64-linux";
+          modules = [
+            disko.nixosModules.disko
+            sops-nix.nixosModules.sops
+            ./hosts/bhyve-image/disko.nix
+            ./hosts/bhyve-image/configuration-server.nix
+          ];
+          hmUsers = {
+            ${users.ij.username} = hmUser [ ./hosts/bhyve-image/home-ij.nix ] true;
+            ${users.mj.username} = hmUser [ ./hosts/bhyve-image/home-mj.nix ] false;
+          };
+          imageName = "bhyve-server";
+          imageBuilder = "diskoImages";
+        };
+
+        rtsp-dev-vm = {
+          kind = "nixos";
+          channel = "unstable";
+          system = "aarch64-linux";
+          modules = [
+            ./hosts/rtsp-dev-vm/configuration.nix
+          ];
+          imageBuilder = "vm";
+        };
+
+        rpi4-stable = {
+          kind = "nixos";
+          channel = "stable";
+          system = "aarch64-linux";
+          modules = [
+            ./hosts/rpi4-image/stable/configuration.nix
+          ];
+          imageBuilder = "sdImage";
+        };
+
+        rpi4-unstable = {
+          kind = "nixos";
+          channel = "unstable";
+          system = "aarch64-linux";
+          modules = [
+            ./hosts/rpi4-image/unstable/configuration.nix
+          ];
+          imageBuilder = "sdImage";
+        };
+
+        macbook = {
+          kind = "darwin";
+          channel = "unstable";
+          system = "aarch64-darwin";
+          modules = [
+            mac-app-util.darwinModules.default
+            sops-nix.darwinModules.sops
+            ./hosts/macbook/configuration.nix
+          ];
+          backupFileExtension = "backup";
+          hmUsers = {
+            ${users.ij.username} = hmUser [
+              mac-app-util.homeManagerModules.default
+              ./hosts/macbook/home.nix
+            ] true;
+          };
+        };
+      };
+
+      nixosHosts = lib.filterAttrs (_: host: host.kind == "nixos") hosts;
+      darwinHosts = lib.filterAttrs (_: host: host.kind == "darwin") hosts;
 
       mkPkgsUnstable = system: import nixpkgs {
         inherit system;
@@ -186,231 +383,74 @@
         };
 
       mkHomeManagerModule = {
-        homeManagerModule,
+        system,
+        kind,
+        channel,
         hmUsers,
         backupFileExtension ? null,
         extraSpecialArgs ? {},
       }:
+        let
+          homeManagerModule = channels.${channel}.homeManagerModules.${kind};
+        in
         [
           homeManagerModule
           ({ ... }: {
             home-manager = {
               useGlobalPkgs = true;
               useUserPackages = true;
-              extraSpecialArgs = { inherit users inputs; } // extraSpecialArgs;
-              users = nixpkgs.lib.mapAttrs (username: imports: {
-                imports = imports ++ [
+              extraSpecialArgs =
+                {
+                  inherit users inputs;
+                  pkgs-unstable = mkPkgsUnstable system;
+                }
+                // extraSpecialArgs;
+              users = lib.mapAttrs (username: hmUserConfig: {
+                imports = hmUserConfig.imports ++ lib.optional hmUserConfig.withNixvim inputs.nixvim.homeModules.nixvim ++ [
                   { _module.args.user = users.${username}; }
                 ];
               }) hmUsers;
             }
-            // nixpkgs.lib.optionalAttrs (backupFileExtension != null) {
+            // lib.optionalAttrs (backupFileExtension != null) {
               inherit backupFileExtension;
             };
           })
         ];
+
+      mkHostModules = host:
+        host.modules
+        ++ lib.optionals (host ? hmUsers) (mkHomeManagerModule {
+          inherit (host) system kind channel hmUsers;
+          backupFileExtension = host.backupFileExtension or null;
+          extraSpecialArgs = host.extraSpecialArgs or { };
+        });
     in
     {
-      nixosConfigurations = {
-        ij-desktop = mkNixosHost {
-          pkgsLib = nixpkgs.lib;
-          system = "x86_64-linux";
-          modules = [
-            disko.nixosModules.disko
-            sops-nix.nixosModules.sops
-            ./hosts/ij-desktop/disko.nix
-            ./hosts/ij-desktop/configuration.nix
-          ] ++ mkHomeManagerModule {
-            homeManagerModule = home-manager.nixosModules.home-manager;
-            extraSpecialArgs = { pkgs-unstable = mkPkgsUnstable "x86_64-linux"; };
-            hmUsers.${users.ij.username} = [
-              ./hosts/ij-desktop/home.nix
-              inputs.nixvim.homeModules.nixvim
-            ];
-          };
-        };
+      nixosConfigurations = lib.mapAttrs (
+        _: host:
+        mkNixosHost {
+          pkgsLib = channels.${host.channel}.pkgsLib;
+          system = host.system;
+          modules = mkHostModules host;
+          primaryUser = host.primaryUser or "ij";
+        }
+      ) nixosHosts;
 
-        pakhet = mkNixosHost {
-          pkgsLib = nixpkgs-stable.lib;
-          system = "x86_64-linux";
-          modules = [
-            sops-nix.nixosModules.sops
-            nixos-mailserver.nixosModules.default
-            ijohanne-nur.nixosModules.pg-exporter
-            screeny.nixosModules.default
-            mercy.nixosModules.default
-            grpc-proxier.nixosModules.default
-            pdf-detective.nixosModules.default
-            shouldidrinktoday.nixosModules.default
-            unixpimpsnet.nixosModules.default
-            themailer-wrapper.nixosModules.default
-            perlpimpnet.nixosModules.default
-            vardrun.nixosModules.default
-            ./hosts/pakhet/configuration.nix
-          ] ++ mkHomeManagerModule {
-            homeManagerModule = home-manager-stable.nixosModules.home-manager;
-            extraSpecialArgs = { pkgs-unstable = mkPkgsUnstable "x86_64-linux"; };
-            hmUsers = {
-              ${users.ij.username} = [
-                ./hosts/pakhet/home-ij.nix
-                inputs.nixvim.homeModules.nixvim
-              ];
-              ${users.mj.username} = [ ./hosts/pakhet/home-mj.nix ];
-            };
-          };
-        };
+      images = lib.mapAttrs' (
+        name: host:
+        lib.nameValuePair (host.imageName or name) (
+          lib.getAttrFromPath [ "config" "system" "build" host.imageBuilder ] self.nixosConfigurations.${name}
+        )
+      ) (lib.filterAttrs (_: host: host ? imageBuilder) nixosHosts);
 
-        goose = mkNixosHost {
-          pkgsLib = nixpkgs-stable.lib;
-          system = "x86_64-linux";
-          modules = [
-            sops-nix.nixosModules.sops
-            ijohanne-nur.nixosModules.multicast-relay
-            ijohanne-nur.nixosModules.prometheus-hue-exporter
-            ijohanne-nur.nixosModules.prometheus-nftables-exporter
-            ijohanne-nur.nixosModules.prometheus-tplink-p110-exporter
-            ./hosts/goose/configuration.nix
-          ] ++ mkHomeManagerModule {
-            homeManagerModule = home-manager-stable.nixosModules.home-manager;
-            backupFileExtension = "bak";
-            extraSpecialArgs = { pkgs-unstable = mkPkgsUnstable "x86_64-linux"; };
-            hmUsers = {
-              ${users.ij.username} = [
-                ./hosts/goose/home-ij.nix
-                inputs.nixvim.homeModules.nixvim
-              ];
-              ${users.mj.username} = [ ./hosts/goose/home-mj.nix ];
-            };
-          };
-        };
-
-        anubis = mkNixosHost {
-          pkgsLib = nixpkgs-stable.lib;
-          system = "x86_64-linux";
-          modules = [
-            disko.nixosModules.disko
-            sops-nix.nixosModules.sops
-            proton-port-sync.nixosModules.default
-            ./hosts/anubis/disko.nix
-            ./hosts/anubis/configuration.nix
-          ] ++ mkHomeManagerModule {
-            homeManagerModule = home-manager-stable.nixosModules.home-manager;
-            backupFileExtension = "bak";
-            extraSpecialArgs = { pkgs-unstable = mkPkgsUnstable "x86_64-linux"; };
-            hmUsers = {
-              ${users.ij.username} = [
-                ./hosts/anubis/home-ij.nix
-                inputs.nixvim.homeModules.nixvim
-              ];
-              ${users.mj.username} = [ ./hosts/anubis/home-mj.nix ];
-            };
-          };
-        };
-
-        khosu = mkNixosHost {
-          pkgsLib = nixpkgs-stable.lib;
-          system = "x86_64-linux";
-          modules = [
-            disko.nixosModules.disko
-            sops-nix.nixosModules.sops
-            ./hosts/khosu/disko.nix
-            ./hosts/khosu/configuration.nix
-          ] ++ mkHomeManagerModule {
-            homeManagerModule = home-manager-stable.nixosModules.home-manager;
-            extraSpecialArgs = { pkgs-unstable = mkPkgsUnstable "x86_64-linux"; };
-            hmUsers = {
-              ${users.ij.username} = [
-                ./hosts/khosu/home-ij.nix
-                inputs.nixvim.homeModules.nixvim
-              ];
-              ${users.mj.username} = [ ./hosts/khosu/home-mj.nix ];
-            };
-          };
-        };
-
-        bhyve-image = mkNixosHost {
-          pkgsLib = nixpkgs-stable.lib;
-          system = "x86_64-linux";
-          modules = [
-            disko.nixosModules.disko
-            ./hosts/bhyve-image/disko.nix
-            ./hosts/bhyve-image/configuration.nix
-          ];
-        };
-
-        bhyve-image-server = mkNixosHost {
-          pkgsLib = nixpkgs-stable.lib;
-          system = "x86_64-linux";
-          modules = [
-            disko.nixosModules.disko
-            sops-nix.nixosModules.sops
-            ./hosts/bhyve-image/disko.nix
-            ./hosts/bhyve-image/configuration-server.nix
-          ] ++ mkHomeManagerModule {
-            homeManagerModule = home-manager-stable.nixosModules.home-manager;
-            extraSpecialArgs = { pkgs-unstable = mkPkgsUnstable "x86_64-linux"; };
-            hmUsers = {
-              ${users.ij.username} = [
-                ./hosts/bhyve-image/home-ij.nix
-                inputs.nixvim.homeModules.nixvim
-              ];
-              ${users.mj.username} = [ ./hosts/bhyve-image/home-mj.nix ];
-            };
-          };
-        };
-
-        rtsp-dev-vm = mkNixosHost {
-          pkgsLib = nixpkgs.lib;
-          system = "aarch64-linux";
-          modules = [
-            ./hosts/rtsp-dev-vm/configuration.nix
-          ];
-        };
-
-        rpi4-stable = mkNixosHost {
-          pkgsLib = nixpkgs-stable.lib;
-          system = "aarch64-linux";
-          modules = [
-            ./hosts/rpi4-image/stable/configuration.nix
-          ];
-        };
-
-        rpi4-unstable = mkNixosHost {
-          pkgsLib = nixpkgs.lib;
-          system = "aarch64-linux";
-          modules = [
-            ./hosts/rpi4-image/unstable/configuration.nix
-          ];
-        };
-      };
-
-      images = {
-        rpi4-stable = self.nixosConfigurations.rpi4-stable.config.system.build.sdImage;
-        rpi4-unstable = self.nixosConfigurations.rpi4-unstable.config.system.build.sdImage;
-        bhyve = self.nixosConfigurations.bhyve-image.config.system.build.diskoImages;
-        bhyve-server = self.nixosConfigurations.bhyve-image-server.config.system.build.diskoImages;
-        rtsp-dev-vm = self.nixosConfigurations.rtsp-dev-vm.config.system.build.vm;
-      };
-
-      darwinConfigurations = {
-        macbook = mkDarwinHost {
-          system = "aarch64-darwin";
-          modules = [
-            mac-app-util.darwinModules.default
-            sops-nix.darwinModules.sops
-            ./hosts/macbook/configuration.nix
-          ] ++ mkHomeManagerModule {
-            homeManagerModule = home-manager.darwinModules.home-manager;
-            backupFileExtension = "backup";
-            extraSpecialArgs = { pkgs-unstable = mkPkgsUnstable "aarch64-darwin"; };
-            hmUsers.${users.ij.username} = [
-              mac-app-util.homeManagerModules.default
-              ./hosts/macbook/home.nix
-              inputs.nixvim.homeModules.nixvim
-            ];
-          };
-        };
-      };
+      darwinConfigurations = lib.mapAttrs (
+        _: host:
+        mkDarwinHost {
+          system = host.system;
+          modules = mkHostModules host;
+          primaryUser = host.primaryUser or "ij";
+        }
+      ) darwinHosts;
 
       checks = {
         aarch64-darwin = {
