@@ -1908,11 +1908,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1774168602,
-        "narHash": "sha256-uvTFEOR1Tne8dG2+h2bwu7XFKRm8BxaCFN8LcBVDiCI=",
+        "lastModified": 1774287365,
+        "narHash": "sha256-gIhF3SfyUJtm9668gpqY8j1/zzaNqkvugHxgMMV/dZI=",
         "owner": "ijohanne",
         "repo": "perlpimpnet",
-        "rev": "48f5fed186717708c42a230ef23c0f656d4b187e",
+        "rev": "c2ce2b65b15d8181c4900fe56004e10ae18b1c94",
         "type": "github"
       },
       "original": {
