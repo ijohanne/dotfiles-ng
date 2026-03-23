@@ -125,7 +125,7 @@
     };
 
     callis = {
-      url = "github:ijohanne/callis";
+      url = "github:Uptimeplaza/callis";
     };
   };
 
