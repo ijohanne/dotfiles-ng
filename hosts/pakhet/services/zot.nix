@@ -31,6 +31,17 @@
         actions = [ "read" "create" "update" "delete" ];
       }];
     };
+    retention.policies = [
+      {
+        repositories = [ "uptimeplaza/**" ];
+        deleteReferrers = true;
+        deleteUntagged = true;
+        keepTags = [
+          { patterns = [ "latest" ]; }
+          { pushedWithin = "168h"; }
+        ];
+      }
+    ];
     nginx = {
       enable = true;
       domain = "registry.unixpimps.net";
