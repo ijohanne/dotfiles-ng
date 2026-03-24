@@ -1183,14 +1183,15 @@
         "prometheus-tplink-p110-exporter": "prometheus-tplink-p110-exporter",
         "sddm-chili": "sddm-chili",
         "sddm-sugar-dark": "sddm-sugar-dark",
-        "ts3exporter": "ts3exporter"
+        "ts3exporter": "ts3exporter",
+        "zot": "zot"
       },
       "locked": {
-        "lastModified": 1774102649,
-        "narHash": "sha256-Nsd7gjYvvWhsnqHmtGbXD92vQrh4U5GQpTI7dToTWtk=",
+        "lastModified": 1774388957,
+        "narHash": "sha256-UqZdI5vR4OgWk9QPZKa+Tk6xgErLZl94QveFTlwuyJc=",
         "owner": "ijohanne",
         "repo": "nur-packages",
-        "rev": "4121b98f356dbb34670f093bd6356e958ebda829",
+        "rev": "2f783d07d99e7ff34a2607820c828a8936817eca",
         "type": "github"
       },
       "original": {
@@ -2782,6 +2783,23 @@
       "original": {
         "owner": "uptimeplaza",
         "repo": "vardrun",
+        "type": "github"
+      }
+    },
+    "zot": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1772955773,
+        "narHash": "sha256-PhPhlifLU0kOGPqH1kqKxikt+DtJO+MWEv1w6/7sZ6E=",
+        "owner": "project-zot",
+        "repo": "zot",
+        "rev": "ace12e2a12d0e104f6fb0aecf162b29e8c67b8a9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "project-zot",
+        "ref": "v2.1.15",
+        "repo": "zot",
         "type": "github"
       }
     }

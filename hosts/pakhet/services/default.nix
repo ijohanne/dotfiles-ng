@@ -24,6 +24,7 @@
     ./vardrun.nix
     ./node-exporter.nix
     ./pg-exporter.nix
+    ./zot.nix
   ];
 
   sops.secrets.cloudflare_api_key = { };

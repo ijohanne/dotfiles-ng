@@ -21,5 +21,6 @@
     ./vardrun.nix
     ./nginx.nix
     ./postgres.nix
+    ./zot.nix
   ];
 }
