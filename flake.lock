@@ -1187,11 +1187,11 @@
         "zot": "zot"
       },
       "locked": {
-        "lastModified": 1774390181,
-        "narHash": "sha256-8gNcy9z6ScpgVCDy4j8ktDnwpA9t2dDw0oCSRdc/f+M=",
+        "lastModified": 1774391618,
+        "narHash": "sha256-Vk0Le0zzEBlHfdq4B5IyPM7j8Rt7GKubuv0+DaRyUIY=",
         "owner": "ijohanne",
         "repo": "nur-packages",
-        "rev": "fafc08235a0918fdc151176fcc0f83304b3f7b40",
+        "rev": "4401edb52c1101a3669e02c765a74e2cc8795cfe",
         "type": "github"
       },
       "original": {
