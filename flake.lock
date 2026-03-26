@@ -2773,11 +2773,11 @@
         "nixpkgs": "nixpkgs_16"
       },
       "locked": {
-        "lastModified": 1774022252,
-        "narHash": "sha256-I0gbn+Yp9xsLGxqo27fHeR4OX3UQMghsG1/zB6YAv+g=",
+        "lastModified": 1774530316,
+        "narHash": "sha256-YnYAb1TQ3/4WBdJ8f60mGXB+ZMqLUf93hd4pYpYWtaI=",
         "owner": "uptimeplaza",
         "repo": "vardrun",
-        "rev": "1bed9c327ab6d8c4774511e942b997766757644b",
+        "rev": "d6d2bb8d75128e83d812dafd26b8bb7b50d2ad62",
         "type": "github"
       },
       "original": {
