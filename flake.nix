@@ -375,13 +375,17 @@
 
       mkNixosHost = { pkgsLib, system, modules, primaryUser ? "ij" }:
         pkgsLib.nixosSystem {
-          inherit system modules;
+          modules = [
+            { nixpkgs.hostPlatform = system; }
+          ] ++ modules;
           specialArgs = { inherit inputs self users; user = users.${primaryUser}; };
         };
 
       mkDarwinHost = { system, modules, primaryUser ? "ij" }:
         nix-darwin.lib.darwinSystem {
-          inherit system modules;
+          modules = [
+            { nixpkgs.hostPlatform = system; }
+          ] ++ modules;
           specialArgs = { inherit inputs self users; user = users.${primaryUser}; };
         };
 

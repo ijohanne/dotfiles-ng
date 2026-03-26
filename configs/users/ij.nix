@@ -57,7 +57,6 @@ in
     enableSshSupport = true;
   };
 
-  programs.password-store.enable = true;
 
   programs.fish.enable = true;
 }

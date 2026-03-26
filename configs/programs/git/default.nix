@@ -20,6 +20,7 @@
       core.pager = "delta";
       interactive.diffFilter = "delta --color-only";
     };
+    signing.format = "openpgp";
     lfs.enable = true;
   };
 }
