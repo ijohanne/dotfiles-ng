@@ -151,16 +151,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1774047910,
-        "narHash": "sha256-LPi6C8Rn7E1qnynV8A4sWnGGP+9JUk3Ih1Q8E7recXM=",
+        "lastModified": 1774488690,
+        "narHash": "sha256-r5yQpoa4AqDOkwKflMMFOviC39XzpqrG1D+1xejn77c=",
         "owner": "sadjow",
         "repo": "claude-code-nix",
-        "rev": "e0175b23568cc5e889d3452feb8d046f4f87687b",
+        "rev": "61d07ce0f48f63f098ed7d4e23018c416ed37b90",
         "type": "github"
       },
       "original": {
         "owner": "sadjow",
-        "ref": "v2.1.81",
+        "ref": "v2.1.84",
         "repo": "claude-code-nix",
         "type": "github"
       }
@@ -2773,11 +2773,11 @@
         "nixpkgs": "nixpkgs_16"
       },
       "locked": {
-        "lastModified": 1774530316,
-        "narHash": "sha256-YnYAb1TQ3/4WBdJ8f60mGXB+ZMqLUf93hd4pYpYWtaI=",
+        "lastModified": 1774531406,
+        "narHash": "sha256-1gWNjPnwgf2Ccl6ODJCJvCV9TGS/7j/dfqmzm/kVcdQ=",
         "owner": "uptimeplaza",
         "repo": "vardrun",
-        "rev": "d6d2bb8d75128e83d812dafd26b8bb7b50d2ad62",
+        "rev": "9970be865a357901f9ef7f5ec0b6e03e9aeb08ea",
         "type": "github"
       },
       "original": {
