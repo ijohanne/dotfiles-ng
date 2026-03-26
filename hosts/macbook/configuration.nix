@@ -9,7 +9,6 @@ in
 {
   imports = [
     ../../configs/secrets.nix
-    ../../configs/darwin/dock
   ];
 
   nix.settings = {
@@ -155,6 +154,21 @@ in
       wvous-br-corner = 14;
       wvous-tl-corner = 5;
       wvous-tr-corner = 12;
+      persistent-apps = [
+        "${pkgs.ghostty-bin}/Applications/Ghostty.app"
+        "${pkgs.zed-editor}/Applications/Zed.app"
+        "/Applications/Safari.app"
+        "/Applications/Google Chrome.app"
+        "/Applications/Notion.app"
+        "/Applications/Slack.app"
+        "/Applications/Mattermost.app"
+        "/Applications/Discord.app"
+        "/System/Applications/Messages.app"
+        "/Applications/WhatsApp.app"
+        "/System/Applications/FaceTime.app"
+        "/Applications/Proton Mail.app"
+        "/System/Applications/Music.app"
+      ];
     };
 
     finder = {
@@ -283,25 +297,6 @@ in
     fi
   '';
 
-  local.dock = {
-    enable = true;
-    username = user.username;
-    entries = [
-      { path = "${pkgs.ghostty-bin}/Applications/Ghostty.app"; }
-      { path = "${pkgs.zed-editor}/Applications/Zed.app"; }
-      { path = "/Applications/Safari.app"; }
-      { path = "/Applications/Google Chrome.app"; }
-      { path = "/Applications/Notion.app"; }
-      { path = "/Applications/Slack.app"; }
-      { path = "/Applications/Mattermost.app"; }
-      { path = "/Applications/Discord.app"; }
-      { path = "/System/Applications/Messages.app"; }
-      { path = "/Applications/WhatsApp.app"; }
-      { path = "/System/Applications/FaceTime.app"; }
-      { path = "/Applications/Proton Mail.app"; }
-      { path = "/System/Applications/Music.app"; }
-    ];
-  };
 
   system.stateVersion = 5;
 }
