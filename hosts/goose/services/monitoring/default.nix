@@ -17,6 +17,7 @@
     ./hue.nix
     ./telegraf.nix
     ./tplink-p110.nix
+    ./ecowitt.nix
     ./proton-port-sync.nix
     ./vardrun.nix
     ./nginx.nix
