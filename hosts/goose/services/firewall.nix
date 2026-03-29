@@ -80,6 +80,7 @@ in
                 "wifi", "wired", "mgnt", "${interfaces.external}", "wg0" } counter accept comment "inter-vlan"
 
               iifname { "wifi", "wired", "mgnt", "wg0" } oifname "camera" counter accept comment "lan to camera"
+              iifname "camera" oifname { "wifi", "wired", "mgnt", "wg0" } ct state established,related counter accept comment "camera return"
 
               iifname "camera" ip saddr ${network.hosts.unvr.ip} oifname "mgnt" ip daddr {
                 ${network.hosts.ap0.ip}, ${network.hosts.ap1.ip},
