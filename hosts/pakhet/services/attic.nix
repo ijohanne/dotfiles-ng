@@ -101,6 +101,11 @@ in
     acmeRoot = null;
     locations."/" = {
       proxyPass = "http://127.0.0.1:8080";
+      extraConfig = ''
+        client_max_body_size 0;
+        proxy_request_buffering off;
+        proxy_buffering off;
+      '';
     };
   };
 
@@ -111,6 +116,9 @@ in
     locations."/" = {
       proxyPass = "http://127.0.0.1:8080";
       extraConfig = ''
+        client_max_body_size 0;
+        proxy_request_buffering off;
+        proxy_buffering off;
         rewrite ^/(.*)$ /$cache/$1 break;
         proxy_set_header Host ${atticApiHost};
       '';
