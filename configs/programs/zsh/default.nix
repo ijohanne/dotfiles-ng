@@ -2,7 +2,7 @@
 { pkgs, ... }:
 {
   programs.zsh = {
-    initExtra = ''
+    initContent = ''
       export EDITOR=nvim
       export VISUAL=nvim
       export PAGER=less

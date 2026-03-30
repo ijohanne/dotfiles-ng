@@ -287,7 +287,7 @@ in
       cp /run/secrets/nix_builder_access_tokens "$USER_NIX_DIR/access-tokens.conf"
       chmod 600 "$USER_NIX_DIR/access-tokens.conf"
       chown ${user.username}:staff "$USER_NIX_DIR/access-tokens.conf"
-      grep -q '!include' "$USER_NIX_DIR/nix.conf" 2>/dev/null || echo '!include access-tokens.conf' >> "$USER_NIX_DIR/nix.conf"
+      grep -Fxq '!include access-tokens.conf' "$USER_NIX_DIR/nix.conf" 2>/dev/null || echo '!include access-tokens.conf' >> "$USER_NIX_DIR/nix.conf"
       chown ${user.username}:staff "$USER_NIX_DIR/nix.conf"
     fi
   '';
