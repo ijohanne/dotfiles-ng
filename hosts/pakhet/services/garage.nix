@@ -44,6 +44,14 @@ let
   '';
 in
 {
+  users.groups.garage = { };
+
+  users.users.garage = {
+    isSystemUser = true;
+    group = "garage";
+    description = "Garage object storage service";
+  };
+
   sops.secrets.garage_rpc_secret = {
     mode = "0400";
     owner = "garage";
@@ -91,6 +99,12 @@ in
         metrics_token_file = config.sops.secrets.garage_metrics_token.path;
       };
     };
+  };
+
+  systemd.services.garage.serviceConfig = {
+    DynamicUser = false;
+    User = "garage";
+    Group = "garage";
   };
 
   services.nginx.virtualHosts.${garageS3Host} = {
