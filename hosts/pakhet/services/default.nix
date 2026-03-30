@@ -3,6 +3,8 @@
 {
   imports = [
     ./nginx.nix
+    ./garage.nix
+    ./attic.nix
     ./mariadb.nix
     ./postgresql.nix
     ./gitea.nix
