@@ -1,7 +1,8 @@
-{ lib, user, pkgs, ... }:
+{ lib, user, inputs, pkgs, ... }:
 let
   isDeveloper = user.developer or false;
-  opencodePackage = pkgs.opencode;
+  system = pkgs.stdenv.hostPlatform.system;
+  opencodePackage = inputs.llm-agents-nix.packages.${system}.opencode;
   opencodeUnsafe = pkgs.writeShellScriptBin "opencode-unsafe" ''
     export OPENCODE_PERMISSION='"allow"'
     exec ${opencodePackage}/bin/opencode "$@"

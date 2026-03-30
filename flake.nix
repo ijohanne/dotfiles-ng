@@ -87,6 +87,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    llm-agents-nix = {
+      url = "github:numtide/llm-agents.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     ijohanne-nur = {
       url = "github:ijohanne/nur-packages";
     };
@@ -153,6 +158,7 @@
       grpc-proxier,
       pdf-detective,
       claude-code-nix,
+      llm-agents-nix,
 
       ijohanne-nur,
       nixos-mailserver,
