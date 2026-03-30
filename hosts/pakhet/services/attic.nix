@@ -3,6 +3,7 @@
 let
   atticApiHost = "nix-cache.unixpimps.net";
   atticBootstrapCache = "ijohanne";
+  atticClient = "${pkgs.attic-client}/bin/attic";
 
   atticEnv = config.sops.templates."atticd-env";
 
@@ -27,14 +28,14 @@ let
       --configure-cache-retention '*' \
       --destroy-cache '*')
 
-    ${config.services.atticd.package}/bin/attic login bootstrap http://127.0.0.1:8080/ "$token"
+    ${atticClient} login bootstrap http://127.0.0.1:8080/ "$token"
 
-    if ! ${config.services.atticd.package}/bin/attic cache info bootstrap:${atticBootstrapCache} >/dev/null 2>&1; then
-      ${config.services.atticd.package}/bin/attic cache create bootstrap:${atticBootstrapCache} --public
+    if ! ${atticClient} cache info bootstrap:${atticBootstrapCache} >/dev/null 2>&1; then
+      ${atticClient} cache create bootstrap:${atticBootstrapCache} --public
     fi
 
-    ${config.services.atticd.package}/bin/attic cache configure bootstrap:${atticBootstrapCache} --public
-    ${config.services.atticd.package}/bin/attic cache info bootstrap:${atticBootstrapCache} > "$state_root/${atticBootstrapCache}.info"
+    ${atticClient} cache configure bootstrap:${atticBootstrapCache} --public
+    ${atticClient} cache info bootstrap:${atticBootstrapCache} > "$state_root/${atticBootstrapCache}.info"
   '';
 in
 {
@@ -73,7 +74,7 @@ in
       api-endpoint = "https://${atticApiHost}/";
       substituter-endpoint = "https://${atticApiHost}/";
 
-      database.url = "postgresql://atticd@/atticd?host=/run/postgresql";
+      database.url = "postgres:///atticd?host=/run/postgresql&user=atticd";
 
       storage = {
         type = "s3";
