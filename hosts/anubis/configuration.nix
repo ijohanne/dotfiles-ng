@@ -62,7 +62,12 @@ in
     ];
   };
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.swraid.enable = true;
+  boot.swraid = {
+    enable = true;
+    mdadmConf = ''
+      PROGRAM /run/current-system/sw/bin/true
+    '';
+  };
 
   time.timeZone = "Europe/Paris";
 

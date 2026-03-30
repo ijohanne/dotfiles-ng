@@ -1,1 +1,1 @@
-{ nixPackage = "protonvpn-gui"; brewCask = "protonvpn"; }
+{ nixPackage = "proton-vpn"; brewCask = "protonvpn"; }

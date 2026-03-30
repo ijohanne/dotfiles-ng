@@ -69,12 +69,12 @@
     };
 
     grpc-proxier = {
-      url = "github:ijohanne/grpc-proxier";
+      url = "github:ijohanne/grpc-proxier/fix-hostplatform-system";
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 
     pdf-detective = {
-      url = "github:ijohanne/pdf-detective";
+      url = "github:ijohanne/pdf-detective/fix-hostplatform-system";
     };
 
     claude-code-nix = {
@@ -725,6 +725,9 @@
           setup-template = {
             type = "app";
             program = "${setup-template}/bin/setup-template";
+            meta = {
+              description = "Scaffold new host and user configs for the dotfiles flake";
+            };
           };
         } // builtins.mapAttrs (name: pkg: {
           type = "app";

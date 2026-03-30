@@ -1,7 +1,8 @@
 { lib, user, inputs, pkgs, ... }:
 let
   isDeveloper = user.developer or false;
-  claudePackage = inputs.claude-code-nix.packages.${pkgs.system}.claude-code;
+  system = pkgs.stdenv.hostPlatform.system;
+  claudePackage = inputs.claude-code-nix.packages.${system}.claude-code;
   claudeUnsafe = pkgs.writeShellScriptBin "claude-unsafe" ''
     exec ${claudePackage}/bin/claude --dangerously-skip-permissions "$@"
   '';
