@@ -168,11 +168,11 @@
         "pre-commit-hooks": "pre-commit-hooks"
       },
       "locked": {
-        "lastModified": 1774869566,
-        "narHash": "sha256-3kpOfcGfhMXQHFRcgkTHKynBYnohVnE37Jv3ROqNbW4=",
+        "lastModified": 1774901357,
+        "narHash": "sha256-ybwv9Z+ZJafpPdczXCTjO+bQHyKlb30zwa/+TLNx8yM=",
         "owner": "Uptimeplaza",
         "repo": "callis",
-        "rev": "b0c067054d258648b98603c6d608902944a77cf8",
+        "rev": "1f336b987ba21ac6ed73ab08bab44d1f05e49df5",
         "type": "github"
       },
       "original": {
