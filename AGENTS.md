@@ -139,5 +139,11 @@ Run `vardrun prime` for full workflow context — do this at the start of every 
 "Take", "claim", "work on", "pick up" all mean this. Always sync after so changes
 are visible in the TUI and web interface.
 
+**Tracker hygiene for agents:**
+- Put technical plans, rollout steps, acceptance notes, and implementation details in the `implementation` field, not in comments.
+- Use vardrun relationships (`dep add ... --type related` or blockers when appropriate) to model epics/child work instead of writing "children" lists in comments.
+- Use comments only for human-facing progress updates, decisions, or other historical notes that are useful to read chronologically later.
+- If you mutate vardrun state multiple times, prefer serialized `create/update/dep/comment/sync` operations over parallel mutations. The tracker syncs through GitHub, so racing mutations can produce inconsistent state.
+
 **For agents:** Use `--json` on any command to discover field structure at runtime.
 For full workflow details and all commands: `vardrun prime`
