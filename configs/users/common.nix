@@ -5,6 +5,7 @@
     ../programs/bat
     ../programs/claude-code
     ../programs/codex-cli
+    ../programs/opencode
     ../programs/eza
     ../programs/fd
   ];
