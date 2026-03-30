@@ -3,6 +3,8 @@
 {
   imports = [
     ../programs/bat
+    ../programs/claude-code
+    ../programs/codex-cli
     ../programs/eza
     ../programs/fd
   ];
@@ -38,6 +40,5 @@
     yubikey-manager
     yubikey-agent
     age-plugin-yubikey
-    inputs.claude-code-nix.packages.${pkgs.system}.claude-code
   ];
 }

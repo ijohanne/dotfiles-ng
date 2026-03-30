@@ -55,9 +55,6 @@
         function tls
             tmux list-sessions
         end
-        function claude-unsafe
-            claude --dangerously-skip-permissions $argv
-        end
         set -g fish_greeting ""
         set -gx SOPS_AGE_KEY_FILE "$HOME/.config/sops/age/keys.txt"
         if test -f /run/secrets/gitea_homebrew_api_token

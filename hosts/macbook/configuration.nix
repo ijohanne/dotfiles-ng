@@ -8,6 +8,7 @@ let
 in
 {
   imports = [
+    ../../configs/nix-caches.nix
     ../../configs/secrets.nix
   ];
 
@@ -15,12 +16,6 @@ in
     experimental-features = [ "nix-command" "flakes" ];
     builders-use-substitutes = true;
     trusted-users = [ "root" "@admin" user.username ];
-    substituters = [
-      "https://cache.garnix.io"
-    ];
-    trusted-public-keys = [
-      "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
-    ];
   };
 
   nix.extraOptions = ''
