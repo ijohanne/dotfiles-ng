@@ -6,6 +6,7 @@
     ../programs/claude-code
     ../programs/codex-cli
     ../programs/opencode
+    ../programs/t3code-cli
     ../programs/eza
     ../programs/fd
   ];

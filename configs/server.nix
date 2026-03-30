@@ -3,7 +3,7 @@
 {
   imports = [
     ./nix-caches.nix
-    ./profiles/base-system.nix
+    ./profiles/system/base
   ];
 
   services.openssh.extraConfig = ''

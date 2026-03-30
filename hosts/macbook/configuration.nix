@@ -4,7 +4,7 @@ let
   deploy = import ../../configs/deploy { inherit pkgs; };
   network = import ../../configs/network.nix { inherit lib; };
   pakhetIp = network.hosts.pakhet.ip;
-  desktopApps = import ../../configs/programs/desktop-apps.nix;
+  desktopApps = import ../../configs/profiles/apps/desktop;
 in
 {
   imports = [
@@ -112,6 +112,8 @@ in
       PermitRootLogin no
     '';
   };
+
+  programs.fish.enable = true;
 
   system.keyboard = {
     enableKeyMapping = true;
@@ -264,8 +266,6 @@ in
     echo "NOTE: If this is a fresh install, enable Proton Pass Safari extension:"
     echo "      Safari > Settings > Extensions > Enable 'Proton Pass'"
     echo ""
-
-    chsh -s /run/current-system/sw/bin/fish ${user.username}
 
     # Start gpg-agent if not running
     if [ -z "$GPG_AGENT_INFO" ]; then

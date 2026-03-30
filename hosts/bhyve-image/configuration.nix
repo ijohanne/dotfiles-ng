@@ -2,9 +2,9 @@
 
 {
   imports = [
-    ../../configs/profiles/base-system.nix
-    ../../configs/profiles/qemu-guest.nix
-    ../../configs/profiles/grow-root-sda2.nix
+    ../../configs/profiles/system/base
+    ../../configs/profiles/system/qemu-guest
+    ../../configs/profiles/system/grow-root-sda2
   ];
 
   systemd.services.sshd.wantedBy = lib.mkOverride 40 [ "multi-user.target" ];

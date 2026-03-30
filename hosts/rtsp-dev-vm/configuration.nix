@@ -8,8 +8,8 @@ in
 
 {
   imports = [
-    ../../configs/profiles/base-system.nix
-    ../../configs/profiles/qemu-guest.nix
+    ../../configs/profiles/system/base
+    ../../configs/profiles/system/qemu-guest
   ];
 
   networking = {

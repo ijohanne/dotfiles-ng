@@ -137,6 +137,10 @@
     callis = {
       url = "github:Uptimeplaza/callis";
     };
+
+    t3code-nix = {
+      url = "github:Sawrz/t3code-nix";
+    };
   };
 
   outputs =

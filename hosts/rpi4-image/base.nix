@@ -3,7 +3,7 @@
 {
   imports = [
     "${modulesPath}/installer/sd-card/sd-image-aarch64.nix"
-    ../../configs/profiles/base-system.nix
+    ../../configs/profiles/system/base
   ];
 
   networking = {

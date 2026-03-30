@@ -26,6 +26,31 @@
         function dig
             dog $argv
         end
+        function tldr
+            ${pkgs.tealdeer}/bin/tldr $argv
+            set -l tealdeer_status $status
+            if test $tealdeer_status -eq 0
+                return 0
+            end
+
+            if test (count $argv) -eq 0
+                return $tealdeer_status
+            end
+
+            if string match -qr '^-' -- $argv[1]
+                return $tealdeer_status
+            end
+
+            set -l man_candidates (string join "-" $argv) $argv[1]
+            for page in $man_candidates
+                if man -w "$page" >/dev/null 2>&1
+                    command man "$page"
+                    return $status
+                end
+            end
+
+            return $tealdeer_status
+        end
         function vim
             nvim $argv
         end

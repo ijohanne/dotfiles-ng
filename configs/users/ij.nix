@@ -3,7 +3,7 @@
 { pkgs, lib, user, inputs, ... }:
 
 let
-  desktopApps = import ../programs/desktop-apps.nix;
+  desktopApps = import ../profiles/apps/desktop;
 in
 {
   imports = [
@@ -29,6 +29,7 @@ in
     (import ../programs/ghostty {})
     (import ../programs/ssh { desktop = true; })
     ../programs/zed
+    ../programs/t3code
     ../dev/languages
   ] else [
     ../dev/languages/nix

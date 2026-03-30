@@ -1,8 +1,7 @@
 { ... }:
 { pkgs, ... }:
 {
-  programs.bash = {
-    enable = true;
+  programs.zsh = {
     initExtra = ''
       export EDITOR=nvim
       export VISUAL=nvim
