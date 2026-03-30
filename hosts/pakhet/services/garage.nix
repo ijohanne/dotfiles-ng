@@ -8,7 +8,17 @@ let
   garageBootstrap = pkgs.writeShellScript "garage-bootstrap" ''
     set -euo pipefail
 
-    node_id="$(${config.services.garage.package}/bin/garage node id | cut -d@ -f1)"
+    for _ in $(seq 1 30); do
+      if node_id="$(${config.services.garage.package}/bin/garage node id 2>/dev/null | cut -d@ -f1)" && [ -n "$node_id" ]; then
+        break
+      fi
+      sleep 1
+    done
+
+    if [ -z "''${node_id:-}" ]; then
+      echo "garage node id did not become available in time" >&2
+      exit 1
+    fi
 
     if ${config.services.garage.package}/bin/garage status | grep -q 'NO ROLE ASSIGNED'; then
       ${config.services.garage.package}/bin/garage layout assign -z ${garageZone} -c ${garageCapacity} "$node_id"
