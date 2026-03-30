@@ -70,7 +70,11 @@ in
     environmentFile = atticEnv.path;
     settings = {
       listen = "127.0.0.1:8080";
-      allowed-hosts = [ atticApiHost ];
+      allowed-hosts = [
+        atticApiHost
+        "127.0.0.1:8080"
+        "localhost:8080"
+      ];
       api-endpoint = "https://${atticApiHost}/";
       substituter-endpoint = "https://${atticApiHost}/";
 
