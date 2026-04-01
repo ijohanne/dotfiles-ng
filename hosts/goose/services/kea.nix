@@ -35,6 +35,9 @@ let
 
   wiredIp6RevZone = ip6ZoneName "${network.ulaPrefix}:101::1";
   wifiIp6RevZone = ip6ZoneName "${network.ulaPrefix}:100::1";
+
+  # Add SKIP_DDNS class to reservations so static DNS isn't overridden
+  skipDdnsReservations = rs: map (r: r // { client-classes = [ "SKIP_DDNS" ]; }) rs;
 in
 {
   services.kea = {
@@ -42,6 +45,7 @@ in
       enable = true;
       settings = {
         authoritative = true;
+        hooks-libraries = [{ library = "${pkgs.kea}/lib/kea/hooks/libdhcp_ddns_tuning.so"; }];
         dhcp-ddns = {
           enable-updates = true;
           server-ip = "127.0.0.1";
@@ -214,7 +218,7 @@ in
           }
         ];
         reservations-global = true;
-        reservations = network.dhcpReservations;
+        reservations = skipDdnsReservations network.dhcpReservations;
         subnet4 = [
           {
             id = 1;
@@ -415,6 +419,7 @@ in
     enable = network.enableIPv6ULA;
     settings = {
       interfaces-config = { interfaces = [ "wired" "wifi" "mgnt" ]; };
+      hooks-libraries = [{ library = "${pkgs.kea}/lib/kea/hooks/libdhcp_ddns_tuning.so"; }];
       lease-database = {
         type = "memfile";
         persist = true;
@@ -435,7 +440,7 @@ in
       hostname-char-replacement = "-";
       host-reservation-identifiers = [ "hw-address" ];
       reservations-global = true;
-      reservations = network.dhcp6Reservations;
+      reservations = skipDdnsReservations network.dhcp6Reservations;
       subnet6 = [
         {
           id = 1;
