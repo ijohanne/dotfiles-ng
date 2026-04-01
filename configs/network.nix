@@ -268,7 +268,7 @@ let
 
 in {
   inherit domain hosts extraDns mailDomains mkDnatRules;
-  inherit enableIPv6ULA ulaPrefix;
+  inherit enableIPv6ULA ulaPrefix expandIp6;
   inherit forwardDns reverseDns reverseZones dhcpReservations;
   inherit forwardDns6 reverseDns6 reverseZones6 dhcp6Reservations;
 }

@@ -21,6 +21,20 @@ let
     name = "domain-search";
     space = "dhcp4";
   };
+
+  # IPv6 reverse zone name helper for D2 config
+  ip6Nibbles = addr:
+    let expanded = network.expandIp6 addr;
+    in lib.stringToCharacters (lib.replaceStrings [":"] [""] expanded);
+
+  ip6ZoneName = addr:
+    let
+      nibbles = ip6Nibbles addr;
+      rev12 = lib.concatStringsSep "." (lib.reverseList (lib.take 12 nibbles));
+    in "${rev12}.ip6.arpa.";
+
+  wiredIp6RevZone = ip6ZoneName "${network.ulaPrefix}:101::1";
+  wifiIp6RevZone = ip6ZoneName "${network.ulaPrefix}:100::1";
 in
 {
   services.kea = {
@@ -200,7 +214,7 @@ in
           }
         ];
         reservations-global = true;
-        reservations = network.dhcpReservations;
+        reservations = map (r: r // { "ddns-send-updates" = false; }) network.dhcpReservations;
         subnet4 = [
           {
             id = 1;
@@ -408,15 +422,27 @@ in
       };
       preferred-lifetime = 86400;
       valid-lifetime = 86400;
+      dhcp-ddns = {
+        enable-updates = true;
+        server-ip = "127.0.0.1";
+        server-port = 53001;
+      };
+      ddns-override-client-update = true;
+      ddns-replace-client-name = "never";
+      ddns-update-on-renew = true;
+      ddns-qualifying-suffix = "dhcp.${network.domain}.";
+      hostname-char-set = "[^A-Za-z0-9.-]";
+      hostname-char-replacement = "-";
       host-reservation-identifiers = [ "hw-address" ];
       reservations-global = true;
-      reservations = network.dhcp6Reservations;
+      reservations = map (r: r // { "ddns-send-updates" = false; }) network.dhcp6Reservations;
       subnet6 = [
         {
           id = 1;
           interface = "wired";
           subnet = "${network.ulaPrefix}:101::/64";
           pools = [{ pool = "${network.ulaPrefix}:101::1000 - ${network.ulaPrefix}:101::ffff"; }];
+          ddns-send-updates = true;
           option-data = [
             {
               name = "dns-servers";
@@ -429,6 +455,7 @@ in
           interface = "wifi";
           subnet = "${network.ulaPrefix}:100::/64";
           pools = [{ pool = "${network.ulaPrefix}:100::1000 - ${network.ulaPrefix}:100::ffff"; }];
+          ddns-send-updates = true;
           option-data = [
             {
               name = "dns-servers";
@@ -441,6 +468,7 @@ in
           interface = "mgnt";
           subnet = "${network.ulaPrefix}:254::/64";
           pools = [{ pool = "${network.ulaPrefix}:254::1000 - ${network.ulaPrefix}:254::ffff"; }];
+          ddns-send-updates = false;
           option-data = [
             {
               name = "dns-servers";
@@ -521,6 +549,16 @@ in
             }
             {
               name = "150.255.10.in-addr.arpa.";
+              key-name = "kea-ddns-key.";
+              dns-servers = [{ ip-address = "127.0.0.1"; port = 53; }];
+            }
+            {
+              name = wiredIp6RevZone;
+              key-name = "kea-ddns-key.";
+              dns-servers = [{ ip-address = "127.0.0.1"; port = 53; }];
+            }
+            {
+              name = wifiIp6RevZone;
               key-name = "kea-ddns-key.";
               dns-servers = [{ ip-address = "127.0.0.1"; port = 53; }];
             }
