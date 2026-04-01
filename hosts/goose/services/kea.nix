@@ -45,7 +45,7 @@ in
       enable = true;
       settings = {
         authoritative = true;
-        hooks-libraries = [{ library = "${pkgs.kea}/lib/kea/hooks/libdhcp_ddns_tuning.so"; }];
+        hooks-libraries = [{ library = "${pkgs.kea}/lib/kea/hooks/libdhcp_ddns_tuning.so"; parameters = {}; }];
         dhcp-ddns = {
           enable-updates = true;
           server-ip = "127.0.0.1";
@@ -419,7 +419,7 @@ in
     enable = network.enableIPv6ULA;
     settings = {
       interfaces-config = { interfaces = [ "wired" "wifi" "mgnt" ]; };
-      hooks-libraries = [{ library = "${pkgs.kea}/lib/kea/hooks/libdhcp_ddns_tuning.so"; }];
+      hooks-libraries = [{ library = "${pkgs.kea}/lib/kea/hooks/libdhcp_ddns_tuning.so"; parameters = {}; }];
       lease-database = {
         type = "memfile";
         persist = true;
