@@ -339,7 +339,7 @@
       "targets": [
         {
           "datasource": { "type": "prometheus", "uid": "${datasource}" },
-          "expr": "(network_ups_tools_ups_power{instance=~\"$instance\"} * 100) / network_ups_tools_ups_power_nominal{instance=~\"$instance\"}",
+          "expr": "(network_ups_tools_ups_realpower{instance=~\"$instance\"} * 100) / network_ups_tools_ups_power_nominal{instance=~\"$instance\"}",
           "legendFormat": "{{instance}}",
           "refId": "A"
         }
