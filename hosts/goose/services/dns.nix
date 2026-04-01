@@ -1,4 +1,4 @@
-{ pkgs, network, lib, ... }:
+{ pkgs, network, lib, config, ... }:
 
 let
   hickory-dns = pkgs.rustPlatform.buildRustPackage rec {
@@ -12,7 +12,7 @@ let
     };
     cargoHash = "sha256-FfckN+qhSqbc8jnL0xThdAMQEgluocSY1ksEyT8rFFY=";
     buildAndTestSubdir = "bin";
-    buildFeatures = [ "sqlite" "resolver" "recursor" "prometheus-metrics" ];
+    buildFeatures = [ "sqlite" "resolver" "recursor" "prometheus-metrics" "dnssec-ring" ];
     nativeBuildInputs = [ pkgs.pkg-config ];
     buildInputs = [ pkgs.openssl pkgs.sqlite ];
     doCheck = false;
@@ -110,6 +110,28 @@ let
 
   reverseZones = lib.mapAttrsToList mkReverseZone hostsBySubnet;
 
+  # --- TSIG key for DDNS authentication ---
+
+  tsigKeyPath = config.sops.secrets.hickory_dns_private_key.path;
+  tsigKeyToml = ''
+    [[zones.stores.tsig_keys]]
+    name = "kea-ddns-key."
+    algorithm = "hmac-sha256"
+    key_file = "${tsigKeyPath}"
+  '';
+
+  # Split reverse zones: DDNS-updatable (wifi/wired/guest) vs static
+  ddnsSubnets = [ "10.255.100" "10.255.101" "10.255.150" ];
+  zoneToSubnet = zoneName:
+    let
+      stripped = lib.removeSuffix ".in-addr.arpa" zoneName;
+      parts = lib.splitString "." stripped;
+    in "${builtins.elemAt parts 2}.${builtins.elemAt parts 1}.${builtins.elemAt parts 0}";
+
+  isDdnsReverseZone = z: builtins.elem (zoneToSubnet z.name) ddnsSubnets;
+  ddnsReverseZones = builtins.filter isDdnsReverseZone reverseZones;
+  staticReverseZones = builtins.filter (z: !(isDdnsReverseZone z)) reverseZones;
+
   # --- Zone file derivations ---
 
   forwardZoneFile = pkgs.writeText "est.unixpimps.net.zone" forwardZoneContent;
@@ -143,12 +165,26 @@ let
 
   toTomlStrArray = items: "[${lib.concatMapStringsSep ", " (i: ''"${i}"'') items}]";
 
-  reverseZoneToml = lib.concatMapStringsSep "\n" (z: ''
+  staticReverseZoneToml = lib.concatMapStringsSep "\n" (z: ''
     [[zones]]
     zone = "${z.name}."
     zone_type = "Primary"
     file = "${reverseZoneFilesByName.${z.name}}"
-  '') reverseZones;
+  '') staticReverseZones;
+
+  ddnsReverseZoneToml = lib.concatMapStringsSep "\n" (z: ''
+    [[zones]]
+    zone = "${z.name}."
+    zone_type = "Primary"
+
+    [zones.stores]
+    type = "sqlite"
+    zone_path = "${reverseZoneFilesByName.${z.name}}"
+    journal_path = "${dataDir}/${z.name}.jrnl"
+    allow_update = true
+
+    ${tsigKeyToml}
+  '') ddnsReverseZones;
 
   rootHints = "${pkgs.dns-root-data}/root.hints";
 
@@ -179,6 +215,8 @@ let
     journal_path = "${dataDir}/dhcp.${network.domain}.jrnl"
     allow_update = true
 
+    ${tsigKeyToml}
+
     [[zones]]
     zone = "guest.${network.domain}."
     zone_type = "Primary"
@@ -189,7 +227,11 @@ let
     journal_path = "${dataDir}/guest.${network.domain}.jrnl"
     allow_update = true
 
-    ${reverseZoneToml}
+    ${tsigKeyToml}
+
+    ${staticReverseZoneToml}
+
+    ${ddnsReverseZoneToml}
 
     [[zones]]
     zone = "."

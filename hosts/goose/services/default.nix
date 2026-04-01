@@ -32,6 +32,7 @@
   sops.secrets.sms_target_number = {};
   sops.secrets.sms_modem = {};
   sops.secrets.wireguard_private_key = {};
+  sops.secrets.hickory_dns_private_key = { owner = "hickory-dns"; };
 
   sops.templates."sms-env" = {
     content = ''

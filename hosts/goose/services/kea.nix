@@ -1,4 +1,4 @@
-{ network, ... }:
+{ network, config, lib, pkgs, ... }:
 
 let
   searchDomainWifiWired = {
@@ -477,5 +477,55 @@ in
   systemd.services.kea-dhcp-ddns-server = {
     after = [ "hickory-dns.service" ];
     wants = [ "hickory-dns.service" ];
+    serviceConfig.ExecStart = lib.mkForce
+      "${pkgs.kea}/bin/kea-dhcp-ddns -c ${config.sops.templates."kea-dhcp-ddns.conf".path}";
+  };
+
+  sops.templates."kea-dhcp-ddns.conf" = {
+    content = builtins.toJSON {
+      DhcpDdns = {
+        ip-address = "127.0.0.1";
+        port = 53001;
+        dns-server-timeout = 3000;
+        tsig-keys = [{
+          name = "kea-ddns-key.";
+          algorithm = "HMAC-SHA256";
+          secret = config.sops.placeholder.hickory_dns_private_key;
+        }];
+        forward-ddns = {
+          ddns-domains = [
+            {
+              name = "dhcp.${network.domain}.";
+              key-name = "kea-ddns-key.";
+              dns-servers = [{ ip-address = "127.0.0.1"; port = 53; }];
+            }
+            {
+              name = "guest.${network.domain}.";
+              key-name = "kea-ddns-key.";
+              dns-servers = [{ ip-address = "127.0.0.1"; port = 53; }];
+            }
+          ];
+        };
+        reverse-ddns = {
+          ddns-domains = [
+            {
+              name = "100.255.10.in-addr.arpa.";
+              key-name = "kea-ddns-key.";
+              dns-servers = [{ ip-address = "127.0.0.1"; port = 53; }];
+            }
+            {
+              name = "101.255.10.in-addr.arpa.";
+              key-name = "kea-ddns-key.";
+              dns-servers = [{ ip-address = "127.0.0.1"; port = 53; }];
+            }
+            {
+              name = "150.255.10.in-addr.arpa.";
+              key-name = "kea-ddns-key.";
+              dns-servers = [{ ip-address = "127.0.0.1"; port = 53; }];
+            }
+          ];
+        };
+      };
+    };
   };
 }
