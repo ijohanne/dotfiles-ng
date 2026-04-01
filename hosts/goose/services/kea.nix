@@ -435,6 +435,8 @@ in
       ddns-override-client-update = true;
       ddns-replace-client-name = "never";
       ddns-update-on-renew = true;
+      ddns-ttl-percent = 0.0;
+      ddns-conflict-resolution-mode = "no-check-with-dhcid";
       ddns-qualifying-suffix = "dhcp.${network.domain}.";
       hostname-char-set = "[^A-Za-z0-9.-]";
       hostname-char-replacement = "-";
@@ -447,6 +449,7 @@ in
           interface = "wired";
           subnet = "${network.ulaPrefix}:101::/64";
           pools = [{ pool = "${network.ulaPrefix}:101::1000 - ${network.ulaPrefix}:101::ffff"; }];
+          max-valid-lifetime = 129600;
           ddns-send-updates = true;
           option-data = [
             {
@@ -460,6 +463,7 @@ in
           interface = "wifi";
           subnet = "${network.ulaPrefix}:100::/64";
           pools = [{ pool = "${network.ulaPrefix}:100::1000 - ${network.ulaPrefix}:100::ffff"; }];
+          max-valid-lifetime = 129600;
           ddns-send-updates = true;
           option-data = [
             {
@@ -473,6 +477,7 @@ in
           interface = "mgnt";
           subnet = "${network.ulaPrefix}:254::/64";
           pools = [{ pool = "${network.ulaPrefix}:254::1000 - ${network.ulaPrefix}:254::ffff"; }];
+          max-valid-lifetime = 129600;
           ddns-send-updates = false;
           option-data = [
             {
