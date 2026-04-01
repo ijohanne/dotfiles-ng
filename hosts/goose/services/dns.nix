@@ -150,7 +150,7 @@ let
     file = "${reverseZoneFilesByName.${z.name}}"
   '') reverseZones;
 
-  rootHints = "${pkgs.dns-root-data}/share/dns/root.hints";
+  rootHints = "${pkgs.dns-root-data}/root.hints";
 
   allowNetworks = [ "10.0.0.0/8" "127.0.0.0/8" ]
     ++ lib.optionals network.enableIPv6ULA [ "fc00::/7" "::1/128" ];
