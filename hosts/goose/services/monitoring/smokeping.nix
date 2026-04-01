@@ -11,8 +11,8 @@
   };
 
   systemd.services.prometheus-smokeping-exporter = {
-    after = [ "unbound.service" ];
-    requires = [ "unbound.service" ];
+    after = [ "hickory-dns.service" ];
+    requires = [ "hickory-dns.service" ];
     serviceConfig = {
       RestartSec = 5;
       StartLimitIntervalSec = 60;

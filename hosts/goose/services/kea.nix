@@ -1,9 +1,23 @@
 { network, ... }:
 
 let
-  searchDomainOption = {
+  searchDomainWifiWired = {
     code = 119;
-    data = "local, ${network.domain}, unixpimps.net";
+    data = "dhcp.${network.domain}, ${network.domain}, unixpimps.net";
+    name = "domain-search";
+    space = "dhcp4";
+  };
+
+  searchDomainMgnt = {
+    code = 119;
+    data = "${network.domain}, unixpimps.net";
+    name = "domain-search";
+    space = "dhcp4";
+  };
+
+  searchDomainGuest = {
+    code = 119;
+    data = "guest.${network.domain}";
     name = "domain-search";
     space = "dhcp4";
   };
@@ -14,6 +28,18 @@ in
       enable = true;
       settings = {
         authoritative = true;
+        dhcp-ddns = {
+          enable-updates = true;
+          server-ip = "127.0.0.1";
+          server-port = 53001;
+        };
+        ddns-override-client-update = true;
+        ddns-replace-client-name = "never";
+        ddns-update-on-renew = true;
+        ddns-ttl-percent = 0.0;
+        ddns-conflict-resolution-mode = "no-check-with-dhcid";
+        hostname-char-set = "[^A-Za-z0-9.-]";
+        hostname-char-replacement = "-";
         client-classes = [
           {
             name = "ubnt";
@@ -180,6 +206,8 @@ in
             id = 1;
             interface = "wifi";
             max-valid-lifetime = 129600;
+            ddns-send-updates = true;
+            ddns-qualifying-suffix = "dhcp.${network.domain}.";
             option-data = [
               {
                 code = 28;
@@ -199,7 +227,7 @@ in
                 name = "unifi-address";
                 space = "ubnt";
               }
-              searchDomainOption
+              searchDomainWifiWired
             ];
             pools = [{ pool = "10.255.100.1 - 10.255.100.200"; }];
             subnet = "10.255.100.0/24";
@@ -212,6 +240,8 @@ in
             id = 2;
             interface = "wired";
             max-valid-lifetime = 129600;
+            ddns-send-updates = true;
+            ddns-qualifying-suffix = "dhcp.${network.domain}.";
             option-data = [
               {
                 code = 28;
@@ -231,7 +261,7 @@ in
                 name = "unifi-address";
                 space = "ubnt";
               }
-              searchDomainOption
+              searchDomainWifiWired
             ];
             pools = [{ pool = "10.255.101.1 - 10.255.101.200"; }];
             subnet = "10.255.101.0/24";
@@ -244,6 +274,8 @@ in
             id = 3;
             interface = "guest";
             max-valid-lifetime = 129600;
+            ddns-send-updates = true;
+            ddns-qualifying-suffix = "guest.${network.domain}.";
             option-data = [
               {
                 code = 28;
@@ -263,6 +295,7 @@ in
                 name = "domain-name-servers";
                 space = "dhcp4";
               }
+              searchDomainGuest
             ];
             pools = [{ pool = "10.255.150.1 - 10.255.150.200"; }];
             subnet = "10.255.150.0/24";
@@ -272,6 +305,7 @@ in
             id = 4;
             interface = "camera";
             max-valid-lifetime = 129600;
+            ddns-send-updates = false;
             option-data = [
               {
                 code = 28;
@@ -300,6 +334,7 @@ in
             id = 5;
             interface = "mgnt";
             max-valid-lifetime = 129600;
+            ddns-send-updates = false;
             option-data = [
               {
                 code = 28;
@@ -325,7 +360,7 @@ in
                 name = "domain-name-servers";
                 space = "dhcp4";
               }
-              searchDomainOption
+              searchDomainMgnt
             ];
             pools = [{ pool = "10.255.254.1 - 10.255.254.200"; }];
             subnet = "10.255.254.0/24";
@@ -333,6 +368,31 @@ in
           }
         ];
         valid-lifetime = 600;
+      };
+    };
+
+    dhcp-ddns = {
+      enable = true;
+      settings = {
+        ip-address = "127.0.0.1";
+        port = 53001;
+        dns-server-timeout = 3000;
+        forward-ddns = {
+          ddns-domains = [
+            {
+              name = "dhcp.${network.domain}.";
+              dns-servers = [
+                { ip-address = "127.0.0.1"; port = 53; }
+              ];
+            }
+            {
+              name = "guest.${network.domain}.";
+              dns-servers = [
+                { ip-address = "127.0.0.1"; port = 53; }
+              ];
+            }
+          ];
+        };
       };
     };
   };
@@ -412,5 +472,10 @@ in
   systemd.services.kea-dhcp6-server = {
     bindsTo = [ "network-addresses-wired.service" "network-addresses-wifi.service" "network-addresses-mgnt.service" ];
     after = [ "network-addresses-wired.service" "network-addresses-wifi.service" "network-addresses-mgnt.service" ];
+  };
+
+  systemd.services.kea-dhcp-ddns-server = {
+    after = [ "hickory-dns.service" ];
+    wants = [ "hickory-dns.service" ];
   };
 }

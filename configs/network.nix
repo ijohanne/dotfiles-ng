@@ -129,6 +129,9 @@ let
     { name = "cloudkey";   ip = hosts.pakhet.ip; }
     { name = "fatty-ipmi"; ip = hosts.pakhet.ip; }
     { name = "goose-ipmi"; ip = hosts.pakhet.ip; }
+    { name = "grafana";    ip = hosts.pakhet.ip; }
+    { name = "printcam";   ip = hosts.pakhet.ip; }
+    { name = "obico";      ip = hosts.pakhet.ip; }
   ];
 
   # --- Helper functions ---

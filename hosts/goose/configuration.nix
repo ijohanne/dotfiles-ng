@@ -61,7 +61,7 @@ let
         echo "backup" > "$STATE_FILE"
         echo "0" > "''${STATE_FILE}.failback-count"
         sms "WAN failover: ppp0 unreachable, switched to mobile"
-        systemctl restart unbound.service
+        systemctl restart hickory-dns.service
       }
 
       failback_to_primary() {
@@ -71,7 +71,7 @@ let
         echo "primary" > "$STATE_FILE"
         rm -f "''${STATE_FILE}.failback-count"
         sms "WAN failback: ppp0 restored"
-        systemctl restart unbound.service
+        systemctl restart hickory-dns.service
       }
 
       if [[ "$(current_state)" == "primary" ]]; then

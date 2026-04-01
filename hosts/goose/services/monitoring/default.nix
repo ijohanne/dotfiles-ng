@@ -11,7 +11,7 @@
     ./screeny.nix
     ./grpc-proxier.nix
     ./pdfdetective.nix
-    ./unbound.nix
+    ./hickory-dns.nix
     ./wireguard.nix
     ./unpoller.nix
     ./hue.nix

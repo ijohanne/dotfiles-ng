@@ -13,7 +13,7 @@
   };
 
   systemd.services.cloudflare-dyndns = {
-    after = [ "unbound.service" ];
+    after = [ "hickory-dns.service" ];
     serviceConfig = {
       Restart = "on-failure";
       RestartSec = "10s";
