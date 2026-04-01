@@ -214,7 +214,7 @@ in
           }
         ];
         reservations-global = true;
-        reservations = map (r: r // { "ddns-send-updates" = false; }) network.dhcpReservations;
+        reservations = network.dhcpReservations;
         subnet4 = [
           {
             id = 1;
@@ -435,7 +435,7 @@ in
       hostname-char-replacement = "-";
       host-reservation-identifiers = [ "hw-address" ];
       reservations-global = true;
-      reservations = map (r: r // { "ddns-send-updates" = false; }) network.dhcp6Reservations;
+      reservations = network.dhcp6Reservations;
       subnet6 = [
         {
           id = 1;
