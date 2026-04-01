@@ -1,9 +1,23 @@
 { pkgs, network, lib, ... }:
 
 let
-  hickory-dns = pkgs.hickory-dns.overrideAttrs (old: {
-    buildFeatures = (old.buildFeatures or []) ++ [ "recursor" "prometheus-metrics" ];
-  });
+  hickory-dns = pkgs.rustPlatform.buildRustPackage rec {
+    pname = "hickory-dns";
+    version = "0.26.0-beta.2";
+    src = pkgs.fetchFromGitHub {
+      owner = "hickory-dns";
+      repo = "hickory-dns";
+      rev = "v${version}";
+      hash = "sha256-7kra6MbLcv0P6iiUJ+hQ0ezqgXh/1KskCrZvFYDqiXQ=";
+    };
+    cargoHash = "sha256-FfckN+qhSqbc8jnL0xThdAMQEgluocSY1ksEyT8rFFY=";
+    buildAndTestSubdir = "bin";
+    buildFeatures = [ "sqlite" "resolver" "recursor" "prometheus-metrics" ];
+    nativeBuildInputs = [ pkgs.pkg-config ];
+    buildInputs = [ pkgs.openssl pkgs.sqlite ];
+    doCheck = false;
+    meta.mainProgram = "hickory-dns";
+  };
 
   dataDir = "/var/lib/hickory-dns";
 
