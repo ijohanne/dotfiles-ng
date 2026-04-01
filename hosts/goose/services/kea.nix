@@ -482,6 +482,7 @@ in
   };
 
   sops.templates."kea-dhcp-ddns.conf" = {
+    mode = "0444";
     content = builtins.toJSON {
       DhcpDdns = {
         ip-address = "127.0.0.1";
