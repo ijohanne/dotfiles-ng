@@ -144,6 +144,11 @@ in
               ${dnat.preroutingLocal}
             }
 
+            chain output {
+              type nat hook output priority -100; policy accept;
+              ${dnat.preroutingLocal}
+            }
+
             chain postrouting {
               type nat hook postrouting priority filter; policy accept;
               oifname "ppp0" counter masquerade comment "ppp0 masquerade"
