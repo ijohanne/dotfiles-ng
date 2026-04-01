@@ -112,12 +112,12 @@ let
 
   # --- TSIG key for DDNS authentication ---
 
-  tsigKeyPath = config.sops.secrets.hickory_dns_private_key.path;
+  tsigKeyRawPath = "${dataDir}/tsig-key.bin";
   tsigKeyToml = ''
     [[zones.stores.tsig_keys]]
     name = "kea-ddns-key."
     algorithm = "hmac-sha256"
-    key_file = "${tsigKeyPath}"
+    key_file = "${tsigKeyRawPath}"
   '';
 
   # Split reverse zones: DDNS-updatable (wifi/wired/guest) vs static
@@ -261,6 +261,7 @@ in
     wantedBy = [ "multi-user.target" ];
 
     serviceConfig = {
+      ExecStartPre = "${pkgs.bash}/bin/bash -c '${pkgs.coreutils}/bin/base64 -d < ${config.sops.secrets.hickory_dns_private_key.path} > ${tsigKeyRawPath}'";
       ExecStart = "${hickory-dns}/bin/hickory-dns -c ${configFile}";
       User = "hickory-dns";
       Group = "hickory-dns";
