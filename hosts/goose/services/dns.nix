@@ -175,8 +175,8 @@ let
 
     [zones.stores]
     type = "sqlite"
-    zone_file_path = "${ddnsZoneFile}"
-    journal_file_path = "${dataDir}/dhcp.${network.domain}.jrnl"
+    zone_path = "${ddnsZoneFile}"
+    journal_path = "${dataDir}/dhcp.${network.domain}.jrnl"
     allow_update = true
 
     [[zones]]
@@ -185,8 +185,8 @@ let
 
     [zones.stores]
     type = "sqlite"
-    zone_file_path = "${guestZoneFile}"
-    journal_file_path = "${dataDir}/guest.${network.domain}.jrnl"
+    zone_path = "${guestZoneFile}"
+    journal_path = "${dataDir}/guest.${network.domain}.jrnl"
     allow_update = true
 
     ${reverseZoneToml}
