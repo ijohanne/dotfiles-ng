@@ -141,6 +141,36 @@
     t3code-nix = {
       url = "github:Sawrz/t3code-nix";
     };
+
+    uptimeplaza-checker-dns = {
+      url = "github:Uptimeplaza/checker-dns";
+      flake = false;
+    };
+
+    uptimeplaza-checker-fping = {
+      url = "github:Uptimeplaza/checker-fping";
+      flake = false;
+    };
+
+    uptimeplaza-checker-ping = {
+      url = "github:Uptimeplaza/checker-ping";
+      flake = false;
+    };
+
+    uptimeplaza-checker-ssl = {
+      url = "github:Uptimeplaza/checker-ssl";
+      flake = false;
+    };
+
+    uptimeplaza-checker-http = {
+      url = "github:Uptimeplaza/checker-http";
+      flake = false;
+    };
+
+    uptimeplaza-checker-website-screenshot = {
+      url = "github:Uptimeplaza/checker-website-screenshot";
+      flake = false;
+    };
   };
 
   outputs =

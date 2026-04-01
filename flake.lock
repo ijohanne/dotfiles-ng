@@ -2366,6 +2366,12 @@
         "t3code-nix": "t3code-nix",
         "themailer-wrapper": "themailer-wrapper",
         "unixpimpsnet": "unixpimpsnet",
+        "uptimeplaza-checker-dns": "uptimeplaza-checker-dns",
+        "uptimeplaza-checker-fping": "uptimeplaza-checker-fping",
+        "uptimeplaza-checker-http": "uptimeplaza-checker-http",
+        "uptimeplaza-checker-ping": "uptimeplaza-checker-ping",
+        "uptimeplaza-checker-ssl": "uptimeplaza-checker-ssl",
+        "uptimeplaza-checker-website-screenshot": "uptimeplaza-checker-website-screenshot",
         "vardrun": "vardrun"
       }
     },
@@ -3203,6 +3209,102 @@
       "original": {
         "owner": "ijohanne",
         "repo": "unixpimpsnet",
+        "type": "github"
+      }
+    },
+    "uptimeplaza-checker-dns": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1775039549,
+        "narHash": "sha256-YiUz44zT2YtZKXuK+AijHSU9PE7HH5ZHm+WUSCGS3jI=",
+        "owner": "Uptimeplaza",
+        "repo": "checker-dns",
+        "rev": "c1c3419fa569b59b6c5f66ec1cbfcdf9cbe27842",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Uptimeplaza",
+        "repo": "checker-dns",
+        "type": "github"
+      }
+    },
+    "uptimeplaza-checker-fping": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1775056836,
+        "narHash": "sha256-oGmqBQrqza5sCoDA7rEBALUTXa+kXIdg/z/ekoM4dHI=",
+        "owner": "Uptimeplaza",
+        "repo": "checker-fping",
+        "rev": "b4cbcfa9ad4d07f41c6391b55285a896ba50a6f8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Uptimeplaza",
+        "repo": "checker-fping",
+        "type": "github"
+      }
+    },
+    "uptimeplaza-checker-http": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1775056835,
+        "narHash": "sha256-CXFkYMS827HhTpaFIHhb/2LDKnnzwvY8zQELAn3rc5Y=",
+        "owner": "Uptimeplaza",
+        "repo": "checker-http",
+        "rev": "2f4f3ceb85adc14a509e105071bcbde3a04218b7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Uptimeplaza",
+        "repo": "checker-http",
+        "type": "github"
+      }
+    },
+    "uptimeplaza-checker-ping": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1775056837,
+        "narHash": "sha256-msLQN8lyyuGqnMEsg7+sJ0vaqGT4emolWDm9wjBCwwk=",
+        "owner": "Uptimeplaza",
+        "repo": "checker-ping",
+        "rev": "a19588f2184d1f9e9a58ffa5c40d4430d82ff7ca",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Uptimeplaza",
+        "repo": "checker-ping",
+        "type": "github"
+      }
+    },
+    "uptimeplaza-checker-ssl": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1775056779,
+        "narHash": "sha256-2YBsBr/QyC+wOQnfrxyB/q4D0caVGuiVIKBJmnYnQt0=",
+        "owner": "Uptimeplaza",
+        "repo": "checker-ssl",
+        "rev": "1ddc4a800334dd3f25751018447d0158c3aa3efd",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Uptimeplaza",
+        "repo": "checker-ssl",
+        "type": "github"
+      }
+    },
+    "uptimeplaza-checker-website-screenshot": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1775056833,
+        "narHash": "sha256-7WgfJIV/9R740f7kHuYEJSRW4jj1vDFpD7zcZt4lpcQ=",
+        "owner": "Uptimeplaza",
+        "repo": "checker-website-screenshot",
+        "rev": "c96e26389c82c2e321b94c4e2f3134d6b53df789",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Uptimeplaza",
+        "repo": "checker-website-screenshot",
         "type": "github"
       }
     },

@@ -23,5 +23,6 @@
     ./nginx.nix
     ./postgres.nix
     ./zot.nix
+    ./uptimeplaza.nix
   ];
 }
