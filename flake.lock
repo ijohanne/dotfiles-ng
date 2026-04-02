@@ -3231,11 +3231,11 @@
     "uptimeplaza-checker-fping": {
       "flake": false,
       "locked": {
-        "lastModified": 1775056836,
-        "narHash": "sha256-oGmqBQrqza5sCoDA7rEBALUTXa+kXIdg/z/ekoM4dHI=",
+        "lastModified": 1775090556,
+        "narHash": "sha256-IbrBOzwhSj+gDq0VhlIZCPQIUynxLq0iTKNK80U6xtU=",
         "owner": "Uptimeplaza",
         "repo": "checker-fping",
-        "rev": "b4cbcfa9ad4d07f41c6391b55285a896ba50a6f8",
+        "rev": "11eb58a3fd11e91f7f8ab6aee1711d8b5b14120e",
         "type": "github"
       },
       "original": {
@@ -3295,11 +3295,11 @@
     "uptimeplaza-checker-website-screenshot": {
       "flake": false,
       "locked": {
-        "lastModified": 1775056833,
-        "narHash": "sha256-7WgfJIV/9R740f7kHuYEJSRW4jj1vDFpD7zcZt4lpcQ=",
+        "lastModified": 1775090552,
+        "narHash": "sha256-yeFFxmr27xK/2QKnkFgZLBp97URnppDto/TwFqyr7mo=",
         "owner": "Uptimeplaza",
         "repo": "checker-website-screenshot",
-        "rev": "c96e26389c82c2e321b94c4e2f3134d6b53df789",
+        "rev": "8a063cf017685457dfd6fcc1045d6d547a2ef8eb",
         "type": "github"
       },
       "original": {
