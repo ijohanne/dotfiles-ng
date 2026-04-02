@@ -1489,11 +1489,11 @@
         "zot": "zot"
       },
       "locked": {
-        "lastModified": 1775150181,
-        "narHash": "sha256-Qn506B8FmaHVD8z/n6ABCpvZ2vdgb5fSL+PwlYH/Kig=",
+        "lastModified": 1775153599,
+        "narHash": "sha256-wkLxiNjfsetl7wWbuyNwj/36vvqZmyqeGJAZxI3lluo=",
         "owner": "ijohanne",
         "repo": "nur-packages",
-        "rev": "aeeed94998b47ce7d142d77a2437e9d084b88511",
+        "rev": "8c6edeb41f167cc32761d5693a083418773fa7c9",
         "type": "github"
       },
       "original": {
@@ -2084,11 +2084,11 @@
     },
     "nixpkgs_3": {
       "locked": {
-        "lastModified": 1772624091,
-        "narHash": "sha256-QKyJ0QGWBn6r0invrMAK8dmJoBYWoOWy7lN+UHzW1jc=",
+        "lastModified": 1775036866,
+        "narHash": "sha256-ZojAnPuCdy657PbTq5V0Y+AHKhZAIwSIT2cb8UgAz/U=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "80bdc1e5ce51f56b19791b52b2901187931f5353",
+        "rev": "6201e203d09599479a3b3450ed24fa81537ebc4e",
         "type": "github"
       },
       "original": {
@@ -2399,11 +2399,11 @@
         "rust-overlay": "rust-overlay_3"
       },
       "locked": {
-        "lastModified": 1775148591,
-        "narHash": "sha256-aGAyvOrRTQLqrs9oO91pJPmROh4xXI8P/JENaxUdZow=",
+        "lastModified": 1775153135,
+        "narHash": "sha256-i0J5QrT23yN9Jggs6wPba2CEVhCiPn/fQ/hRdjDpjWE=",
         "owner": "ijohanne",
         "repo": "prometheus-gpsd-exporter",
-        "rev": "b4b5c4767fa2175f2efab1f0c0d75a4bfa9ed8ae",
+        "rev": "5964679a78ce29777e72832a30feb3123bd15808",
         "type": "github"
       },
       "original": {
