@@ -1,0 +1,19 @@
+diff --git i/crates/resolver/src/recursor/handle.rs w/crates/resolver/src/recursor/handle.rs
+index 6c808af..4ac66f4 100644
+--- i/crates/resolver/src/recursor/handle.rs
++++ w/crates/resolver/src/recursor/handle.rs
+@@ -537,8 +537,12 @@ impl<P: ConnectionProvider> RecursorDnsHandle<P> {
+ 
+             let response = match lookup_res {
+                 Ok(response) => response,
+-                // Short-circuit on NXDOMAIN, per RFC 8020.
+-                Err(e) if e.is_nx_domain() => return Err(e),
++                // RFC 9156: NXDOMAIN on an intermediate QMIN label does not prove
++                // the full query name is absent, so treat it like a non-zone-cut.
++                Err(e) if e.is_nx_domain() => {
++                    trace!(?zone, "NXDOMAIN during QMIN probe, continuing");
++                    continue;
++                }
+                 // Short-circuit on timeouts. Requesting a longer name from the same pool would likely
+                 // encounter them again.
+                 Err(e) if e.is_timeout() => return Err(e),
