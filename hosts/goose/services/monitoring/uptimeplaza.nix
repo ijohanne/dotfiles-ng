@@ -9,7 +9,7 @@ let
     "uptimeplaza_prometheus_${builtins.replaceStrings [ "-" ] [ "_" ] type}_targets";
 
   mkScrapeJob = type: {
-    job_name = "uptimeplaza-${type}";
+    job_name = "checker-${type}";
     scheme = "https";
     basic_auth = {
       username = "prometheus";
