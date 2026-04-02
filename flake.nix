@@ -283,6 +283,7 @@
             ijohanne-nur.nixosModules.prometheus-nftables-exporter
             ijohanne-nur.nixosModules.prometheus-tplink-p110-exporter
             ijohanne-nur.nixosModules.prometheus-ecowitt-exporter
+            ijohanne-nur.nixosModules.prometheus-gpsd-exporter
             ./hosts/goose/configuration.nix
           ];
           backupFileExtension = "bak";

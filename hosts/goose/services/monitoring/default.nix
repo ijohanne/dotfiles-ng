@@ -25,5 +25,6 @@
     ./zot.nix
     ./uptimeplaza.nix
     ./chrony.nix
+    ./gpsd.nix
   ];
 }
