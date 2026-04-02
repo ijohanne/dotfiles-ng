@@ -3,6 +3,8 @@
 let
   checkerTypes = [ "dns" "fping" "ping" "ssl" "http" "website-screenshot" ];
 
+  sdDir = "/var/lib/prometheus2/file_sd";
+
   secretName = type:
     "uptimeplaza_prometheus_${builtins.replaceStrings [ "-" ] [ "_" ] type}_targets";
 
@@ -14,7 +16,7 @@ let
       password_file = config.sops.secrets.uptimeplaza_prometheus_password.path;
     };
     file_sd_configs = [{
-      files = [ config.sops.templates."uptimeplaza-${type}-sd.json".path ];
+      files = [ "${sdDir}/uptimeplaza-${type}.json" ];
     }];
   };
 
@@ -25,6 +27,10 @@ let
   ) checkerTypes));
 in
 {
+  systemd.tmpfiles.rules = [
+    "d ${sdDir} 0755 prometheus prometheus -"
+  ];
+
   sops.secrets = {
     uptimeplaza_prometheus_password = { owner = "prometheus"; };
   } // builtins.listToAttrs (map (type: {
@@ -37,6 +43,7 @@ in
     value = {
       content = config.sops.placeholder.${secretName type};
       owner = "prometheus";
+      path = "${sdDir}/uptimeplaza-${type}.json";
     };
   }) checkerTypes);
 
