@@ -24,5 +24,6 @@
     ./postgres.nix
     ./zot.nix
     ./uptimeplaza.nix
+    ./chrony.nix
   ];
 }
