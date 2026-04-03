@@ -68,6 +68,7 @@ let
     dyson-office  = { ip = "10.255.100.205"; mac = "c8:ff:77:27:b3:f1"; };
     dyson-livingroom = { ip = "10.255.100.206"; mac = "c8:ff:77:67:34:b5"; };
     dyson-ian     = { ip = "10.255.100.207"; mac = "c8:ff:77:67:34:7f"; };
+    ecowitt-gw    = { ip = "10.255.100.208"; mac = "88:57:21:19:22:24"; };
 
     # --- Printers ---
     brother-hallway = { ip = "10.255.101.230"; mac = "b4:22:00:8c:a4:a4"; dns = [ "brother-hallway" ]; };
