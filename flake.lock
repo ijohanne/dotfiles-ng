@@ -1489,11 +1489,11 @@
         "zot": "zot"
       },
       "locked": {
-        "lastModified": 1775206056,
-        "narHash": "sha256-yIRQcbO5k8TitesV5dvNNGAqCjL18xJHKQlg7z8ye1k=",
+        "lastModified": 1775207149,
+        "narHash": "sha256-q4+ZVaDfIjkObKdpaaJN/oFr4Vfw5FM27r0aDR/QcQM=",
         "owner": "ijohanne",
         "repo": "nur-packages",
-        "rev": "c34f2dc179f48467a93f98daf5e99300c6d17b9b",
+        "rev": "2b457fa798d88d307d5274b9ed866ae477ae460b",
         "type": "github"
       },
       "original": {
@@ -2378,11 +2378,11 @@
         "rust-overlay": "rust-overlay_2"
       },
       "locked": {
-        "lastModified": 1775205584,
-        "narHash": "sha256-gr5WqMnDZcZFzQpe7RnxC36z7QR/VmbiLgfCPsLPOQk=",
+        "lastModified": 1775207093,
+        "narHash": "sha256-reXGTRbG1GLkis8SmNy4jOc6IX6y2xeMcv+Y3uJenU8=",
         "owner": "ijohanne",
         "repo": "prometheus-ecowitt-exporter",
-        "rev": "6ad1f6e0560a231e7f98a2f644f69119890e718a",
+        "rev": "0b77f53fe1cdc1e65f5366f12014defbbb49e9c7",
         "type": "github"
       },
       "original": {
