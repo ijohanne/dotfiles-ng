@@ -3,7 +3,7 @@
 let
   homeDir = if pkgs.stdenv.isDarwin then "/Users/${user.username}" else "/home/${user.username}";
   hostname = config.networking.hostName;
-  
+
   hasSecrets = hostname == "macbook";
 in
 {

@@ -61,9 +61,12 @@ in
         private = false;
         command = "smtpd";
         args = [
-          "-o" "mynetworks=${network.hosts.pakhet.ip}/32"
-          "-o" "smtpd_recipient_restrictions=permit_mynetworks,reject"
-          "-o" "smtpd_tls_security_level=may"
+          "-o"
+          "mynetworks=${network.hosts.pakhet.ip}/32"
+          "-o"
+          "smtpd_recipient_restrictions=permit_mynetworks,reject"
+          "-o"
+          "smtpd_tls_security_level=may"
         ];
       };
     };

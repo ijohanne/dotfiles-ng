@@ -1,15 +1,16 @@
 { pkgs }:
 {
-  mkDeployScript = {
-    name,
-    host,
-    repoName ? "dotfiles-ng",
-    githubRef ? "github:ijohanne/dotfiles-ng",
-    localCheckoutGlobs ? [
-      "/home/*/git/${repoName}"
-      "/root/git/${repoName}"
-    ],
-  }:
+  mkDeployScript =
+    { name
+    , host
+    , repoName ? "dotfiles-ng"
+    , githubRef ? "github:ijohanne/dotfiles-ng"
+    , localCheckoutGlobs ? [
+        "/home/*/git/${repoName}"
+        "/root/git/${repoName}"
+      ]
+    ,
+    }:
     pkgs.writeShellScriptBin name ''
       set -euo pipefail
 
@@ -26,18 +27,19 @@
       exec sudo nixos-rebuild switch --flake "${githubRef}#${host}" --refresh
     '';
 
-  mkLocalDeployScript = {
-    name,
-    host,
-    rebuildCmd,
-    useSudo ? true,
-    gitAdd ? true,
-    githubRef ? "github:ijohanne/dotfiles-ng",
-    repoCandidates ? [
-      "git/private/dotfiles-ng"
-      "git/dotfiles-ng"
-    ],
-  }:
+  mkLocalDeployScript =
+    { name
+    , host
+    , rebuildCmd
+    , useSudo ? true
+    , gitAdd ? true
+    , githubRef ? "github:ijohanne/dotfiles-ng"
+    , repoCandidates ? [
+        "git/private/dotfiles-ng"
+        "git/dotfiles-ng"
+      ]
+    ,
+    }:
     pkgs.writeShellScriptBin name ''
       set -euo pipefail
 

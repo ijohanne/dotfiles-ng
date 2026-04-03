@@ -25,13 +25,14 @@ let
   # IPv6 reverse zone name helper for D2 config
   ip6Nibbles = addr:
     let expanded = network.expandIp6 addr;
-    in lib.stringToCharacters (lib.replaceStrings [":"] [""] expanded);
+    in lib.stringToCharacters (lib.replaceStrings [ ":" ] [ "" ] expanded);
 
   ip6ZoneName = addr:
     let
       nibbles = ip6Nibbles addr;
       rev12 = lib.concatStringsSep "." (lib.reverseList (lib.take 12 nibbles));
-    in "${rev12}.ip6.arpa.";
+    in
+    "${rev12}.ip6.arpa.";
 
   wiredIp6RevZone = ip6ZoneName "${network.ulaPrefix}:101::1";
   wifiIp6RevZone = ip6ZoneName "${network.ulaPrefix}:100::1";
@@ -45,7 +46,7 @@ in
       enable = true;
       settings = {
         authoritative = true;
-        hooks-libraries = [{ library = "${pkgs.kea}/lib/kea/hooks/libdhcp_ddns_tuning.so"; parameters = {}; }];
+        hooks-libraries = [{ library = "${pkgs.kea}/lib/kea/hooks/libdhcp_ddns_tuning.so"; parameters = { }; }];
         dhcp-ddns = {
           enable-updates = true;
           server-ip = "127.0.0.1";
@@ -419,7 +420,7 @@ in
     enable = network.enableIPv6ULA;
     settings = {
       interfaces-config = { interfaces = [ "wired" "wifi" "mgnt" ]; };
-      hooks-libraries = [{ library = "${pkgs.kea}/lib/kea/hooks/libdhcp_ddns_tuning.so"; parameters = {}; }];
+      hooks-libraries = [{ library = "${pkgs.kea}/lib/kea/hooks/libdhcp_ddns_tuning.so"; parameters = { }; }];
       lease-database = {
         type = "memfile";
         persist = true;

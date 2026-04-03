@@ -14,6 +14,6 @@
     } // (if pkgs.stdenv.isDarwin then {
       macos-titlebar-style = "native";
       quit-after-last-window-closed = "true";
-    } else {});
+    } else { });
   };
 }

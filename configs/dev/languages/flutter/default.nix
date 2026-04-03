@@ -16,7 +16,8 @@ let
 
   androidSdk = androidComposition.androidsdk;
 
-  chromeExecutable = if isDarwin
+  chromeExecutable =
+    if isDarwin
     then "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
     else "${pkgs-unstable.google-chrome}/bin/google-chrome-stable";
 in

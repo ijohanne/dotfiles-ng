@@ -17,21 +17,21 @@
 
   services.vnstat.enable = true;
 
-  sops.secrets.cloudflare_api_token = {};
-  sops.secrets.grafana_admin_password = {};
+  sops.secrets.cloudflare_api_token = { };
+  sops.secrets.grafana_admin_password = { };
   sops.secrets.unpoller_password = { owner = "unpoller-exporter"; };
-  sops.secrets.fireboard_token = {};
+  sops.secrets.fireboard_token = { };
   sops.secrets.hue_api_key = { owner = "hue-exporter"; };
   sops.secrets.hue_api_key_secondary = { owner = "hue-exporter"; };
   sops.secrets.tplink_username = { owner = "tplink-p110-exporter"; };
   sops.secrets.tplink_password = { owner = "tplink-p110-exporter"; };
-  sops.secrets.smtp_pass_brother = {};
-  sops.secrets.sms_user = {};
-  sops.secrets.sms_password = {};
-  sops.secrets.sms_ip = {};
-  sops.secrets.sms_target_number = {};
-  sops.secrets.sms_modem = {};
-  sops.secrets.wireguard_private_key = {};
+  sops.secrets.smtp_pass_brother = { };
+  sops.secrets.sms_user = { };
+  sops.secrets.sms_password = { };
+  sops.secrets.sms_ip = { };
+  sops.secrets.sms_target_number = { };
+  sops.secrets.sms_modem = { };
+  sops.secrets.wireguard_private_key = { };
   sops.secrets.hickory_dns_private_key = { owner = "hickory-dns"; };
 
   sops.templates."sms-env" = {

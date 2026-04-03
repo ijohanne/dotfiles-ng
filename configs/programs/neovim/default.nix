@@ -14,7 +14,7 @@ let
     nvim-lspconfig
   ];
 
-  nonLspPlugins = [];
+  nonLspPlugins = [ ];
 
   lspKeymaps = [
     { mode = "n"; key = "gd"; action = ":lua vim.lsp.buf.definition()<CR>"; options = { desc = "Go to definition"; }; }

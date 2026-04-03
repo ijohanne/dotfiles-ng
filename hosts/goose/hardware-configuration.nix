@@ -24,7 +24,7 @@
     fsType = "vfat";
   };
 
-  swapDevices = [];
+  swapDevices = [ ];
 
   hardware.cpu.amd.updateMicrocode = true;
   hardware.enableAllFirmware = true;

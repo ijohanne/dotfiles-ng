@@ -20,11 +20,13 @@ let
     }];
   };
 
-  dashboards = pkgs.runCommand "uptimeplaza-dashboards" {} (''
+  dashboards = pkgs.runCommand "uptimeplaza-dashboards" { } (''
     mkdir -p $out
-  '' + builtins.concatStringsSep "\n" (map (type:
-    "cp ${inputs.${"uptimeplaza-checker-" + type}}/nix/dashboard.json $out/uptimeplaza-${type}.json"
-  ) checkerTypes));
+  '' + builtins.concatStringsSep "\n" (map
+    (type:
+      "cp ${inputs.${"uptimeplaza-checker-" + type}}/nix/dashboard.json $out/uptimeplaza-${type}.json"
+    )
+    checkerTypes));
 in
 {
   systemd.tmpfiles.rules = [
@@ -33,19 +35,23 @@ in
 
   sops.secrets = {
     uptimeplaza_prometheus_password = { owner = "prometheus"; };
-  } // builtins.listToAttrs (map (type: {
-    name = secretName type;
-    value = {};
-  }) checkerTypes);
+  } // builtins.listToAttrs (map
+    (type: {
+      name = secretName type;
+      value = { };
+    })
+    checkerTypes);
 
-  sops.templates = builtins.listToAttrs (map (type: {
-    name = "uptimeplaza-${type}-sd.json";
-    value = {
-      content = config.sops.placeholder.${secretName type};
-      owner = "prometheus";
-      path = "${sdDir}/uptimeplaza-${type}.json";
-    };
-  }) checkerTypes);
+  sops.templates = builtins.listToAttrs (map
+    (type: {
+      name = "uptimeplaza-${type}-sd.json";
+      value = {
+        content = config.sops.placeholder.${secretName type};
+        owner = "prometheus";
+        path = "${sdDir}/uptimeplaza-${type}.json";
+      };
+    })
+    checkerTypes);
 
   services.prometheus.scrapeConfigs = map mkScrapeJob checkerTypes;
 

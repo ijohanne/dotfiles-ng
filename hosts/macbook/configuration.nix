@@ -84,7 +84,6 @@ in
 
   homebrew = {
     enable = true;
-    caskArgs.no_quarantine = true;
     onActivation = {
       autoUpdate = true;
       cleanup = "uninstall";
@@ -92,7 +91,7 @@ in
     };
 
     casks =
-      builtins.filter (x: x != null) (map (app: app.brewCask or null) desktopApps);
+      builtins.filter (x: x != null) (map (app: app.brewCask or null) desktopApps) ++ [ "steipete/tap/codexbar" ];
 
     masApps = {
       "WhatsApp" = 310633997;

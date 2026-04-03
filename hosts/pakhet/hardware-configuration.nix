@@ -3,9 +3,9 @@
 {
   boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.initrd.availableKernelModules = [ "ahci" "sd_mod" "sr_mod" ];
-  boot.initrd.kernelModules = [];
-  boot.kernelModules = [];
-  boot.extraModulePackages = [];
+  boot.initrd.kernelModules = [ ];
+  boot.kernelModules = [ ];
+  boot.extraModulePackages = [ ];
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "/dev/sda";
 
@@ -14,7 +14,7 @@
     fsType = "ext4";
   };
 
-  swapDevices = [];
+  swapDevices = [ ];
 
   hardware.cpu.amd.updateMicrocode = false;
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];

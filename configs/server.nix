@@ -26,22 +26,24 @@
   programs.fish.enable = true;
   programs.zsh.enable = true;
 
-  users.groups.srv = {};
+  users.groups.srv = { };
 
-  users.users = lib.mapAttrs (_: u: {
-    createHome = true;
-    description = u.name;
-    extraGroups = [ "wheel" ];
-    group = "adm";
-    isNormalUser = true;
-    shell = pkgs.${u.shell};
-    openssh.authorizedKeys.keys = u.sshKeys;
-  }) users // {
+  users.users = lib.mapAttrs
+    (_: u: {
+      createHome = true;
+      description = u.name;
+      extraGroups = [ "wheel" ];
+      group = "adm";
+      isNormalUser = true;
+      shell = pkgs.${u.shell};
+      openssh.authorizedKeys.keys = u.sshKeys;
+    })
+    users // {
     root = {
       initialHashedPassword = "";
       openssh.authorizedKeys.keys =
         lib.concatMap (u: u.sshKeys) (lib.attrValues users)
-        ++ [
+          ++ [
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMGlZ6MnFwequnPcUuM26bxcHZR/1447SL0vP3fjIkJq nix-remote-builder-macbook"
         ];
     };

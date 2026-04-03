@@ -3,7 +3,8 @@
 let
   wgIP = "10.2.0.2";
   table = 51820;
-in {
+in
+{
   networking.wireguard.interfaces = {
     wg0 = {
       ips = [ "${wgIP}/32" ];

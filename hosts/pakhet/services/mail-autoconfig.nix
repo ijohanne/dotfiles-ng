@@ -91,7 +91,7 @@ let
     };
   };
 
-  allVhosts = lib.foldl' (acc: domain: acc // mkAutoconfig domain) {} network.mailDomains;
+  allVhosts = lib.foldl' (acc: domain: acc // mkAutoconfig domain) { } network.mailDomains;
 in
 {
   services.nginx.virtualHosts = allVhosts;

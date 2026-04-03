@@ -1,10 +1,10 @@
 { network, config, pkgs, ... }:
 
 {
-  sops.secrets.fatty_ipmi_user = {};
-  sops.secrets.fatty_ipmi_pass = {};
-  sops.secrets.goose_ipmi_user = {};
-  sops.secrets.goose_ipmi_pass = {};
+  sops.secrets.fatty_ipmi_user = { };
+  sops.secrets.fatty_ipmi_pass = { };
+  sops.secrets.goose_ipmi_user = { };
+  sops.secrets.goose_ipmi_pass = { };
 
   sops.templates."ipmi-exporter.yml" = {
     content = ''

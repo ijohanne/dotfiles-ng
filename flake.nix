@@ -174,37 +174,35 @@
   };
 
   outputs =
-    {
-      self,
-      nixpkgs,
-      home-manager,
-      nix-darwin,
-      mac-app-util,
-      nixvim,
-      rust-overlay,
-      flake-utils,
-      disko,
-      sops-nix,
-      nixpkgs-stable,
-      home-manager-stable,
-      screeny,
-      mercy,
-      grpc-proxier,
-      pdf-detective,
-      claude-code-nix,
-      llm-agents-nix,
-
-      ijohanne-nur,
-      nixos-mailserver,
-      shouldidrinktoday,
-      unixpimpsnet,
-      themailer-wrapper,
-      perlpimpnet,
-      proton-port-sync,
-      vardrun,
-      leita,
-      callis,
-      ...
+    { self
+    , nixpkgs
+    , home-manager
+    , nix-darwin
+    , mac-app-util
+    , nixvim
+    , rust-overlay
+    , flake-utils
+    , disko
+    , sops-nix
+    , nixpkgs-stable
+    , home-manager-stable
+    , screeny
+    , mercy
+    , grpc-proxier
+    , pdf-detective
+    , claude-code-nix
+    , llm-agents-nix
+    , ijohanne-nur
+    , nixos-mailserver
+    , shouldidrinktoday
+    , unixpimpsnet
+    , themailer-wrapper
+    , perlpimpnet
+    , proton-port-sync
+    , vardrun
+    , leita
+    , callis
+    , ...
     }@inputs:
     let
       lib = nixpkgs.lib;
@@ -403,7 +401,8 @@
             ${users.ij.username} = hmUser [
               mac-app-util.homeManagerModules.default
               ./hosts/macbook/home.nix
-            ] true;
+            ]
+              true;
           };
         };
       };
@@ -436,14 +435,15 @@
           specialArgs = { inherit inputs self users; user = users.${primaryUser}; };
         };
 
-      mkHomeManagerModule = {
-        system,
-        kind,
-        channel,
-        hmUsers,
-        backupFileExtension ? null,
-        extraSpecialArgs ? {},
-      }:
+      mkHomeManagerModule =
+        { system
+        , kind
+        , channel
+        , hmUsers
+        , backupFileExtension ? null
+        , extraSpecialArgs ? { }
+        ,
+        }:
         let
           homeManagerModule = channels.${channel}.homeManagerModules.${kind};
         in
@@ -460,13 +460,15 @@
                   hmStateVersion = extraSpecialArgs.hmStateVersion or "22.05";
                 }
                 // lib.removeAttrs extraSpecialArgs [ "hmStateVersion" ];
-              users = lib.mapAttrs (username: hmUserConfig: {
-                imports = [
-                  ./configs/users/home-defaults.nix
-                ] ++ hmUserConfig.imports ++ lib.optional hmUserConfig.withNixvim inputs.nixvim.homeModules.nixvim ++ [
-                  { _module.args.user = users.${username}; }
-                ];
-              }) hmUsers;
+              users = lib.mapAttrs
+                (username: hmUserConfig: {
+                  imports = [
+                    ./configs/users/home-defaults.nix
+                  ] ++ hmUserConfig.imports ++ lib.optional hmUserConfig.withNixvim inputs.nixvim.homeModules.nixvim ++ [
+                    { _module.args.user = users.${username}; }
+                  ];
+                })
+                hmUsers;
             }
             // lib.optionalAttrs (backupFileExtension != null) {
               inherit backupFileExtension;
@@ -485,325 +487,333 @@
         });
     in
     {
-      nixosConfigurations = lib.mapAttrs (
-        _: host:
-        mkNixosHost {
-          pkgsLib = channels.${host.channel}.pkgsLib;
-          system = host.system;
-          modules = mkHostModules host;
-          primaryUser = host.primaryUser or "ij";
-        }
-      ) nixosHosts;
-
-      images = lib.mapAttrs' (
-        name: host:
-        lib.nameValuePair (host.imageName or name) (
-          lib.getAttrFromPath [ "config" "system" "build" host.imageBuilder ] self.nixosConfigurations.${name}
+      nixosConfigurations = lib.mapAttrs
+        (
+          _: host:
+            mkNixosHost {
+              pkgsLib = channels.${host.channel}.pkgsLib;
+              system = host.system;
+              modules = mkHostModules host;
+              primaryUser = host.primaryUser or "ij";
+            }
         )
-      ) (lib.filterAttrs (_: host: host ? imageBuilder) nixosHosts);
+        nixosHosts;
 
-      darwinConfigurations = lib.mapAttrs (
-        _: host:
-        mkDarwinHost {
-          system = host.system;
-          modules = mkHostModules host;
-          primaryUser = host.primaryUser or "ij";
-        }
-      ) darwinHosts;
+      images = lib.mapAttrs'
+        (
+          name: host:
+            lib.nameValuePair (host.imageName or name) (
+              lib.getAttrFromPath [ "config" "system" "build" host.imageBuilder ] self.nixosConfigurations.${name}
+            )
+        )
+        (lib.filterAttrs (_: host: host ? imageBuilder) nixosHosts);
+
+      darwinConfigurations = lib.mapAttrs
+        (
+          _: host:
+            mkDarwinHost {
+              system = host.system;
+              modules = mkHostModules host;
+              primaryUser = host.primaryUser or "ij";
+            }
+        )
+        darwinHosts;
 
       checks = { };
     }
     // flake-utils.lib.eachDefaultSystem (system:
-      let
-        pkgs = nixpkgs.legacyPackages.${system};
-        pkgs-stable = nixpkgs-stable.legacyPackages.${system};
-        formatter = pkgs.nixpkgs-fmt;
-        nix-repl-unstable = pkgs.writeShellScriptBin "nix-repl-unstable" ''
-          exec nix repl --expr "import (builtins.getFlake \"${nixpkgs}\") { system = \"${system}\"; config.allowUnfree = true; }"
-        '';
-        nix-repl-stable = pkgs.writeShellScriptBin "nix-repl-stable" ''
-          exec nix repl --expr "import (builtins.getFlake \"${nixpkgs-stable}\") { system = \"${system}\"; config.allowUnfree = true; }"
-        '';
-        ssh-to-age-remote = pkgs.writeShellScriptBin "ssh-to-age-remote" ''
-          set -euo pipefail
-          if [ $# -ne 1 ]; then
-            echo "Usage: ssh-to-age-remote <user@host>" >&2
-            exit 1
-          fi
-          ${pkgs.openssh}/bin/ssh-keyscan "$1" 2>/dev/null \
-            | ${pkgs.ssh-to-age}/bin/ssh-to-age 2>/dev/null
-        '';
-        jnlp-jdk = if pkgs.stdenv.isDarwin then pkgs.zulu8 else pkgs.jdk8;
-        jnlp-run = pkgs.writeShellScriptBin "jnlp-run" ''
-          export PATH="${pkgs.lib.makeBinPath [ jnlp-jdk pkgs.xmlstarlet pkgs.curl pkgs.coreutils ]}"
+    let
+      pkgs = nixpkgs.legacyPackages.${system};
+      pkgs-stable = nixpkgs-stable.legacyPackages.${system};
+      formatter = pkgs.nixpkgs-fmt;
+      nix-repl-unstable = pkgs.writeShellScriptBin "nix-repl-unstable" ''
+        exec nix repl --expr "import (builtins.getFlake \"${nixpkgs}\") { system = \"${system}\"; config.allowUnfree = true; }"
+      '';
+      nix-repl-stable = pkgs.writeShellScriptBin "nix-repl-stable" ''
+        exec nix repl --expr "import (builtins.getFlake \"${nixpkgs-stable}\") { system = \"${system}\"; config.allowUnfree = true; }"
+      '';
+      ssh-to-age-remote = pkgs.writeShellScriptBin "ssh-to-age-remote" ''
+        set -euo pipefail
+        if [ $# -ne 1 ]; then
+          echo "Usage: ssh-to-age-remote <user@host>" >&2
+          exit 1
+        fi
+        ${pkgs.openssh}/bin/ssh-keyscan "$1" 2>/dev/null \
+          | ${pkgs.ssh-to-age}/bin/ssh-to-age 2>/dev/null
+      '';
+      jnlp-jdk = if pkgs.stdenv.isDarwin then pkgs.zulu8 else pkgs.jdk8;
+      jnlp-run = pkgs.writeShellScriptBin "jnlp-run" ''
+        export PATH="${pkgs.lib.makeBinPath [ jnlp-jdk pkgs.xmlstarlet pkgs.curl pkgs.coreutils ]}"
 
-          if [ -z "$1" ]; then
-            echo "Usage: jnlp-run <file.jnlp>" >&2
-            exit 1
-          fi
+        if [ -z "$1" ]; then
+          echo "Usage: jnlp-run <file.jnlp>" >&2
+          exit 1
+        fi
 
-          jnlp="$1"
+        jnlp="$1"
 
-          codebase=$(xml sel -t -v '/jnlp/@codebase' "$jnlp")
-          jar_href=$(xml sel -t -v '/jnlp/resources/jar/@href' "$jnlp")
-          jar_url="''${codebase}/''${jar_href}"
+        codebase=$(xml sel -t -v '/jnlp/@codebase' "$jnlp")
+        jar_href=$(xml sel -t -v '/jnlp/resources/jar/@href' "$jnlp")
+        jar_url="''${codebase}/''${jar_href}"
 
-          os=$(uname -s)
-          arch=$(uname -m)
-          case "''${os}-''${arch}" in
-            Linux-x86_64)  native_href=$(xml sel -t -v '//resources[@os="Linux" and (@arch="x86_64" or @arch="amd64")]/nativelib/@href' "$jnlp" 2>/dev/null) ;;
-            Linux-i*86)    native_href=$(xml sel -t -v '//resources[@os="Linux" and (@arch="x86" or @arch="i386")]/nativelib/@href' "$jnlp" 2>/dev/null) ;;
-            *)             native_href="" ;;
-          esac
+        os=$(uname -s)
+        arch=$(uname -m)
+        case "''${os}-''${arch}" in
+          Linux-x86_64)  native_href=$(xml sel -t -v '//resources[@os="Linux" and (@arch="x86_64" or @arch="amd64")]/nativelib/@href' "$jnlp" 2>/dev/null) ;;
+          Linux-i*86)    native_href=$(xml sel -t -v '//resources[@os="Linux" and (@arch="x86" or @arch="i386")]/nativelib/@href' "$jnlp" 2>/dev/null) ;;
+          *)             native_href="" ;;
+        esac
 
-          mapfile -t args < <(xml sel -t -v '/jnlp/application-desc/argument' -n "$jnlp")
+        mapfile -t args < <(xml sel -t -v '/jnlp/application-desc/argument' -n "$jnlp")
 
-          tmpdir=$(mktemp -d)
-          trap 'rm -rf "$tmpdir"' EXIT
+        tmpdir=$(mktemp -d)
+        trap 'rm -rf "$tmpdir"' EXIT
 
-          echo "Downloading $jar_url ..."
-          curl -ksSL -o "$tmpdir/app.jar" "$jar_url"
+        echo "Downloading $jar_url ..."
+        curl -ksSL -o "$tmpdir/app.jar" "$jar_url"
 
-          if [ -n "$native_href" ]; then
-            native_url="''${codebase}/''${native_href}"
-            echo "Downloading native lib $native_url ..."
-            curl -ksSL -o "$tmpdir/native.jar" "$native_url"
-            (cd "$tmpdir" && jar xf native.jar)
-          fi
+        if [ -n "$native_href" ]; then
+          native_url="''${codebase}/''${native_href}"
+          echo "Downloading native lib $native_url ..."
+          curl -ksSL -o "$tmpdir/native.jar" "$native_url"
+          (cd "$tmpdir" && jar xf native.jar)
+        fi
 
-          echo "Launching with $(java -version 2>&1 | head -1) ..."
-          exec java -Djava.library.path="$tmpdir" -jar "$tmpdir/app.jar" "''${args[@]}"
-        '';
-        pkgsWithRust = import nixpkgs {
-          inherit system;
-          overlays = [ rust-overlay.overlays.default ];
+        echo "Launching with $(java -version 2>&1 | head -1) ..."
+        exec java -Djava.library.path="$tmpdir" -jar "$tmpdir/app.jar" "''${args[@]}"
+      '';
+      pkgsWithRust = import nixpkgs {
+        inherit system;
+        overlays = [ rust-overlay.overlays.default ];
+      };
+      rustToolchain = pkgsWithRust.rust-bin.stable.latest.default;
+      setup-template = pkgs.rustPlatform.buildRustPackage {
+        pname = "setup-template";
+        version = "0.1.0";
+        src = ./tools/setup-template;
+        cargoLock.lockFile = ./tools/setup-template/Cargo.lock;
+        nativeBuildInputs = [ rustToolchain ];
+      };
+
+      pgUpgradeScripts = pkgs.lib.optionalAttrs (system == "x86_64-linux") (
+        let
+          pg14 = pkgs-stable.postgresql_14;
+          pg18 = pkgs-stable.postgresql_18;
+          oldDir = "/var/lib/postgresql/14";
+          newDir = "/var/lib/postgresql/18";
+        in
+        {
+          postgresql-upgrade-14-18-step1 = pkgs.writeShellScriptBin "postgresql-upgrade-14-18-step1" ''
+            set -euo pipefail
+
+            echo "=== Step 1: Backup and preflight check ==="
+
+            [[ $EUID -eq 0 ]] || { echo "Run as root"; exit 1; }
+
+            echo "Checking current checksum status..."
+            sudo -u postgres ${pg14}/bin/pg_controldata ${oldDir} | grep -i checksum
+
+            echo ""
+            echo "Checking for MD5 passwords..."
+            sudo -u postgres ${pg14}/bin/psql -c "SELECT rolname, CASE WHEN rolpassword LIKE 'md5%' THEN 'MD5 (migrate to SCRAM!)' ELSE 'OK' END AS auth FROM pg_authid WHERE rolpassword IS NOT NULL;"
+
+            echo ""
+            echo "Checking for expression indexes..."
+            sudo -u postgres ${pg14}/bin/psql -At -c "SELECT schemaname || '.' || indexname || ': ' || indexdef FROM pg_indexes WHERE indexdef ~ '\\(.*\\('" 2>/dev/null || true
+
+            echo ""
+            echo "Checking for FTS indexes..."
+            sudo -u postgres ${pg14}/bin/psql -At -c "SELECT schemaname || '.' || indexname FROM pg_indexes WHERE indexdef LIKE '%tsvector%' OR indexdef LIKE '%gin%' OR indexdef LIKE '%gist%'" 2>/dev/null || true
+
+            echo ""
+            echo "Taking pg_dumpall backup..."
+            mkdir -p /var/backup
+            sudo -u postgres ${pg14}/bin/pg_dumpall > "/var/backup/postgresql-14-pre-upgrade-$(date +%Y%m%d).sql"
+            echo "Backup saved to /var/backup/"
+
+            echo ""
+            echo "Listing databases for reference..."
+            sudo -u postgres ${pg14}/bin/psql -l
+
+            echo ""
+            echo "Stopping PostgreSQL..."
+            systemctl stop postgresql.service
+
+            echo "Creating socket directory..."
+            mkdir -p /var/run/postgresql
+            chown postgres:postgres /var/run/postgresql
+
+            checksum_status=$(sudo -u postgres ${pg14}/bin/pg_controldata ${oldDir} | grep "Data page checksum" | awk '{print $NF}')
+            initdb_flags=""
+            if [ "$checksum_status" = "0" ] || echo "$checksum_status" | grep -qi "off\|disabled"; then
+              echo "Old cluster has checksums DISABLED — passing --no-data-checksums to initdb"
+              initdb_flags="--no-data-checksums"
+            fi
+
+            echo "Initializing new data directory..."
+            sudo -u postgres ${pg18}/bin/initdb $initdb_flags -D ${newDir}
+
+            echo "Running pg_upgrade --check (dry run)..."
+            cd /var/lib/postgresql
+            sudo -u postgres ${pg18}/bin/pg_upgrade \
+              --socketdir=/var/run/postgresql \
+              --old-bindir=${pg14}/bin \
+              --new-bindir=${pg18}/bin \
+              --old-datadir=${oldDir} \
+              --new-datadir=${newDir} \
+              --check
+
+            echo ""
+            echo "=== Preflight passed. Proceed to step 2. ==="
+            echo "NOTE: PostgreSQL is stopped. If aborting, run: rm -rf ${newDir} && systemctl start postgresql.service"
+          '';
+
+          postgresql-upgrade-14-18-step2 = pkgs.writeShellScriptBin "postgresql-upgrade-14-18-step2" ''
+            set -euo pipefail
+
+            echo "=== Step 2: Run pg_upgrade ==="
+
+            [[ $EUID -eq 0 ]] || { echo "Run as root"; exit 1; }
+
+            echo "Ensuring PostgreSQL is stopped..."
+            systemctl stop postgresql.service 2>/dev/null || true
+
+            mkdir -p /var/run/postgresql
+            chown postgres:postgres /var/run/postgresql
+
+            echo "Running pg_upgrade..."
+            cd /var/lib/postgresql
+            sudo -u postgres ${pg18}/bin/pg_upgrade \
+              --socketdir=/var/run/postgresql \
+              --old-bindir=${pg14}/bin \
+              --new-bindir=${pg18}/bin \
+              --old-datadir=${oldDir} \
+              --new-datadir=${newDir}
+
+            echo ""
+            echo "=== pg_upgrade completed. ==="
+            echo ""
+            echo "Next steps:"
+            echo "  1. Update hosts/pakhet/services/postgresql.nix to set package = pkgs.postgresql_18"
+            echo "  2. Commit, push, deploy-pakhet"
+            echo "  3. Run step 3 for post-upgrade verification"
+          '';
+
+          postgresql-upgrade-14-18-step3 = pkgs.writeShellScriptBin "postgresql-upgrade-14-18-step3" ''
+            set -euo pipefail
+
+            echo "=== Step 3: Post-upgrade verification ==="
+
+            [[ $EUID -eq 0 ]] || { echo "Run as root"; exit 1; }
+
+            echo "Checking PostgreSQL service status..."
+            systemctl status postgresql.service --no-pager
+
+            echo ""
+            echo "Checking PostgreSQL version..."
+            sudo -u postgres ${pg18}/bin/psql -c "SELECT version();"
+
+            echo ""
+            echo "Listing databases..."
+            sudo -u postgres ${pg18}/bin/psql -l
+
+            if [ -f /var/lib/postgresql/update_extensions.sql ]; then
+              echo ""
+              echo "Applying extension updates..."
+              sudo -u postgres ${pg18}/bin/psql -f /var/lib/postgresql/update_extensions.sql
+            fi
+
+            echo ""
+            echo "Reindexing all databases (required for FTS collation changes in PG18)..."
+            for db in $(sudo -u postgres ${pg18}/bin/psql -At -c "SELECT datname FROM pg_database WHERE datistemplate = false;"); do
+              echo "  Reindexing $db..."
+              sudo -u postgres ${pg18}/bin/reindexdb "$db" || echo "  WARNING: reindex of $db failed"
+            done
+
+            echo ""
+            echo "Checking for MD5 passwords (deprecated in PG18)..."
+            sudo -u postgres ${pg18}/bin/psql -c "SELECT rolname, CASE WHEN rolpassword LIKE 'md5%' THEN 'MD5 — MIGRATE TO SCRAM!' ELSE 'SCRAM (ok)' END AS auth FROM pg_authid WHERE rolpassword IS NOT NULL;"
+
+            echo ""
+            echo "Running ANALYZE on all databases..."
+            sudo -u postgres ${pg18}/bin/vacuumdb --all --analyze-only
+
+            echo ""
+            echo "Checking all dependent services are healthy..."
+            for svc in screeny-k111-agw screeny-k111-test screeny-k131-god screeny-geoip vardrun-unixpimps vardrun-opsplaza plausible; do
+              status=$(systemctl is-active "$svc" 2>/dev/null || echo "not found")
+              printf "  %-25s %s\n" "$svc" "$status"
+            done
+
+            echo ""
+            echo "=== Verification complete ==="
+            echo ""
+            echo "If everything looks good:"
+            echo "  1. Remove old data directory: rm -rf ${oldDir}"
+            echo "  2. Delete pg_upgrade logs/scripts in /var/lib/postgresql/ (delete_old_cluster.sh, etc.)"
+            echo "  3. If MD5 passwords were found, migrate them to SCRAM-SHA-256"
+          '';
+        }
+      );
+
+      checks =
+        {
+          setup-template = setup-template.overrideAttrs (_: {
+            doCheck = true;
+          });
         };
-        rustToolchain = pkgsWithRust.rust-bin.stable.latest.default;
-        setup-template = pkgs.rustPlatform.buildRustPackage {
-          pname = "setup-template";
-          version = "0.1.0";
-          src = ./tools/setup-template;
-          cargoLock.lockFile = ./tools/setup-template/Cargo.lock;
-          nativeBuildInputs = [ rustToolchain ];
+    in
+    {
+      inherit formatter;
+
+      packages = {
+        setup-template = setup-template;
+      } // pgUpgradeScripts;
+
+      apps = {
+        setup-template = {
+          type = "app";
+          program = "${setup-template}/bin/setup-template";
+          meta = {
+            description = "Scaffold new host and user configs for the dotfiles flake";
+          };
         };
-
-        pgUpgradeScripts = pkgs.lib.optionalAttrs (system == "x86_64-linux") (
-          let
-            pg14 = pkgs-stable.postgresql_14;
-            pg18 = pkgs-stable.postgresql_18;
-            oldDir = "/var/lib/postgresql/14";
-            newDir = "/var/lib/postgresql/18";
-          in
-          {
-            postgresql-upgrade-14-18-step1 = pkgs.writeShellScriptBin "postgresql-upgrade-14-18-step1" ''
-              set -euo pipefail
-
-              echo "=== Step 1: Backup and preflight check ==="
-
-              [[ $EUID -eq 0 ]] || { echo "Run as root"; exit 1; }
-
-              echo "Checking current checksum status..."
-              sudo -u postgres ${pg14}/bin/pg_controldata ${oldDir} | grep -i checksum
-
-              echo ""
-              echo "Checking for MD5 passwords..."
-              sudo -u postgres ${pg14}/bin/psql -c "SELECT rolname, CASE WHEN rolpassword LIKE 'md5%' THEN 'MD5 (migrate to SCRAM!)' ELSE 'OK' END AS auth FROM pg_authid WHERE rolpassword IS NOT NULL;"
-
-              echo ""
-              echo "Checking for expression indexes..."
-              sudo -u postgres ${pg14}/bin/psql -At -c "SELECT schemaname || '.' || indexname || ': ' || indexdef FROM pg_indexes WHERE indexdef ~ '\\(.*\\('" 2>/dev/null || true
-
-              echo ""
-              echo "Checking for FTS indexes..."
-              sudo -u postgres ${pg14}/bin/psql -At -c "SELECT schemaname || '.' || indexname FROM pg_indexes WHERE indexdef LIKE '%tsvector%' OR indexdef LIKE '%gin%' OR indexdef LIKE '%gist%'" 2>/dev/null || true
-
-              echo ""
-              echo "Taking pg_dumpall backup..."
-              mkdir -p /var/backup
-              sudo -u postgres ${pg14}/bin/pg_dumpall > "/var/backup/postgresql-14-pre-upgrade-$(date +%Y%m%d).sql"
-              echo "Backup saved to /var/backup/"
-
-              echo ""
-              echo "Listing databases for reference..."
-              sudo -u postgres ${pg14}/bin/psql -l
-
-              echo ""
-              echo "Stopping PostgreSQL..."
-              systemctl stop postgresql.service
-
-              echo "Creating socket directory..."
-              mkdir -p /var/run/postgresql
-              chown postgres:postgres /var/run/postgresql
-
-              checksum_status=$(sudo -u postgres ${pg14}/bin/pg_controldata ${oldDir} | grep "Data page checksum" | awk '{print $NF}')
-              initdb_flags=""
-              if [ "$checksum_status" = "0" ] || echo "$checksum_status" | grep -qi "off\|disabled"; then
-                echo "Old cluster has checksums DISABLED — passing --no-data-checksums to initdb"
-                initdb_flags="--no-data-checksums"
-              fi
-
-              echo "Initializing new data directory..."
-              sudo -u postgres ${pg18}/bin/initdb $initdb_flags -D ${newDir}
-
-              echo "Running pg_upgrade --check (dry run)..."
-              cd /var/lib/postgresql
-              sudo -u postgres ${pg18}/bin/pg_upgrade \
-                --socketdir=/var/run/postgresql \
-                --old-bindir=${pg14}/bin \
-                --new-bindir=${pg18}/bin \
-                --old-datadir=${oldDir} \
-                --new-datadir=${newDir} \
-                --check
-
-              echo ""
-              echo "=== Preflight passed. Proceed to step 2. ==="
-              echo "NOTE: PostgreSQL is stopped. If aborting, run: rm -rf ${newDir} && systemctl start postgresql.service"
-            '';
-
-            postgresql-upgrade-14-18-step2 = pkgs.writeShellScriptBin "postgresql-upgrade-14-18-step2" ''
-              set -euo pipefail
-
-              echo "=== Step 2: Run pg_upgrade ==="
-
-              [[ $EUID -eq 0 ]] || { echo "Run as root"; exit 1; }
-
-              echo "Ensuring PostgreSQL is stopped..."
-              systemctl stop postgresql.service 2>/dev/null || true
-
-              mkdir -p /var/run/postgresql
-              chown postgres:postgres /var/run/postgresql
-
-              echo "Running pg_upgrade..."
-              cd /var/lib/postgresql
-              sudo -u postgres ${pg18}/bin/pg_upgrade \
-                --socketdir=/var/run/postgresql \
-                --old-bindir=${pg14}/bin \
-                --new-bindir=${pg18}/bin \
-                --old-datadir=${oldDir} \
-                --new-datadir=${newDir}
-
-              echo ""
-              echo "=== pg_upgrade completed. ==="
-              echo ""
-              echo "Next steps:"
-              echo "  1. Update hosts/pakhet/services/postgresql.nix to set package = pkgs.postgresql_18"
-              echo "  2. Commit, push, deploy-pakhet"
-              echo "  3. Run step 3 for post-upgrade verification"
-            '';
-
-            postgresql-upgrade-14-18-step3 = pkgs.writeShellScriptBin "postgresql-upgrade-14-18-step3" ''
-              set -euo pipefail
-
-              echo "=== Step 3: Post-upgrade verification ==="
-
-              [[ $EUID -eq 0 ]] || { echo "Run as root"; exit 1; }
-
-              echo "Checking PostgreSQL service status..."
-              systemctl status postgresql.service --no-pager
-
-              echo ""
-              echo "Checking PostgreSQL version..."
-              sudo -u postgres ${pg18}/bin/psql -c "SELECT version();"
-
-              echo ""
-              echo "Listing databases..."
-              sudo -u postgres ${pg18}/bin/psql -l
-
-              if [ -f /var/lib/postgresql/update_extensions.sql ]; then
-                echo ""
-                echo "Applying extension updates..."
-                sudo -u postgres ${pg18}/bin/psql -f /var/lib/postgresql/update_extensions.sql
-              fi
-
-              echo ""
-              echo "Reindexing all databases (required for FTS collation changes in PG18)..."
-              for db in $(sudo -u postgres ${pg18}/bin/psql -At -c "SELECT datname FROM pg_database WHERE datistemplate = false;"); do
-                echo "  Reindexing $db..."
-                sudo -u postgres ${pg18}/bin/reindexdb "$db" || echo "  WARNING: reindex of $db failed"
-              done
-
-              echo ""
-              echo "Checking for MD5 passwords (deprecated in PG18)..."
-              sudo -u postgres ${pg18}/bin/psql -c "SELECT rolname, CASE WHEN rolpassword LIKE 'md5%' THEN 'MD5 — MIGRATE TO SCRAM!' ELSE 'SCRAM (ok)' END AS auth FROM pg_authid WHERE rolpassword IS NOT NULL;"
-
-              echo ""
-              echo "Running ANALYZE on all databases..."
-              sudo -u postgres ${pg18}/bin/vacuumdb --all --analyze-only
-
-              echo ""
-              echo "Checking all dependent services are healthy..."
-              for svc in screeny-k111-agw screeny-k111-test screeny-k131-god screeny-geoip vardrun-unixpimps vardrun-opsplaza plausible; do
-                status=$(systemctl is-active "$svc" 2>/dev/null || echo "not found")
-                printf "  %-25s %s\n" "$svc" "$status"
-              done
-
-              echo ""
-              echo "=== Verification complete ==="
-              echo ""
-              echo "If everything looks good:"
-              echo "  1. Remove old data directory: rm -rf ${oldDir}"
-              echo "  2. Delete pg_upgrade logs/scripts in /var/lib/postgresql/ (delete_old_cluster.sh, etc.)"
-              echo "  3. If MD5 passwords were found, migrate them to SCRAM-SHA-256"
-            '';
-          }
-        );
-
-        checks =
-          {
-            setup-template = setup-template.overrideAttrs (_: {
-              doCheck = true;
-            });
-          };
-      in
-      {
-        inherit formatter;
-
-        packages = {
-          setup-template = setup-template;
-        } // pgUpgradeScripts;
-
-        apps = {
-          setup-template = {
-            type = "app";
-            program = "${setup-template}/bin/setup-template";
-            meta = {
-              description = "Scaffold new host and user configs for the dotfiles flake";
-            };
-          };
-        } // builtins.mapAttrs (name: pkg: {
+      } // builtins.mapAttrs
+        (name: pkg: {
           type = "app";
           program = "${pkg}/bin/${name}";
-        }) pgUpgradeScripts;
+        })
+        pgUpgradeScripts;
 
-        inherit checks;
+      inherit checks;
 
-        devShells.default = pkgs.mkShell {
-          packages = with pkgs; [
-            formatter
-            sops
-            age
-            nix-output-monitor
-            ssh-to-age-remote
-            nix-repl-unstable
-            nix-repl-stable
-            jnlp-run
-          ] ++ [
-            rustToolchain
-            pkgsWithRust.rust-bin.stable.latest.rust-analyzer
-          ];
-          shellHook = ''
-            echo ""
-            echo "dotfiles-ng dev shell"
-            echo "─────────────────────────────────────────────"
-            echo "  nix-repl-unstable     nixpkgs unstable repl"
-            echo "  nix-repl-stable       nixpkgs stable repl"
-            echo "  jnlp-run <file.jnlp>  launch Kimsufi IP KVM"
-            echo "  sops <file>           edit encrypted secret"
-            echo "  ssh-to-age-remote     convert SSH host key to age"
-            echo "  nix flake check       validate all configs"
-            echo ""
-          '';
-        };
-      }
+      devShells.default = pkgs.mkShell {
+        packages = with pkgs; [
+          formatter
+          sops
+          age
+          nix-output-monitor
+          ssh-to-age-remote
+          nix-repl-unstable
+          nix-repl-stable
+          jnlp-run
+        ] ++ [
+          rustToolchain
+          pkgsWithRust.rust-bin.stable.latest.rust-analyzer
+        ];
+        shellHook = ''
+          echo ""
+          echo "dotfiles-ng dev shell"
+          echo "─────────────────────────────────────────────"
+          echo "  nix-repl-unstable     nixpkgs unstable repl"
+          echo "  nix-repl-stable       nixpkgs stable repl"
+          echo "  jnlp-run <file.jnlp>  launch Kimsufi IP KVM"
+          echo "  sops <file>           edit encrypted secret"
+          echo "  ssh-to-age-remote     convert SSH host key to age"
+          echo "  nix flake check       validate all configs"
+          echo ""
+        '';
+      };
+    }
     );
 }

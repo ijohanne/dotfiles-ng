@@ -9,11 +9,11 @@
     config.xdg.configFile."ghostty/config".source;
 
   home.activation.setupAuthorizedKeys = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    mkdir -p "$HOME/.ssh"
-    chmod 700 "$HOME/.ssh"
-    cat > "$HOME/.ssh/authorized_keys" << 'EOF'
-${lib.concatStringsSep "\n" user.sshKeys}
-EOF
-    chmod 600 "$HOME/.ssh/authorized_keys"
+        mkdir -p "$HOME/.ssh"
+        chmod 700 "$HOME/.ssh"
+        cat > "$HOME/.ssh/authorized_keys" << 'EOF'
+    ${lib.concatStringsSep "\n" user.sshKeys}
+    EOF
+        chmod 600 "$HOME/.ssh/authorized_keys"
   '';
 }

@@ -46,10 +46,12 @@ let
 
   # --- Forward zone (est.unixpimps.net) ---
 
-  hostARecords = lib.flatten (lib.mapAttrsToList (name: host:
-    let names = builtins.filter isInZone (hostDnsNames name host);
-    in map (n: "${n} IN A ${host.ip}") names
-  ) network.hosts);
+  hostARecords = lib.flatten (lib.mapAttrsToList
+    (name: host:
+      let names = builtins.filter isInZone (hostDnsNames name host);
+      in map (n: "${n} IN A ${host.ip}") names
+    )
+    network.hosts);
 
   extraARecords = map (e: "${e.name} IN A ${e.ip}")
     (builtins.filter (e: isInZone e.name) network.extraDns);
@@ -57,10 +59,12 @@ let
   hostsWithIp6 = lib.filterAttrs (_: host: host ? ip6) network.hosts;
 
   hostAAAARecords = lib.optionals network.enableIPv6ULA (lib.flatten (
-    lib.mapAttrsToList (name: host:
-      let names = builtins.filter isInZone (hostDnsNames name host);
-      in map (n: "${n} IN AAAA ${host.ip6}") names
-    ) hostsWithIp6));
+    lib.mapAttrsToList
+      (name: host:
+        let names = builtins.filter isInZone (hostDnsNames name host);
+        in map (n: "${n} IN AAAA ${host.ip6}") names
+      )
+      hostsWithIp6));
 
   forwardZoneContent =
     mkSoa network.domain
@@ -80,15 +84,19 @@ let
 
   # --- Reverse zones ---
 
-  allHostEntries = lib.mapAttrsToList (name: host: {
-    dnsName = builtins.head (hostDnsNames name host);
-    inherit (host) ip;
-  }) network.hosts;
+  allHostEntries = lib.mapAttrsToList
+    (name: host: {
+      dnsName = builtins.head (hostDnsNames name host);
+      inherit (host) ip;
+    })
+    network.hosts;
 
-  hostsBySubnet = lib.groupBy (h:
-    let parts = lib.splitString "." h.ip;
-    in "${builtins.elemAt parts 0}.${builtins.elemAt parts 1}.${builtins.elemAt parts 2}"
-  ) allHostEntries;
+  hostsBySubnet = lib.groupBy
+    (h:
+      let parts = lib.splitString "." h.ip;
+      in "${builtins.elemAt parts 0}.${builtins.elemAt parts 1}.${builtins.elemAt parts 2}"
+    )
+    allHostEntries;
 
   mkReverseZone = subnet: entries:
     let
@@ -98,11 +106,14 @@ let
       fqdn = name:
         if lib.hasInfix "." name then "${name}."
         else "${name}.${network.domain}.";
-      records = map (h:
-        let lastOctet = lib.last (lib.splitString "." h.ip);
-        in "${lastOctet} IN PTR ${fqdn h.dnsName}"
-      ) entries;
-    in {
+      records = map
+        (h:
+          let lastOctet = lib.last (lib.splitString "." h.ip);
+          in "${lastOctet} IN PTR ${fqdn h.dnsName}"
+        )
+        entries;
+    in
+    {
       name = zoneName;
       content = mkSoa zoneName
         + "ns1.${network.domain}. IN A ${network.hosts.goose.ips.mgnt}\n"
@@ -127,7 +138,8 @@ let
     let
       stripped = lib.removeSuffix ".in-addr.arpa" zoneName;
       parts = lib.splitString "." stripped;
-    in "${builtins.elemAt parts 2}.${builtins.elemAt parts 1}.${builtins.elemAt parts 0}";
+    in
+    "${builtins.elemAt parts 2}.${builtins.elemAt parts 1}.${builtins.elemAt parts 0}";
 
   isDdnsReverseZone = z: builtins.elem (zoneToSubnet z.name) ddnsSubnets;
   ddnsReverseZones = builtins.filter isDdnsReverseZone reverseZones;
@@ -137,18 +149,21 @@ let
 
   ip6Nibbles = addr:
     let expanded = network.expandIp6 addr;
-    in lib.stringToCharacters (lib.replaceStrings [":"] [""] expanded);
+    in lib.stringToCharacters (lib.replaceStrings [ ":" ] [ "" ] expanded);
 
   ip6ZoneName = addr:
     let
       nibbles = ip6Nibbles addr;
       rev12 = lib.concatStringsSep "." (lib.reverseList (lib.take 12 nibbles));
-    in "${rev12}.ip6.arpa";
+    in
+    "${rev12}.ip6.arpa";
 
-  hostsWithIp6Entries = lib.mapAttrsToList (name: host: {
-    dnsName = builtins.head (hostDnsNames name host);
-    ip6 = host.ip6;
-  }) hostsWithIp6;
+  hostsWithIp6Entries = lib.mapAttrsToList
+    (name: host: {
+      dnsName = builtins.head (hostDnsNames name host);
+      ip6 = host.ip6;
+    })
+    hostsWithIp6;
 
   hostsByIp6Zone = lib.groupBy (h: ip6ZoneName h.ip6) hostsWithIp6Entries;
 
@@ -157,14 +172,18 @@ let
       fqdn = name:
         if lib.hasInfix "." name then "${name}."
         else "${name}.${network.domain}.";
-      records = map (h:
-        let
-          nibbles = ip6Nibbles h.ip6;
-          allRev = lib.reverseList nibbles;
-          relName = lib.concatStringsSep "." (lib.take 20 allRev);
-        in "${relName} IN PTR ${fqdn h.dnsName}"
-      ) entries;
-    in {
+      records = map
+        (h:
+          let
+            nibbles = ip6Nibbles h.ip6;
+            allRev = lib.reverseList nibbles;
+            relName = lib.concatStringsSep "." (lib.take 20 allRev);
+          in
+          "${relName} IN PTR ${fqdn h.dnsName}"
+        )
+        entries;
+    in
+    {
       name = zoneName;
       content = mkSoa zoneName
         + "ns1.${network.domain}. IN A ${network.hosts.goose.ips.mgnt}\n"
@@ -188,15 +207,19 @@ let
   ddnsZoneFile = pkgs.writeText "dhcp.est.unixpimps.net.zone" ddnsZoneContent;
   guestZoneFile = pkgs.writeText "guest.est.unixpimps.net.zone" guestZoneContent;
 
-  reverseZoneFilesByName = builtins.listToAttrs (map (z: {
-    name = z.name;
-    value = pkgs.writeText "${z.name}.zone" z.content;
-  }) reverseZones);
+  reverseZoneFilesByName = builtins.listToAttrs (map
+    (z: {
+      name = z.name;
+      value = pkgs.writeText "${z.name}.zone" z.content;
+    })
+    reverseZones);
 
-  ip6ReverseZoneFilesByName = builtins.listToAttrs (map (z: {
-    name = z.name;
-    value = pkgs.writeText "${z.name}.zone" z.content;
-  }) ip6ReverseZones);
+  ip6ReverseZoneFilesByName = builtins.listToAttrs (map
+    (z: {
+      name = z.name;
+      value = pkgs.writeText "${z.name}.zone" z.content;
+    })
+    ip6ReverseZones);
 
   # --- Listen addresses (explicit per issue comment re: hickory-dns#3401) ---
 
@@ -220,47 +243,55 @@ let
 
   toTomlStrArray = items: "[${lib.concatMapStringsSep ", " (i: ''"${i}"'') items}]";
 
-  staticReverseZoneToml = lib.concatMapStringsSep "\n" (z: ''
-    [[zones]]
-    zone = "${z.name}."
-    zone_type = "Primary"
-    file = "${reverseZoneFilesByName.${z.name}}"
-  '') staticReverseZones;
+  staticReverseZoneToml = lib.concatMapStringsSep "\n"
+    (z: ''
+      [[zones]]
+      zone = "${z.name}."
+      zone_type = "Primary"
+      file = "${reverseZoneFilesByName.${z.name}}"
+    '')
+    staticReverseZones;
 
-  ddnsReverseZoneToml = lib.concatMapStringsSep "\n" (z: ''
-    [[zones]]
-    zone = "${z.name}."
-    zone_type = "Primary"
+  ddnsReverseZoneToml = lib.concatMapStringsSep "\n"
+    (z: ''
+      [[zones]]
+      zone = "${z.name}."
+      zone_type = "Primary"
 
-    [zones.stores]
-    type = "sqlite"
-    zone_path = "${reverseZoneFilesByName.${z.name}}"
-    journal_path = "${dataDir}/${z.name}.jrnl"
-    allow_update = true
+      [zones.stores]
+      type = "sqlite"
+      zone_path = "${reverseZoneFilesByName.${z.name}}"
+      journal_path = "${dataDir}/${z.name}.jrnl"
+      allow_update = true
 
-    ${tsigKeyToml}
-  '') ddnsReverseZones;
+      ${tsigKeyToml}
+    '')
+    ddnsReverseZones;
 
-  staticIp6ReverseZoneToml = lib.concatMapStringsSep "\n" (z: ''
-    [[zones]]
-    zone = "${z.name}."
-    zone_type = "Primary"
-    file = "${ip6ReverseZoneFilesByName.${z.name}}"
-  '') staticIp6ReverseZones;
+  staticIp6ReverseZoneToml = lib.concatMapStringsSep "\n"
+    (z: ''
+      [[zones]]
+      zone = "${z.name}."
+      zone_type = "Primary"
+      file = "${ip6ReverseZoneFilesByName.${z.name}}"
+    '')
+    staticIp6ReverseZones;
 
-  ddnsIp6ReverseZoneToml = lib.concatMapStringsSep "\n" (z: ''
-    [[zones]]
-    zone = "${z.name}."
-    zone_type = "Primary"
+  ddnsIp6ReverseZoneToml = lib.concatMapStringsSep "\n"
+    (z: ''
+      [[zones]]
+      zone = "${z.name}."
+      zone_type = "Primary"
 
-    [zones.stores]
-    type = "sqlite"
-    zone_path = "${ip6ReverseZoneFilesByName.${z.name}}"
-    journal_path = "${dataDir}/${z.name}.jrnl"
-    allow_update = true
+      [zones.stores]
+      type = "sqlite"
+      zone_path = "${ip6ReverseZoneFilesByName.${z.name}}"
+      journal_path = "${dataDir}/${z.name}.jrnl"
+      allow_update = true
 
-    ${tsigKeyToml}
-  '') ddnsIp6ReverseZones;
+      ${tsigKeyToml}
+    '')
+    ddnsIp6ReverseZones;
 
   rootHints = "${pkgs.dns-root-data}/root.hints";
 
@@ -332,7 +363,7 @@ in
     isSystemUser = true;
     group = "hickory-dns";
   };
-  users.groups.hickory-dns = {};
+  users.groups.hickory-dns = { };
 
   systemd.services.hickory-dns = {
     description = "hickory-dns DNS server";

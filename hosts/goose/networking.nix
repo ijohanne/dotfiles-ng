@@ -136,21 +136,21 @@
         autostart = true;
         enable = true;
         config = ''
-                  plugin pppoe.so ${interfaces.external}
-                  name "adslppp@telefonicanetpa"
-                  password "adslppp"
-                  persist
-                  maxfail 0
-                  holdoff 5
-                  lcp-echo-failure 5
-                  lcp-echo-interval 5
-                  noipdefault
-            defaultroute
-            defaultroute-metric 0
-                  replacedefaultroute
-            mru 1492
-             mtu 1492
-                  debug
+                plugin pppoe.so ${interfaces.external}
+                name "adslppp@telefonicanetpa"
+                password "adslppp"
+                persist
+                maxfail 0
+                holdoff 5
+                lcp-echo-failure 5
+                lcp-echo-interval 5
+                noipdefault
+          defaultroute
+          defaultroute-metric 0
+                replacedefaultroute
+          mru 1492
+           mtu 1492
+                debug
         '';
       };
     };

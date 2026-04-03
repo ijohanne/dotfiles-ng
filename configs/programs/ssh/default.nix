@@ -6,9 +6,10 @@
     enableDefaultConfig = false;
     matchBlocks."*" = {
       forwardAgent = desktop;
-      extraOptions = if desktop then {
-        PubkeyAuthentication = "unbound";
-      } else {};
+      extraOptions =
+        if desktop then {
+          PubkeyAuthentication = "unbound";
+        } else { };
     };
   };
 }

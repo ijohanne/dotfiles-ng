@@ -5,7 +5,8 @@ let
     "10.255.0.0/16"
     "10.100.0.0/24"
   ];
-in {
+in
+{
   security.acme = {
     acceptTerms = true;
     defaults.email = "sysops@unixpimps.net";
