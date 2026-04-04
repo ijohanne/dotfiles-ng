@@ -31,10 +31,6 @@
 
   networking.hostName = "ij-desktop";
 
-  nix.settings = {
-    experimental-features = [ "nix-command" "flakes" ];
-  };
-
   time.timeZone = "UTC";
 
   i18n.defaultLocale = "en_US.UTF-8";
