@@ -43,6 +43,7 @@ in
 
   homebrew = {
     enable = true;
+    taps = [ "steipete/tap" ];
     onActivation = {
       autoUpdate = true;
       cleanup = "uninstall";
