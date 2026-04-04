@@ -14,6 +14,7 @@
   services = {
     nodeExporterBase = ./nixos/services/node-exporter-base.nix;
     server = ../../configs/server.nix;
+    wanFailover = ./nixos/services/wan-failover.nix;
     wireguardWatchdog = ../../configs/wireguard-watchdog.nix;
   };
 

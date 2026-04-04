@@ -39,65 +39,6 @@ let
     '';
   };
 
-  test_main_wan_uplink = pkgs.writeShellApplication {
-    name = "test_main_wan_uplink";
-    runtimeInputs = with pkgs; [ bash fping iproute2 systemd sms ];
-    text = ''
-      STATE_FILE="/var/run/wan-failover-state"
-      MAIN_WAN=ppp0
-      BACKUP_WAN=mobile
-      PROBE_TARGETS="8.8.8.8 8.8.4.4 1.1.1.1"
-      FPING_ARGS=(-c 3 -q -x 2)
-      FAILBACK_THRESHOLD=3
-
-      current_state() {
-        cat "$STATE_FILE" 2>/dev/null || echo "primary"
-      }
-
-      failover_to_backup() {
-        mobile_gw=$(ip route show dev mobile | awk '/default/{print $3}')
-        ip route replace default via "$mobile_gw" dev mobile metric 0
-        ip route replace default dev ppp0 scope link metric 9999
-        echo "backup" > "$STATE_FILE"
-        echo "0" > "''${STATE_FILE}.failback-count"
-        sms "WAN failover: ppp0 unreachable, switched to mobile"
-        systemctl restart hickory-dns.service
-      }
-
-      failback_to_primary() {
-        mobile_gw=$(ip route show dev mobile | awk '/default/{print $3}')
-        ip route replace default dev ppp0 scope link metric 0
-        ip route replace default via "$mobile_gw" dev mobile metric 1063
-        echo "primary" > "$STATE_FILE"
-        rm -f "''${STATE_FILE}.failback-count"
-        sms "WAN failback: ppp0 restored"
-        systemctl restart hickory-dns.service
-      }
-
-      if [[ "$(current_state)" == "primary" ]]; then
-        # shellcheck disable=SC2086
-        if ! fping -I "$MAIN_WAN" "''${FPING_ARGS[@]}" $PROBE_TARGETS >/dev/null 2>&1; then
-          # shellcheck disable=SC2086
-          if fping -I "$BACKUP_WAN" "''${FPING_ARGS[@]}" $PROBE_TARGETS >/dev/null 2>&1; then
-            failover_to_backup
-          fi
-        fi
-      else
-        # shellcheck disable=SC2086
-        if fping -I "$MAIN_WAN" "''${FPING_ARGS[@]}" $PROBE_TARGETS >/dev/null 2>&1; then
-          count=$(cat "''${STATE_FILE}.failback-count" 2>/dev/null || echo 0)
-          count=$((count + 1))
-          if [[ $count -ge $FAILBACK_THRESHOLD ]]; then
-            failback_to_primary
-          else
-            echo "$count" > "''${STATE_FILE}.failback-count"
-          fi
-        else
-          echo "0" > "''${STATE_FILE}.failback-count"
-        fi
-      fi
-    '';
-  };
 in
 {
   _module.args = {
@@ -111,6 +52,13 @@ in
       sopsFile = ../../secrets/goose.yaml;
     })
     modules.private.nixos.aspects.gooseServices
+    (import modules.public.nixos.services.wanFailover {
+      mainInterface = "ppp0";
+      backupInterface = "mobile";
+      onFailoverCommand = ''sms "WAN failover: ppp0 unreachable, switched to mobile"'';
+      onFailbackCommand = ''sms "WAN failback: ppp0 restored"'';
+      restartServices = [ "hickory-dns.service" ];
+    })
     ./hardware-configuration.nix
     ./networking.nix
   ];
@@ -137,26 +85,9 @@ in
     ipmitool
     fping
     sms
-    test_main_wan_uplink
   ];
 
   nix.gc.options = lib.mkForce "--delete-older-than 30d";
-
-  systemd.services.wan-failover = {
-    description = "WAN failover check";
-    serviceConfig = {
-      Type = "oneshot";
-      ExecStart = "${test_main_wan_uplink}/bin/test_main_wan_uplink";
-    };
-  };
-
-  systemd.timers.wan-failover = {
-    wantedBy = [ "timers.target" ];
-    timerConfig = {
-      OnBootSec = "2min";
-      OnUnitActiveSec = "1min";
-    };
-  };
 
   system.stateVersion = "22.05";
 }
