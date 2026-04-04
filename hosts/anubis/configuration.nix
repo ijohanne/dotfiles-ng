@@ -1,4 +1,4 @@
-{ config, pkgs, lib, inputs, self, users, user, ... }:
+{ config, pkgs, lib, inputs, self, users, user, modules, ... }:
 
 let
   network = import ../../configs/network.nix { inherit lib; };
@@ -9,8 +9,8 @@ in
   };
 
   imports = [
-    ../../modules/community/nixos/aspects/server-base.nix
-    (import ../../configs/managed-remote-host.nix {
+    modules.public.nixos.aspects.serverBase
+    (import modules.private.nixos.aspects.managedRemoteHost {
       host = "anubis";
       sopsFile = ../../secrets/anubis.yaml;
     })

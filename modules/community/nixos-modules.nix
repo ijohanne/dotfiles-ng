@@ -1,4 +1,8 @@
 {
+  shared = {
+    nixCaches = ../../configs/nix-caches.nix;
+  };
+
   profiles = {
     system = {
       base = ../../configs/profiles/system/base;

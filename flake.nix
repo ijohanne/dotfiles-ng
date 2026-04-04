@@ -207,12 +207,18 @@
     let
       lib = nixpkgs.lib;
       communityModules = import ./modules/community;
+      privateModules = import ./modules/private;
+      moduleRegistry = {
+        public = communityModules;
+        private = privateModules;
+      };
       flatHomeManagerModules =
         communityModules.homeManager.programs
         // communityModules.homeManager.languages
         // communityModules.homeManager.aspects;
       flatNixosModules =
-        communityModules.nixos.profiles.system
+        communityModules.nixos.shared
+        // communityModules.nixos.profiles.system
         // communityModules.nixos.services
         // communityModules.nixos.aspects;
       flatDarwinModules =
@@ -277,8 +283,8 @@
             ./hosts/pakhet/configuration.nix
           ];
           hmUsers = {
-            ${users.ij.username} = hmUser [ (import ./configs/users/ij.nix { }) ] true;
-            ${users.mj.username} = hmUser [ ./configs/users/mj.nix ] false;
+            ${users.ij.username} = hmUser [ (import privateModules.home.users.ij { }) ] true;
+            ${users.mj.username} = hmUser [ privateModules.home.users.mj ] false;
           };
         };
 
@@ -298,8 +304,8 @@
           ];
           backupFileExtension = "bak";
           hmUsers = {
-            ${users.ij.username} = hmUser [ (import ./configs/users/ij.nix { }) ] true;
-            ${users.mj.username} = hmUser [ ./configs/users/mj.nix ] false;
+            ${users.ij.username} = hmUser [ (import privateModules.home.users.ij { }) ] true;
+            ${users.mj.username} = hmUser [ privateModules.home.users.mj ] false;
           };
         };
 
@@ -316,8 +322,8 @@
           ];
           backupFileExtension = "bak";
           hmUsers = {
-            ${users.ij.username} = hmUser [ (import ./configs/users/ij.nix { }) ] true;
-            ${users.mj.username} = hmUser [ ./configs/users/mj.nix ] false;
+            ${users.ij.username} = hmUser [ (import privateModules.home.users.ij { }) ] true;
+            ${users.mj.username} = hmUser [ privateModules.home.users.mj ] false;
           };
         };
 
@@ -332,8 +338,8 @@
             ./hosts/khosu/configuration.nix
           ];
           hmUsers = {
-            ${users.ij.username} = hmUser [ (import ./configs/users/ij.nix { }) ] true;
-            ${users.mj.username} = hmUser [ ./configs/users/mj.nix ] false;
+            ${users.ij.username} = hmUser [ (import privateModules.home.users.ij { }) ] true;
+            ${users.mj.username} = hmUser [ privateModules.home.users.mj ] false;
           };
         };
 
@@ -361,8 +367,8 @@
             ./hosts/bhyve-image/configuration-server.nix
           ];
           hmUsers = {
-            ${users.ij.username} = hmUser [ (import ./configs/users/ij.nix { }) ] true;
-            ${users.mj.username} = hmUser [ ./configs/users/mj.nix ] false;
+            ${users.ij.username} = hmUser [ (import privateModules.home.users.ij { }) ] true;
+            ${users.mj.username} = hmUser [ privateModules.home.users.mj ] false;
           };
           imageName = "bhyve-server";
           imageBuilder = "diskoImages";
@@ -436,7 +442,7 @@
           modules = [
             { nixpkgs.hostPlatform = system; }
           ] ++ modules;
-          specialArgs = { inherit inputs self users; user = users.${primaryUser}; };
+          specialArgs = { inherit inputs self users moduleRegistry; modules = moduleRegistry; user = users.${primaryUser}; };
         };
 
       mkDarwinHost = { system, modules, primaryUser ? "ij" }:
@@ -444,7 +450,7 @@
           modules = [
             { nixpkgs.hostPlatform = system; }
           ] ++ modules;
-          specialArgs = { inherit inputs self users; user = users.${primaryUser}; };
+          specialArgs = { inherit inputs self users moduleRegistry; modules = moduleRegistry; user = users.${primaryUser}; };
         };
 
       mkHomeManagerModule =
@@ -468,6 +474,8 @@
               extraSpecialArgs =
                 {
                   inherit users inputs;
+                  modules = moduleRegistry;
+                  moduleRegistry = moduleRegistry;
                   pkgs-unstable = mkPkgsUnstable system;
                   hmStateVersion = extraSpecialArgs.hmStateVersion or "22.05";
                 }

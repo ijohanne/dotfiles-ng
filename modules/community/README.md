@@ -17,6 +17,9 @@ Flat aliases are also exported through the standard `homeManagerModules`,
 `nixosModules`, and `darwinModules` outputs for easier consumption by
 ordinary flakes.
 
+Anything secret-oriented, inventory-specific, or dependent on private/internal git
+sources belongs in the internal private tree instead of this exported surface.
+
 ## Current Boundary
 
 Reusable:

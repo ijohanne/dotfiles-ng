@@ -1,11 +1,1 @@
-{ pkgs, user, ... }:
-
-{
-  imports = [
-    (import ../../modules/community/home/aspects/cli-base.nix { })
-    (import ../programs/bash { })
-    (import ../programs/zsh { })
-  ];
-
-  programs.${user.shell}.enable = true;
-}
+import ../../modules/private/home/users/mj.nix

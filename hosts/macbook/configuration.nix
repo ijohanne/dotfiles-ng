@@ -1,4 +1,4 @@
-{ inputs, config, pkgs, lib, user, ... }:
+{ inputs, config, pkgs, lib, user, modules, ... }:
 
 let
   deploy = import ../../configs/deploy { inherit pkgs; };
@@ -8,8 +8,8 @@ let
 in
 {
   imports = [
-    ../../configs/nix-caches.nix
-    ../../configs/secrets.nix
+    modules.public.darwin.shared.nixCaches
+    modules.private.darwin.aspects.workstationSecrets
   ];
 
   nix.settings = {

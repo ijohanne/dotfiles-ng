@@ -1,12 +1,12 @@
-{ inputs, config, pkgs, user, ... }:
+{ inputs, config, pkgs, user, modules, ... }:
 
 let
   deploy = import ../../configs/deploy { inherit pkgs; };
 in
 {
   imports = [
-    ../../configs/nix-caches.nix
-    ../../configs/secrets.nix
+    modules.public.nixos.shared.nixCaches
+    modules.private.nixos.aspects.workstationSecrets
   ];
 
   boot.loader.systemd-boot.enable = true;

@@ -1,4 +1,4 @@
-{ inputs, config, pkgs, lib, user, ... }:
+{ inputs, config, pkgs, lib, user, modules, ... }:
 
 let
   network = import ../../configs/network.nix { inherit lib; };
@@ -9,8 +9,8 @@ in
   };
 
   imports = [
-    ../../modules/community/nixos/aspects/server-base.nix
-    (import ../../configs/managed-remote-host.nix {
+    modules.public.nixos.aspects.serverBase
+    (import modules.private.nixos.aspects.managedRemoteHost {
       host = "pakhet";
       sopsFile = ../../secrets/pakhet.yaml;
     })
