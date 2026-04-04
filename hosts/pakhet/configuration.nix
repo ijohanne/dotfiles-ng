@@ -1,7 +1,7 @@
-{ inputs, config, pkgs, lib, user, ... }:
+{ inputs, config, pkgs, lib, user, modules, ... }:
 
 let
-  network = import ../../configs/network.nix { inherit lib; };
+  network = modules.private.inventory.network { inherit lib; };
 in
 {
   _module.args = {
@@ -9,13 +9,13 @@ in
   };
 
   imports = [
-    ../../configs/server.nix
-    (import ../../configs/managed-remote-host.nix {
+    modules.public.nixos.aspects.serverBase
+    (import modules.private.nixos.aspects.managedRemoteHost {
       host = "pakhet";
       sopsFile = ../../secrets/pakhet.yaml;
     })
+    modules.private.nixos.aspects.pakhetServices
     ./hardware-configuration.nix
-    ./services
   ];
 
   networking = {
@@ -23,12 +23,6 @@ in
     useDHCP = true;
     nameservers = [ "${network.hosts.goose.ips.wired}" ];
   };
-
-  networking.firewall.extraCommands = ''
-    ip6tables -I INPUT -i enp0s5 -p icmpv6 --icmpv6-type router-advertisement \
-      -m mac --mac-source b8:27:eb:ff:f8:5f \
-      -j DROP
-  '';
 
   # kresd is pulled in by nixos-mailserver for DANE — keep it for postfix
   # but don't let it hijack resolv.conf; system DNS goes to goose

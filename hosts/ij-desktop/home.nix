@@ -1,7 +1,7 @@
-{ config, pkgs, lib, user, ... }:
+{ config, pkgs, lib, user, modules, ... }:
 
 {
   imports = [
-    (import ../../configs/users/ij.nix { desktop = true; })
+    (import modules.private.home.users.ij { desktop = true; })
   ];
 }

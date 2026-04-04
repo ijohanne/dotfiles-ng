@@ -1,15 +1,15 @@
-{ lib, config, pkgs, user, modulesPath, ... }:
+{ lib, config, pkgs, user, modulesPath, modules, ... }:
 
 let
-  rtsp-linux = pkgs.callPackage ../../hosts/goose/pkgs/rtsp-linux.nix {
+  rtsp-linux = pkgs.callPackage modules.public.packages.rtspLinux {
     kernel = config.boot.kernelPackages.kernel;
   };
 in
 
 {
   imports = [
-    ../../configs/profiles/system/base
-    ../../configs/profiles/system/qemu-guest
+    modules.public.nixos.profiles.system.base
+    modules.public.nixos.profiles.system.qemuGuest
   ];
 
   networking = {

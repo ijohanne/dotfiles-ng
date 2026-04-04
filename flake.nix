@@ -206,7 +206,26 @@
     }@inputs:
     let
       lib = nixpkgs.lib;
-      users = import ./configs/users.nix;
+      communityModules = import ./modules/community;
+      privateModules = import ./modules/private;
+      moduleRegistry = {
+        public = communityModules;
+        private = privateModules;
+      };
+      flatHomeManagerModules =
+        communityModules.homeManager.shared
+        // communityModules.homeManager.programs
+        // communityModules.homeManager.languages
+        // communityModules.homeManager.aspects;
+      flatNixosModules =
+        communityModules.nixos.shared
+        // communityModules.nixos.profiles.system
+        // communityModules.nixos.services
+        // communityModules.nixos.aspects;
+      flatDarwinModules =
+        communityModules.darwin.shared
+        // communityModules.darwin.aspects;
+      users = import ./modules/private/inventory/users.nix;
       hmUser = imports: withNixvim: {
         inherit imports withNixvim;
       };
@@ -265,8 +284,8 @@
             ./hosts/pakhet/configuration.nix
           ];
           hmUsers = {
-            ${users.ij.username} = hmUser [ (import ./configs/users/ij.nix { }) ] true;
-            ${users.mj.username} = hmUser [ ./configs/users/mj.nix ] false;
+            ${users.ij.username} = hmUser [ (import privateModules.home.users.ij { }) ] true;
+            ${users.mj.username} = hmUser [ privateModules.home.users.mj ] false;
           };
         };
 
@@ -286,8 +305,8 @@
           ];
           backupFileExtension = "bak";
           hmUsers = {
-            ${users.ij.username} = hmUser [ (import ./configs/users/ij.nix { }) ] true;
-            ${users.mj.username} = hmUser [ ./configs/users/mj.nix ] false;
+            ${users.ij.username} = hmUser [ (import privateModules.home.users.ij { }) ] true;
+            ${users.mj.username} = hmUser [ privateModules.home.users.mj ] false;
           };
         };
 
@@ -304,8 +323,8 @@
           ];
           backupFileExtension = "bak";
           hmUsers = {
-            ${users.ij.username} = hmUser [ (import ./configs/users/ij.nix { }) ] true;
-            ${users.mj.username} = hmUser [ ./configs/users/mj.nix ] false;
+            ${users.ij.username} = hmUser [ (import privateModules.home.users.ij { }) ] true;
+            ${users.mj.username} = hmUser [ privateModules.home.users.mj ] false;
           };
         };
 
@@ -320,8 +339,8 @@
             ./hosts/khosu/configuration.nix
           ];
           hmUsers = {
-            ${users.ij.username} = hmUser [ (import ./configs/users/ij.nix { }) ] true;
-            ${users.mj.username} = hmUser [ ./configs/users/mj.nix ] false;
+            ${users.ij.username} = hmUser [ (import privateModules.home.users.ij { }) ] true;
+            ${users.mj.username} = hmUser [ privateModules.home.users.mj ] false;
           };
         };
 
@@ -349,8 +368,8 @@
             ./hosts/bhyve-image/configuration-server.nix
           ];
           hmUsers = {
-            ${users.ij.username} = hmUser [ (import ./configs/users/ij.nix { }) ] true;
-            ${users.mj.username} = hmUser [ ./configs/users/mj.nix ] false;
+            ${users.ij.username} = hmUser [ (import privateModules.home.users.ij { }) ] true;
+            ${users.mj.username} = hmUser [ privateModules.home.users.mj ] false;
           };
           imageName = "bhyve-server";
           imageBuilder = "diskoImages";
@@ -424,7 +443,7 @@
           modules = [
             { nixpkgs.hostPlatform = system; }
           ] ++ modules;
-          specialArgs = { inherit inputs self users; user = users.${primaryUser}; };
+          specialArgs = { inherit inputs self users moduleRegistry; modules = moduleRegistry; user = users.${primaryUser}; };
         };
 
       mkDarwinHost = { system, modules, primaryUser ? "ij" }:
@@ -432,7 +451,7 @@
           modules = [
             { nixpkgs.hostPlatform = system; }
           ] ++ modules;
-          specialArgs = { inherit inputs self users; user = users.${primaryUser}; };
+          specialArgs = { inherit inputs self users moduleRegistry; modules = moduleRegistry; user = users.${primaryUser}; };
         };
 
       mkHomeManagerModule =
@@ -456,6 +475,8 @@
               extraSpecialArgs =
                 {
                   inherit users inputs;
+                  modules = moduleRegistry;
+                  moduleRegistry = moduleRegistry;
                   pkgs-unstable = mkPkgsUnstable system;
                   hmStateVersion = extraSpecialArgs.hmStateVersion or "22.05";
                 }
@@ -463,7 +484,7 @@
               users = lib.mapAttrs
                 (username: hmUserConfig: {
                   imports = [
-                    ./configs/users/home-defaults.nix
+                    ./modules/community/home/shared/home-defaults.nix
                   ] ++ hmUserConfig.imports ++ lib.optional hmUserConfig.withNixvim inputs.nixvim.homeModules.nixvim ++ [
                     { _module.args.user = users.${username}; }
                   ];
@@ -487,6 +508,11 @@
         });
     in
     {
+      moduleTrees = communityModules;
+      homeManagerModules = flatHomeManagerModules;
+      nixosModules = flatNixosModules;
+      darwinModules = flatDarwinModules;
+
       nixosConfigurations = lib.mapAttrs
         (
           _: host:
@@ -694,7 +720,7 @@
             echo "=== pg_upgrade completed. ==="
             echo ""
             echo "Next steps:"
-            echo "  1. Update hosts/pakhet/services/postgresql.nix to set package = pkgs.postgresql_18"
+            echo "  1. Update modules/private/nixos/services/pakhet/postgresql.nix to set package = pkgs.postgresql_18"
             echo "  2. Commit, push, deploy-pakhet"
             echo "  3. Run step 3 for post-upgrade verification"
           '';

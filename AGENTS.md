@@ -10,11 +10,12 @@ NixOS/Darwin dotfiles repository using **flakes**. All nix changes must be made 
 
 ### Directory Structure
 
-- `configs/` — shared configuration modules
-  - `configs/programs/` — program modules (fish, tmux, git, neovim, bat, eza, fd, etc.)
-  - `configs/dev/languages/` — language modules (rust, nix, lua, markdown, flutter) — self-contained: toolchain + LSP + neovim wiring
-  - `configs/users/` — per-user home-manager configs (ij.nix, mj.nix, common.nix)
-  - `configs/darwin/` — macOS-specific modules
+- `modules/community/home/programs/` — public reusable Home Manager program modules
+- `modules/community/home/languages/` — public reusable language modules (rust, nix, lua, markdown, flutter) — self-contained: toolchain + LSP + neovim wiring
+- `modules/community/home/shared/` — public reusable Home Manager shared modules and defaults
+- `modules/community/nixos/` — public reusable NixOS profiles, services, and aspects
+- `modules/private/home/users/` — private per-user Home Manager modules
+- `modules/private/inventory/` — private inventory data such as shared user and network registries
 - `hosts/` — per-host wiring (configuration.nix, services/, home.nix)
 - `lib/` — library functions (`user.nix` for user settings)
 - `secrets/` — sops-encrypted secrets (`.sops.yaml` at repo root)
@@ -22,14 +23,14 @@ NixOS/Darwin dotfiles repository using **flakes**. All nix changes must be made 
 
 ### Key References
 
-- **@NETWORK.md** — network topology, VLANs, switches, DNS, and how `configs/network.nix` works
+- **@NETWORK.md** — network topology, VLANs, switches, DNS, and how `modules/private/inventory/network.nix` works
 - **@cli-references.md** — keybindings and aliases for tmux, neovim, fish, tool replacements
 
 ### Shared Configuration
 
-- **`configs/network.nix`** — single registry for all hosts (IPs, MACs, DNS, DNAT port forwarding), DHCP reservations, `mkDnatRules`, and `mailDomains`
-- **`configs/dev/languages/`** — composable language modules; each provides packages + neovim LSP wiring via `pkgs-unstable`
-- **`lib/user.nix`** — user settings; `developer = true` enables LSP, dev tools
+- **`modules/private/inventory/network.nix`** — single registry for all hosts (IPs, MACs, DNS, DNAT port forwarding), DHCP reservations, `mkDnatRules`, and `mailDomains`
+- **`modules/private/inventory/users.nix`** — shared user inventory (`username`, `email`, `name`, `developer`, `shell`, `sshKeys`)
+- **`modules/community/home/languages/`** — composable language modules; each provides packages + neovim LSP wiring via `pkgs-unstable`
 
 ### Secrets Management
 

@@ -1,7 +1,7 @@
-{ inputs, config, pkgs, lib, user, ... }:
+{ inputs, config, pkgs, lib, user, modules, ... }:
 
 let
-  network = import ../../configs/network.nix { inherit lib; };
+  network = modules.private.inventory.network { inherit lib; };
 in
 {
   _module.args = {
@@ -9,13 +9,13 @@ in
   };
 
   imports = [
-    ../../configs/server.nix
-    (import ../../configs/managed-remote-host.nix {
+    modules.public.nixos.aspects.serverBase
+    (import modules.private.nixos.aspects.managedRemoteHost {
       host = "khosu";
       sopsFile = ../../secrets/khosu.yaml;
     })
+    modules.private.nixos.aspects.khosuServices
     ./hardware-configuration.nix
-    ./services
   ];
 
   networking = {

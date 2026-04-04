@@ -4,6 +4,11 @@
 
 Nix-based dotfiles for managing macOS and Linux configurations.
 
+This repository follows a dendritic module pattern: reusable public aspects live in
+`modules/community`, repo-private reusable composition lives in `modules/private`,
+and private host/user inventory lives in `modules/private/inventory`. Hosts stay thin
+and mostly opt into named aspects rather than owning large piles of inline logic.
+
 ## Table of Contents
 
 - [Overview](#overview)
@@ -47,19 +52,37 @@ Nix-based dotfiles for managing macOS and Linux configurations.
 ### Structure
 
 - `hosts/` — Host-specific configurations
-- `configs/` — Shared configurations for various programs
-- `lib/` — Shared library definitions
+- `modules/community/` — Public reusable modules, services, profiles, and helper libraries
+- `modules/private/` — Private reusable modules and secret-aware aspects
+- `modules/private/inventory/` — Private host and user inventory
+
+The repository is now intentionally split three ways:
+
+- `modules/community/` is the public, reusable surface exported through the flake outputs
+- `modules/private/` is internal reusable composition for this repo's own hosts and users
+- `modules/private/inventory/` is private data such as shared user and network registries
+
+The public community surface is exported through:
+
+- `homeManagerModules`
+- `nixosModules`
+- `darwinModules`
+- `moduleTrees`
 
 ### User Settings
 
-User settings are defined in `lib/user.nix`:
+Shared user inventory is defined in `modules/private/inventory/users.nix`:
 
 ```nix
 {
-  username = "ij";
-  email = "ij@opsplaza.com";
-  name = "Ian Johannesen";
-  developer = true;  # Enable LSP for neovim, lorri daemon, dev packages
+  ij = {
+    username = "ij";
+    email = "ij@opsplaza.com";
+    name = "Ian Johannesen";
+    developer = true;
+    shell = "fish";
+    sshKeys = [ "ssh-ed25519 ..." ];
+  };
 }
 ```
 
@@ -130,13 +153,17 @@ nix run nixpkgs#nixos-rebuild -- switch \
    cd ~/dotfiles
    ```
 
-2. Edit `lib/user.nix` with your details:
+2. Edit `modules/private/inventory/users.nix` with your details:
    ```nix
    {
-     username = "your-username";
-     email = "your@email.com";
-     name = "Your Name";
-     developer = true;
+     youruser = {
+       username = "your-username";
+       email = "your@email.com";
+       name = "Your Name";
+       developer = true;
+       shell = "fish";
+       sshKeys = [ "ssh-ed25519 ..." ];
+     };
    }
    ```
 
@@ -517,7 +544,7 @@ sudo dd if=result/sd-image/*.img of=/dev/sdX bs=4M status=progress
 #### First Boot
 
 The image includes:
-- SSH enabled with authorized keys from `lib/user.nix`
+- SSH enabled with authorized keys from `modules/private/inventory/users.nix`
 - Flakes enabled
 - A `rebuild` alias for easy updates
 
@@ -546,9 +573,9 @@ To use this as a starting point for a new dedicated host:
 3. Add the new host to `flake.nix`:
    ```nix
    nixosConfigurations = {
-     my-new-rpi = nixpkgs-stable.lib.nixosSystem {
+     my-new-rpi = mkNixosHost {
+       pkgsLib = nixpkgs-stable.lib;
        system = "aarch64-linux";
-       specialArgs = { inherit inputs self user; };
        modules = [
          ./hosts/my-new-rpi/configuration.nix
        ];
@@ -567,7 +594,7 @@ To use this as a starting point for a new dedicated host:
 
 A QEMU virtual machine for developing and debugging the `nf_conntrack_rtsp` / `nf_nat_rtsp` kernel modules. Runs natively on Apple Silicon (aarch64-linux) — no emulation overhead.
 
-The RTSP conntrack helper is used on goose to handle Movistar IPTV VOD (Video on Demand) traffic. Live channels use multicast via igmpproxy, but VOD is unicast — the STB (`10.255.101.201` on the wired VLAN) communicates via RTSP (port 554) to set up on-demand streams. The conntrack helper parses RTSP SETUP requests and creates expectations for the dynamically negotiated RTP/RTCP ports, allowing NAT to work correctly for the media streams. The out-of-tree kernel module (`hosts/goose/pkgs/rtsp-linux.nix`) is old and may need fixes for newer kernels — this VM provides a safe environment to iterate.
+The RTSP conntrack helper is used on goose to handle Movistar IPTV VOD (Video on Demand) traffic. Live channels use multicast via igmpproxy, but VOD is unicast — the STB (`10.255.101.201` on the wired VLAN) communicates via RTSP (port 554) to set up on-demand streams. The conntrack helper parses RTSP SETUP requests and creates expectations for the dynamically negotiated RTP/RTCP ports, allowing NAT to work correctly for the media streams. The out-of-tree kernel module (`modules/community/packages/rtsp-linux/default.nix`) is old and may need fixes for newer kernels — this VM provides a safe environment to iterate.
 
 #### Building and Running
 
@@ -649,7 +676,7 @@ Start a VOD playback on the STB to generate RTSP SETUP/PLAY/TEARDOWN traffic, th
 
 #### Iterating on the Kernel Module
 
-The RTSP module source is from [maru-sama/rtsp-linux](https://github.com/maru-sama/rtsp-linux) with patches in `hosts/goose/pkgs/rtsp-linux.patch`. To iterate:
+The RTSP module source is from [maru-sama/rtsp-linux](https://github.com/maru-sama/rtsp-linux) with patches in `modules/community/packages/rtsp-linux/rtsp-linux.patch`. To iterate:
 
 1. Clone the source in the VM:
    ```bash
@@ -686,7 +713,7 @@ nix run .#setup-template -- generate --config setup.json
 nix run .#setup-template -- new --dry-run
 ```
 
-The generator produces `configs/users.nix`, `hosts/<name>/configuration.nix`, `hosts/<name>/home.nix`, and a ready-to-paste `flake.nix` snippet. See [docs/setup-template-usage.md](docs/setup-template-usage.md) for full details.
+The generator produces `modules/private/inventory/users.nix`, `hosts/<name>/configuration.nix`, `hosts/<name>/home.nix`, and a ready-to-paste `flake.nix` snippet. See [docs/setup-template-usage.md](docs/setup-template-usage.md) for full details.
 
 ## Reference
 
@@ -883,7 +910,7 @@ sops -d secrets/macbook.yaml
 
 3. Reference in nix config:
    ```nix
-   # In configs/secrets.nix (for macbook/ij-desktop)
+   # In modules/private/shared/workstation-secrets.nix (for macbook/ij-desktop)
    sops.secrets.my_api_key = {};
    
    # Or in host-specific config (for pakhet)

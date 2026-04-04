@@ -8,7 +8,10 @@ use anyhow::Result;
 use clap::{Parser, Subcommand};
 
 #[derive(Parser)]
-#[command(name = "setup-template", about = "Scaffold new host/user configs for the dotfiles flake")]
+#[command(
+    name = "setup-template",
+    about = "Scaffold new host/user configs for the dotfiles flake"
+)]
 struct Cli {
     #[command(subcommand)]
     command: Command,
@@ -134,7 +137,7 @@ fn print_next_steps(config: &schema::Config) {
     println!("\n  Next steps:\n");
     println!("  1. Review the generated files");
     println!("  2. Add the flake snippet above to flake.nix");
-    println!("  3. Update configs/users.nix (merge with existing if needed)");
+    println!("  3. Update modules/private/inventory/users.nix (merge with existing if needed)");
 
     for host in &config.hosts {
         if host.modules.secrets {
@@ -148,16 +151,15 @@ fn print_next_steps(config: &schema::Config) {
         }
     }
 
-    println!("  5. Add the host to configs/network.nix (if on the local network)");
+    println!(
+        "  5. Add the host to modules/private/inventory/network.nix (if on the local network)"
+    );
     println!("  6. Build and test:");
     for host in &config.hosts {
         match host.platform {
             schema::Platform::Darwin => {
                 println!("     nix build .#darwinConfigurations.{}.system", host.name);
-                println!(
-                    "     darwin-rebuild switch --flake .#{}",
-                    host.name
-                );
+                println!("     darwin-rebuild switch --flake .#{}", host.name);
             }
             schema::Platform::Linux => {
                 println!(
@@ -166,16 +168,10 @@ fn print_next_steps(config: &schema::Config) {
                 );
                 match host.deploy_mode {
                     schema::DeployMode::Local => {
-                        println!(
-                            "     sudo nixos-rebuild switch --flake .#{}",
-                            host.name
-                        );
+                        println!("     sudo nixos-rebuild switch --flake .#{}", host.name);
                     }
                     schema::DeployMode::Remote => {
-                        println!(
-                            "     git push && ssh <host> deploy-{}",
-                            host.name
-                        );
+                        println!("     git push && ssh <host> deploy-{}", host.name);
                     }
                 }
             }

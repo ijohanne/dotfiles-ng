@@ -1,12 +1,15 @@
-{ inputs, config, pkgs, user, ... }:
-
-let
-  deploy = import ../../configs/deploy { inherit pkgs; };
-in
+{ inputs, config, pkgs, user, modules, ... }:
 {
   imports = [
-    ../../configs/nix-caches.nix
-    ../../configs/secrets.nix
+    (import modules.public.nixos.aspects.gcPolicy { })
+    modules.public.nixos.aspects.fishLoginShell
+    modules.public.nixos.aspects.nixCli
+    modules.public.nixos.shared.nixCaches
+    modules.private.nixos.aspects.workstationSecrets
+    (import modules.public.nixos.aspects.localFlakeDeploy {
+      name = "deploy-ij-desktop";
+      host = "ij-desktop";
+    })
   ];
 
   boot.loader.systemd-boot.enable = true;
@@ -29,10 +32,6 @@ in
   };
 
   networking.hostName = "ij-desktop";
-
-  nix.settings = {
-    experimental-features = [ "nix-command" "flakes" ];
-  };
 
   time.timeZone = "UTC";
 
@@ -75,8 +74,6 @@ in
     inputs.rust-overlay.overlays.default
   ];
 
-  programs.fish.enable = true;
-
   fonts = {
     packages = with pkgs; [
       noto-fonts
@@ -89,14 +86,6 @@ in
   virtualisation.docker = {
     enable = true;
   };
-
-  environment.systemPackages = [
-    (deploy.mkLocalDeployScript {
-      name = "deploy-ij-desktop";
-      host = "ij-desktop";
-      rebuildCmd = "nixos-rebuild switch --flake";
-    })
-  ];
 
   system.stateVersion = "23.05";
 }

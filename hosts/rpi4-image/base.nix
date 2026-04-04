@@ -1,9 +1,9 @@
-{ lib, config, pkgs, user, users, modulesPath, ... }:
+{ lib, config, pkgs, user, users, modulesPath, modules, ... }:
 
 {
   imports = [
     "${modulesPath}/installer/sd-card/sd-image-aarch64.nix"
-    ../../configs/profiles/system/base
+    modules.public.nixos.profiles.system.base
   ];
 
   networking = {
