@@ -20,6 +20,7 @@
   };
 
   aspects = {
+    fishLoginShell = ./nixos/aspects/fish-login-shell.nix;
     gcPolicy = ./nixos/aspects/gc-policy.nix;
     localFlakeDeploy = ./nixos/aspects/local-flake-deploy.nix;
     serverBase = ./nixos/aspects/server-base.nix;

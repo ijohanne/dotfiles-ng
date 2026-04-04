@@ -1,14 +1,14 @@
 { desktop ? false }:
-{ pkgs, lib, inputs, ... }:
+{ pkgs, lib, inputs, modules, ... }:
 {
   imports = [
-    ../programs/bat
-    ../programs/claude-code
-    ../programs/codex-cli
-    ../programs/opencode
-    ../programs/t3code-cli
-    ../programs/eza
-    ../programs/fd
+    modules.public.homeManager.programs.bat
+    modules.public.homeManager.programs.claudeCode
+    modules.public.homeManager.programs.codexCli
+    modules.public.homeManager.programs.opencode
+    modules.public.homeManager.programs.t3codeCli
+    modules.public.homeManager.programs.eza
+    modules.public.homeManager.programs.fd
   ];
 
   programs.home-manager.enable = true;

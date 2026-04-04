@@ -24,8 +24,8 @@ sources belongs in the internal private tree instead of this exported surface.
 
 Reusable:
 
-- `configs/programs/*`
-- `configs/dev/languages/*`
+- `modules/community/home/programs/*`
+- `modules/community/home/languages/*`
 - `configs/profiles/system/*`
 - `configs/server.nix`
 - `configs/nix-caches.nix`
@@ -55,4 +55,3 @@ Private for now:
   };
 }
 ```
-

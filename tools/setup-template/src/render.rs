@@ -7,7 +7,7 @@
 //!   - desktop/local: `deploy.mkLocalDeployScript { name, host, rebuildCmd }`
 //!   - server/remote: `deploy.mkDeployScript { name, host }`
 //!   - darwin/local: `deploy.mkLocalDeployScript { name, host, rebuildCmd, useSudo = false }`
-//! - `hosts/<name>/home.nix` — home-manager config importing from configs/users/, configs/programs/, configs/dev/languages/
+//! - `hosts/<name>/home.nix` — home-manager config importing from configs/users/ and modules/community/home/{programs,languages}/
 //! - Flake snippet (not patched) — ready-to-paste nixosConfigurations/darwinConfigurations block
 //!
 //! Deterministic: same Config always produces same output (sorted keys, stable ordering).
@@ -27,7 +27,10 @@ pub struct RenderedOutput {
 pub fn render(config: &Config) -> Result<RenderedOutput> {
     let mut files = BTreeMap::new();
 
-    files.insert(PathBuf::from("configs/users.nix"), render_users_nix(&config.users));
+    files.insert(
+        PathBuf::from("configs/users.nix"),
+        render_users_nix(&config.users),
+    );
 
     for host in &config.hosts {
         let host_dir = PathBuf::from(format!("hosts/{}", host.name));
@@ -35,10 +38,7 @@ pub fn render(config: &Config) -> Result<RenderedOutput> {
             host_dir.join("configuration.nix"),
             render_configuration_nix(host, config),
         );
-        files.insert(
-            host_dir.join("home.nix"),
-            render_home_nix(host, config),
-        );
+        files.insert(host_dir.join("home.nix"), render_home_nix(host, config));
     }
 
     let flake_snippet = render_flake_snippet(config);
@@ -111,15 +111,9 @@ fn render_configuration_nix(host: &HostConfig, config: &Config) -> String {
     }
 
     if host.platform == Platform::Linux {
-        out.push_str(&format!(
-            "  networking.hostName = \"{}\";\n\n",
-            host.name
-        ));
+        out.push_str(&format!("  networking.hostName = \"{}\";\n\n", host.name));
     } else {
-        out.push_str(&format!(
-            "  networking.hostName = \"{}\";\n\n",
-            host.name
-        ));
+        out.push_str(&format!("  networking.hostName = \"{}\";\n\n", host.name));
     }
 
     out.push_str("  nix.settings = {\n");
@@ -139,7 +133,10 @@ fn render_configuration_nix(host: &HostConfig, config: &Config) -> String {
             "[ \"wheel\" ]"
         };
         out.push_str(&format!("    extraGroups = {};\n", groups));
-        out.push_str(&format!("    shell = {};\n", shell_pkg(&primary_user.shell)));
+        out.push_str(&format!(
+            "    shell = {};\n",
+            shell_pkg(&primary_user.shell)
+        ));
         out.push_str("    openssh.authorizedKeys.keys = user.sshKeys;\n");
         out.push_str("  };\n\n");
 
@@ -235,30 +232,33 @@ fn render_home_nix(host: &HostConfig, config: &Config) -> String {
 
     // programs
     if is_desktop {
-        out.push_str("    ../../configs/programs/fish\n");
-        out.push_str("    ../../configs/programs/tmux\n");
-        out.push_str("    ../../configs/programs/git\n");
-        out.push_str("    ../../configs/programs/bash\n");
-        out.push_str("    ../../configs/programs/direnv\n");
-        out.push_str("    ../../configs/programs/lazygit\n");
-        out.push_str("    ../../configs/programs/starship\n");
-        out.push_str("    ../../configs/programs/htop\n");
-        out.push_str("    ../../configs/programs/zoxide\n");
-        out.push_str("    ../../configs/programs/delta\n");
+        out.push_str("    ../../modules/community/home/programs/fish\n");
+        out.push_str("    ../../modules/community/home/programs/tmux\n");
+        out.push_str("    ../../modules/community/home/programs/git\n");
+        out.push_str("    ../../modules/community/home/programs/bash\n");
+        out.push_str("    ../../modules/community/home/programs/direnv\n");
+        out.push_str("    ../../modules/community/home/programs/lazygit\n");
+        out.push_str("    ../../modules/community/home/programs/starship\n");
+        out.push_str("    ../../modules/community/home/programs/htop\n");
+        out.push_str("    ../../modules/community/home/programs/zoxide\n");
+        out.push_str("    ../../modules/community/home/programs/delta\n");
     }
 
     // neovim
     if host.modules.neovim {
-        out.push_str("    ../../configs/programs/neovim\n");
+        out.push_str("    ../../modules/community/home/programs/neovim\n");
     }
 
     // languages
     if !host.modules.languages.is_empty() {
         if host.modules.languages.len() == 5 {
-            out.push_str("    ../../configs/dev/languages\n");
+            out.push_str("    ../../modules/community/home/languages\n");
         } else {
             for lang in &host.modules.languages {
-                out.push_str(&format!("    ../../configs/dev/languages/{}.nix\n", lang));
+                out.push_str(&format!(
+                    "    ../../modules/community/home/languages/{}\n",
+                    lang
+                ));
             }
         }
     }
@@ -351,7 +351,12 @@ fn render_flake_snippet(config: &Config) -> String {
     out
 }
 
-pub fn write_files(output: &RenderedOutput, output_dir: &Path, force: bool, dry_run: bool) -> Result<()> {
+pub fn write_files(
+    output: &RenderedOutput,
+    output_dir: &Path,
+    force: bool,
+    dry_run: bool,
+) -> Result<()> {
     if dry_run {
         println!("\n  Dry run — files that would be generated:\n");
         for (path, content) in &output.files {
@@ -429,9 +434,15 @@ mod tests {
     #[test]
     fn render_produces_expected_files() {
         let output = render(&test_config()).unwrap();
-        assert!(output.files.contains_key(&PathBuf::from("configs/users.nix")));
-        assert!(output.files.contains_key(&PathBuf::from("hosts/workstation/configuration.nix")));
-        assert!(output.files.contains_key(&PathBuf::from("hosts/workstation/home.nix")));
+        assert!(output
+            .files
+            .contains_key(&PathBuf::from("configs/users.nix")));
+        assert!(output
+            .files
+            .contains_key(&PathBuf::from("hosts/workstation/configuration.nix")));
+        assert!(output
+            .files
+            .contains_key(&PathBuf::from("hosts/workstation/home.nix")));
     }
 
     #[test]
@@ -478,14 +489,16 @@ mod tests {
     fn home_nix_imports_languages() {
         let output = render(&test_config()).unwrap();
         let home = &output.files[&PathBuf::from("hosts/workstation/home.nix")];
-        assert!(home.contains("configs/dev/languages/nix.nix"));
-        assert!(home.contains("configs/dev/languages/rust.nix"));
+        assert!(home.contains("modules/community/home/languages/nix"));
+        assert!(home.contains("modules/community/home/languages/rust"));
     }
 
     #[test]
     fn flake_snippet_contains_host() {
         let output = render(&test_config()).unwrap();
-        assert!(output.flake_snippet.contains("nixosConfigurations.workstation"));
+        assert!(output
+            .flake_snippet
+            .contains("nixosConfigurations.workstation"));
         assert!(output.flake_snippet.contains("mkNixosHost"));
         assert!(output.flake_snippet.contains("mkPkgsUnstable"));
     }
@@ -505,8 +518,12 @@ mod tests {
         config.hosts[0].platform = Platform::Darwin;
         config.hosts[0].arch = Arch::Aarch64;
         let output = render(&config).unwrap();
-        assert!(output.flake_snippet.contains("darwinConfigurations.workstation"));
+        assert!(output
+            .flake_snippet
+            .contains("darwinConfigurations.workstation"));
         assert!(output.flake_snippet.contains("mkDarwinHost"));
-        assert!(output.flake_snippet.contains("home-manager.darwinModules.home-manager"));
+        assert!(output
+            .flake_snippet
+            .contains("home-manager.darwinModules.home-manager"));
     }
 }

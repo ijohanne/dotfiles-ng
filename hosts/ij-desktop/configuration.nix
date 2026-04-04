@@ -2,6 +2,7 @@
 {
   imports = [
     (import modules.public.nixos.aspects.gcPolicy { })
+    modules.public.nixos.aspects.fishLoginShell
     modules.public.nixos.shared.nixCaches
     modules.private.nixos.aspects.workstationSecrets
     (import modules.public.nixos.aspects.localFlakeDeploy {

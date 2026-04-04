@@ -55,7 +55,7 @@ The renderer produces files matching these flake conventions:
   - Server/remote: `deploy.mkDeployScript { name, host }`
   - Darwin/local: `deploy.mkLocalDeployScript { name, host, rebuildCmd, useSudo = false }`
 - **User registry**: same schema as `configs/users.nix` (`{ username, email, name, developer, shell, sshKeys }`)
-- **Home-manager**: imports from `configs/users/<user>.nix`, `configs/programs/`, `configs/dev/languages/`
+- **Home-manager**: imports from `configs/users/<user>.nix`, `modules/community/home/programs/`, `modules/community/home/languages/`
 - **Flake snippet**: ready-to-paste `nixosConfigurations`/`darwinConfigurations` block using `mkNixosHost`/`mkDarwinHost` + `mkHomeManagerModule`
 
 ## Config file format

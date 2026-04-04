@@ -151,10 +151,7 @@ pub struct ModuleSelections {
 impl Config {
     pub fn load(path: &Path) -> anyhow::Result<Self> {
         let content = std::fs::read_to_string(path)?;
-        let ext = path
-            .extension()
-            .and_then(|e| e.to_str())
-            .unwrap_or("");
+        let ext = path.extension().and_then(|e| e.to_str()).unwrap_or("");
         match ext {
             "json" => Ok(serde_json::from_str(&content)?),
             "toml" => Ok(toml::from_str(&content)?),

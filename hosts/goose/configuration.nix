@@ -30,10 +30,6 @@ in
       onFailbackCommand = ''sms "WAN failback: ppp0 restored"'';
       restartServices = [ "hickory-dns.service" ];
     })
-    (import modules.public.nixos.aspects.gcPolicy {
-      dates = "weekly";
-      options = "--delete-older-than 30d";
-    })
     ./hardware-configuration.nix
     ./networking.nix
   ];

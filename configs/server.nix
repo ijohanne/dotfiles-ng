@@ -2,10 +2,7 @@
 
 {
   imports = [
-    (import modules.public.nixos.aspects.gcPolicy {
-      dates = "weekly";
-      options = "--delete-older-than 180d";
-    })
+    (import modules.public.nixos.aspects.gcPolicy { })
     ./nix-caches.nix
     ./profiles/system/base
   ];

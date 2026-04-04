@@ -8,7 +8,10 @@ use anyhow::Result;
 use clap::{Parser, Subcommand};
 
 #[derive(Parser)]
-#[command(name = "setup-template", about = "Scaffold new host/user configs for the dotfiles flake")]
+#[command(
+    name = "setup-template",
+    about = "Scaffold new host/user configs for the dotfiles flake"
+)]
 struct Cli {
     #[command(subcommand)]
     command: Command,
@@ -154,10 +157,7 @@ fn print_next_steps(config: &schema::Config) {
         match host.platform {
             schema::Platform::Darwin => {
                 println!("     nix build .#darwinConfigurations.{}.system", host.name);
-                println!(
-                    "     darwin-rebuild switch --flake .#{}",
-                    host.name
-                );
+                println!("     darwin-rebuild switch --flake .#{}", host.name);
             }
             schema::Platform::Linux => {
                 println!(
@@ -166,16 +166,10 @@ fn print_next_steps(config: &schema::Config) {
                 );
                 match host.deploy_mode {
                     schema::DeployMode::Local => {
-                        println!(
-                            "     sudo nixos-rebuild switch --flake .#{}",
-                            host.name
-                        );
+                        println!("     sudo nixos-rebuild switch --flake .#{}", host.name);
                     }
                     schema::DeployMode::Remote => {
-                        println!(
-                            "     git push && ssh <host> deploy-{}",
-                            host.name
-                        );
+                        println!("     git push && ssh <host> deploy-{}", host.name);
                     }
                 }
             }

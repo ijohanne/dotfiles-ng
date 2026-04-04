@@ -1,4 +1,4 @@
-{ automatic ? true, dates ? null, options ? null }:
+{ automatic ? true, dates ? "weekly", options ? "--delete-older-than 30d" }:
 
 { lib, ... }:
 

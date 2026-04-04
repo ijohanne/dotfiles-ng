@@ -21,17 +21,11 @@ pub fn run_wizard(repo_ref: &str) -> Result<Config> {
 fn prompt_user() -> Result<UserConfig> {
     println!("--- User ---");
 
-    let username: String = Input::new()
-        .with_prompt("Username")
-        .interact_text()?;
+    let username: String = Input::new().with_prompt("Username").interact_text()?;
 
-    let name: String = Input::new()
-        .with_prompt("Full name")
-        .interact_text()?;
+    let name: String = Input::new().with_prompt("Full name").interact_text()?;
 
-    let email: String = Input::new()
-        .with_prompt("Email")
-        .interact_text()?;
+    let email: String = Input::new().with_prompt("Email").interact_text()?;
 
     let shell_options = &["fish", "zsh", "bash"];
     let shell_idx = Select::new()
@@ -70,9 +64,7 @@ fn prompt_user() -> Result<UserConfig> {
 fn prompt_host(default_user: &str) -> Result<HostConfig> {
     println!("\n--- Host ---");
 
-    let name: String = Input::new()
-        .with_prompt("Host name")
-        .interact_text()?;
+    let name: String = Input::new().with_prompt("Host name").interact_text()?;
 
     let platform_options = &["linux", "darwin"];
     let platform_idx = Select::new()

@@ -61,7 +61,7 @@ Configured via [nixvim](https://github.com/nix-community/nixvim). Catppuccin Moc
 
 ### Adding a language
 
-Create `configs/dev/languages/mylang.nix`:
+Create `modules/community/home/languages/mylang/default.nix`:
 
 ```nix
 { pkgs-unstable, ... }:

@@ -38,7 +38,7 @@ setup-template generate --config <file.json|file.toml> [--output <dir>] [--force
 |------|---------|
 | `configs/users.nix` | User registry — merge with the existing file if you already have users |
 | `hosts/<name>/configuration.nix` | NixOS or Darwin system configuration with deploy script wiring |
-| `hosts/<name>/home.nix` | Home-manager config importing user, program, and language modules |
+| `hosts/<name>/home.nix` | Home-manager config importing user config plus community program and language modules |
 | *(printed to stdout)* | Flake snippet to paste into `flake.nix` |
 
 ## Where to edit first
