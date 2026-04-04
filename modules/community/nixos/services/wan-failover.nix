@@ -1,22 +1,21 @@
-{
-  name ? "wan-failover",
-  description ? "WAN failover check",
-  mainInterface,
-  backupInterface,
-  probeTargets ? [ "8.8.8.8" "8.8.4.4" "1.1.1.1" ],
-  fpingArgs ? [ "-c" "3" "-q" "-x" "2" ],
-  failbackThreshold ? 3,
-  stateFile ? "/var/run/${name}-state",
-  failoverPrimaryMetric ? 9999,
-  failoverBackupMetric ? 0,
-  failbackPrimaryMetric ? 0,
-  failbackBackupMetric ? 1063,
-  onFailoverCommand ? null,
-  onFailbackCommand ? null,
-  restartServices ? [ ],
-  onBootSec ? "2min",
-  onUnitActiveSec ? "1min",
-  exposeCommand ? true
+{ name ? "wan-failover"
+, description ? "WAN failover check"
+, mainInterface
+, backupInterface
+, probeTargets ? [ "8.8.8.8" "8.8.4.4" "1.1.1.1" ]
+, fpingArgs ? [ "-c" "3" "-q" "-x" "2" ]
+, failbackThreshold ? 3
+, stateFile ? "/var/run/${name}-state"
+, failoverPrimaryMetric ? 9999
+, failoverBackupMetric ? 0
+, failbackPrimaryMetric ? 0
+, failbackBackupMetric ? 1063
+, onFailoverCommand ? null
+, onFailbackCommand ? null
+, restartServices ? [ ]
+, onBootSec ? "2min"
+, onUnitActiveSec ? "1min"
+, exposeCommand ? true
 }:
 
 { pkgs, lib, ... }:
@@ -25,9 +24,11 @@ let
   shellQuote = lib.escapeShellArg;
   probeTargetsStr = builtins.concatStringsSep " " probeTargets;
   fpingArgsStr = builtins.concatStringsSep " " fpingArgs;
-  restartSnippet = lib.concatMapStringsSep "\n" (service: ''
-    systemctl restart ${shellQuote service}
-  '') restartServices;
+  restartSnippet = lib.concatMapStringsSep "\n"
+    (service: ''
+      systemctl restart ${shellQuote service}
+    '')
+    restartServices;
   failoverSnippet = lib.optionalString (onFailoverCommand != null) ''
     ${onFailoverCommand}
   '';

@@ -9,36 +9,6 @@ let
     uplinks = [ "enp5s0f0np0" "enp5s0f1np1" ];
   };
 
-  sms = pkgs.writeShellApplication {
-    name = "sms";
-    runtimeInputs = with pkgs; [ bash curl jq ];
-    excludeShellChecks = [ "SC1091" ];
-    text = ''
-      if [[ $# -ne 1 ]]; then
-        echo "Need text message as argument"
-        exit 1
-      fi
-
-      source /run/secrets/rendered/sms-env
-
-      message="$1"
-
-      sid=$(curl -sf "http://$SMS_IP/ubus" -X POST \
-        -H "Content-Type: application/json" \
-        -d "{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"call\",\"params\":[\"00000000000000000000000000000000\",\"session\",\"login\",{\"username\":\"$SMS_USER\",\"password\":\"$SMS_PASSWORD\"}]}" \
-        | jq -re '.result[1].ubus_rpc_session')
-
-      IFS=',' read -ra numbers <<< "$SMS_TARGET_NUMBER"
-      for number in "''${numbers[@]}"; do
-        curl -sf "http://$SMS_IP/api/messages/actions/send" -X POST \
-          -H "Content-Type: application/json" \
-          -H "Authorization: Bearer $sid" \
-          -d "{\"data\":{\"modem\":\"$SMS_MODEM\",\"number\":\"$number\",\"message\":\"$message\"}}"
-        echo ""
-      done
-    '';
-  };
-
 in
 {
   _module.args = {
@@ -52,6 +22,7 @@ in
       sopsFile = ../../secrets/goose.yaml;
     })
     modules.private.nixos.aspects.gooseServices
+    modules.public.nixos.services.smsGatewayClient
     (import modules.public.nixos.services.wanFailover {
       mainInterface = "ppp0";
       backupInterface = "mobile";
@@ -73,6 +44,11 @@ in
 
   time.timeZone = "Europe/Madrid";
 
+  services.smsGatewayClient = {
+    enable = true;
+    envFile = config.sops.templates."sms-env".path;
+  };
+
   environment.systemPackages = with pkgs; [
     (writeShellScriptBin "ping6" ''exec ping -6 "$@"'')
     efibootmgr
@@ -84,7 +60,6 @@ in
     dnstop
     ipmitool
     fping
-    sms
   ];
 
   nix.gc.options = lib.mkForce "--delete-older-than 30d";

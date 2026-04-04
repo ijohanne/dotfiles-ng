@@ -14,6 +14,7 @@
   services = {
     nodeExporterBase = ./nixos/services/node-exporter-base.nix;
     server = ../../configs/server.nix;
+    smsGatewayClient = ./nixos/services/sms-gateway-client.nix;
     wanFailover = ./nixos/services/wan-failover.nix;
     wireguardWatchdog = ../../configs/wireguard-watchdog.nix;
   };
