@@ -24,12 +24,6 @@ in
     nameservers = [ "${network.hosts.goose.ips.wired}" ];
   };
 
-  networking.firewall.extraCommands = ''
-    ip6tables -I INPUT -i enp0s5 -p icmpv6 --icmpv6-type router-advertisement \
-      -m mac --mac-source b8:27:eb:ff:f8:5f \
-      -j DROP
-  '';
-
   # kresd is pulled in by nixos-mailserver for DANE — keep it for postfix
   # but don't let it hijack resolv.conf; system DNS goes to goose
   networking.resolvconf.useLocalResolver = lib.mkForce false;
