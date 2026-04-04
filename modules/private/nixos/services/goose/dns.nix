@@ -1,4 +1,4 @@
-{ pkgs, network, lib, config, ... }:
+{ pkgs, network, lib, config, modules, ... }:
 
 let
   hickory-dns = pkgs.rustPlatform.buildRustPackage rec {
@@ -11,7 +11,7 @@ let
       hash = "sha256-7kra6MbLcv0P6iiUJ+hQ0ezqgXh/1KskCrZvFYDqiXQ=";
     };
     cargoHash = "sha256-FfckN+qhSqbc8jnL0xThdAMQEgluocSY1ksEyT8rFFY=";
-    patches = [ ../patches/hickory-dns-qmin-nxdomain.patch ];
+    patches = [ modules.public.patches.hickoryDnsQminNxdomain ];
     buildAndTestSubdir = "bin";
     buildFeatures = [ "sqlite" "resolver" "recursor" "prometheus-metrics" "dnssec-ring" ];
     nativeBuildInputs = [ pkgs.pkg-config ];

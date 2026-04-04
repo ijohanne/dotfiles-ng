@@ -1,7 +1,7 @@
-{ lib, config, pkgs, user, modulesPath, ... }:
+{ lib, config, pkgs, user, modulesPath, modules, ... }:
 
 let
-  rtsp-linux = pkgs.callPackage ../../hosts/goose/pkgs/rtsp-linux.nix {
+  rtsp-linux = pkgs.callPackage modules.public.packages.rtspLinux {
     kernel = config.boot.kernelPackages.kernel;
   };
 in

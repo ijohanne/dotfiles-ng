@@ -567,7 +567,7 @@ To use this as a starting point for a new dedicated host:
 
 A QEMU virtual machine for developing and debugging the `nf_conntrack_rtsp` / `nf_nat_rtsp` kernel modules. Runs natively on Apple Silicon (aarch64-linux) — no emulation overhead.
 
-The RTSP conntrack helper is used on goose to handle Movistar IPTV VOD (Video on Demand) traffic. Live channels use multicast via igmpproxy, but VOD is unicast — the STB (`10.255.101.201` on the wired VLAN) communicates via RTSP (port 554) to set up on-demand streams. The conntrack helper parses RTSP SETUP requests and creates expectations for the dynamically negotiated RTP/RTCP ports, allowing NAT to work correctly for the media streams. The out-of-tree kernel module (`hosts/goose/pkgs/rtsp-linux.nix`) is old and may need fixes for newer kernels — this VM provides a safe environment to iterate.
+The RTSP conntrack helper is used on goose to handle Movistar IPTV VOD (Video on Demand) traffic. Live channels use multicast via igmpproxy, but VOD is unicast — the STB (`10.255.101.201` on the wired VLAN) communicates via RTSP (port 554) to set up on-demand streams. The conntrack helper parses RTSP SETUP requests and creates expectations for the dynamically negotiated RTP/RTCP ports, allowing NAT to work correctly for the media streams. The out-of-tree kernel module (`modules/community/packages/rtsp-linux/default.nix`) is old and may need fixes for newer kernels — this VM provides a safe environment to iterate.
 
 #### Building and Running
 
@@ -649,7 +649,7 @@ Start a VOD playback on the STB to generate RTSP SETUP/PLAY/TEARDOWN traffic, th
 
 #### Iterating on the Kernel Module
 
-The RTSP module source is from [maru-sama/rtsp-linux](https://github.com/maru-sama/rtsp-linux) with patches in `hosts/goose/pkgs/rtsp-linux.patch`. To iterate:
+The RTSP module source is from [maru-sama/rtsp-linux](https://github.com/maru-sama/rtsp-linux) with patches in `modules/community/packages/rtsp-linux/rtsp-linux.patch`. To iterate:
 
 1. Clone the source in the VM:
    ```bash
