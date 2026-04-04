@@ -2,7 +2,7 @@
 //!
 //! Given a validated Config, produce a file tree matching current flake conventions:
 //!
-//! - `configs/users.nix` — user registry (attrset of { username, email, name, developer, shell, sshKeys })
+//! - `modules/private/inventory/users.nix` — user registry (attrset of { username, email, name, developer, shell, sshKeys })
 //! - `hosts/<name>/configuration.nix` — host config using `deploy = modules.public.lib.deploy { inherit pkgs; };`
 //!   - desktop/local: `deploy.mkLocalDeployScript { name, host, rebuildCmd }`
 //!   - server/remote: `deploy.mkDeployScript { name, host }`
@@ -28,7 +28,7 @@ pub fn render(config: &Config) -> Result<RenderedOutput> {
     let mut files = BTreeMap::new();
 
     files.insert(
-        PathBuf::from("configs/users.nix"),
+        PathBuf::from("modules/private/inventory/users.nix"),
         render_users_nix(&config.users),
     );
 
@@ -436,7 +436,7 @@ mod tests {
         let output = render(&test_config()).unwrap();
         assert!(output
             .files
-            .contains_key(&PathBuf::from("configs/users.nix")));
+            .contains_key(&PathBuf::from("modules/private/inventory/users.nix")));
         assert!(output
             .files
             .contains_key(&PathBuf::from("hosts/workstation/configuration.nix")));
@@ -448,7 +448,7 @@ mod tests {
     #[test]
     fn users_nix_contains_user() {
         let output = render(&test_config()).unwrap();
-        let users = &output.files[&PathBuf::from("configs/users.nix")];
+        let users = &output.files[&PathBuf::from("modules/private/inventory/users.nix")];
         assert!(users.contains("alice"));
         assert!(users.contains("alice@example.com"));
         assert!(users.contains("developer = true"));

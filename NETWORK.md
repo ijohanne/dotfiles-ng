@@ -9,13 +9,13 @@
   - [Access Points](#access-points)
 - [Switch Inventory](#switch-inventory)
   - [Cameras](#cameras-vlan-200)
-- [How configs/network.nix Works](#how-configsnetworknix-works)
+- [How modules/private/inventory/network.nix Works](#how-modulesprivateinventorynetworknix-works)
 - [DNS Resolution](#dns-resolution)
 - [Adding a New Host](#adding-a-new-host)
 
 ## Overview
 
-All network hosts, IPs, and MACs are defined in a single registry at `configs/network.nix`. DNS records, DHCP reservations, and cross-host IP references are derived from this registry.
+All network hosts, IPs, and MACs are defined in a single registry at `modules/private/inventory/network.nix`. DNS records, DHCP reservations, and cross-host IP references are derived from this registry.
 
 ## VLANs & Subnets
 
@@ -180,7 +180,7 @@ Living room          sw9     1     PoE
 Entrance             sw9     2     PoE
 ```
 
-## How `configs/network.nix` Works
+## How `modules/private/inventory/network.nix` Works
 
 The registry contains:
 
@@ -222,7 +222,7 @@ Reverse zones (`in-addr.arpa`) use `local-zone: static` since private IPs never 
 
 ## Adding a New Host
 
-1. Add an entry to `hosts` in `configs/network.nix`:
+1. Add an entry to `hosts` in `modules/private/inventory/network.nix`:
    ```nix
    my-host = { ip = "10.255.101.123"; mac = "aa:bb:cc:dd:ee:ff"; };
    ```

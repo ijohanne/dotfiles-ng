@@ -36,14 +36,14 @@ setup-template generate --config <file.json|file.toml> [--output <dir>] [--force
 
 | File | Purpose |
 |------|---------|
-| `configs/users.nix` | User registry — merge with the existing file if you already have users |
+| `modules/private/inventory/users.nix` | User registry — merge with the existing file if you already have users |
 | `hosts/<name>/configuration.nix` | NixOS or Darwin system configuration with deploy script wiring |
 | `hosts/<name>/home.nix` | Home-manager config importing user config plus community program and language modules |
 | *(printed to stdout)* | Flake snippet to paste into `flake.nix` |
 
 ## Where to edit first
 
-1. **`configs/users.nix`** — If you have existing users, merge the generated block into the existing file rather than replacing it.
+1. **`modules/private/inventory/users.nix`** — If you have existing users, merge the generated block into the existing file rather than replacing it.
 2. **`hosts/<name>/configuration.nix`** — Add hardware-specific config, additional packages, services.
 3. **`hosts/<name>/home.nix`** — Add or remove program/language module imports.
 4. **`flake.nix`** — Paste the printed snippet into the outputs.
@@ -92,7 +92,7 @@ ssh <host> deploy-<name>
 
 ## Network follow-up
 
-If the new host is on the local network, add it to `configs/network.nix`:
+If the new host is on the local network, add it to `modules/private/inventory/network.nix`:
 
 ```nix
 my-host = {

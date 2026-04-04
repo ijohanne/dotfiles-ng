@@ -1,5 +1,5 @@
 {
   imports = [
-    ../../../../configs/nix-caches.nix
+    ../../shared/nix-caches.nix
   ];
 }

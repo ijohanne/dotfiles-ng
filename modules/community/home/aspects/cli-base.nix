@@ -1,6 +1,6 @@
 { desktop ? false }:
 {
   imports = [
-    (import ../../../../configs/users/common.nix { inherit desktop; })
+    (import ../shared/common.nix { inherit desktop; })
   ];
 }

@@ -1,7 +1,7 @@
 { inputs, config, pkgs, lib, user, modules, ... }:
 
 let
-  network = import ../../configs/network.nix { inherit lib; };
+  network = modules.private.inventory.network { inherit lib; };
 
   interfaces = {
     external = "br-wan";

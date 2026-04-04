@@ -27,16 +27,18 @@ Reusable:
 
 - `modules/community/home/programs/*`
 - `modules/community/home/languages/*`
-- `configs/profiles/system/*`
-- `configs/server.nix`
-- `configs/nix-caches.nix`
+- `modules/community/home/shared/*`
+- `modules/community/nixos/profiles/system/*`
+- `modules/community/nixos/services/server.nix`
+- `modules/community/shared/nix-caches.nix`
+- `modules/community/lib/*`
 - `modules/community/nixos/services/node-exporter-base.nix`
 
 Private for now:
 
 - `hosts/*`
 - `secrets/*`
-- `configs/network.nix`
+- `modules/private/inventory/*`
 - `configs/users/ij.nix`
 - `configs/users/mj.nix`
 

@@ -1,6 +1,6 @@
 {
   shared = {
-    nixCaches = ../../configs/nix-caches.nix;
+    nixCaches = ./shared/nix-caches.nix;
   };
 
   aspects = {

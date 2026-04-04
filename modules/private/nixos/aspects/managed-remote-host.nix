@@ -1,5 +1,5 @@
 { host, sopsFile, installDeployScript ? true }:
 
-import ../../../../configs/managed-remote-host.nix {
+import ./managed-remote-host-impl.nix {
   inherit host sopsFile installDeployScript;
 }

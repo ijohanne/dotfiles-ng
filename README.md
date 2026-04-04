@@ -686,7 +686,7 @@ nix run .#setup-template -- generate --config setup.json
 nix run .#setup-template -- new --dry-run
 ```
 
-The generator produces `configs/users.nix`, `hosts/<name>/configuration.nix`, `hosts/<name>/home.nix`, and a ready-to-paste `flake.nix` snippet. See [docs/setup-template-usage.md](docs/setup-template-usage.md) for full details.
+The generator produces `modules/private/inventory/users.nix`, `hosts/<name>/configuration.nix`, `hosts/<name>/home.nix`, and a ready-to-paste `flake.nix` snippet. See [docs/setup-template-usage.md](docs/setup-template-usage.md) for full details.
 
 ## Reference
 
@@ -883,7 +883,7 @@ sops -d secrets/macbook.yaml
 
 3. Reference in nix config:
    ```nix
-   # In configs/secrets.nix (for macbook/ij-desktop)
+   # In modules/private/shared/workstation-secrets.nix (for macbook/ij-desktop)
    sops.secrets.my_api_key = {};
    
    # Or in host-specific config (for pakhet)

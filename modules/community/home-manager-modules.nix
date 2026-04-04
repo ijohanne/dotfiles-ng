@@ -1,4 +1,9 @@
 {
+  shared = {
+    common = ./home/shared/common.nix;
+    homeDefaults = ./home/shared/home-defaults.nix;
+  };
+
   programs = {
     agentSkillsCli = ./home/programs/agent-skills-cli;
     bash = ./home/programs/bash;

@@ -137,7 +137,7 @@ fn print_next_steps(config: &schema::Config) {
     println!("\n  Next steps:\n");
     println!("  1. Review the generated files");
     println!("  2. Add the flake snippet above to flake.nix");
-    println!("  3. Update configs/users.nix (merge with existing if needed)");
+    println!("  3. Update modules/private/inventory/users.nix (merge with existing if needed)");
 
     for host in &config.hosts {
         if host.modules.secrets {
@@ -151,7 +151,9 @@ fn print_next_steps(config: &schema::Config) {
         }
     }
 
-    println!("  5. Add the host to configs/network.nix (if on the local network)");
+    println!(
+        "  5. Add the host to modules/private/inventory/network.nix (if on the local network)"
+    );
     println!("  6. Build and test:");
     for host in &config.hosts {
         match host.platform {

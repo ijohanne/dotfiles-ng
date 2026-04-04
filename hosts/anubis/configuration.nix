@@ -1,7 +1,7 @@
 { config, pkgs, lib, inputs, self, users, user, modules, ... }:
 
 let
-  network = import ../../configs/network.nix { inherit lib; };
+  network = modules.private.inventory.network { inherit lib; };
 in
 {
   _module.args = {

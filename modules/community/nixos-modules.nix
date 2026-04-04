@@ -1,22 +1,22 @@
 {
   shared = {
-    nixCaches = ../../configs/nix-caches.nix;
+    nixCaches = ./shared/nix-caches.nix;
   };
 
   profiles = {
     system = {
-      base = ../../configs/profiles/system/base;
-      growRootSda2 = ../../configs/profiles/system/grow-root-sda2;
-      qemuGuest = ../../configs/profiles/system/qemu-guest;
+      base = ./nixos/profiles/system/base;
+      growRootSda2 = ./nixos/profiles/system/grow-root-sda2;
+      qemuGuest = ./nixos/profiles/system/qemu-guest;
     };
   };
 
   services = {
     nodeExporterBase = ./nixos/services/node-exporter-base.nix;
-    server = ../../configs/server.nix;
+    server = ./nixos/services/server.nix;
     smsGatewayClient = ./nixos/services/sms-gateway-client.nix;
     wanFailover = ./nixos/services/wan-failover.nix;
-    wireguardWatchdog = ../../configs/wireguard-watchdog.nix;
+    wireguardWatchdog = ./nixos/services/wireguard-watchdog.nix;
   };
 
   aspects = {

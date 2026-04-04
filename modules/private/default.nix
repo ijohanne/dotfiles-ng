@@ -1,4 +1,6 @@
 {
+  inventory = import ./inventory;
+
   home = {
     users = {
       ij = ./home/users/ij.nix;

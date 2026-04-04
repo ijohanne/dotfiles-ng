@@ -213,7 +213,8 @@
         private = privateModules;
       };
       flatHomeManagerModules =
-        communityModules.homeManager.programs
+        communityModules.homeManager.shared
+        // communityModules.homeManager.programs
         // communityModules.homeManager.languages
         // communityModules.homeManager.aspects;
       flatNixosModules =
@@ -224,7 +225,7 @@
       flatDarwinModules =
         communityModules.darwin.shared
         // communityModules.darwin.aspects;
-      users = import ./configs/users.nix;
+      users = import ./modules/private/inventory/users.nix;
       hmUser = imports: withNixvim: {
         inherit imports withNixvim;
       };
@@ -483,7 +484,7 @@
               users = lib.mapAttrs
                 (username: hmUserConfig: {
                   imports = [
-                    ./configs/users/home-defaults.nix
+                    ./modules/community/home/shared/home-defaults.nix
                   ] ++ hmUserConfig.imports ++ lib.optional hmUserConfig.withNixvim inputs.nixvim.homeModules.nixvim ++ [
                     { _module.args.user = users.${username}; }
                   ];

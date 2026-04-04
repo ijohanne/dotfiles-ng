@@ -1,1 +1,1 @@
-import ../../../../configs/secrets.nix
+import ../../shared/workstation-secrets.nix

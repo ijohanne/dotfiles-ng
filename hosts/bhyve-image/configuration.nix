@@ -1,10 +1,10 @@
-{ lib, config, pkgs, user, users, modulesPath, ... }:
+{ lib, config, pkgs, user, users, modulesPath, modules, ... }:
 
 {
   imports = [
-    ../../configs/profiles/system/base
-    ../../configs/profiles/system/qemu-guest
-    ../../configs/profiles/system/grow-root-sda2
+    modules.public.nixos.profiles.system.base
+    modules.public.nixos.profiles.system.qemuGuest
+    modules.public.nixos.profiles.system.growRootSda2
   ];
 
   systemd.services.sshd.wantedBy = lib.mkOverride 40 [ "multi-user.target" ];

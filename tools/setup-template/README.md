@@ -41,7 +41,7 @@ Reads a JSON or TOML config file and generates all files.
 
 | File | Description |
 |------|-------------|
-| `configs/users.nix` | User registry (merge with existing) |
+| `modules/private/inventory/users.nix` | User registry (merge with existing) |
 | `hosts/<name>/configuration.nix` | Host system config with deploy script |
 | `hosts/<name>/home.nix` | Home-manager config with module imports |
 | *(stdout)* | Flake snippet to paste into `flake.nix` |
@@ -54,7 +54,7 @@ The renderer produces files matching these flake conventions:
   - Desktop/local: `deploy.mkLocalDeployScript { name, host, rebuildCmd }`
   - Server/remote: `deploy.mkDeployScript { name, host }`
   - Darwin/local: `deploy.mkLocalDeployScript { name, host, rebuildCmd, useSudo = false }`
-- **User registry**: same schema as `configs/users.nix` (`{ username, email, name, developer, shell, sshKeys }`)
+- **User registry**: same schema as `modules/private/inventory/users.nix` (`{ username, email, name, developer, shell, sshKeys }`)
 - **Home-manager**: imports from `configs/users/<user>.nix`, `modules/community/home/programs/`, `modules/community/home/languages/`
 - **Flake snippet**: ready-to-paste `nixosConfigurations`/`darwinConfigurations` block using `mkNixosHost`/`mkDarwinHost` + `mkHomeManagerModule`
 

@@ -3,7 +3,7 @@
 { pkgs, lib, user, modules, ... }:
 
 let
-  desktopApps = import ../../../../configs/profiles/apps/desktop;
+  desktopApps = modules.public.lib.desktopApps;
 in
 {
   imports = [

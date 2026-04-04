@@ -1,5 +1,5 @@
 {
   imports = [
-    ../../../../configs/server.nix
+    ../services/server.nix
   ];
 }

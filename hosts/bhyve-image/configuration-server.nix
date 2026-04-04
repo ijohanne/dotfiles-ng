@@ -2,8 +2,8 @@
 
 {
   imports = [
-    ../../configs/profiles/system/qemu-guest
-    ../../configs/profiles/system/grow-root-sda2
+    modules.public.nixos.profiles.system.qemuGuest
+    modules.public.nixos.profiles.system.growRootSda2
     modules.public.nixos.aspects.serverBase
   ];
 

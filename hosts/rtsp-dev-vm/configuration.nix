@@ -8,8 +8,8 @@ in
 
 {
   imports = [
-    ../../configs/profiles/system/base
-    ../../configs/profiles/system/qemu-guest
+    modules.public.nixos.profiles.system.base
+    modules.public.nixos.profiles.system.qemuGuest
   ];
 
   networking = {
