@@ -1,12 +1,12 @@
 { inputs, config, pkgs, user, modules, ... }:
-
-let
-  deploy = import ../../configs/deploy { inherit pkgs; };
-in
 {
   imports = [
     modules.public.nixos.shared.nixCaches
     modules.private.nixos.aspects.workstationSecrets
+    (import modules.public.nixos.aspects.localFlakeDeploy {
+      name = "deploy-ij-desktop";
+      host = "ij-desktop";
+    })
   ];
 
   boot.loader.systemd-boot.enable = true;
@@ -89,14 +89,6 @@ in
   virtualisation.docker = {
     enable = true;
   };
-
-  environment.systemPackages = [
-    (deploy.mkLocalDeployScript {
-      name = "deploy-ij-desktop";
-      host = "ij-desktop";
-      rebuildCmd = "nixos-rebuild switch --flake";
-    })
-  ];
 
   system.stateVersion = "23.05";
 }

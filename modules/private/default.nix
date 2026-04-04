@@ -19,6 +19,7 @@
 
   darwin = {
     aspects = {
+      remoteBuilderClient = ./darwin/aspects/remote-builder-client.nix;
       workstationSecrets = ./darwin/aspects/workstation-secrets.nix;
     };
   };

@@ -18,6 +18,7 @@
   };
 
   aspects = {
+    localFlakeDeploy = ./nixos/aspects/local-flake-deploy.nix;
     serverBase = ./nixos/aspects/server-base.nix;
   };
 }
