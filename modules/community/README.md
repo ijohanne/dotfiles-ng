@@ -18,6 +18,18 @@ Flat aliases are also exported through the standard `homeManagerModules`,
 `nixosModules`, and `darwinModules` outputs for easier consumption by
 ordinary flakes.
 
+Inside this repository, hosts and private modules usually consume the same public
+surface through `specialArgs.modules.public`, for example:
+
+```nix
+{
+  imports = [
+    modules.public.nixos.aspects.serverBase
+    modules.public.homeManager.aspects.developerBase
+  ];
+}
+```
+
 Anything secret-oriented, inventory-specific, or dependent on private/internal git
 sources belongs in the internal private tree instead of this exported surface.
 

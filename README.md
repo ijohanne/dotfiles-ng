@@ -50,18 +50,34 @@ Nix-based dotfiles for managing macOS and Linux configurations.
 - `modules/community/` — Public reusable modules, services, profiles, and helper libraries
 - `modules/private/` — Private reusable modules and secret-aware aspects
 - `modules/private/inventory/` — Private host and user inventory
-- `lib/` — Shared library definitions
+
+The repository is now intentionally split three ways:
+
+- `modules/community/` is the public, reusable surface exported through the flake outputs
+- `modules/private/` is internal reusable composition for this repo's own hosts and users
+- `modules/private/inventory/` is private data such as shared user and network registries
+
+The public community surface is exported through:
+
+- `homeManagerModules`
+- `nixosModules`
+- `darwinModules`
+- `moduleTrees`
 
 ### User Settings
 
-User settings are defined in `lib/user.nix`:
+Shared user inventory is defined in `modules/private/inventory/users.nix`:
 
 ```nix
 {
-  username = "ij";
-  email = "ij@opsplaza.com";
-  name = "Ian Johannesen";
-  developer = true;  # Enable LSP for neovim, lorri daemon, dev packages
+  ij = {
+    username = "ij";
+    email = "ij@opsplaza.com";
+    name = "Ian Johannesen";
+    developer = true;
+    shell = "fish";
+    sshKeys = [ "ssh-ed25519 ..." ];
+  };
 }
 ```
 
@@ -132,13 +148,17 @@ nix run nixpkgs#nixos-rebuild -- switch \
    cd ~/dotfiles
    ```
 
-2. Edit `lib/user.nix` with your details:
+2. Edit `modules/private/inventory/users.nix` with your details:
    ```nix
    {
-     username = "your-username";
-     email = "your@email.com";
-     name = "Your Name";
-     developer = true;
+     youruser = {
+       username = "your-username";
+       email = "your@email.com";
+       name = "Your Name";
+       developer = true;
+       shell = "fish";
+       sshKeys = [ "ssh-ed25519 ..." ];
+     };
    }
    ```
 
@@ -519,7 +539,7 @@ sudo dd if=result/sd-image/*.img of=/dev/sdX bs=4M status=progress
 #### First Boot
 
 The image includes:
-- SSH enabled with authorized keys from `lib/user.nix`
+- SSH enabled with authorized keys from `modules/private/inventory/users.nix`
 - Flakes enabled
 - A `rebuild` alias for easy updates
 
@@ -548,9 +568,9 @@ To use this as a starting point for a new dedicated host:
 3. Add the new host to `flake.nix`:
    ```nix
    nixosConfigurations = {
-     my-new-rpi = nixpkgs-stable.lib.nixosSystem {
+     my-new-rpi = mkNixosHost {
+       pkgsLib = nixpkgs-stable.lib;
        system = "aarch64-linux";
-       specialArgs = { inherit inputs self user; };
        modules = [
          ./hosts/my-new-rpi/configuration.nix
        ];

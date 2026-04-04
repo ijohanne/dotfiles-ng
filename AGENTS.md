@@ -29,8 +29,8 @@ NixOS/Darwin dotfiles repository using **flakes**. All nix changes must be made 
 ### Shared Configuration
 
 - **`modules/private/inventory/network.nix`** — single registry for all hosts (IPs, MACs, DNS, DNAT port forwarding), DHCP reservations, `mkDnatRules`, and `mailDomains`
+- **`modules/private/inventory/users.nix`** — shared user inventory (`username`, `email`, `name`, `developer`, `shell`, `sshKeys`)
 - **`modules/community/home/languages/`** — composable language modules; each provides packages + neovim LSP wiring via `pkgs-unstable`
-- **`lib/user.nix`** — user settings; `developer = true` enables LSP, dev tools
 
 ### Secrets Management
 
