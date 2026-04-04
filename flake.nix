@@ -719,7 +719,7 @@
             echo "=== pg_upgrade completed. ==="
             echo ""
             echo "Next steps:"
-            echo "  1. Update hosts/pakhet/services/postgresql.nix to set package = pkgs.postgresql_18"
+            echo "  1. Update modules/private/nixos/services/pakhet/postgresql.nix to set package = pkgs.postgresql_18"
             echo "  2. Commit, push, deploy-pakhet"
             echo "  3. Run step 3 for post-upgrade verification"
           '';

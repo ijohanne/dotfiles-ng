@@ -110,9 +110,9 @@ in
       host = "goose";
       sopsFile = ../../secrets/goose.yaml;
     })
+    modules.private.nixos.aspects.gooseServices
     ./hardware-configuration.nix
     ./networking.nix
-    ./services
   ];
 
   networking = {

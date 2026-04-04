@@ -1,7 +1,7 @@
 { lib, ... }:
 
 let
-  network = import ../../../configs/network.nix { inherit lib; };
+  network = import ../../../../../configs/network.nix { inherit lib; };
 
   autoconfigXml = builtins.replaceStrings [ "'" ] [ "\\'" ] ''<?xml version="1.0" encoding="UTF-8"?>
 <clientConfig version="1.1">

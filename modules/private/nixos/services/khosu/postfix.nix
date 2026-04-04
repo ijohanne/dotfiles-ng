@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 
 let
-  network = import ../../../configs/network.nix { inherit lib; };
+  network = import ../../../../../configs/network.nix { inherit lib; };
   relayDomains = network.mailDomains;
 
   # Deliver inbound mail to pakhet via WireGuard tunnel

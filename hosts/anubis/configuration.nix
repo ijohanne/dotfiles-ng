@@ -14,8 +14,8 @@ in
       host = "anubis";
       sopsFile = ../../secrets/anubis.yaml;
     })
+    modules.private.nixos.aspects.anubisServices
     ./hardware-configuration.nix
-    ./services
   ];
 
   networking = {

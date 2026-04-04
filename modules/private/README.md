@@ -12,3 +12,6 @@ These modules are not exported through public flake outputs. They may depend on:
 
 The repository passes this tree to internal modules through
 `specialArgs.modules.private`.
+
+It also now owns the host-specific service trees that used to live under
+`hosts/*/services`.

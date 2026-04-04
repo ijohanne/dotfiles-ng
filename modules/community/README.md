@@ -29,6 +29,7 @@ Reusable:
 - `configs/profiles/system/*`
 - `configs/server.nix`
 - `configs/nix-caches.nix`
+- `modules/community/nixos/services/node-exporter-base.nix`
 
 Private for now:
 

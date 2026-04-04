@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 
 let
-  network = import ../../../configs/network.nix { inherit lib; };
+  network = import ../../../../../configs/network.nix { inherit lib; };
 in
 {
   services.roundcube = {

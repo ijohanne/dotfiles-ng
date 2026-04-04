@@ -8,7 +8,11 @@
 
   nixos = {
     aspects = {
+      anubisServices = ./nixos/aspects/anubis-services.nix;
+      gooseServices = ./nixos/aspects/goose-services.nix;
+      khosuServices = ./nixos/aspects/khosu-services.nix;
       managedRemoteHost = ./nixos/aspects/managed-remote-host.nix;
+      pakhetServices = ./nixos/aspects/pakhet-services.nix;
       workstationSecrets = ./nixos/aspects/workstation-secrets.nix;
     };
   };

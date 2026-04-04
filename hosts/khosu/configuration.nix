@@ -14,8 +14,8 @@ in
       host = "khosu";
       sopsFile = ../../secrets/khosu.yaml;
     })
+    modules.private.nixos.aspects.khosuServices
     ./hardware-configuration.nix
-    ./services
   ];
 
   networking = {

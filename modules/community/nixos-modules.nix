@@ -12,6 +12,7 @@
   };
 
   services = {
+    nodeExporterBase = ./nixos/services/node-exporter-base.nix;
     server = ../../configs/server.nix;
     wireguardWatchdog = ../../configs/wireguard-watchdog.nix;
   };

@@ -14,8 +14,8 @@ in
       host = "pakhet";
       sopsFile = ../../secrets/pakhet.yaml;
     })
+    modules.private.nixos.aspects.pakhetServices
     ./hardware-configuration.nix
-    ./services
   ];
 
   networking = {
