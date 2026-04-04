@@ -10,11 +10,11 @@ NixOS/Darwin dotfiles repository using **flakes**. All nix changes must be made 
 
 ### Directory Structure
 
-- `configs/` — shared configuration modules
-  - `configs/users/` — per-user home-manager configs (ij.nix, mj.nix, common.nix)
-  - `configs/darwin/` — macOS-specific modules
 - `modules/community/home/programs/` — public reusable Home Manager program modules
 - `modules/community/home/languages/` — public reusable language modules (rust, nix, lua, markdown, flutter) — self-contained: toolchain + LSP + neovim wiring
+- `modules/community/home/shared/` — public reusable Home Manager shared modules and defaults
+- `modules/community/nixos/` — public reusable NixOS profiles, services, and aspects
+- `modules/private/home/users/` — private per-user Home Manager modules
 - `modules/private/inventory/` — private inventory data such as shared user and network registries
 - `hosts/` — per-host wiring (configuration.nix, services/, home.nix)
 - `lib/` — library functions (`user.nix` for user settings)

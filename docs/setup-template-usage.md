@@ -143,4 +143,4 @@ If you enabled secrets (`modules.secrets = true`):
 
 **Build fails after pasting flake snippet** — Ensure the snippet is inside the correct `outputs` block and that `mkNixosHost`/`mkDarwinHost`/`mkHomeManagerModule`/`mkPkgsUnstable` are in scope (they're defined in the `let` block of this flake).
 
-**Missing `configs/users/<name>.nix`** — The generated `home.nix` imports a per-user config file. If one doesn't exist yet, create it by copying `configs/users/ij.nix` as a starting point, or import [common.nix](/Users/ij/git/private/dotfiles-ng/modules/community/home/shared/common.nix) directly.
+**Need custom per-user Home Manager config** — The generated `home.nix` already imports [common.nix](/Users/ij/git/private/dotfiles-ng/modules/community/home/shared/common.nix). If you need host- or person-specific behavior, add a private module such as `modules/private/home/users/<name>.nix` and import it from that host’s `home.nix`.

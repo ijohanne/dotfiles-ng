@@ -39,8 +39,7 @@ Private for now:
 - `hosts/*`
 - `secrets/*`
 - `modules/private/inventory/*`
-- `configs/users/ij.nix`
-- `configs/users/mj.nix`
+- `modules/private/home/users/*`
 
 ## Example
 

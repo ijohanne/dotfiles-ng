@@ -47,7 +47,9 @@ Nix-based dotfiles for managing macOS and Linux configurations.
 ### Structure
 
 - `hosts/` — Host-specific configurations
-- `configs/` — Shared configurations for various programs
+- `modules/community/` — Public reusable modules, services, profiles, and helper libraries
+- `modules/private/` — Private reusable modules and secret-aware aspects
+- `modules/private/inventory/` — Private host and user inventory
 - `lib/` — Shared library definitions
 
 ### User Settings

@@ -7,7 +7,7 @@
 //!   - desktop/local: `deploy.mkLocalDeployScript { name, host, rebuildCmd }`
 //!   - server/remote: `deploy.mkDeployScript { name, host }`
 //!   - darwin/local: `deploy.mkLocalDeployScript { name, host, rebuildCmd, useSudo = false }`
-//! - `hosts/<name>/home.nix` — home-manager config importing from configs/users/ and modules/community/home/{programs,languages}/
+//! - `hosts/<name>/home.nix` — home-manager config importing from modules/community/home/{shared,programs,languages}/
 //! - Flake snippet (not patched) — ready-to-paste nixosConfigurations/darwinConfigurations block
 //!
 //! Deterministic: same Config always produces same output (sorted keys, stable ordering).
@@ -38,7 +38,7 @@ pub fn render(config: &Config) -> Result<RenderedOutput> {
             host_dir.join("configuration.nix"),
             render_configuration_nix(host, config),
         );
-        files.insert(host_dir.join("home.nix"), render_home_nix(host, config));
+        files.insert(host_dir.join("home.nix"), render_home_nix(host));
     }
 
     let flake_snippet = render_flake_snippet(config);
@@ -99,8 +99,6 @@ fn render_configuration_nix(host: &HostConfig, config: &Config) -> String {
     if host.modules.secrets {
         if host.platform == Platform::Darwin {
             out.push_str("    inputs.sops-nix.darwinModules.sops\n");
-        } else {
-            out.push_str("    ../../configs/secrets.nix\n");
         }
     }
     out.push_str("  ];\n\n");
@@ -210,13 +208,7 @@ fn render_configuration_nix(host: &HostConfig, config: &Config) -> String {
     out
 }
 
-fn render_home_nix(host: &HostConfig, config: &Config) -> String {
-    let primary_user = config
-        .users
-        .iter()
-        .find(|u| u.username == host.primary_user)
-        .unwrap();
-
+fn render_home_nix(host: &HostConfig) -> String {
     let is_desktop = host.role == Role::Desktop;
     let mut out = String::new();
 
@@ -224,10 +216,10 @@ fn render_home_nix(host: &HostConfig, config: &Config) -> String {
     out.push_str("{\n");
     out.push_str("  imports = [\n");
 
-    // user config
+    // shared user config
     out.push_str(&format!(
-        "    ../../configs/users/{}.nix\n",
-        primary_user.username
+        "    (import ../../modules/community/home/shared/common.nix {{ desktop = {}; }})\n",
+        if is_desktop { "true" } else { "false" }
     ));
 
     // programs
