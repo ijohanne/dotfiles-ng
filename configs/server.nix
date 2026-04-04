@@ -1,7 +1,11 @@
-{ pkgs, lib, users, ... }:
+{ pkgs, lib, users, modules, ... }:
 
 {
   imports = [
+    (import modules.public.nixos.aspects.gcPolicy {
+      dates = "weekly";
+      options = "--delete-older-than 180d";
+    })
     ./nix-caches.nix
     ./profiles/system/base
   ];
@@ -53,9 +57,4 @@
     max-jobs = lib.mkDefault 64;
   };
 
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 180d";
-  };
 }

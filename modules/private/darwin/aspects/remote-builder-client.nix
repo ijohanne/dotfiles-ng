@@ -10,9 +10,13 @@
 , sshKeySecretPath ? "/run/secrets/nix_remote_builder_ssh_key"
 }:
 
-{ config, pkgs, user, ... }:
+{ config, pkgs, user, modules, ... }:
 
 {
+  imports = [
+    (import modules.public.darwin.aspects.gcPolicy { })
+  ];
+
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" ];
     builders-use-substitutes = true;
@@ -22,8 +26,6 @@
   nix.extraOptions = ''
     !include ${config.sops.secrets.${tokenSecretName}.path}
   '';
-
-  nix.gc.automatic = true;
 
   nix.distributedBuilds = true;
 

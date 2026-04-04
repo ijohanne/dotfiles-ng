@@ -30,6 +30,10 @@ in
       onFailbackCommand = ''sms "WAN failback: ppp0 restored"'';
       restartServices = [ "hickory-dns.service" ];
     })
+    (import modules.public.nixos.aspects.gcPolicy {
+      dates = "weekly";
+      options = "--delete-older-than 30d";
+    })
     ./hardware-configuration.nix
     ./networking.nix
   ];
@@ -37,9 +41,6 @@ in
   networking = {
     hostName = "goose";
     useDHCP = false;
-    extraHosts = ''
-      ${network.hosts.pakhet.ip} vardrun.unixpimps.net
-    '';
   };
 
   time.timeZone = "Europe/Madrid";
@@ -61,8 +62,6 @@ in
     ipmitool
     fping
   ];
-
-  nix.gc.options = lib.mkForce "--delete-older-than 30d";
 
   system.stateVersion = "22.05";
 }
