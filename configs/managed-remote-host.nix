@@ -1,8 +1,8 @@
 { host, sopsFile, installDeployScript ? true }:
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, modules, ... }:
 
 let
-  deploy = import ./deploy { inherit pkgs; };
+  deploy = modules.public.lib.deploy { inherit pkgs; };
 in
 {
   environment.systemPackages = lib.optionals installDeployScript [

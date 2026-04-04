@@ -3,7 +3,7 @@
 //! Given a validated Config, produce a file tree matching current flake conventions:
 //!
 //! - `configs/users.nix` — user registry (attrset of { username, email, name, developer, shell, sshKeys })
-//! - `hosts/<name>/configuration.nix` — host config using `deploy = import ../../configs/deploy { inherit pkgs; };`
+//! - `hosts/<name>/configuration.nix` — host config using `deploy = modules.public.lib.deploy { inherit pkgs; };`
 //!   - desktop/local: `deploy.mkLocalDeployScript { name, host, rebuildCmd }`
 //!   - server/remote: `deploy.mkDeployScript { name, host }`
 //!   - darwin/local: `deploy.mkLocalDeployScript { name, host, rebuildCmd, useSudo = false }`
@@ -87,13 +87,13 @@ fn render_configuration_nix(host: &HostConfig, config: &Config) -> String {
     let mut out = String::new();
 
     if host.platform == Platform::Darwin {
-        out.push_str("{ inputs, config, pkgs, user, ... }:\n\n");
+        out.push_str("{ inputs, config, pkgs, user, modules, ... }:\n\n");
     } else {
-        out.push_str("{ inputs, config, pkgs, lib, user, ... }:\n\n");
+        out.push_str("{ inputs, config, pkgs, lib, user, modules, ... }:\n\n");
     }
 
     out.push_str("let\n");
-    out.push_str("  deploy = import ../../configs/deploy { inherit pkgs; };\n");
+    out.push_str("  deploy = modules.public.lib.deploy { inherit pkgs; };\n");
     out.push_str("in\n{\n");
     out.push_str("  imports = [\n");
     if host.modules.secrets {

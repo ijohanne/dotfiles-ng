@@ -1,9 +1,9 @@
 { name, host, rebuildCmd ? "nixos-rebuild switch --flake", useSudo ? true, gitAdd ? true }:
 
-{ pkgs, ... }:
+{ pkgs, modules, ... }:
 
 let
-  deploy = import ../../../../configs/deploy { inherit pkgs; };
+  deploy = modules.public.lib.deploy { inherit pkgs; };
 in
 {
   environment.systemPackages = [

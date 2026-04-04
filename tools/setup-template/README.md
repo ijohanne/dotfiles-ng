@@ -50,7 +50,7 @@ Reads a JSON or TOML config file and generates all files.
 
 The renderer produces files matching these flake conventions:
 
-- **Deploy wiring**: `deploy = import ../../configs/deploy { inherit pkgs; };`
+- **Deploy wiring**: `deploy = modules.public.lib.deploy { inherit pkgs; };`
   - Desktop/local: `deploy.mkLocalDeployScript { name, host, rebuildCmd }`
   - Server/remote: `deploy.mkDeployScript { name, host }`
   - Darwin/local: `deploy.mkLocalDeployScript { name, host, rebuildCmd, useSudo = false }`

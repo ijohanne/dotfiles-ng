@@ -9,6 +9,7 @@ locations.
 ## Exported Trees
 
 - `homeManager`: reusable Home Manager programs, languages, and composed aspects
+- `lib`: reusable helper libraries such as deploy script builders
 - `nixos`: reusable NixOS profiles, shared services, and composed aspects
 - `darwin`: reusable Darwin shared modules and composed aspects
 
