@@ -72,8 +72,6 @@
     inputs.rust-overlay.overlays.default
   ];
 
-  programs.fish.enable = true;
-
   fonts = {
     packages = with pkgs; [
       noto-fonts
