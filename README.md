@@ -4,6 +4,11 @@
 
 Nix-based dotfiles for managing macOS and Linux configurations.
 
+This repository follows a dendritic module pattern: reusable public aspects live in
+`modules/community`, repo-private reusable composition lives in `modules/private`,
+and private host/user inventory lives in `modules/private/inventory`. Hosts stay thin
+and mostly opt into named aspects rather than owning large piles of inline logic.
+
 ## Table of Contents
 
 - [Overview](#overview)
