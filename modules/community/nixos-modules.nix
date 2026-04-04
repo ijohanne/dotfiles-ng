@@ -23,6 +23,7 @@
     fishLoginShell = ./nixos/aspects/fish-login-shell.nix;
     gcPolicy = ./nixos/aspects/gc-policy.nix;
     localFlakeDeploy = ./nixos/aspects/local-flake-deploy.nix;
+    nixCli = ./nixos/aspects/nix-cli.nix;
     serverBase = ./nixos/aspects/server-base.nix;
   };
 }

@@ -1,6 +1,10 @@
-{ pkgs, ... }:
+{ pkgs, modules, ... }:
 
 {
+  imports = [
+    modules.public.nixos.aspects.nixCli
+  ];
+
   services.openssh = {
     enable = true;
     settings = {
@@ -22,8 +26,6 @@
     htop
     git
   ];
-
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   nixpkgs.config.allowUnfree = true;
 }
