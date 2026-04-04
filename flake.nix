@@ -206,6 +206,18 @@
     }@inputs:
     let
       lib = nixpkgs.lib;
+      communityModules = import ./modules/community;
+      flatHomeManagerModules =
+        communityModules.homeManager.programs
+        // communityModules.homeManager.languages
+        // communityModules.homeManager.aspects;
+      flatNixosModules =
+        communityModules.nixos.profiles.system
+        // communityModules.nixos.services
+        // communityModules.nixos.aspects;
+      flatDarwinModules =
+        communityModules.darwin.shared
+        // communityModules.darwin.aspects;
       users = import ./configs/users.nix;
       hmUser = imports: withNixvim: {
         inherit imports withNixvim;
@@ -487,6 +499,11 @@
         });
     in
     {
+      moduleTrees = communityModules;
+      homeManagerModules = flatHomeManagerModules;
+      nixosModules = flatNixosModules;
+      darwinModules = flatDarwinModules;
+
       nixosConfigurations = lib.mapAttrs
         (
           _: host:

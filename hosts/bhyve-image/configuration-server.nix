@@ -4,7 +4,7 @@
   imports = [
     ../../configs/profiles/system/qemu-guest
     ../../configs/profiles/system/grow-root-sda2
-    ../../configs/server.nix
+    ../../modules/community/nixos/aspects/server-base.nix
   ];
 
   system.stateVersion = "25.11";

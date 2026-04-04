@@ -9,7 +9,7 @@ in
   };
 
   imports = [
-    ../../configs/server.nix
+    ../../modules/community/nixos/aspects/server-base.nix
     (import ../../configs/managed-remote-host.nix {
       host = "pakhet";
       sopsFile = ../../secrets/pakhet.yaml;

@@ -7,35 +7,8 @@ let
 in
 {
   imports = [
-    (import ./common.nix { inherit desktop; })
-    (import ../programs/fish { inherit desktop; })
-    (import ../programs/tmux { inherit desktop; })
-    (import ../programs/git { })
-    (import ../programs/bash { })
-    (import ../programs/direnv { })
-    (import ../programs/lazygit { })
-    (import ../programs/starship { })
-    (import ../programs/htop { })
-    (import ../programs/zoxide { })
-    (import ../programs/delta { })
-    (import ../programs/procs { })
-    ../programs/neovim
-    ../programs/lorri
-    ../programs/agent-skills-cli
-    ../programs/leita
-    ../programs/vardrun
-    ../programs/callis
-  ] ++ (if desktop then [
-    (import ../programs/ghostty { })
-    (import ../programs/ssh { desktop = true; })
-    ../programs/zed
-    ../programs/t3code
-    ../dev/languages
-  ] else [
-    ../dev/languages/nix
-    ../dev/languages/lua
-    ../dev/languages/markdown
-  ]);
+    (import ../../modules/community/home/aspects/developer-base.nix { inherit desktop; })
+  ];
 
   home = {
     packages = lib.optionals desktop (

@@ -105,7 +105,7 @@ in
   };
 
   imports = [
-    ../../configs/server.nix
+    ../../modules/community/nixos/aspects/server-base.nix
     (import ../../configs/managed-remote-host.nix {
       host = "goose";
       sopsFile = ../../secrets/goose.yaml;

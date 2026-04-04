@@ -2,7 +2,7 @@
 
 {
   imports = [
-    (import ./common.nix { })
+    (import ../../modules/community/home/aspects/cli-base.nix { })
     (import ../programs/bash { })
     (import ../programs/zsh { })
   ];
