@@ -90,6 +90,8 @@ nix run nixpkgs#nixos-rebuild -- switch \
 
 All remote hosts have `nix_builder_access_tokens` configured via sops for fetching private GitHub flake inputs. For a brand new host, bootstrap the first deploy using `--build-host` pointed at an existing host that already has the tokens decrypted.
 
+Do not run multiple remote deploys or remote `nix build` / `nixos-rebuild` jobs at the same time against the same infrastructure. In particular, serialize work that uses `pakhet` as a build host or that deploys several remote hosts in parallel, because overlapping SSH/Nix daemon sessions can interfere with deploy reliability and make failures much harder to interpret.
+
 ### Test builds (without activating)
 
 ```bash
