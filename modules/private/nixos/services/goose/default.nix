@@ -25,6 +25,8 @@
   sops.secrets.hue_api_key_secondary = { owner = "hue-exporter"; };
   sops.secrets.tplink_username = { owner = "tplink-p110-exporter"; };
   sops.secrets.tplink_password = { owner = "tplink-p110-exporter"; };
+  sops.secrets.gardena_api_key = { };
+  sops.secrets.gardena_api_secret = { };
   sops.secrets.smtp_pass_brother = { };
   sops.secrets.sms_user = { };
   sops.secrets.sms_password = { };

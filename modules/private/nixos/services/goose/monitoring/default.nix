@@ -18,6 +18,7 @@
     ./telegraf.nix
     ./tplink-p110.nix
     ./ecowitt.nix
+    ./gardena.nix
     ./proton-port-sync.nix
     ./vardrun.nix
     ./nginx.nix
