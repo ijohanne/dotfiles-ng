@@ -406,6 +406,17 @@
           imageBuilder = "sdImage";
         };
 
+        bastet = {
+          kind = "nixos";
+          channel = "stable";
+          system = "aarch64-linux";
+          modules = [
+            sops-nix.nixosModules.sops
+            ./hosts/bastet/configuration.nix
+          ];
+          imageBuilder = "sdImage";
+        };
+
         macbook = {
           kind = "darwin";
           channel = "unstable";
@@ -567,6 +578,102 @@
         fi
         ${pkgs.openssh}/bin/ssh-keyscan "$1" 2>/dev/null \
           | ${pkgs.ssh-to-age}/bin/ssh-to-age 2>/dev/null
+      '';
+      raspberry-pi-provision-image = pkgs.writeShellScriptBin "raspberry-pi-provision-image" ''
+        set -euo pipefail
+
+        export PATH="${pkgs.lib.makeBinPath [
+          pkgs.coreutils
+          pkgs.findutils
+          pkgs.jq
+          pkgs.util-linux
+          pkgs.zstd
+          pkgs.sops
+          pkgs.openssh
+          pkgs.e2fsprogs
+          pkgs.nix
+        ]}"
+
+        if [ $# -ne 2 ]; then
+          echo "Usage: raspberry-pi-provision-image <host> <output-path-or-directory>" >&2
+          exit 1
+        fi
+
+        repo_root="''${DOTFILES_NG_ROOT:-$PWD}"
+        if [ ! -f "$repo_root/flake.nix" ]; then
+          echo "Could not find flake.nix in $repo_root. Run from the repo root or set DOTFILES_NG_ROOT." >&2
+          exit 1
+        fi
+
+        host="$1"
+        target="$2"
+        secret_file="$repo_root/secrets/$host.yaml"
+        if [ ! -f "$secret_file" ]; then
+          echo "Missing host secret file at $secret_file" >&2
+          exit 1
+        fi
+
+        build_out="$(nix build --print-out-paths --no-link "$repo_root#images.$host")"
+        readarray -t built_images < <(find "$build_out/sd-image" -maxdepth 1 -type f \( -name '*.img' -o -name '*.img.zst' \) | sort)
+
+        if [ "''${#built_images[@]}" -ne 1 ]; then
+          echo "Expected exactly one image for $host under $build_out/sd-image" >&2
+          exit 1
+        fi
+
+        source_image="''${built_images[0]}"
+        destination="$target"
+        if [ -d "$destination" ]; then
+          destination="$destination/$(basename "$source_image")"
+        fi
+
+        mkdir -p "$(dirname "$destination")"
+        cp "$source_image" "$destination"
+
+        if [[ "$destination" == *.zst ]]; then
+          zstd -d --rm "$destination"
+          destination="''${destination%.zst}"
+        fi
+
+        tmpdir="$(mktemp -d)"
+        trap 'rm -rf "$tmpdir"' EXIT
+
+        private_key="$tmpdir/ssh_host_ed25519_key"
+        public_key="$tmpdir/ssh_host_ed25519_key.pub"
+        root_fs="$tmpdir/rootfs.img"
+        partition_json="$tmpdir/partitions.json"
+
+        sops decrypt --extract '["ssh_host_ed25519_key"]' "$secret_file" > "$private_key"
+        chmod 600 "$private_key"
+        ssh-keygen -y -f "$private_key" > "$public_key"
+
+        sfdisk --json "$destination" > "$partition_json"
+        root_start="$(jq -er '.partitiontable.partitions[1].start' "$partition_json")"
+        root_size="$(jq -er '.partitiontable.partitions[1].size' "$partition_json")"
+
+        dd if="$destination" of="$root_fs" bs=512 skip="$root_start" count="$root_size" status=none
+
+        debugfs_write() {
+          debugfs -w -R "$1" "$root_fs" >/dev/null 2>&1
+        }
+
+        debugfs_write "rm /etc/ssh/ssh_host_ed25519_key" || true
+        debugfs_write "rm /etc/ssh/ssh_host_ed25519_key.pub" || true
+        debugfs_write "write $private_key /etc/ssh/ssh_host_ed25519_key"
+        debugfs_write "write $public_key /etc/ssh/ssh_host_ed25519_key.pub"
+        debugfs_write "set_inode_field /etc/ssh/ssh_host_ed25519_key mode 0100600"
+        debugfs_write "set_inode_field /etc/ssh/ssh_host_ed25519_key uid 0"
+        debugfs_write "set_inode_field /etc/ssh/ssh_host_ed25519_key gid 0"
+        debugfs_write "set_inode_field /etc/ssh/ssh_host_ed25519_key.pub mode 0100644"
+        debugfs_write "set_inode_field /etc/ssh/ssh_host_ed25519_key.pub uid 0"
+        debugfs_write "set_inode_field /etc/ssh/ssh_host_ed25519_key.pub gid 0"
+
+        dd if="$root_fs" of="$destination" bs=512 seek="$root_start" count="$root_size" conv=notrunc status=none
+
+        set -- $(ssh-keygen -lf "$public_key")
+        fingerprint="$2"
+        echo "Provisioned $host image written to $destination"
+        echo "Injected SSH host key fingerprint: $fingerprint"
       '';
       jnlp-jdk = if pkgs.stdenv.isDarwin then pkgs.zulu8 else pkgs.jdk8;
       jnlp-run = pkgs.writeShellScriptBin "jnlp-run" ''
@@ -795,6 +902,7 @@
 
       packages = {
         setup-template = setup-template;
+        raspberry-pi-provision-image = raspberry-pi-provision-image;
       } // pgUpgradeScripts;
 
       apps = {
@@ -803,6 +911,13 @@
           program = "${setup-template}/bin/setup-template";
           meta = {
             description = "Scaffold new host and user configs for the dotfiles flake";
+          };
+        };
+        raspberry-pi-provision-image = {
+          type = "app";
+          program = "${raspberry-pi-provision-image}/bin/raspberry-pi-provision-image";
+          meta = {
+            description = "Build, copy, and provision a Raspberry Pi image with its SSH host key";
           };
         };
       } // builtins.mapAttrs
@@ -834,6 +949,7 @@
           echo "─────────────────────────────────────────────"
           echo "  nix-repl-unstable     nixpkgs unstable repl"
           echo "  nix-repl-stable       nixpkgs stable repl"
+          echo "  raspberry-pi-provision-image <host> <path>  build and provision a Raspberry Pi image"
           echo "  jnlp-run <file.jnlp>  launch Kimsufi IP KVM"
           echo "  sops <file>           edit encrypted secret"
           echo "  ssh-to-age-remote     convert SSH host key to age"

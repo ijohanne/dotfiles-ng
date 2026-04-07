@@ -6,6 +6,7 @@ keys:
   - &goose age1w3txsuslrkv7m8jak3lqkwyu6624p55ewrjyprwzdzwxpfgjkvxsh9y0dz
   - &khosu age1t7cj3yeyge87wk4fcljur5wv0fap68fyqjrf8fzk7vppv2v5qfmqpuhzfy
   - &anubis age1r0phf8m20r0jcypw4f7c2r7nh54rr32audrld5ssky48ck8gpuzs47d5ds
+  - &bastet age1harfm00p7lwgx2xtzy7dcm5ez4wgjlk7nm9zzghezg7kc8vz3djqnde324
 
 creation_rules:
   - path_regex: secrets/goose\.(yaml|json|env|ini)$
@@ -35,6 +36,13 @@ creation_rules:
           - *ij
           - *mkj
           - *pakhet
+
+  - path_regex: secrets/bastet\.(yaml|json|env|ini)$
+    key_groups:
+      - age:
+          - *ij
+          - *mkj
+          - *bastet
 
   - path_regex: secrets/macbook\.(yaml|json|env|ini)$
     key_groups:

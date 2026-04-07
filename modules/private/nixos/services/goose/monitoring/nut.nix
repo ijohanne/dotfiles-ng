@@ -15,6 +15,10 @@
           targets = [ "${network.hosts.chronos-wired.ip}:9199" ];
           labels = { instance = "chronos"; };
         }
+        {
+          targets = [ "${network.hosts.bastet.ip}:9199" ];
+          labels = { instance = "bastet"; };
+        }
       ];
     }
   ];

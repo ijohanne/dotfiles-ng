@@ -74,7 +74,7 @@ let
     # --- Wireless devices ---
     chronos = { ip = "10.255.100.202"; ip6 = "${ulaPrefix}:100::202"; mac = "dc:a6:32:34:1e:6e"; dns = [ "chronos-wifi" ]; };
     sobek = { ip = "10.255.100.203"; ip6 = "${ulaPrefix}:100::203"; mac = "dc:a6:32:08:7c:33"; dns = [ "sobek-wifi" ]; };
-    canon-printserver = { ip = "10.255.100.204"; mac = "dc:a6:32:34:02:6f"; };
+    bastet = { ip = "10.255.100.204"; mac = "dc:a6:32:34:02:6f"; };
     dyson-office = { ip = "10.255.100.205"; mac = "c8:ff:77:27:b3:f1"; };
     dyson-livingroom = { ip = "10.255.100.206"; mac = "c8:ff:77:67:34:b5"; };
     dyson-ian = { ip = "10.255.100.207"; mac = "c8:ff:77:67:34:7f"; };
