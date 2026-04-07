@@ -1612,11 +1612,11 @@
         "zot": "zot"
       },
       "locked": {
-        "lastModified": 1775604636,
-        "narHash": "sha256-o4agS4c5srdgCsXV8iU2S7Y+2SFxS/0dpn+89S28JUo=",
+        "lastModified": 1775605088,
+        "narHash": "sha256-uPk1/8D23+N6jClds4Ysah/ZnEIDKY1DIV8E2e/pIzY=",
         "owner": "ijohanne",
         "repo": "nur-packages",
-        "rev": "b9fa6a0a3b1b048f4729d528dd975e074e8dd5b3",
+        "rev": "f60cf732db810669395e94f541ecb88c627f8e39",
         "type": "github"
       },
       "original": {

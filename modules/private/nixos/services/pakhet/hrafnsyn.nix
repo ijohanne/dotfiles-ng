@@ -2,6 +2,7 @@
 
 let
   domain = "hrafnsyn.unixpimps.net";
+  nurPackages = inputs.ijohanne-nur.legacyPackages.${pkgs.stdenv.hostPlatform.system};
 in
 {
   sops.secrets.hrafnsyn_secret_key_base = {
@@ -18,7 +19,8 @@ in
 
   services.hrafnsyn = {
     enable = true;
-    package = inputs.ijohanne-nur.legacyPackages.${pkgs.system}.hrafnsyn;
+    package = nurPackages.hrafnsyn;
+    aircraftDbPackage = nurPackages.hrafnsyn-aircraft-db;
 
     host = domain;
     port = 4020;
