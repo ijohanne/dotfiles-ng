@@ -52,6 +52,7 @@
 
   nix.settings = {
     max-jobs = lib.mkDefault 64;
+    trusted-users = [ "@wheel" ];
   };
 
 }
