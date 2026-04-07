@@ -270,6 +270,7 @@
           modules = [
             sops-nix.nixosModules.sops
             nixos-mailserver.nixosModules.default
+            ijohanne-nur.nixosModules.hrafnsyn
             ijohanne-nur.nixosModules.pg-exporter
             ijohanne-nur.nixosModules.zot
             screeny.nixosModules.default

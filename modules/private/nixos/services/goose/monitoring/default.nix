@@ -21,6 +21,7 @@
     ./gardena.nix
     ./proton-port-sync.nix
     ./vardrun.nix
+    ./hrafnsyn.nix
     ./nginx.nix
     ./postgres.nix
     ./zot.nix

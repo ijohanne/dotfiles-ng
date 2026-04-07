@@ -23,6 +23,7 @@
     ./mail-autoconfig.nix
     ./plausible.nix
     ./perlpimpnet.nix
+    ./hrafnsyn.nix
     ./vardrun.nix
     ./node-exporter.nix
     ./pg-exporter.nix
