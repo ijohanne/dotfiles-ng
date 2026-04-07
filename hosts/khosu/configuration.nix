@@ -13,6 +13,7 @@ in
     (import modules.private.nixos.aspects.managedRemoteHost {
       host = "khosu";
       sopsFile = ../../secrets/khosu.yaml;
+      installDeployScript = false;
     })
     modules.private.nixos.aspects.khosuServices
     ./hardware-configuration.nix

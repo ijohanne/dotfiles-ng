@@ -61,7 +61,7 @@ sudo nixos-rebuild switch --flake .#ij-desktop
 
 ### Remote hosts (goose, pakhet, khosu, anubis)
 
-These hosts pull the flake from GitHub via `deploy-<hostname>` wrappers. Changes **must be pushed first**.
+`goose`, `pakhet`, and `anubis` pull the flake from GitHub via `deploy-<hostname>` wrappers. Changes **must be pushed first**.
 
 When a matching local checkout is found, the deploy helper intentionally runs `git add -A`
 before rebuilding from that checkout. Use `--no-local` to skip the local-checkout path and
@@ -71,11 +71,12 @@ build from GitHub instead.
 git push
 ssh r0.est.unixpimps.net deploy-goose        # goose (router)
 ssh pakhet.est.unixpimps.net deploy-pakhet    # pakhet (server)
-ssh khosu.unixpimps.net deploy-khosu          # khosu (VPS)
 ssh anubis.unixpimps.net deploy-anubis        # anubis (Kimsufi)
 ```
 
 The `deploy-<hostname>` wrapper checks for a local checkout under any user's `~/git/dotfiles-ng`, intentionally runs `git add -A`, and builds from it if found. Pass `--no-local` to skip that behavior and rebuild directly from GitHub instead. See @NETWORK.md for IPs.
+
+`khosu` is the exception: do not use a `deploy-khosu` wrapper there. The VPS is too small to build reliably on-host.
 
 #### Alternative: `nixos-rebuild` with `--target-host` and `--build-host`
 
@@ -86,6 +87,18 @@ nix run nixpkgs#nixos-rebuild -- switch \
   --flake .#<hostname> \
   --target-host root@<target> \
   --build-host root@pakhet.est.unixpimps.net
+```
+
+For `khosu`, prefer this path every time and add `--use-substitutes` so the remote `nix copy`
+steps can use substituters on `pakhet`/`khosu` instead of trying to stream the full closure from
+the machine running `nixos-rebuild`:
+
+```bash
+nix run nixpkgs#nixos-rebuild -- switch \
+  --flake .#khosu \
+  --target-host root@khosu.unixpimps.net \
+  --build-host root@pakhet.est.unixpimps.net \
+  --use-substitutes
 ```
 
 All remote hosts have `nix_builder_access_tokens` configured via sops for fetching private GitHub flake inputs. For a brand new host, bootstrap the first deploy using `--build-host` pointed at an existing host that already has the tokens decrypted.

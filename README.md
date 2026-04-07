@@ -125,7 +125,8 @@ nix run nixpkgs#nixos-rebuild -- switch \
 nix run nixpkgs#nixos-rebuild -- switch \
   --flake .#khosu \
   --target-host root@khosu.unixpimps.net \
-  --build-host root@pakhet.est.unixpimps.net
+  --build-host root@pakhet.est.unixpimps.net \
+  --use-substitutes
 ```
 
 ## Installation
@@ -335,14 +336,15 @@ Khosu is a VPS on netcup running as a mail relay. It uses disko for disk partiti
    - Set up GRUB bootloader
    - Reboot automatically
 
-2. After installation completes, the VPS will reboot into NixOS. For the first deploy (before sops has decrypted `nix_builder_access_tokens` on the host), build on pakhet:
+2. After installation completes, the VPS will reboot into NixOS. Deploy `khosu` by building on pakhet instead of on the VPS itself:
    ```bash
    nix run nixpkgs#nixos-rebuild -- switch \
      --flake .#khosu \
      --target-host root@khosu.unixpimps.net \
-     --build-host root@pakhet.est.unixpimps.net
+     --build-host root@pakhet.est.unixpimps.net \
+     --use-substitutes
    ```
-   Subsequent deploys can use `ssh khosu.unixpimps.net deploy-khosu`.
+   `--use-substitutes` lets the `nix copy` steps use substituters on `pakhet` and `khosu`, which is much more reliable than trying to push the entire closure from your local machine.
 
 #### Disk Layout
 
