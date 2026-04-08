@@ -15,9 +15,13 @@
 
   services.openssh.hostKeys = lib.mkForce [
     {
-      path = "/etc/ssh/ssh_host_ed25519_key";
+      path = "/var/lib/bootstrap/ssh_host_ed25519_key";
       type = "ed25519";
     }
+  ];
+
+  systemd.tmpfiles.rules = [
+    "d /var/lib/bootstrap 0700 root root -"
   ];
 
   sops = {
@@ -26,12 +30,12 @@
       keyFile = lib.mkForce null;
       generateKey = lib.mkForce false;
       # bastet's Wi-Fi secrets are encrypted to its precomputed SSH host key.
-      sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+      sshKeyPaths = [ "/var/lib/bootstrap/ssh_host_ed25519_key" ];
     };
 
     secrets = {
       ssh_host_ed25519_key = {
-        path = "/etc/ssh/ssh_host_ed25519_key";
+        path = "/var/lib/bootstrap/ssh_host_ed25519_key";
         mode = "0600";
         restartUnits = [ "sshd.service" ];
       };

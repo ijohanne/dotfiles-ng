@@ -708,20 +708,20 @@
           debugfs_run "stat $1" >/dev/null
         }
 
-        debugfs_mkdir_p "/etc/ssh"
+        debugfs_mkdir_p "/var/lib/bootstrap"
         debugfs_mkdir_p "/var/lib/networkmanager"
-        debugfs_write "rm /etc/ssh/ssh_host_ed25519_key" || true
-        debugfs_write "rm /etc/ssh/ssh_host_ed25519_key.pub" || true
-        debugfs_write "write $private_key /etc/ssh/ssh_host_ed25519_key"
-        debugfs_write "write $public_key /etc/ssh/ssh_host_ed25519_key.pub"
-        debugfs_write "set_inode_field /etc/ssh/ssh_host_ed25519_key mode 0100600"
-        debugfs_write "set_inode_field /etc/ssh/ssh_host_ed25519_key uid 0"
-        debugfs_write "set_inode_field /etc/ssh/ssh_host_ed25519_key gid 0"
-        debugfs_write "set_inode_field /etc/ssh/ssh_host_ed25519_key.pub mode 0100644"
-        debugfs_write "set_inode_field /etc/ssh/ssh_host_ed25519_key.pub uid 0"
-        debugfs_write "set_inode_field /etc/ssh/ssh_host_ed25519_key.pub gid 0"
-        debugfs_assert_exists "/etc/ssh/ssh_host_ed25519_key"
-        debugfs_assert_exists "/etc/ssh/ssh_host_ed25519_key.pub"
+        debugfs_write "rm /var/lib/bootstrap/ssh_host_ed25519_key" || true
+        debugfs_write "rm /var/lib/bootstrap/ssh_host_ed25519_key.pub" || true
+        debugfs_write "write $private_key /var/lib/bootstrap/ssh_host_ed25519_key"
+        debugfs_write "write $public_key /var/lib/bootstrap/ssh_host_ed25519_key.pub"
+        debugfs_write "set_inode_field /var/lib/bootstrap/ssh_host_ed25519_key mode 0100600"
+        debugfs_write "set_inode_field /var/lib/bootstrap/ssh_host_ed25519_key uid 0"
+        debugfs_write "set_inode_field /var/lib/bootstrap/ssh_host_ed25519_key gid 0"
+        debugfs_write "set_inode_field /var/lib/bootstrap/ssh_host_ed25519_key.pub mode 0100644"
+        debugfs_write "set_inode_field /var/lib/bootstrap/ssh_host_ed25519_key.pub uid 0"
+        debugfs_write "set_inode_field /var/lib/bootstrap/ssh_host_ed25519_key.pub gid 0"
+        debugfs_assert_exists "/var/lib/bootstrap/ssh_host_ed25519_key"
+        debugfs_assert_exists "/var/lib/bootstrap/ssh_host_ed25519_key.pub"
         if [ -f "$networkmanager_env" ]; then
           debugfs_write "rm /var/lib/networkmanager/system-connections.env" || true
           debugfs_write "write $networkmanager_env /var/lib/networkmanager/system-connections.env"
