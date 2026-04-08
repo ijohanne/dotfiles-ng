@@ -33,6 +33,7 @@
 
   sops = {
     defaultSopsFile = ../../secrets/bastet.yaml;
+    useSystemdActivation = true;
     age = {
       keyFile = lib.mkForce null;
       generateKey = lib.mkForce false;
@@ -55,6 +56,11 @@
       '';
       restartUnits = [ "wpa_supplicant-wlan0.service" ];
     };
+  };
+
+  systemd.services.wpa_supplicant-wlan0 = {
+    wants = [ "sops-install-secrets.service" ];
+    after = [ "sops-install-secrets.service" ];
   };
 
   power.ups = {

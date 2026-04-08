@@ -629,11 +629,14 @@
         fi
 
         mkdir -p "$(dirname "$destination")"
+        rm -f "$destination"
         cp "$source_image" "$destination"
+        chmod u+w "$destination"
 
         if [[ "$destination" == *.zst ]]; then
           zstd -d --rm "$destination"
           destination="''${destination%.zst}"
+          chmod u+w "$destination"
         fi
 
         tmpdir="$(mktemp -d)"
