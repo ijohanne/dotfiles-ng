@@ -1,44 +1,12 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, ... }:
 
 {
   imports = [
     ../rpi4-image/base.nix
   ];
 
-  boot.extraModprobeConfig = ''
-    options cfg80211 ieee80211_regdom=ES
-    options brcmfmac roamoff=1 feature_disable=0x82000
-  '';
-
   networking = {
     hostName = lib.mkForce "bastet";
-    useDHCP = lib.mkForce false;
-    networkmanager = {
-      enable = true;
-      wifi.powersave = false;
-      ensureProfiles = {
-        environmentFiles = [ "/var/lib/networkmanager/system-connections.env" ];
-        profiles."UNIXPIMPSNET" = {
-          connection = {
-            id = "UNIXPIMPSNET";
-            type = "wifi";
-            autoconnect = "true";
-            permissions = "";
-          };
-          wifi = {
-            mode = "infrastructure";
-            ssid = "UNIXPIMPSNET";
-          };
-          wifi-security = {
-            auth-alg = "open";
-            key-mgmt = "wpa-psk";
-            psk = "$WIFI_PSK";
-          };
-          ipv4.method = "auto";
-          ipv6.method = "ignore";
-        };
-      };
-    };
     firewall.allowedTCPPorts = [
       22
       9199
@@ -67,17 +35,6 @@
         mode = "0600";
         restartUnits = [ "sshd.service" ];
       };
-    };
-  };
-
-  systemd.services.rfkill-unblock-wifi = {
-    description = "Unblock WiFi";
-    wantedBy = [ "multi-user.target" ];
-    before = [ "NetworkManager.service" ];
-    serviceConfig = {
-      Type = "oneshot";
-      ExecStart = "${pkgs.util-linux}/bin/rfkill unblock wifi";
-      RemainAfterExit = true;
     };
   };
 

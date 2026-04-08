@@ -651,10 +651,26 @@
         sops decrypt --extract '["ssh_host_ed25519_key"]' "$secret_file" > "$private_key"
         chmod 600 "$private_key"
         ssh-keygen -y -f "$private_key" > "$public_key"
+        have_wifi_ssid=0
+        have_wifi_psk=0
+        if sops decrypt --extract '["wifi_ssid"]' "$secret_file" > "$tmpdir/wifi_ssid" 2>/dev/null; then
+          have_wifi_ssid=1
+        fi
         if sops decrypt --extract '["wifi_psk"]' "$secret_file" > "$tmpdir/wifi_psk" 2>/dev/null; then
+          have_wifi_psk=1
+        fi
+
+        if [ "$have_wifi_ssid" -eq 1 ] && [ "$have_wifi_psk" -eq 1 ]; then
+          escaped_ssid="$(sed -e 's/[\\"]/\\&/g' -e 's/[$`]/\\&/g' "$tmpdir/wifi_ssid")"
           escaped_psk="$(sed -e 's/[\\"]/\\&/g' -e 's/[$`]/\\&/g' "$tmpdir/wifi_psk")"
-          printf 'WIFI_PSK="%s"\n' "$escaped_psk" > "$networkmanager_env"
+          {
+            printf 'WIFI_SSID="%s"\n' "$escaped_ssid"
+            printf 'WIFI_PSK="%s"\n' "$escaped_psk"
+          } > "$networkmanager_env"
           chmod 400 "$networkmanager_env"
+        elif [ "$have_wifi_ssid" -ne "$have_wifi_psk" ]; then
+          echo "Expected both wifi_ssid and wifi_psk in $secret_file to provision Wi-Fi" >&2
+          exit 1
         fi
 
         sfdisk --json "$destination" > "$partition_json"
