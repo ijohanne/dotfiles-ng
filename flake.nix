@@ -680,11 +680,36 @@
 
         dd if="$destination" of="$root_fs" bs=512 skip="$root_start" count="$root_size" status=none
 
-        debugfs_write() {
-          debugfs -w -R "$1" "$root_fs" >/dev/null 2>&1
+        debugfs_run() {
+          debugfs -w -R "$1" "$root_fs"
         }
 
-        debugfs_write "mkdir /var/lib/networkmanager" || true
+        debugfs_write() {
+          debugfs_run "$1" >/dev/null
+        }
+
+        debugfs_mkdir_p() {
+          path="$1"
+          current=""
+          old_ifs="$IFS"
+          IFS='/'
+          set -- $path
+          IFS="$old_ifs"
+          for part in "$@"; do
+            if [ -z "$part" ]; then
+              continue
+            fi
+            current="$current/$part"
+            debugfs_write "mkdir $current" || true
+          done
+        }
+
+        debugfs_assert_exists() {
+          debugfs_run "stat $1" >/dev/null
+        }
+
+        debugfs_mkdir_p "/etc/ssh"
+        debugfs_mkdir_p "/var/lib/networkmanager"
         debugfs_write "rm /etc/ssh/ssh_host_ed25519_key" || true
         debugfs_write "rm /etc/ssh/ssh_host_ed25519_key.pub" || true
         debugfs_write "write $private_key /etc/ssh/ssh_host_ed25519_key"
@@ -695,12 +720,15 @@
         debugfs_write "set_inode_field /etc/ssh/ssh_host_ed25519_key.pub mode 0100644"
         debugfs_write "set_inode_field /etc/ssh/ssh_host_ed25519_key.pub uid 0"
         debugfs_write "set_inode_field /etc/ssh/ssh_host_ed25519_key.pub gid 0"
+        debugfs_assert_exists "/etc/ssh/ssh_host_ed25519_key"
+        debugfs_assert_exists "/etc/ssh/ssh_host_ed25519_key.pub"
         if [ -f "$networkmanager_env" ]; then
           debugfs_write "rm /var/lib/networkmanager/system-connections.env" || true
           debugfs_write "write $networkmanager_env /var/lib/networkmanager/system-connections.env"
           debugfs_write "set_inode_field /var/lib/networkmanager/system-connections.env mode 0100400"
           debugfs_write "set_inode_field /var/lib/networkmanager/system-connections.env uid 0"
           debugfs_write "set_inode_field /var/lib/networkmanager/system-connections.env gid 0"
+          debugfs_assert_exists "/var/lib/networkmanager/system-connections.env"
         fi
 
         dd if="$root_fs" of="$destination" bs=512 seek="$root_start" count="$root_size" conv=notrunc status=none
