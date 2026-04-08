@@ -537,6 +537,24 @@ nix build .#images.rpi4-stable
 nix build .#images.rpi4-unstable
 ```
 
+#### Provisioning a Host Image
+
+For Raspberry Pi hosts that have their own `sdImage` output in the flake, use the
+provisioning app instead of copying the generic template image by hand:
+
+```bash
+nix run .#raspberry-pi-provision-image -- bastet ./images/
+```
+
+This app:
+
+- Builds `.#images.<host>`
+- Copies the resulting image to the output path or directory you pass
+- Injects the host's SSH key from `secrets/<host>.yaml` into `/var/lib/bootstrap`
+- Provisions Wi-Fi credentials for NetworkManager when both `wifi_ssid` and `wifi_psk` exist in the host secret
+
+The host must expose an SD image in `flake.nix` and have a matching secret file in `secrets/`.
+
 #### Writing to SD Card
 
 ```bash
