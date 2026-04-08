@@ -1612,11 +1612,11 @@
         "zot": "zot"
       },
       "locked": {
-        "lastModified": 1775609042,
-        "narHash": "sha256-zfAC/EfJMZr/+3dFHFajaD1jgsbDs9CkPzSPi4KCt0I=",
+        "lastModified": 1775639651,
+        "narHash": "sha256-45uBDFbpBhINDBMXruyDh8zzyvTE4oS2hAo1wvlfgwo=",
         "owner": "ijohanne",
         "repo": "nur-packages",
-        "rev": "e8389181790e740efeb9192792aceee868119f0f",
+        "rev": "67dc9c3d2f81c2a1e0a7702154d44d9d7e4ecf54",
         "type": "github"
       },
       "original": {
@@ -2538,11 +2538,11 @@
         "rust-overlay": "rust-overlay_3"
       },
       "locked": {
-        "lastModified": 1775499830,
-        "narHash": "sha256-CfwwP9VwBLHvjCJ8YE97OT9/xzxWeU4ZNHBm3r5q7W0=",
+        "lastModified": 1775639459,
+        "narHash": "sha256-3Kbm4gsOY6lmQaqTBuhJIfymWaN8qA94Dux1d9/vJ2Q=",
         "owner": "ijohanne",
         "repo": "prometheus-gardena-exporter",
-        "rev": "95083f7b6e549de8c1ca05ee48dcbc0553b35fe7",
+        "rev": "212503089257d4bc4cbd8f870f4674848d7d51d7",
         "type": "github"
       },
       "original": {
