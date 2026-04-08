@@ -9,8 +9,7 @@
     hostName = lib.mkForce "bastet";
     wireless = {
       enable = lib.mkForce true;
-      interfaces = [ "wlan0" ];
-      secretsFile = config.sops.templates."wireless.conf".path;
+      secretsFile = "/etc/wpa_supplicant/secrets.conf";
       networks = {
         "UNIXPIMPSNET" = {
           pskRaw = "ext:wifi_psk";
@@ -33,7 +32,6 @@
 
   sops = {
     defaultSopsFile = ../../secrets/bastet.yaml;
-    useSystemdActivation = true;
     age = {
       keyFile = lib.mkForce null;
       generateKey = lib.mkForce false;
@@ -47,20 +45,7 @@
         mode = "0600";
         restartUnits = [ "sshd.service" ];
       };
-      wifi_psk = { };
     };
-
-    templates."wireless.conf" = {
-      content = ''
-        wifi_psk=${config.sops.placeholder.wifi_psk}
-      '';
-      restartUnits = [ "wpa_supplicant-wlan0.service" ];
-    };
-  };
-
-  systemd.services.wpa_supplicant-wlan0 = {
-    wants = [ "sops-install-secrets.service" ];
-    after = [ "sops-install-secrets.service" ];
   };
 
   power.ups = {

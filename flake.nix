@@ -644,12 +644,17 @@
 
         private_key="$tmpdir/ssh_host_ed25519_key"
         public_key="$tmpdir/ssh_host_ed25519_key.pub"
+        wifi_secrets="$tmpdir/wpa_supplicant-secrets.conf"
         root_fs="$tmpdir/rootfs.img"
         partition_json="$tmpdir/partitions.json"
 
         sops decrypt --extract '["ssh_host_ed25519_key"]' "$secret_file" > "$private_key"
         chmod 600 "$private_key"
         ssh-keygen -y -f "$private_key" > "$public_key"
+        if sops decrypt --extract '["wifi_psk"]' "$secret_file" > "$tmpdir/wifi_psk" 2>/dev/null; then
+          printf 'wifi_psk=%s\n' "$(cat "$tmpdir/wifi_psk")" > "$wifi_secrets"
+          chmod 400 "$wifi_secrets"
+        fi
 
         sfdisk --json "$destination" > "$partition_json"
         root_start="$(jq -er '.partitiontable.partitions[1].start' "$partition_json")"
@@ -661,6 +666,7 @@
           debugfs -w -R "$1" "$root_fs" >/dev/null 2>&1
         }
 
+        debugfs_write "mkdir /etc/wpa_supplicant" || true
         debugfs_write "rm /etc/ssh/ssh_host_ed25519_key" || true
         debugfs_write "rm /etc/ssh/ssh_host_ed25519_key.pub" || true
         debugfs_write "write $private_key /etc/ssh/ssh_host_ed25519_key"
@@ -671,6 +677,13 @@
         debugfs_write "set_inode_field /etc/ssh/ssh_host_ed25519_key.pub mode 0100644"
         debugfs_write "set_inode_field /etc/ssh/ssh_host_ed25519_key.pub uid 0"
         debugfs_write "set_inode_field /etc/ssh/ssh_host_ed25519_key.pub gid 0"
+        if [ -f "$wifi_secrets" ]; then
+          debugfs_write "rm /etc/wpa_supplicant/secrets.conf" || true
+          debugfs_write "write $wifi_secrets /etc/wpa_supplicant/secrets.conf"
+          debugfs_write "set_inode_field /etc/wpa_supplicant/secrets.conf mode 0100400"
+          debugfs_write "set_inode_field /etc/wpa_supplicant/secrets.conf uid 0"
+          debugfs_write "set_inode_field /etc/wpa_supplicant/secrets.conf gid 0"
+        fi
 
         dd if="$root_fs" of="$destination" bs=512 seek="$root_start" count="$root_size" conv=notrunc status=none
 
