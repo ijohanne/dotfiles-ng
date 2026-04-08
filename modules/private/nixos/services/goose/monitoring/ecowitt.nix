@@ -3,6 +3,7 @@
 {
   services.prometheus-ecowitt-exporter = {
     enable = true;
+    enableLightning = true;
     irradianceUnit = "klx";
     enableLocalScraping = true;
     enableGrafanaDashboard = true;
