@@ -63,6 +63,17 @@
   services.prometheus.exporters.nut = {
     enable = true;
     listenAddress = "0.0.0.0";
+    nutVariables = [
+      "battery.charge"
+      "battery.runtime"
+      "input.voltage"
+      "output.voltage"
+      "ups.beeper.status"
+      "ups.load"
+      "ups.power.nominal"
+      "ups.realpower"
+      "ups.status"
+    ];
   };
 
   system.stateVersion = "25.05";
