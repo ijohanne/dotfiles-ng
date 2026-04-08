@@ -586,6 +586,7 @@
         export PATH="${pkgs.lib.makeBinPath [
           pkgs.coreutils
           pkgs.findutils
+          pkgs.gnused
           pkgs.jq
           pkgs.util-linux
           pkgs.zstd
