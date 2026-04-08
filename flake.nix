@@ -667,7 +667,7 @@
           debugfs -w -R "$1" "$root_fs" >/dev/null 2>&1
         }
 
-        debugfs_write "mkdir /etc/NetworkManager" || true
+        debugfs_write "mkdir /var/lib/networkmanager" || true
         debugfs_write "rm /etc/ssh/ssh_host_ed25519_key" || true
         debugfs_write "rm /etc/ssh/ssh_host_ed25519_key.pub" || true
         debugfs_write "write $private_key /etc/ssh/ssh_host_ed25519_key"
@@ -679,11 +679,11 @@
         debugfs_write "set_inode_field /etc/ssh/ssh_host_ed25519_key.pub uid 0"
         debugfs_write "set_inode_field /etc/ssh/ssh_host_ed25519_key.pub gid 0"
         if [ -f "$networkmanager_env" ]; then
-          debugfs_write "rm /etc/NetworkManager/system-connections.env" || true
-          debugfs_write "write $networkmanager_env /etc/NetworkManager/system-connections.env"
-          debugfs_write "set_inode_field /etc/NetworkManager/system-connections.env mode 0100400"
-          debugfs_write "set_inode_field /etc/NetworkManager/system-connections.env uid 0"
-          debugfs_write "set_inode_field /etc/NetworkManager/system-connections.env gid 0"
+          debugfs_write "rm /var/lib/networkmanager/system-connections.env" || true
+          debugfs_write "write $networkmanager_env /var/lib/networkmanager/system-connections.env"
+          debugfs_write "set_inode_field /var/lib/networkmanager/system-connections.env mode 0100400"
+          debugfs_write "set_inode_field /var/lib/networkmanager/system-connections.env uid 0"
+          debugfs_write "set_inode_field /var/lib/networkmanager/system-connections.env gid 0"
         fi
 
         dd if="$root_fs" of="$destination" bs=512 seek="$root_start" count="$root_size" conv=notrunc status=none

@@ -17,7 +17,7 @@
       enable = true;
       wifi.powersave = false;
       ensureProfiles = {
-        environmentFiles = [ "/etc/NetworkManager/system-connections.env" ];
+        environmentFiles = [ "/var/lib/networkmanager/system-connections.env" ];
         profiles."UNIXPIMPSNET" = {
           connection = {
             id = "UNIXPIMPSNET";
