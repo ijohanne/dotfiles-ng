@@ -34,6 +34,13 @@ in
     relayhost = [ "[10.100.0.8]:2525" ];
   };
 
+  services.rspamd.locals."greylist.conf".text = ''
+    whitelisted_ip = "${pkgs.writeText "greylist-whitelist-ip.map" ''
+      ${network.hosts.pakhet.ip}
+      ${network.hosts.pakhet.ip6}
+    ''}";
+  '';
+
   mailserver = {
     enable = true;
     enablePop3 = false;

@@ -14,7 +14,7 @@
     mail = {
       email = "no-reply@unixpimps.net";
       smtp = {
-        hostAddr = "127.0.0.1";
+        hostAddr = "pakhet.est.unixpimps.net";
         hostPort = 25;
       };
     };
