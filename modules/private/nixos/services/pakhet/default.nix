@@ -11,6 +11,7 @@
     ./geoip-updater.nix
     ./pastebin.nix
     ./backup.nix
+    ./keycloak.nix
     ./estepona.nix
     ./kubernetes.nix
     ./screeny.nix
