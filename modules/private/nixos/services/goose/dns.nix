@@ -225,6 +225,7 @@ let
 
   listenAddrsIpv4 = [
     "127.0.0.1"
+    network.hosts.wg-goose.ip
     network.hosts.goose.ips.wifi
     network.hosts.goose.ips.wired
     network.hosts.goose.ips.guest
