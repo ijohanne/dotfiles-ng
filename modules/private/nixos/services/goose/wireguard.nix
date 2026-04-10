@@ -57,6 +57,11 @@
           publicKey = "SyWatfaLXku+dgVSvqKBGGrrFx+V9ef1e6Pv/1yNb0Y=";
           allowedIPs = [ "${network.hosts.wg-mt-remote.ip}/32" ];
         }
+        {
+          # hv-remote
+          publicKey = "sTgwTlg/mIjJsYxfvk0fxNIL1jaZVsCs/INcDwsE0XE=";
+          allowedIPs = [ "${network.hosts.wg-hv-remote.ip}/32" ];
+        }
       ];
     };
   };

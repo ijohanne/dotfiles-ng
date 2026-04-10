@@ -123,6 +123,7 @@ let
     wg-anubis = { ip = "10.100.0.10"; dns = [ "wg-anubis" ]; };
     wg-ij-remote = { ip = "10.100.0.11"; dns = [ "wg-ij-remote" "ij-remote" ]; };
     wg-mt-remote = { ip = "10.100.0.12"; dns = [ "wg-mt-remote" "mt-remote" ]; };
+    wg-hv-remote = { ip = "10.100.0.13"; dns = [ "wg-hv-remote" "hv-remote" ]; };
 
     # --- Kubernetes ---
     k8s-master-00 = { ip = "10.255.101.234"; ip6 = "${ulaPrefix}:101::234"; mac = "d8:43:ae:1a:1a:5c"; };
