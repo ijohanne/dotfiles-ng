@@ -28,6 +28,9 @@
         questionnairesEnabled = true;
         layoutsEnabled = true;
         layoutCalculatorVersions = [ "V2" ];
+        chestCounterEnabled = true;
+
+        chest.googleApiKeyFile = config.sops.secrets.screeny_k111_agw_google_api_key.path;
 
         telegram = {
           enable = true;

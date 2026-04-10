@@ -15,7 +15,10 @@
       email = "no-reply@unixpimps.net";
       smtp = {
         hostAddr = "pakhet.est.unixpimps.net";
-        hostPort = 25;
+        hostPort = 465;
+        user = "no-reply@unixpimps.net";
+        passwordFile = config.sops.secrets.mail_password_no_reply.path;
+        enableSSL = true;
       };
     };
   };

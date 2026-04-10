@@ -90,6 +90,12 @@
     group = "screeny";
   };
 
+  sops.secrets.screeny_k111_agw_google_api_key = {
+    mode = "0400";
+    owner = "screeny";
+    group = "screeny";
+  };
+
   # Screeny k111-test secrets
   sops.secrets.screeny_k111_test_jwt_secret = {
     mode = "0400";
@@ -218,12 +224,13 @@
 
   # Plausible secrets
   sops.secrets.plausible_secret_key_base = { };
+  sops.secrets.mail_password_no_reply = { };
 
   # Mail server secrets (hashed passwords)
-  sops.secrets.mail_hashed_password_ij = { };
-  sops.secrets.mail_hashed_password_brother_hallway = { };
-  sops.secrets.mail_hashed_password_mj = { };
-  sops.secrets.mail_hashed_password_no_reply = { };
-  sops.secrets.mail_hashed_password_themailer = { };
-  sops.secrets.mail_hashed_password_alertmanager = { };
+  sops.secrets.mail_hashed_password_ij.restartUnits = [ "dovecot.service" ];
+  sops.secrets.mail_hashed_password_brother_hallway.restartUnits = [ "dovecot.service" ];
+  sops.secrets.mail_hashed_password_mj.restartUnits = [ "dovecot.service" ];
+  sops.secrets.mail_hashed_password_no_reply.restartUnits = [ "dovecot.service" ];
+  sops.secrets.mail_hashed_password_themailer.restartUnits = [ "dovecot.service" ];
+  sops.secrets.mail_hashed_password_alertmanager.restartUnits = [ "dovecot.service" ];
 }
