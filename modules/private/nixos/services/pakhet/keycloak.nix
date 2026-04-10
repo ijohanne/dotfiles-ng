@@ -60,6 +60,11 @@ in
     locations."/" = {
       proxyPass = "http://127.0.0.1:${toString keycloakPort}";
       proxyWebsockets = true;
+      extraConfig = ''
+        allow 10.100.0.0/24;
+        allow 10.255.0.0/16;
+        deny all;
+      '';
     };
   };
 }
