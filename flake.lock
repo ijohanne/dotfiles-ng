@@ -2439,11 +2439,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1775912783,
-        "narHash": "sha256-MzUxF68XB7irsbiVBdkJ8L3MpBeAnLrwcu4V3dwnI1c=",
+        "lastModified": 1775945949,
+        "narHash": "sha256-M8L76gVXxK9iA7EdIu9dnDfyS8tJmkDBdIDyIHv36OM=",
         "owner": "ijohanne",
         "repo": "perlpimpnet",
-        "rev": "10c9b81ff44add16bf0c7a93f21cd8d0e11fc629",
+        "rev": "ee79efb7771031c28dbad3d9ae466db911bc7a74",
         "type": "github"
       },
       "original": {
@@ -2901,11 +2901,11 @@
         "rust-overlay": "rust-overlay_10"
       },
       "locked": {
-        "lastModified": 1775936439,
-        "narHash": "sha256-xmp8o1EVlPKF0RY7cWqCQeVSlql6bSurSSme7fAuowg=",
+        "lastModified": 1775945308,
+        "narHash": "sha256-KkF3aZ5wZ1jBGwsnysDZL0lh8XatsdX+tXkKAlRmCiI=",
         "owner": "ijohanne",
         "repo": "screeny",
-        "rev": "06789710311ddb745aa22d4a59df28d0ed19eda4",
+        "rev": "9a95e2a7db20a2f5cf366961b5a69af464260080",
         "type": "github"
       },
       "original": {
