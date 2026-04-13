@@ -54,7 +54,7 @@
         }
         {
           # mt-remote
-          publicKey = "SyWatfaLXku+dgVSvqKBGGrrFx+V9ef1e6Pv/1yNb0Y=";
+          publicKey = "4FD9EOA+FPK4oNEkv4IA835apCt1oQqro0Nk4pZUyiE=";
           allowedIPs = [ "${network.hosts.wg-mt-remote.ip}/32" ];
         }
         {
