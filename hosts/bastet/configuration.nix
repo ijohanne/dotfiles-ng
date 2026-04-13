@@ -1,9 +1,23 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
+
+let
+  kmsOverlay = ''
+    [pi4]
+    dtoverlay=vc4-kms-v3d
+  '';
+in
 
 {
   imports = [
     ../rpi4-image/base.nix
   ];
+
+  sdImage.populateFirmwareCommands = lib.mkAfter ''
+    cat >> firmware/config.txt <<'EOF'
+
+    ${kmsOverlay}
+    EOF
+  '';
 
   networking = {
     hostName = lib.mkForce "bastet";
@@ -23,6 +37,55 @@
   systemd.tmpfiles.rules = [
     "d /var/lib/bootstrap 0700 root root -"
   ];
+
+  system.activationScripts.bastetRpiGlDriver.text = ''
+    config=/boot/firmware/config.txt
+
+    if [ ! -e "$config" ]; then
+      exit 0
+    fi
+
+    tmp="$(${pkgs.coreutils}/bin/mktemp)"
+
+    ${pkgs.gawk}/bin/awk '
+      /^\[pi4\]$/ {
+        pending_pi4 = 1
+        next
+      }
+
+      /^dtoverlay=vc4-(f)?kms-v3d$/ {
+        if (pending_pi4) {
+          pending_pi4 = 0
+        }
+        next
+      }
+
+      {
+        if (pending_pi4) {
+          print "[pi4]"
+          pending_pi4 = 0
+        }
+        print
+      }
+
+      END {
+        if (pending_pi4) {
+          print "[pi4]"
+        }
+      }
+    ' "$config" > "$tmp"
+
+    cat >> "$tmp" <<'EOF'
+
+    ${kmsOverlay}
+    EOF
+
+    if ! ${pkgs.diffutils}/bin/cmp -s "$tmp" "$config"; then
+      ${pkgs.coreutils}/bin/install -m 0644 "$tmp" "$config"
+    fi
+
+    rm -f "$tmp"
+  '';
 
   sops = {
     defaultSopsFile = ../../secrets/bastet.yaml;
