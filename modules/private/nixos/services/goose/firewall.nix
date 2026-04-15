@@ -4,6 +4,7 @@ let
   dnat = network.mkDnatRules {
     extIfaces = ''{ "ppp0", "${interfaces.external}" }'';
   };
+  eastWestIfaces = ''{ "wifi", "wired", "mgnt", "wg0" }'';
 in
 {
   networking = {
@@ -60,7 +61,7 @@ in
             chain forward {
               meta oiftype ppp tcp flags syn tcp option maxseg size set 1452 counter comment "ppp mss clamp"
               type filter hook forward priority filter; policy drop;
-              ip protocol udp ct state established ct status ! dnat flow add @fastnat counter comment "flow offload udp non-dnat"
+              ip protocol { tcp, udp } iifname ${eastWestIfaces} oifname ${eastWestIfaces} ct state established ct status ! dnat flow add @fastnat counter comment "flow offload trusted east-west"
               ct state invalid counter drop comment "invalid state"
               ip saddr ${network.hosts.livingroom-movistar-stb.ip} ip daddr 80.58.63.218 counter reject with icmp host-unreachable comment "stb acs block"
               iifname { "guest", "wifi", "wired", "mgnt", "${interfaces.external}", "wg0" } oifname {
