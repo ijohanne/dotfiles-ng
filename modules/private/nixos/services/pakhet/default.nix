@@ -15,7 +15,6 @@
     ./estepona.nix
     ./kubernetes.nix
     ./screeny.nix
-    ./mercy.nix
     ./grpc-proxier.nix
     ./pdf-detective.nix
     ./shouldidrinktoday.nix
@@ -128,37 +127,6 @@
     mode = "0400";
     owner = "grpc-proxier";
     group = "grpc-proxier";
-  };
-
-  # Mercy secrets
-  sops.secrets.mercy_auth_token = {
-    mode = "0400";
-    owner = "mercy";
-    group = "mercy";
-  };
-
-  sops.secrets.mercy_tb_email = {
-    mode = "0400";
-    owner = "mercy";
-    group = "mercy";
-  };
-
-  sops.secrets.mercy_tb_password = {
-    mode = "0400";
-    owner = "mercy";
-    group = "mercy";
-  };
-
-  sops.secrets.mercy_admin_name = {
-    mode = "0400";
-    owner = "mercy";
-    group = "mercy";
-  };
-
-  sops.secrets.mercy_admin_password = {
-    mode = "0400";
-    owner = "mercy";
-    group = "mercy";
   };
 
   # Vardrun unixpimps secrets

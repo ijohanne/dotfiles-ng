@@ -63,11 +63,6 @@
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 
-    mercy = {
-      url = "github:ijohanne/mercy";
-      inputs.nixpkgs.follows = "nixpkgs-stable";
-    };
-
     grpc-proxier = {
       url = "github:ijohanne/grpc-proxier/fix-hostplatform-system";
       inputs.nixpkgs.follows = "nixpkgs-stable";
@@ -187,7 +182,6 @@
     , nixpkgs-stable
     , home-manager-stable
     , screeny
-    , mercy
     , grpc-proxier
     , pdf-detective
     , claude-code-nix
@@ -274,7 +268,6 @@
             ijohanne-nur.nixosModules.pg-exporter
             ijohanne-nur.nixosModules.zot
             screeny.nixosModules.default
-            mercy.nixosModules.default
             grpc-proxier.nixosModules.default
             pdf-detective.nixosModules.default
             shouldidrinktoday.nixosModules.default
