@@ -1,5 +1,9 @@
-{ config, inputs, ... }:
+{ config, inputs, network, pkgs, ... }:
 
+let
+  chestCounterName = "k111_agw_main";
+  chestCounterDomain = "k111-agw-main-chest-counter.${network.domain}";
+in
 {
   sops.templates."screeny-maxmind-env" = {
     content = ''
@@ -31,6 +35,19 @@
         chestCounterEnabled = true;
 
         chest.googleApiKeyFile = config.sops.secrets.screeny_k111_agw_google_api_key.path;
+        chest.remoteCollector = {
+          enable = true;
+          endpointUrl = "http://${chestCounterDomain}";
+          sourceId = chestCounterName;
+          apiKeyFile = config.sops.secrets.screeny_k111_agw_chest_counter_api_key.path;
+
+          scheduler = {
+            maxRowsPerRun = 50;
+            runIntervalSecs = 300;
+            lowYieldRunIntervalSecs = 600;
+            lowYieldThresholdPercent = 50;
+          };
+        };
 
         telegram = {
           enable = true;
@@ -126,5 +143,79 @@
       domain = "tb.unixpimps.net";
       analytics.plausible.enable = true;
     };
+
+    chestCounterCollectors.${chestCounterName} = {
+      package = inputs.screeny.packages.${pkgs.stdenv.hostPlatform.system}.screeny-chest-counter;
+
+      sourceId = chestCounterName;
+      apiKeyFile = config.sops.secrets.screeny_k111_agw_chest_counter_api_key.path;
+      domain = chestCounterDomain;
+
+      totalBattle = {
+        login = "ij@unixpimps.net";
+        passwordFile = config.sops.secrets.screeny_k111_agw_chest_counter_tb_password.path;
+      };
+
+      email2fa = {
+        enable = true;
+        imapServer = "imap.unixpimps.net";
+        imapPort = 993;
+        username = "ij@unixpimps.net";
+        passwordFile = config.sops.secrets.screeny_k111_agw_chest_counter_mail_pass.path;
+        inboxFolder = "INBOX";
+        useTls = true;
+        useStartTls = false;
+        senderFilter = "noreply@service.totalbattle.com";
+      };
+
+      database = {
+        type = "postgres";
+        postgres = {
+          host = null;
+          socketPath = "/run/postgresql";
+          database = "chest_counter_k111_agw_main";
+          user = "chest_counter_k111_agw_main";
+        };
+      };
+
+      browser = {
+        headless = true;
+        captureDebugScreenshots = false;
+        captureRewardProbe = false;
+        extraArgs = [
+          "--use-gl=angle"
+          "--use-angle=swiftshader-webgl"
+          "--enable-unsafe-swiftshader"
+        ];
+      };
+
+      artifacts.policy = "failures";
+
+      scheduler = {
+        maxRowsPerRun = 50;
+        runIntervalSecs = 300;
+        lowYieldRunIntervalSecs = 600;
+        lowYieldThresholdPercent = 50;
+      };
+
+      ocr.workerConcurrency = 1;
+
+      service = {
+        cpuQuota = "100%";
+        cpuWeight = 20;
+        nice = 10;
+      };
+
+      prometheusLabels = {
+        clan = chestCounterName;
+        service = "chest-counter";
+      };
+    };
   };
+
+  services.nginx.virtualHosts.${chestCounterDomain}.locations."/".extraConfig = ''
+    allow 10.0.0.0/8;
+    allow fd00:255::/48;
+    deny all;
+  '';
 }

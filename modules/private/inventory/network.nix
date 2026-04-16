@@ -144,6 +144,7 @@ let
     { name = "fatty-ipmi"; ip = hosts.pakhet.ip; }
     { name = "goose-ipmi"; ip = hosts.pakhet.ip; }
     { name = "grafana"; ip = hosts.pakhet.ip; }
+    { name = "k111-agw-main-chest-counter"; ip = hosts.pakhet.ip; }
     { name = "printcam"; ip = hosts.pakhet.ip; }
     { name = "obico"; ip = hosts.pakhet.ip; }
   ];
