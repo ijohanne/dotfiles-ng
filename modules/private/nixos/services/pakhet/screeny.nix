@@ -266,9 +266,9 @@ in
       ocr.workerConcurrency = 1;
 
       service = {
-        cpuQuota = "100%";
-        cpuWeight = 20;
-        nice = 10;
+        cpuQuota = "200%";
+        cpuWeight = 100;
+        nice = 0;
       };
 
       prometheusLabels = {
