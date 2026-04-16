@@ -186,6 +186,9 @@ in
           "--use-gl=angle"
           "--use-angle=swiftshader-webgl"
           "--enable-unsafe-swiftshader"
+          "--disable-crash-reporter"
+          "--disable-crashpad"
+          "--disable-breakpad"
         ];
       };
 
