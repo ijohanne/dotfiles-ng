@@ -133,9 +133,4 @@ in
       nice = 10;
     };
   };
-
-  systemd.services."screeny-chest-counter-${collectorName}" = {
-    after = [ "postgresql-setup.service" ];
-    requires = [ "postgresql-setup.service" ];
-  };
 }
