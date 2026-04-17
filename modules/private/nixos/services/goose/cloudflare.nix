@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, lib, ... }:
 
 {
   services.cloudflare-dyndns = {
@@ -14,9 +14,11 @@
 
   systemd.services.cloudflare-dyndns = {
     after = [ "hickory-dns.service" ];
+    wantedBy = lib.mkForce [ ];
     serviceConfig = {
       Restart = "on-failure";
       RestartSec = "10s";
+      RestartSteps = 10;
       RestartMaxDelaySec = "5min";
     };
   };
