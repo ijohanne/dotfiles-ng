@@ -96,24 +96,6 @@
     group = "screeny";
   };
 
-  sops.secrets.screeny_k111_agw_chest_counter_api_key = {
-    mode = "0440";
-    owner = "screeny";
-    group = "screeny";
-  };
-
-  sops.secrets.screeny_k111_agw_chest_counter_tb_password = {
-    mode = "0400";
-    owner = "chest_counter_k111_agw_main";
-    group = "screeny";
-  };
-
-  sops.secrets.screeny_k111_agw_chest_counter_mail_pass = {
-    mode = "0400";
-    owner = "chest_counter_k111_agw_main";
-    group = "screeny";
-  };
-
   # Screeny k111-test secrets
   sops.secrets.screeny_k111_test_jwt_secret = {
     mode = "0400";

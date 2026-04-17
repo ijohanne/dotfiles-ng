@@ -1,9 +1,5 @@
-{ config, inputs, network, pkgs, ... }:
+{ config, inputs, ... }:
 
-let
-  chestCounterName = "k111_agw_main";
-  chestCounterDomain = "k111-agw-main-chest-counter.${network.domain}";
-in
 {
   sops.templates."screeny-maxmind-env" = {
     content = ''
@@ -35,19 +31,6 @@ in
         chestCounterEnabled = true;
 
         chest.googleApiKeyFile = config.sops.secrets.screeny_k111_agw_google_api_key.path;
-        chest.remoteCollector = {
-          enable = true;
-          endpointUrl = "http://${chestCounterDomain}";
-          sourceId = chestCounterName;
-          apiKeyFile = config.sops.secrets.screeny_k111_agw_chest_counter_api_key.path;
-
-          scheduler = {
-            maxRowsPerRun = 50;
-            runIntervalSecs = 300;
-            lowYieldRunIntervalSecs = 600;
-            lowYieldThresholdPercent = 50;
-          };
-        };
 
         telegram = {
           enable = true;
@@ -143,144 +126,5 @@ in
       domain = "tb.unixpimps.net";
       analytics.plausible.enable = true;
     };
-
-    chestCounterCollectors.${chestCounterName} = {
-      package = inputs.screeny.packages.${pkgs.stdenv.hostPlatform.system}.screeny-chest-counter;
-
-      sourceId = chestCounterName;
-      apiKeyFile = config.sops.secrets.screeny_k111_agw_chest_counter_api_key.path;
-      domain = chestCounterDomain;
-
-      totalBattle = {
-        login = "ij@unixpimps.net";
-        passwordFile = config.sops.secrets.screeny_k111_agw_chest_counter_tb_password.path;
-      };
-
-      email2fa = {
-        enable = true;
-        imapServer = "imap.unixpimps.net";
-        imapPort = 993;
-        username = "ij@unixpimps.net";
-        passwordFile = config.sops.secrets.screeny_k111_agw_chest_counter_mail_pass.path;
-        inboxFolder = "INBOX";
-        useTls = true;
-        useStartTls = false;
-        senderFilter = "noreply@service.totalbattle.com";
-      };
-
-      database = {
-        type = "postgres";
-        postgres = {
-          host = null;
-          socketPath = "/run/postgresql";
-          database = "chest_counter_k111_agw_main";
-          user = "chest_counter_k111_agw_main";
-        };
-      };
-
-      browser = {
-        headless = true;
-        captureDebugScreenshots = false;
-        captureRewardProbe = false;
-
-        openClanPoint = {
-          x = 1043;
-          y = 982;
-        };
-        openGiftsPoint = {
-          x = 540;
-          y = 408;
-        };
-
-        giftsTabPoint = {
-          x = 855;
-          y = 342;
-        };
-        giftsTabFallbackPoint = {
-          x = 855;
-          y = 349;
-        };
-
-        triumphalGiftsTabPoint = {
-          x = 1059;
-          y = 342;
-        };
-        triumphalGiftsTabFallbackPoint = {
-          x = 1123;
-          y = 349;
-        };
-
-        giftsList = {
-          openRowPoint = {
-            x = 1348;
-            y = 436;
-          };
-
-          rowCapture = {
-            firstRowRegion = {
-              x = 690;
-              y = 372;
-              width = 760;
-              height = 100;
-            };
-            rowPitchY = 100;
-            rowCount = 4;
-          };
-        };
-
-        giftsTabSwatches = {
-          giftsRegion = {
-            x = 722;
-            y = 328;
-            width = 24;
-            height = 14;
-          };
-
-          triumphalRegion = {
-            x = 1019;
-            y = 328;
-            width = 24;
-            height = 14;
-          };
-        };
-
-        extraArgs = [
-          "--use-gl=angle"
-          "--use-angle=swiftshader-webgl"
-          "--enable-unsafe-swiftshader"
-          "--disable-crash-reporter"
-          "--disable-crashpad"
-          "--disable-breakpad"
-        ];
-      };
-
-      artifacts.policy = "failures";
-
-      scheduler = {
-        maxRowsPerRun = 50;
-        runIntervalSecs = 300;
-        lowYieldRunIntervalSecs = 600;
-        lowYieldThresholdPercent = 50;
-      };
-
-      ocr.workerConcurrency = 1;
-
-      service = {
-        cpuQuota = "200%";
-        cpuWeight = 100;
-        nice = 0;
-      };
-
-      prometheusLabels = {
-        clan = chestCounterName;
-        service = "chest-counter";
-      };
-    };
   };
-
-  services.nginx.virtualHosts.${chestCounterDomain}.locations."/".extraConfig = ''
-    allow 10.0.0.0/8;
-    allow fd00:255::/48;
-    deny all;
-  '';
 }
