@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, modules, ... }:
 
 let
   kmsOverlay = ''
@@ -10,6 +10,7 @@ in
 {
   imports = [
     ../rpi4-image/base.nix
+    modules.public.nixos.services.nodeExporterBase
   ];
 
   sdImage.populateFirmwareCommands = lib.mkAfter ''
@@ -23,6 +24,7 @@ in
     hostName = lib.mkForce "bastet";
     firewall.allowedTCPPorts = [
       22
+      9100
       9199
     ];
   };

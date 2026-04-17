@@ -52,8 +52,20 @@
           labels = { instance = "pakhet"; os = "linux"; };
         }
         {
+          targets = [ "${network.hosts.bastet.ip}:9100" ];
+          labels = { instance = "bastet"; os = "linux"; };
+        }
+        {
           targets = [ "${network.hosts.wg-khosu.ip}:9100" ];
           labels = { instance = "khosu"; os = "linux"; };
+        }
+        {
+          targets = [ "${network.hosts.wg-anubis.ip}:9100" ];
+          labels = { instance = "anubis"; os = "linux"; };
+        }
+        {
+          targets = [ "${network.hosts.wg-seshat.ip}:9100" ];
+          labels = { instance = "seshat"; os = "linux"; };
         }
       ];
     }
