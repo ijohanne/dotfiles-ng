@@ -41,67 +41,6 @@ in
       passwordFile = config.sops.secrets.screeny_k111_agw_chest_counter_tb_password.path;
     };
 
-    browser = {
-      viewport = {
-        width = 1920;
-        height = 1080;
-      };
-      openClanPoint = {
-        x = 1043;
-        y = 982;
-      };
-      openGiftsPoint = {
-        x = 540;
-        y = 408;
-      };
-      giftsTabPoint = {
-        x = 855;
-        y = 342;
-      };
-      giftsTabFallbackPoint = {
-        x = 855;
-        y = 349;
-      };
-      triumphalGiftsTabPoint = {
-        x = 1059;
-        y = 342;
-      };
-      triumphalGiftsTabFallbackPoint = {
-        x = 1123;
-        y = 349;
-      };
-      giftsList = {
-        openRowPoint = {
-          x = 1348;
-          y = 436;
-        };
-        rowCapture = {
-          firstRowRegion = {
-            x = 690;
-            y = 372;
-            width = 760;
-            height = 100;
-          };
-          rowPitchY = 100;
-          rowCount = 4;
-        };
-      };
-      giftsTabSwatches = {
-        giftsRegion = {
-          x = 722;
-          y = 328;
-          width = 24;
-          height = 14;
-        };
-        triumphalRegion = {
-          x = 1019;
-          y = 328;
-          width = 24;
-          height = 14;
-        };
-      };
-    };
-
     email2fa = {
       enable = true;
       imapServer = "imap.unixpimps.net";
@@ -125,12 +64,6 @@ in
     prometheusLabels = {
       clan = "K111-AGW";
       service = "chest-counter";
-    };
-
-    service = {
-      cpuQuota = "150%";
-      cpuWeight = 20;
-      nice = 10;
     };
   };
 }
