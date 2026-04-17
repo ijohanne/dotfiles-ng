@@ -44,6 +44,7 @@ Uses **sops-nix** (not agenix). Secrets are in `secrets/` encrypted per-host. To
 | `ij-desktop` | x86_64-linux | unstable | Desktop workstation |
 | `goose` | x86_64-linux | stable | Router/gateway (DNS, DHCP, firewall) |
 | `pakhet` | x86_64-linux | stable | Server (mail, gitea, web services) — VM on fatty |
+| `seshat` | x86_64-linux | stable | OVH Kimsufi server (screeny chest counter) |
 | `khosu` | x86_64-linux | stable | VPS (mail relay, MX for inbound) |
 | `rpi4-stable/unstable` | aarch64-linux | stable/unstable | Raspberry Pi images |
 
@@ -59,9 +60,9 @@ darwin-rebuild switch --flake .#macbook
 sudo nixos-rebuild switch --flake .#ij-desktop
 ```
 
-### Remote hosts (goose, pakhet, khosu, anubis)
+### Remote hosts (goose, pakhet, khosu, anubis, seshat)
 
-`goose`, `pakhet`, and `anubis` pull the flake from GitHub via `deploy-<hostname>` wrappers. Changes **must be pushed first**.
+`goose`, `pakhet`, `anubis`, and `seshat` pull the flake from GitHub via `deploy-<hostname>` wrappers. Changes **must be pushed first**.
 
 When a matching local checkout is found, the deploy helper intentionally runs `git add -A`
 before rebuilding from that checkout. Use `--no-local` to skip the local-checkout path and
@@ -72,6 +73,7 @@ git push
 ssh r0.est.unixpimps.net deploy-goose        # goose (router)
 ssh pakhet.est.unixpimps.net deploy-pakhet    # pakhet (server)
 ssh anubis.unixpimps.net deploy-anubis        # anubis (Kimsufi)
+ssh seshat.unixpimps.net deploy-seshat        # seshat (Kimsufi)
 ```
 
 The `deploy-<hostname>` wrapper checks for a local checkout under any user's `~/git/dotfiles-ng`, intentionally runs `git add -A`, and builds from it if found. Pass `--no-local` to skip that behavior and rebuild directly from GitHub instead. See @NETWORK.md for IPs.

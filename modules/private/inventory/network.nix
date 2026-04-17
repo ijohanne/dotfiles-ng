@@ -48,6 +48,7 @@ let
     sobek-wired = { ip = "10.255.101.244"; ip6 = "${ulaPrefix}:101::244"; mac = "dc:a6:32:08:7c:32"; dns = [ "sobek" ]; };
     chronos-wired = { ip = "10.255.101.202"; ip6 = "${ulaPrefix}:101::202"; mac = "dc:a6:32:34:1e:6d"; dns = [ "chronos" ]; };
     hapi = { ip = "10.255.101.242"; ip6 = "${ulaPrefix}:101::242"; mac = "b8:27:eb:ff:f8:5f"; };
+    seshat = { ip = "51.75.118.69"; ip6 = "2001:41d0:303:8545::1"; dns = [ "seshat.unixpimps.net" ]; };
     cctax-couch = {
       ip = "10.255.101.209";
       ip6 = "${ulaPrefix}:101::209";
@@ -124,6 +125,7 @@ let
     wg-ij-remote = { ip = "10.100.0.11"; dns = [ "wg-ij-remote" "ij-remote" ]; };
     wg-mt-remote = { ip = "10.100.0.12"; dns = [ "wg-mt-remote" "mt-remote" ]; };
     wg-hv-remote = { ip = "10.100.0.13"; dns = [ "wg-hv-remote" "hv-remote" ]; };
+    wg-seshat = { ip = "10.100.0.14"; dns = [ "wg-seshat" ]; };
 
     # --- Kubernetes ---
     k8s-master-00 = { ip = "10.255.101.234"; ip6 = "${ulaPrefix}:101::234"; mac = "d8:43:ae:1a:1a:5c"; };

@@ -6,6 +6,7 @@ keys:
   - &goose age1w3txsuslrkv7m8jak3lqkwyu6624p55ewrjyprwzdzwxpfgjkvxsh9y0dz
   - &khosu age1t7cj3yeyge87wk4fcljur5wv0fap68fyqjrf8fzk7vppv2v5qfmqpuhzfy
   - &anubis age1r0phf8m20r0jcypw4f7c2r7nh54rr32audrld5ssky48ck8gpuzs47d5ds
+  - &seshat age1e2qgnpndj9kkcnu3lq9d8uz695znpsx2qh46wzqvc0gzfyrpdqusm5u57w
   - &bastet age1harfm00p7lwgx2xtzy7dcm5ez4wgjlk7nm9zzghezg7kc8vz3djqnde324
 
 creation_rules:
@@ -29,6 +30,13 @@ creation_rules:
           - *ij
           - *mkj
           - *anubis
+
+  - path_regex: secrets/seshat\.(yaml|json|env|ini)$
+    key_groups:
+      - age:
+          - *ij
+          - *mkj
+          - *seshat
 
   - path_regex: secrets/pakhet\.(yaml|json|env|ini)$
     key_groups:

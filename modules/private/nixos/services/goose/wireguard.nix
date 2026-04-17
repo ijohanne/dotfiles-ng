@@ -62,6 +62,11 @@
           publicKey = "sTgwTlg/mIjJsYxfvk0fxNIL1jaZVsCs/INcDwsE0XE=";
           allowedIPs = [ "${network.hosts.wg-hv-remote.ip}/32" ];
         }
+        {
+          # seshat (Kimsufi screeny host)
+          publicKey = "z4iTbNzyVMonTLiWz+T+5XJinwYao/76KzGQ8wPP/B8=";
+          allowedIPs = [ "${network.hosts.wg-seshat.ip}/32" ];
+        }
       ];
     };
   };

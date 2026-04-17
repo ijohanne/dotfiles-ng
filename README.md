@@ -21,6 +21,7 @@ and mostly opt into named aspects rather than owning large piles of inline logic
   - [macOS Setup](#macos-setup)
   - [Linux Desktop Setup](#linux-desktop-setup)
   - [Anubis (OVH Kimsufi)](#anubis-ovh-kimsufi)
+  - [Seshat (OVH Kimsufi)](#seshat-ovh-kimsufi)
   - [Khosu (netcup VPS)](#khosu-netcup-vps)
   - [Goose (Router)](#goose-router)
   - [Pakhet (Application Server)](#pakhet-application-server)
@@ -42,6 +43,7 @@ and mostly opt into named aspects rather than owning large piles of inline logic
 - **ij-desktop** — Linux (x86_64-linux)
 - **goose** — NixOS router/firewall (x86_64-linux)
 - **anubis** — NixOS torrent host on OVH Kimsufi (x86_64-linux)
+- **seshat** — NixOS screeny chest counter host on OVH Kimsufi (x86_64-linux)
 - **khosu** — NixOS mail relay VPS on netcup (x86_64-linux)
 - **pakhet** — NixOS application server (x86_64-linux)
 - **bhyve-image** — Minimal bhyve VM image (x86_64-linux)
@@ -120,6 +122,11 @@ sudo nixos-rebuild switch --flake .#pakhet
 nix run nixpkgs#nixos-rebuild -- switch \
   --flake .#anubis \
   --target-host root@anubis.unixpimps.net \
+  --build-host root@pakhet.est.unixpimps.net
+
+nix run nixpkgs#nixos-rebuild -- switch \
+  --flake .#seshat \
+  --target-host root@seshat.unixpimps.net \
   --build-host root@pakhet.est.unixpimps.net
 
 nix run nixpkgs#nixos-rebuild -- switch \
@@ -311,6 +318,45 @@ These deployment lessons are hard-won:
 - **The age key changes on every nixos-anywhere run** — always update `.sops.yaml` and run `sops updatekeys` after install, before the first real boot.
 - **Verify critical boot config before deploying** — use `nix eval .#nixosConfigurations.anubis.config.boot.swraid.enable` and similar checks. Each failed boot costs significant time since you must re-enter rescue mode and re-run nixos-anywhere.
 - **UEFI, not BIOS** — Kimsufi servers use UEFI boot. Use EF00 (ESP) partitions, not EF02 (BIOS boot).
+
+### Seshat (OVH Kimsufi)
+
+Seshat is a dedicated OVH Kimsufi server for the screeny chest counter. It uses disko with a single BIOS-booted GPT disk and is installed via [nixos-anywhere](https://github.com/nix-community/nixos-anywhere).
+
+#### Prerequisites
+
+- SSH access as `debian@seshat.unixpimps.net`
+- Passwordless sudo on that Debian install
+- OVH monitoring/interventions disabled before kexec
+
+#### Installation
+
+1. From your local machine:
+   ```bash
+   nix run github:nix-community/nixos-anywhere -- \
+     --flake .#seshat \
+     --phases kexec,disko,install \
+     debian@seshat.unixpimps.net
+   ```
+
+   **`--phases kexec,disko,install` (no reboot) is mandatory on Kimsufi.**
+
+2. After nixos-anywhere completes, note the age key it prints. Update `.sops.yaml` to add `seshat` as an age recipient for `secrets/seshat.yaml`, then re-encrypt:
+   ```bash
+   sops updatekeys secrets/seshat.yaml
+   ```
+
+3. Reboot the server.
+
+4. Once NixOS boots, deploy future changes by building on pakhet:
+   ```bash
+   nix run nixpkgs#nixos-rebuild -- switch \
+     --flake .#seshat \
+     --target-host root@seshat.unixpimps.net \
+     --build-host root@pakhet.est.unixpimps.net
+   ```
+
+The WireGuard backhaul registers `wg-seshat.est.unixpimps.net` as `10.100.0.14`.
 
 ### Khosu (netcup VPS)
 

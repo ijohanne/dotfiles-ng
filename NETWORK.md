@@ -79,6 +79,10 @@ Site: **Estepona, Spain** — domain `est.es.unixpimps.net`
                WireGuard backhaul to goose (wg1, 10.100.0.10)
                ProtonVPN P2P tunnel (wg0)
                qBittorrent + nginx + proton-port-sync
+
+    seshat --- Kimsufi dedicated server (OVH Eco, 51.75.118.69)
+               NixOS screeny chest counter host
+               WireGuard backhaul to goose (wg0, 10.100.0.14)
 ```
 
 ### Trunk Links (LACP Aggregates)

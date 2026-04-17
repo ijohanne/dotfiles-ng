@@ -323,6 +323,23 @@
           };
         };
 
+        seshat = {
+          kind = "nixos";
+          channel = "stable";
+          system = "x86_64-linux";
+          modules = [
+            disko.nixosModules.disko
+            sops-nix.nixosModules.sops
+            ./hosts/seshat/disko.nix
+            ./hosts/seshat/configuration.nix
+          ];
+          backupFileExtension = "bak";
+          hmUsers = {
+            ${users.ij.username} = hmUser [ (import privateModules.home.users.ij { }) ] true;
+            ${users.mj.username} = hmUser [ privateModules.home.users.mj ] false;
+          };
+        };
+
         khosu = {
           kind = "nixos";
           channel = "stable";

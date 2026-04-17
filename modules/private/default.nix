@@ -15,6 +15,7 @@
       khosuServices = ./nixos/aspects/khosu-services.nix;
       managedRemoteHost = ./nixos/aspects/managed-remote-host.nix;
       pakhetServices = ./nixos/aspects/pakhet-services.nix;
+      seshatServices = ./nixos/aspects/seshat-services.nix;
       workstationSecrets = ./nixos/aspects/workstation-secrets.nix;
     };
   };
