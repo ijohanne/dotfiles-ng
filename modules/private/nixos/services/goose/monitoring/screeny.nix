@@ -40,10 +40,11 @@ in
         {
           targets = [ "${network.hosts.wg-seshat.ip}:8090" ];
           labels = {
+            collector = "seshat";
             clan = "K111-AGW";
-            collector = "k111-agw";
-            service = "chest-counter";
+	    source = "K111-AGW-MAIN";
             source_id = "k111_agw_main";
+            service = "chest-counter";
           };
         }
       ];
