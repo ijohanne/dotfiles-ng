@@ -948,7 +948,7 @@
 
             echo ""
             echo "Checking all dependent services are healthy..."
-            for svc in screeny-k111-agw screeny-k111-test screeny-k131-god screeny-geoip vardrun-unixpimps vardrun-opsplaza plausible; do
+            for svc in screeny-k111-agw screeny-geoip vardrun-unixpimps vardrun-opsplaza plausible; do
               status=$(systemctl is-active "$svc" 2>/dev/null || echo "not found")
               printf "  %-25s %s\n" "$svc" "$status"
             done

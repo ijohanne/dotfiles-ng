@@ -5,6 +5,10 @@ let
 in
 
 {
+  environment.systemPackages = [
+    inputs.screeny.packages.x86_64-linux.screeny-migrate
+  ];
+
   sops.templates."screeny-maxmind-env" = {
     content = ''
       MAXMIND_LICENSE_KEY=${config.sops.placeholder.maxmind_api_key}
@@ -25,6 +29,7 @@ in
         host = "0.0.0.0";
         port = 3002;
         databaseType = "postgres";
+        postgres.database = "screeny_k111_agw";
         jwtSecretFile = config.sops.secrets.screeny_k111_agw_jwt_secret.path;
         adminPasswordFile = config.sops.secrets.screeny_k111_agw_admin_password.path;
         geoipDatabasePath = "/var/lib/screeny/GeoLite2-Country.mmdb";
@@ -64,64 +69,6 @@ in
       };
 
       analytics.plausible.enable = true;
-
-      backup = {
-        enable = true;
-        schedule = "daily";
-      };
-    };
-
-    instances.k111-test = {
-      domain = "screeny-test.unixpimps.net";
-      clanType = "main";
-      frontendPackage = inputs.screeny.packages.x86_64-linux.screeny-frontend;
-
-      backend = {
-        package = inputs.screeny.packages.x86_64-linux.screeny-backend-postgres;
-        host = "0.0.0.0";
-        port = 3006;
-        databaseType = "postgres";
-        jwtSecretFile = config.sops.secrets.screeny_k111_test_jwt_secret.path;
-        adminPasswordFile = config.sops.secrets.screeny_k111_test_admin_password.path;
-        questionnairesEnabled = true;
-        layoutsEnabled = true;
-      };
-
-      frontendPort = 3007;
-
-      nginx = {
-        enableACME = true;
-        forceSSL = true;
-        disableGraphiQL = true;
-      };
-
-      backup = {
-        enable = true;
-        schedule = "daily";
-      };
-    };
-
-    instances.k131-god = {
-      domain = "screeny-god.unixpimps.net";
-      clanType = "main";
-      frontendPackage = inputs.screeny.packages.x86_64-linux.screeny-frontend;
-
-      backend = {
-        package = inputs.screeny.packages.x86_64-linux.screeny-backend-postgres;
-        host = "0.0.0.0";
-        port = 3004;
-        databaseType = "postgres";
-        jwtSecretFile = config.sops.secrets.screeny_k131_god_jwt_secret.path;
-        adminPasswordFile = config.sops.secrets.screeny_k131_god_admin_password.path;
-      };
-
-      frontendPort = 3003;
-
-      nginx = {
-        enableACME = true;
-        forceSSL = true;
-        disableGraphiQL = true;
-      };
 
       backup = {
         enable = true;

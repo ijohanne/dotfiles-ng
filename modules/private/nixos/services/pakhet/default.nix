@@ -1,5 +1,12 @@
 { network, config, pkgs, lib, ... }:
 
+let
+  screenySecret = {
+    mode = "0440";
+    owner = config.services.screeny.user;
+    group = config.services.screeny.group;
+  };
+in
 {
   imports = [
     ./nginx.nix
@@ -72,67 +79,12 @@
     group = "root";
   };
 
-  sops.secrets.screeny_k111_agw_jwt_secret = {
-    mode = "0400";
-    owner = "screeny";
-    group = "screeny";
-  };
-
-  sops.secrets.screeny_k111_agw_admin_password = {
-    mode = "0400";
-    owner = "screeny";
-    group = "screeny";
-  };
-
-  sops.secrets.screeny_k111_agw_telegram_bot_token = {
-    mode = "0400";
-    owner = "screeny";
-    group = "screeny";
-  };
-
-  sops.secrets.screeny_k111_agw_google_api_key = {
-    mode = "0400";
-    owner = "screeny";
-    group = "screeny";
-  };
-
-  sops.secrets.screeny_k111_agw_chest_counter_api_key = {
-    mode = "0400";
-    owner = "screeny";
-    group = "screeny";
-  };
-
-  sops.secrets.screeny_control_user_ij_pass = {
-    mode = "0400";
-    owner = "screeny";
-    group = "screeny";
-  };
-
-  # Screeny k111-test secrets
-  sops.secrets.screeny_k111_test_jwt_secret = {
-    mode = "0400";
-    owner = "screeny";
-    group = "screeny";
-  };
-
-  sops.secrets.screeny_k111_test_admin_password = {
-    mode = "0400";
-    owner = "screeny";
-    group = "screeny";
-  };
-
-  # Screeny k131-god secrets
-  sops.secrets.screeny_k131_god_jwt_secret = {
-    mode = "0400";
-    owner = "screeny";
-    group = "screeny";
-  };
-
-  sops.secrets.screeny_k131_god_admin_password = {
-    mode = "0400";
-    owner = "screeny";
-    group = "screeny";
-  };
+  sops.secrets.screeny_k111_agw_jwt_secret = screenySecret;
+  sops.secrets.screeny_k111_agw_admin_password = screenySecret;
+  sops.secrets.screeny_k111_agw_telegram_bot_token = screenySecret;
+  sops.secrets.screeny_k111_agw_google_api_key = screenySecret;
+  sops.secrets.screeny_k111_agw_chest_counter_api_key = screenySecret;
+  sops.secrets.screeny_control_user_ij_pass = screenySecret;
 
   # gRPC proxier secrets
   sops.secrets.grpc_proxier_cctax_admin_password = {

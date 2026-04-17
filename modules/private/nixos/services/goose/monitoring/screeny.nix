@@ -22,13 +22,6 @@ in
             service = "screeny";
           };
         }
-        {
-          targets = [ "${network.hosts.pakhet.ip}:3004" ];
-          labels = {
-            clan = "K131-GOD";
-            service = "screeny";
-          };
-        }
       ];
     }
     {
@@ -42,7 +35,7 @@ in
           labels = {
             collector = "seshat";
             clan = "K111-AGW";
-	    source = "K111-AGW-MAIN";
+            source = "K111-AGW-MAIN";
             source_id = "k111_agw_main";
             service = "chest-counter";
           };

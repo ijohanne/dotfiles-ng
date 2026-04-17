@@ -27,8 +27,8 @@
   };
 
   systemd.services.borgbackup-job-screeny = {
-    after = [ "screeny-backup.service" ];
-    wants = [ "screeny-backup.service" ];
+    after = [ "screeny-k111-agw-backup.service" ];
+    wants = [ "screeny-k111-agw-backup.service" ];
   };
 
 }
