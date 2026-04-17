@@ -61,8 +61,6 @@ in
 
   security.pam.services.sudo_local.touchIdAuth = true;
 
-  services.lorri.enable = true;
-
   services.openssh = {
     enable = true;
     extraConfig = ''

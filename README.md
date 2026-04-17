@@ -94,14 +94,12 @@ When `developer = true`:
 - Neovim LSP is enabled (nixd, rust-analyzer, lua_ls)
 - Neovim completion (nvim-cmp) with LSP sources
 - LSP keybindings (gd, gr, K, leader ca)
-- Lorri daemon service (Linux only)
 - Dev language servers (nixd, lua-language-server)
 
 When `developer = false`:
 - Basic neovim without LSP
 - No completion engine
 - No LSP keybindings
-- No lorri daemon
 
 ## Quick Start
 

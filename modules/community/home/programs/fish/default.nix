@@ -16,9 +16,6 @@
     };
     interactiveShellInit = lib.concatStringsSep "\n" ([
       ''
-        if not set -q SSH_CONNECTION; or not set -q SSH_AUTH_SOCK
-            export SSH_AUTH_SOCK="$(${pkgs.gnupg}/bin/gpgconf --list-dirs agent-ssh-socket 2>/dev/null || echo "$HOME/.gnupg/S.gpg-agent.ssh")"
-        end
         abbr -a ps procs
         function dog
             ${pkgs.doggo}/bin/doggo $argv

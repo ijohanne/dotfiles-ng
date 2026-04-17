@@ -22,7 +22,6 @@
     kitty = ./home/programs/kitty;
     lazygit = ./home/programs/lazygit;
     leita = ./home/programs/leita;
-    lorri = ./home/programs/lorri;
     neovim = ./home/programs/neovim;
     opencode = ./home/programs/opencode;
     procs = ./home/programs/procs;

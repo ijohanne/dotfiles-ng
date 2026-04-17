@@ -14,7 +14,6 @@
     (import ../programs/delta { })
     (import ../programs/procs { })
     ../programs/neovim
-    ../programs/lorri
     ../programs/agent-skills-cli
     ../programs/leita
     ../programs/vardrun

@@ -18,15 +18,15 @@ in
     );
   };
 
-  home.activation.importGpgKey = lib.hm.dag.entryBefore [ "writeBoundary" ] ''
+  home.activation.importGpgKey = lib.mkIf desktop (lib.hm.dag.entryBefore [ "writeBoundary" ] ''
     gpg --import "${../../../../secrets/ij-public-key.gpg}" 2>/dev/null || true
-  '';
+  '');
 
-  home.activation.tldrUpdate = lib.hm.dag.entryAfter [ "importGpgKey" ] ''
+  home.activation.tldrUpdate = lib.hm.dag.entryAfter ([ "writeBoundary" ] ++ lib.optional desktop "importGpgKey") ''
     ${pkgs.tealdeer}/bin/tldr --update 2>/dev/null || true
   '';
 
-  services.gpg-agent = lib.mkIf (!pkgs.stdenv.isDarwin) {
+  services.gpg-agent = lib.mkIf (!pkgs.stdenv.isDarwin && desktop) {
     enable = true;
     enableSshSupport = true;
   };
