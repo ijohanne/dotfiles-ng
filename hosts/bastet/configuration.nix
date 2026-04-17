@@ -43,50 +43,48 @@ in
   system.activationScripts.bastetRpiGlDriver.text = ''
     config=/boot/firmware/config.txt
 
-    if [ ! -e "$config" ]; then
-      exit 0
-    fi
+    if [ -e "$config" ]; then
+      tmp="$(${pkgs.coreutils}/bin/mktemp)"
 
-    tmp="$(${pkgs.coreutils}/bin/mktemp)"
-
-    ${pkgs.gawk}/bin/awk '
-      /^\[pi4\]$/ {
-        pending_pi4 = 1
-        next
-      }
-
-      /^dtoverlay=vc4-(f)?kms-v3d$/ {
-        if (pending_pi4) {
-          pending_pi4 = 0
+      ${pkgs.gawk}/bin/awk '
+        /^\[pi4\]$/ {
+          pending_pi4 = 1
+          next
         }
-        next
-      }
 
-      {
-        if (pending_pi4) {
-          print "[pi4]"
-          pending_pi4 = 0
+        /^dtoverlay=vc4-(f)?kms-v3d$/ {
+          if (pending_pi4) {
+            pending_pi4 = 0
+          }
+          next
         }
-        print
-      }
 
-      END {
-        if (pending_pi4) {
-          print "[pi4]"
+        {
+          if (pending_pi4) {
+            print "[pi4]"
+            pending_pi4 = 0
+          }
+          print
         }
-      }
-    ' "$config" > "$tmp"
 
-    cat >> "$tmp" <<'EOF'
+        END {
+          if (pending_pi4) {
+            print "[pi4]"
+          }
+        }
+      ' "$config" > "$tmp"
+
+      cat >> "$tmp" <<'EOF'
 
     ${kmsOverlay}
     EOF
 
-    if ! ${pkgs.diffutils}/bin/cmp -s "$tmp" "$config"; then
-      ${pkgs.coreutils}/bin/install -m 0644 "$tmp" "$config"
-    fi
+      if ! ${pkgs.diffutils}/bin/cmp -s "$tmp" "$config"; then
+        ${pkgs.coreutils}/bin/install -m 0644 "$tmp" "$config"
+      fi
 
-    rm -f "$tmp"
+      rm -f "$tmp"
+    fi
   '';
 
   sops = {
