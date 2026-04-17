@@ -3,7 +3,8 @@
 let
   dashboards = pkgs.runCommand "screeny-dashboards" { } ''
     mkdir -p "$out"
-    cp ${inputs.screeny + "/docs/grafana-dashboard.json"} "$out/screeny.json"
+    cp ${inputs.screeny + "/docs/grafana-dashboard.json"} "$out/screeny-backend.json"
+    cp ${inputs.screeny + "/docs/grafana-chest-counter-dashboard.json"} "$out/screeny-chest-counter.json"
   '';
 in
 {
@@ -17,7 +18,7 @@ in
         {
           targets = [ "${network.hosts.pakhet.ip}:3002" ];
           labels = {
-            clan = "k111_agw_main";
+            clan = "K111-AGW";
             service = "screeny";
           };
         }
@@ -37,10 +38,10 @@ in
       scrape_interval = "15s";
       static_configs = [
         {
-          targets = [ "k111-agw-main-chest-counter.${network.domain}:80" ];
+          targets = [ "${network.hosts.wg-seshat.ip}:8090" ];
           labels = {
-            clan = "k111_agw_main";
-            collector = "k111_agw_main";
+            clan = "K111-AGW";
+            collector = "k111-agw";
             service = "chest-counter";
             source_id = "k111_agw_main";
           };

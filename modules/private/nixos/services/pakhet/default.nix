@@ -96,6 +96,18 @@
     group = "screeny";
   };
 
+  sops.secrets.screeny_k111_agw_chest_counter_api_key = {
+    mode = "0400";
+    owner = "screeny";
+    group = "screeny";
+  };
+
+  sops.secrets.screeny_control_user_ij_pass = {
+    mode = "0400";
+    owner = "screeny";
+    group = "screeny";
+  };
+
   # Screeny k111-test secrets
   sops.secrets.screeny_k111_test_jwt_secret = {
     mode = "0400";

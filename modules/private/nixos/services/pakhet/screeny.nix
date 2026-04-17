@@ -1,4 +1,8 @@
-{ config, inputs, ... }:
+{ config, inputs, network, ... }:
+
+let
+  chestCollectorUrl = "http://${network.hosts.wg-seshat.ip}:8090";
+in
 
 {
   sops.templates."screeny-maxmind-env" = {
@@ -31,6 +35,17 @@
         chestCounterEnabled = true;
 
         chest.googleApiKeyFile = config.sops.secrets.screeny_k111_agw_google_api_key.path;
+        chest.remoteCollector = {
+          enable = true;
+          endpointUrl = chestCollectorUrl;
+          sourceId = "k111_agw_main";
+          apiKeyFile = config.sops.secrets.screeny_k111_agw_chest_counter_api_key.path;
+          scheduler = {
+            runIntervalSecs = 900;
+            lowYieldRunIntervalSecs = 900;
+            maxRowsPerRun = 500;
+          };
+        };
 
         telegram = {
           enable = true;
@@ -125,6 +140,24 @@
       package = inputs.screeny.packages.x86_64-linux.tbhub;
       domain = "tb.unixpimps.net";
       analytics.plausible.enable = true;
+    };
+
+    chestCounterControl = {
+      enable = true;
+      package = inputs.screeny.packages.x86_64-linux.screeny-chest-counter;
+      domain = "screeny-chestadm.unixpimps.net";
+
+      users.ij.passwordHashFile = config.sops.secrets.screeny_control_user_ij_pass.path;
+
+      remotes.k111-agw = {
+        baseUrl = chestCollectorUrl;
+        apiKeyFile = config.sops.secrets.screeny_k111_agw_chest_counter_api_key.path;
+      };
+
+      nginx = {
+        enableACME = true;
+        forceSSL = true;
+      };
     };
   };
 }

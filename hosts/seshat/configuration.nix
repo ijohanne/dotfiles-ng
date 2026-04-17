@@ -53,6 +53,7 @@ in
       enable = true;
       allowedTCPPorts = [ 22 ];
       allowedUDPPorts = [ 51820 ];
+      interfaces.wg0.allowedTCPPorts = [ 8090 ];
     };
   };
 

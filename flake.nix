@@ -330,6 +330,7 @@
           modules = [
             disko.nixosModules.disko
             sops-nix.nixosModules.sops
+            screeny.nixosModules.default
             ./hosts/seshat/disko.nix
             ./hosts/seshat/configuration.nix
           ];
