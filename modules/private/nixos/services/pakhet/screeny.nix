@@ -37,20 +37,9 @@ in
         questionnairesEnabled = true;
         layoutsEnabled = true;
         layoutCalculatorVersions = [ "V2" ];
-        chestCounterEnabled = true;
+        chestCounterEnabled = false;
 
-        chest.googleApiKeyFile = config.sops.secrets.screeny_k111_agw_google_api_key.path;
-        chest.remoteCollector = {
-          enable = true;
-          endpointUrl = chestCollectorUrl;
-          sourceId = "k111_agw_main";
-          apiKeyFile = config.sops.secrets.screeny_k111_agw_chest_counter_api_key.path;
-          scheduler = {
-            runIntervalSecs = 900;
-            lowYieldRunIntervalSecs = 900;
-            maxRowsPerRun = 500;
-          };
-        };
+        chest.remoteCollector.enable = false;
 
         telegram = {
           enable = true;
