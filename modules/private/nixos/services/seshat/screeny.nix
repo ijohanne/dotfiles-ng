@@ -34,6 +34,12 @@ in
       port = collectorPort;
     };
 
+    browser.profile = {
+      enable = true;
+      resetOnLaunch = false;
+      cleanRetryOnFailure = true;
+    };
+
     database.type = "postgres";
 
     totalBattle = {
