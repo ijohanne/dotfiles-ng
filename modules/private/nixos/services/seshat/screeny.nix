@@ -54,9 +54,11 @@ in
     };
 
     scheduler = {
-      runIntervalSecs = 300;
-      lowYieldRunIntervalSecs = 600;
       maxRowsPerRun = 2000;
+      runIntervalSecs = 60;
+      failedRunRetryIntervalSecs = 60;
+      lowYieldRunIntervalSecs = 600;
+      lowYieldThresholdPercent = 50;
     };
 
     ocr.workerConcurrency = 1;
