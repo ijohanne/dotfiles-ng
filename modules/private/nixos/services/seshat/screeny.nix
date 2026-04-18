@@ -64,7 +64,7 @@ in
       runIntervalSecs = 60;
       failedRunRetryIntervalSecs = 60;
       lowYieldRunIntervalSecs = 600;
-      lowYieldThresholdPercent = 50;
+      lowYieldThresholdPercent = 0;
     };
 
     ocr.workerConcurrency = 1;
