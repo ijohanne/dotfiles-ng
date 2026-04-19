@@ -43,11 +43,15 @@ in
     browser.backend = "playwright-sidecar";
 
     browser.networkObservability = {
-      enable = true;
+      enable = false;
       eventLog = {
-        enable = true;
+        enable = false;
         capturePayloads = true;
         maxPayloadBytes = 200000;
+      };
+      rubens = {
+        enable = true;
+        interRowFastPath.enable = true;
       };
     };
 
