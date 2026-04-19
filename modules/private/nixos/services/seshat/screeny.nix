@@ -42,10 +42,13 @@ in
 
     browser.backend = "playwright-sidecar";
 
-    browser.networkObservability.eventLog = {
+    browser.networkObservability = {
       enable = true;
-      capturePayloads = true;
-      maxPayloadBytes = 4096;
+      eventLog = {
+        enable = true;
+        capturePayloads = true;
+        maxPayloadBytes = 4096;
+      };
     };
 
     database.type = "postgres";
