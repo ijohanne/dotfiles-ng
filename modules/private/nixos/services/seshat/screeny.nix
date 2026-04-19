@@ -40,6 +40,8 @@ in
       cleanRetryOnFailure = true;
     };
 
+    browser.backend = "playwright-sidecar";
+
     database.type = "postgres";
 
     totalBattle = {
