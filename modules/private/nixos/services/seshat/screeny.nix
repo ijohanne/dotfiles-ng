@@ -42,6 +42,12 @@ in
 
     browser.backend = "playwright-sidecar";
 
+    browser.networkObservability.eventLog = {
+      enable = true;
+      capturePayloads = true;
+      maxPayloadBytes = 4096;
+    };
+
     database.type = "postgres";
 
     totalBattle = {
