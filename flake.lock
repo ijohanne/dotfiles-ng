@@ -2677,11 +2677,11 @@
         "rust-overlay": "rust-overlay_9"
       },
       "locked": {
-        "lastModified": 1776613786,
-        "narHash": "sha256-NYVnzCRrlAeZs3omPDdQ1oxlM3M96HeDPhaiS/kcn+o=",
+        "lastModified": 1776640816,
+        "narHash": "sha256-yrg5pG8GQYadq8/g9yQdqQuPDDAei9kuG3GaHXaKzmw=",
         "owner": "ijohanne",
         "repo": "screeny",
-        "rev": "24dc1e4a09d876e0e71ae4b944ceb55d97290099",
+        "rev": "e55a796b5366c5e1dacff704411cc594bb5a561f",
         "type": "github"
       },
       "original": {
