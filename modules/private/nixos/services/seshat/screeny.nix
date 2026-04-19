@@ -47,7 +47,7 @@ in
       eventLog = {
         enable = true;
         capturePayloads = true;
-        maxPayloadBytes = 4096;
+        maxPayloadBytes = 200000;
       };
     };
 
