@@ -59,7 +59,7 @@
     };
 
     screeny = {
-      url = "github:ijohanne/screeny";
+      url = "github:ijohanne/screeny/screeny-p1o-playwright-sidecar";
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 

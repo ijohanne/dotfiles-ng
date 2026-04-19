@@ -2677,15 +2677,16 @@
         "rust-overlay": "rust-overlay_9"
       },
       "locked": {
-        "lastModified": 1776547177,
-        "narHash": "sha256-Bk23N8xsIz8GIM7UHIaoja5zCI1JCUHc5rTYAOi+n58=",
+        "lastModified": 1776593512,
+        "narHash": "sha256-LxFwd7iyR6D7/GHQO98tw6UE6rZE67TXuoeEIrysWEc=",
         "owner": "ijohanne",
         "repo": "screeny",
-        "rev": "60eff9fb355e0be6b6491003ce091d1c9acdbc09",
+        "rev": "92f5d06d7667ea2ef0489151dd3f1ba2a2f3536f",
         "type": "github"
       },
       "original": {
         "owner": "ijohanne",
+        "ref": "screeny-p1o-playwright-sidecar",
         "repo": "screeny",
         "type": "github"
       }
