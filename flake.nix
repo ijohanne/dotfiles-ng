@@ -59,7 +59,7 @@
     };
 
     screeny = {
-      url = "github:ijohanne/screeny";
+      url = "git+https://github.com/Devops-Plaza-SL/screeny.git";
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 
