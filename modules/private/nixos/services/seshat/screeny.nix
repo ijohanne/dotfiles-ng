@@ -76,10 +76,10 @@ in
 
     scheduler = {
       maxRowsPerRun = 2000;
-      runIntervalSecs = 60;
+      runIntervalSecs = 90;
       failedRunRetryIntervalSecs = 60;
       lowYieldRunIntervalSecs = 600;
-      lowYieldThresholdPercent = 0;
+      lowYieldThresholdPercent = 20;
     };
 
     ocr.workerConcurrency = 1;
