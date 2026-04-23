@@ -85,7 +85,7 @@ in
 
       users.ij.passwordHashFile = config.sops.secrets.screeny_control_user_ij_pass.path;
 
-      remotes.k111-agw = {
+      remotes.seshat = {
         baseUrl = chestCollectorUrl;
         apiKeyFile = config.sops.secrets.screeny_k111_agw_chest_counter_api_key.path;
       };
