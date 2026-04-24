@@ -2514,11 +2514,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1777065584,
-        "narHash": "sha256-D+t+xrLYJz4f6IDkBLXG5B9FoLzU4lVB4psdPuf3M+U=",
+        "lastModified": 1777069277,
+        "narHash": "sha256-pys8aN1WUuQJ6OWgZ6vdqinSOmvcCk4Et6oiY6x0DJ4=",
         "owner": "Devops-Plaza-SL",
         "repo": "runekist",
-        "rev": "b109b41075b1f3a3165ceb9d3a387ada2f30497d",
+        "rev": "aea75cc3111e597aa79362545d5561fc58ab12e0",
         "type": "github"
       },
       "original": {
