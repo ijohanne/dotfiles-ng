@@ -67,6 +67,16 @@
           publicKey = "z4iTbNzyVMonTLiWz+T+5XJinwYao/76KzGQ8wPP/B8=";
           allowedIPs = [ "${network.hosts.wg-seshat.ip}/32" ];
         }
+        {
+          # app-srv-00-rbx-fr (OpsPlaza RBX app server)
+          publicKey = "7l0WgmtS4C/Sk8Pn/UeXKrLqVxU3sRHCxzPeA1wmzEs=";
+          allowedIPs = [ "${network.hosts.wg-app-srv-00-rbx-fr.ip}/32" ];
+        }
+        {
+          # app-srv-00-nur-de (OpsPlaza NUR app server)
+          publicKey = "oPlSf8EHsZn/a7InzetISds/HjWBsc+0IAXn7uqJdBI=";
+          allowedIPs = [ "${network.hosts.wg-app-srv-00-nur-de.ip}/32" ];
+        }
       ];
     };
   };
