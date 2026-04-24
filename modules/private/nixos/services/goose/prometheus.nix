@@ -46,6 +46,12 @@
       enable = true;
       datasources = {
         settings = {
+          deleteDatasources = [
+            {
+              name = "Prometheus";
+              orgId = 1;
+            }
+          ];
           datasources = [
             {
               name = "Prometheus";
