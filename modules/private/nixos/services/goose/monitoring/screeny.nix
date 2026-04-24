@@ -22,6 +22,13 @@ in
             service = "screeny";
           };
         }
+        {
+          targets = [ "${network.hosts.pakhet.ip}:3012" ];
+          labels = {
+            clan = "K112-FUBAR";
+            service = "screeny";
+          };
+        }
       ];
     }
     {

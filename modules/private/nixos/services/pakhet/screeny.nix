@@ -61,6 +61,46 @@
       };
     };
 
+    instances.k112-fubar = {
+      domain = "fubar.unixpimps.net";
+      clanType = "main";
+      frontendPackage = inputs.screeny.packages.x86_64-linux.screeny-frontend;
+
+      backend = {
+        package = inputs.screeny.packages.x86_64-linux.screeny-backend-postgres;
+        adminUsername = "Ferodad";
+        host = "0.0.0.0";
+        port = 3012;
+        databaseType = "postgres";
+        postgres.database = "screeny_k112_fubar";
+        jwtSecretFile = config.sops.secrets.screeny_k112_fubar_jwt_secret.path;
+        adminPasswordFile = config.sops.secrets.screeny_k112_fubar_admin_password.path;
+        geoipDatabasePath = "/var/lib/screeny/GeoLite2-Country.mmdb";
+
+        questionnairesEnabled = true;
+        layoutsEnabled = true;
+        layoutCalculatorVersions = [ "V2" ];
+        chestCounterEnabled = false;
+
+        chest.remoteCollector.enable = false;
+      };
+
+      frontendPort = 3011;
+
+      nginx = {
+        enableACME = true;
+        forceSSL = true;
+        disableGraphiQL = true;
+      };
+
+      analytics.plausible.enable = true;
+
+      backup = {
+        enable = true;
+        schedule = "daily";
+      };
+    };
+
     geoip = {
       enable = true;
       package = inputs.screeny.packages.x86_64-linux.screeny-backend-postgres;
