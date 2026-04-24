@@ -128,6 +128,7 @@ let
     wg-seshat = { ip = "10.100.0.14"; dns = [ "wg-seshat" ]; };
     wg-app-srv-00-rbx-fr = { ip = "10.100.0.15"; dns = [ "wg-app-srv-00-rbx-fr" ]; };
     wg-app-srv-00-nur-de = { ip = "10.100.0.16"; dns = [ "wg-app-srv-00-nur-de" ]; };
+    wg-seshat-ops = { ip = "172.29.89.2"; dns = [ "wg-seshat-ops" ]; };
 
     # --- Kubernetes ---
     k8s-master-00 = { ip = "10.255.101.234"; ip6 = "${ulaPrefix}:101::234"; mac = "d8:43:ae:1a:1a:5c"; };
