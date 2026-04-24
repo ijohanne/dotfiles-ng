@@ -14,6 +14,11 @@
     apiKeyFile = config.sops.secrets.screeny_chest_counter_api_key.path;
 
     listen = {
+      host = network.hosts.wg-seshat-ops.ip;
+      port = 8090;
+    };
+
+    metricsListen = {
       host = network.hosts.wg-seshat.ip;
       port = 8090;
     };
