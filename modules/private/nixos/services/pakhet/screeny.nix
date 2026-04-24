@@ -1,8 +1,4 @@
-{ config, inputs, network, ... }:
-
-let
-  chestCollectorUrl = "http://${network.hosts.wg-seshat.ip}:8090";
-in
+{ config, inputs, ... }:
 
 {
   environment.systemPackages = [
@@ -76,24 +72,6 @@ in
       package = inputs.screeny.packages.x86_64-linux.tbhub;
       domain = "tb.unixpimps.net";
       analytics.plausible.enable = true;
-    };
-
-    chestCounterControl = {
-      enable = true;
-      package = inputs.screeny.packages.x86_64-linux.screeny-chest-counter;
-      domain = "screeny-chestadm.unixpimps.net";
-
-      users.ij.passwordHashFile = config.sops.secrets.screeny_control_user_ij_pass.path;
-
-      remotes.seshat = {
-        baseUrl = chestCollectorUrl;
-        apiKeyFile = config.sops.secrets.screeny_k111_agw_chest_counter_api_key.path;
-      };
-
-      nginx = {
-        enableACME = true;
-        forceSSL = true;
-      };
     };
   };
 }

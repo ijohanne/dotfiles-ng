@@ -82,8 +82,6 @@ in
   sops.secrets.screeny_k111_agw_jwt_secret = screenySecret;
   sops.secrets.screeny_k111_agw_admin_password = screenySecret;
   sops.secrets.screeny_k111_agw_telegram_bot_token = screenySecret;
-  sops.secrets.screeny_k111_agw_chest_counter_api_key = screenySecret;
-  sops.secrets.screeny_control_user_ij_pass = screenySecret;
 
   # gRPC proxier secrets
   sops.secrets.grpc_proxier_cctax_admin_password = {
