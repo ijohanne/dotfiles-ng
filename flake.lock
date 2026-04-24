@@ -122,7 +122,7 @@
         "flake-parts": "flake-parts_5",
         "import-tree": "import-tree_3",
         "nixpkgs": "nixpkgs_16",
-        "systems": "systems_20",
+        "systems": "systems_21",
         "treefmt-nix": "treefmt-nix_5"
       },
       "locked": {
@@ -678,7 +678,7 @@
     },
     "flake-utils_16": {
       "inputs": {
-        "systems": "systems_21"
+        "systems": "systems_20"
       },
       "locked": {
         "lastModified": 1731533236,
@@ -769,6 +769,24 @@
     "flake-utils_20": {
       "inputs": {
         "systems": "systems_25"
+      },
+      "locked": {
+        "lastModified": 1731533236,
+        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "flake-utils_21": {
+      "inputs": {
+        "systems": "systems_26"
       },
       "locked": {
         "lastModified": 1731533236,
@@ -1389,6 +1407,22 @@
         "owner": "ijohanne",
         "ref": "fix-hostplatform-system",
         "repo": "grpc-proxier",
+        "type": "github"
+      }
+    },
+    "heroicons": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1758217845,
+        "narHash": "sha256-fySfwUujtFl/0zSM47e/XN42DBqsT3v4IojrXyu0ob0=",
+        "owner": "tailwindlabs",
+        "repo": "heroicons",
+        "rev": "bd6c5c0d5acec14d116da611b4c5044fec1bb7dc",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tailwindlabs",
+        "repo": "heroicons",
         "type": "github"
       }
     },
@@ -2453,6 +2487,7 @@
         "pdf-detective": "pdf-detective",
         "perlpimpnet": "perlpimpnet",
         "proton-port-sync": "proton-port-sync",
+        "runekist": "runekist",
         "rust-overlay": "rust-overlay_8",
         "screeny": "screeny",
         "shouldidrinktoday": "shouldidrinktoday",
@@ -2468,6 +2503,28 @@
         "uptimeplaza-checker-ssl": "uptimeplaza-checker-ssl",
         "uptimeplaza-checker-website-screenshot": "uptimeplaza-checker-website-screenshot",
         "vardrun": "vardrun"
+      }
+    },
+    "runekist": {
+      "inputs": {
+        "flake-utils": "flake-utils_16",
+        "heroicons": "heroicons",
+        "nixpkgs": [
+          "nixpkgs-stable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1777059249,
+        "narHash": "sha256-kJTxghn37XD4UNif6MXf2nUOK5FZtsug8VvIV7M1i+8=",
+        "owner": "Devops-Plaza-SL",
+        "repo": "runekist",
+        "rev": "9231b9ca8f7084b8138b49f61164a0d54effcefa",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Devops-Plaza-SL",
+        "repo": "runekist",
+        "type": "github"
       }
     },
     "rust-overlay": {
@@ -2686,7 +2743,7 @@
     "screeny": {
       "inputs": {
         "bun2nix": "bun2nix_3",
-        "flake-utils": "flake-utils_16",
+        "flake-utils": "flake-utils_17",
         "git-hooks": "git-hooks_8",
         "nixpkgs": [
           "nixpkgs-stable"
@@ -2785,7 +2842,7 @@
     },
     "stripe-router": {
       "inputs": {
-        "flake-utils": "flake-utils_17",
+        "flake-utils": "flake-utils_18",
         "nixpkgs": [
           "nixpkgs-stable"
         ]
@@ -3074,6 +3131,21 @@
         "type": "github"
       }
     },
+    "systems_26": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
     "systems_3": {
       "locked": {
         "lastModified": 1681028828,
@@ -3181,7 +3253,7 @@
     },
     "t3code-nix": {
       "inputs": {
-        "flake-utils": "flake-utils_18",
+        "flake-utils": "flake-utils_19",
         "nixpkgs": "nixpkgs_17"
       },
       "locked": {
@@ -3200,7 +3272,7 @@
     },
     "themailer-wrapper": {
       "inputs": {
-        "flake-utils": "flake-utils_19",
+        "flake-utils": "flake-utils_20",
         "git-hooks": "git-hooks_9",
         "nixpkgs": [
           "nixpkgs-stable"
@@ -3457,7 +3529,7 @@
     },
     "vardrun": {
       "inputs": {
-        "flake-utils": "flake-utils_20",
+        "flake-utils": "flake-utils_21",
         "nixpkgs": "nixpkgs_18"
       },
       "locked": {
