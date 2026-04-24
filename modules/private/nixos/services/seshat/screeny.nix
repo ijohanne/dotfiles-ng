@@ -36,4 +36,6 @@
     scheduler.maxRowsPerRun = 2000;
     ocr.workerConcurrency = 1;
   };
+
+  networking.firewall.interfaces.wg-ops.allowedTCPPorts = [ 8090 ];
 }
