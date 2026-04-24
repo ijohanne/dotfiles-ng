@@ -63,6 +63,11 @@
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 
+    stripe-router = {
+      url = "github:Devops-Plaza-SL/stripe-webhook-router";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
+    };
+
     grpc-proxier = {
       url = "github:ijohanne/grpc-proxier/fix-hostplatform-system";
       inputs.nixpkgs.follows = "nixpkgs-stable";

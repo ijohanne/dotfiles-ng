@@ -28,5 +28,6 @@
     ./uptimeplaza.nix
     ./chrony.nix
     ./gpsd.nix
+    ./stripe-webhook-router.nix
   ];
 }

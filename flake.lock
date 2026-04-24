@@ -766,6 +766,24 @@
         "type": "github"
       }
     },
+    "flake-utils_20": {
+      "inputs": {
+        "systems": "systems_25"
+      },
+      "locked": {
+        "lastModified": 1731533236,
+        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
     "flake-utils_3": {
       "inputs": {
         "systems": "systems_3"
@@ -2439,6 +2457,7 @@
         "screeny": "screeny",
         "shouldidrinktoday": "shouldidrinktoday",
         "sops-nix": "sops-nix",
+        "stripe-router": "stripe-router",
         "t3code-nix": "t3code-nix",
         "themailer-wrapper": "themailer-wrapper",
         "unixpimpsnet": "unixpimpsnet",
@@ -2764,6 +2783,27 @@
         "type": "github"
       }
     },
+    "stripe-router": {
+      "inputs": {
+        "flake-utils": "flake-utils_17",
+        "nixpkgs": [
+          "nixpkgs-stable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1777045879,
+        "narHash": "sha256-zeCuwOpAmRr0rtbA0dSCVMQXctD1cCwj1wkiczkerlY=",
+        "owner": "Devops-Plaza-SL",
+        "repo": "stripe-webhook-router",
+        "rev": "34d1bb56da2392cb6b0ed9888d5c3c779a1a530f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Devops-Plaza-SL",
+        "repo": "stripe-webhook-router",
+        "type": "github"
+      }
+    },
     "systems": {
       "locked": {
         "lastModified": 1681028828,
@@ -3019,6 +3059,21 @@
         "type": "github"
       }
     },
+    "systems_25": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
     "systems_3": {
       "locked": {
         "lastModified": 1681028828,
@@ -3126,7 +3181,7 @@
     },
     "t3code-nix": {
       "inputs": {
-        "flake-utils": "flake-utils_17",
+        "flake-utils": "flake-utils_18",
         "nixpkgs": "nixpkgs_17"
       },
       "locked": {
@@ -3145,7 +3200,7 @@
     },
     "themailer-wrapper": {
       "inputs": {
-        "flake-utils": "flake-utils_18",
+        "flake-utils": "flake-utils_19",
         "git-hooks": "git-hooks_9",
         "nixpkgs": [
           "nixpkgs-stable"
@@ -3402,7 +3457,7 @@
     },
     "vardrun": {
       "inputs": {
-        "flake-utils": "flake-utils_19",
+        "flake-utils": "flake-utils_20",
         "nixpkgs": "nixpkgs_18"
       },
       "locked": {
