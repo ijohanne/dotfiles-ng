@@ -49,6 +49,7 @@
           datasources = [
             {
               name = "Prometheus";
+              uid = "DS_PROMETHEUS";
               type = "prometheus";
               url = "http://localhost:9001";
               isDefault = true;
