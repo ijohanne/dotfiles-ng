@@ -1,5 +1,16 @@
-{ config, ... }:
+{ config, lib, ... }:
 
+let
+  plausibleProxyVhost = {
+    forceSSL = true;
+    enableACME = true;
+    acmeRoot = null;
+    locations."/" = {
+      proxyPass = "http://127.0.0.1:8000";
+      proxyWebsockets = true;
+    };
+  };
+in
 {
   services.plausible = {
     enable = true;
@@ -23,13 +34,8 @@
     };
   };
 
-  services.nginx.virtualHosts."analytics.unixpimps.net" = {
-    forceSSL = true;
-    enableACME = true;
-    acmeRoot = null;
-    locations."/" = {
-      proxyPass = "http://127.0.0.1:8000";
-      proxyWebsockets = true;
-    };
-  };
+  services.nginx.virtualHosts = lib.genAttrs [
+    "analytics.unixpimps.net"
+    "analytics.opsplaza.com"
+  ] (_: plausibleProxyVhost);
 }
