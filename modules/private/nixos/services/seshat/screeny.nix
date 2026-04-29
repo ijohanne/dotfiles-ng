@@ -34,7 +34,10 @@
 
     database.type = "postgres";
     scheduler.maxRowsPerRun = 2000;
-    ocr.workerConcurrency = 2;
+    ocr = {
+      workerConcurrency = 2;
+      openmpThreadLimit = 1;
+    };
   };
 
   networking.firewall.interfaces.wg-ops.allowedTCPPorts = [ 8090 ];
