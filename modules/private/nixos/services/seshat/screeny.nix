@@ -36,6 +36,7 @@
     scheduler.maxRowsPerRun = 2000;
     ocr = {
       workerConcurrency = 2;
+      idleWorkerConcurrency = 5;
       openmpThreadLimit = 1;
     };
   };
