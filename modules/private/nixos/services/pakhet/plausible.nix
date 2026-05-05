@@ -37,5 +37,8 @@ in
   services.nginx.virtualHosts = lib.genAttrs [
     "analytics.unixpimps.net"
     "analytics.opsplaza.com"
+    "analytics.mathxp.app"
+    "analytics.volahealth.com"
+    "analytics.beevpn.com"
   ] (_: plausibleProxyVhost);
 }
