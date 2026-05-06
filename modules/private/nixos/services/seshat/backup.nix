@@ -38,10 +38,17 @@ in
       tmp="${backupDir}/.postgresql-dump.sql.gz.$$"
       final="${backupDir}/postgresql-dump.sql.gz"
 
+      rm -f "$final"
+      trap 'rm -f "$tmp"' EXIT
+
       pg_dumpall | gzip -9 > "$tmp"
+      trap - EXIT
       mv "$tmp" "$final"
     '';
   };
+
+  programs.ssh.knownHosts."zh3691.rsync.net".publicKey =
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJtclizeBy1Uo3D86HpgD3LONGVH0CJ0NT+YfZlldAJd";
 
   services.borgbackup.jobs.postgresql = {
     paths = backupDir;
@@ -55,6 +62,6 @@ in
 
   systemd.services.borgbackup-job-postgresql = {
     after = [ "postgresql-backup.service" ];
-    wants = [ "postgresql-backup.service" ];
+    requires = [ "postgresql-backup.service" ];
   };
 }
