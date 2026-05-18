@@ -25,19 +25,11 @@
 
     browser.backend = "playwright-sidecar";
 
-    browser.networkObservability = {
-      rubens = {
-        enable = true;
-        interRowFastPath.enable = true;
-      };
-    };
-
     database.type = "postgres";
     scheduler.maxRowsPerRun = 2000;
+
     ocr = {
-      workerConcurrency = 2;
       idleWorkerConcurrency = 5;
-      openmpThreadLimit = 1;
     };
   };
 
