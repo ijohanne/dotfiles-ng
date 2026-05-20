@@ -25,6 +25,15 @@
 
     browser.backend = "playwright-sidecar";
 
+    browser.networkObservability.rubens.giftTrace = {
+      enable = true;
+      captureBodies = true;
+      maxBodyBytes = 65536;
+      clickWindowMillis = 1500;
+      listWindowMillis = 5000;
+      includeClanBootstrap = false;
+    };
+
     database.type = "postgres";
     scheduler.maxRowsPerRun = 2000;
 
