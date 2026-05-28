@@ -1494,11 +1494,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1779962714,
-        "narHash": "sha256-IYBRTjvcOGFOZVcoug+ZcagZPOe2MCfLNAhFyXXFM+4=",
+        "lastModified": 1779963679,
+        "narHash": "sha256-GyrB+Aw0TZsL0AaGoXJZT4aouD3t46x8FWxsujXP2YA=",
         "owner": "ijohanne",
         "repo": "hrafnsyn",
-        "rev": "e0b21595295c9c05a9c03106109d5a421789f831",
+        "rev": "1803f4733d8afeab426275dda1a46112e1d4d55c",
         "type": "github"
       },
       "original": {
@@ -1548,11 +1548,11 @@
         "zot": "zot"
       },
       "locked": {
-        "lastModified": 1779962745,
-        "narHash": "sha256-pSKp9nbvKqc9j4nQsCGwzZkOettk6DeOE33ng+6Crx8=",
+        "lastModified": 1779964286,
+        "narHash": "sha256-vXqHlG/DWLW8xaV9niyRZS1uL6PeC+gjxXcLUqWlsck=",
         "owner": "ijohanne",
         "repo": "nur-packages",
-        "rev": "74f9fc1718e7d9a2e1cd9134556bbc38de2c0bd7",
+        "rev": "816b80d83d87ae3ef2d872b603ef2275685ee389",
         "type": "github"
       },
       "original": {
