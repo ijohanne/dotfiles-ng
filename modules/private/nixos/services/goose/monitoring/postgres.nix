@@ -30,6 +30,12 @@
             instance = "collector-00-muc-de";
           };
         }
+        {
+          targets = [ "${network.hosts.wg-collector-00-nur-de.ip}:9630" ];
+          labels = {
+            instance = "collector-00-nur-de";
+          };
+        }
       ];
     }
   ];

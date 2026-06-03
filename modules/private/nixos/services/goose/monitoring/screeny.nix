@@ -57,6 +57,16 @@ in
             service = "chest-counter";
           };
         }
+        {
+          targets = [ "${network.hosts.wg-collector-00-nur-de.ip}:8090" ];
+          labels = {
+            collector = "collector-00-nur-de";
+            clan = "K111-AGW";
+            source = "K111-AGW-MAIN";
+            source_id = "k111_agw_main";
+            service = "chest-counter";
+          };
+        }
       ];
     }
   ];

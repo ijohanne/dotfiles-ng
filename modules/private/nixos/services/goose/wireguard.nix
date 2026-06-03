@@ -82,6 +82,11 @@
           publicKey = "2MXbTccWhRsHmjScSn9wWlgTNeUHY9UxdaNhKTk4+H8=";
           allowedIPs = [ "${network.hosts.wg-collector-00-muc-de.ip}/32" ];
         }
+        {
+          # collector-00-nur-de (Screeny chest collector)
+          publicKey = "1WxGeN84Kv/hkp/l44/FaJz+8mVU/xzk+x3mbBQmJnY=";
+          allowedIPs = [ "${network.hosts.wg-collector-00-nur-de.ip}/32" ];
+        }
       ];
     };
   };
