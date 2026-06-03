@@ -6,6 +6,7 @@
     defaults.email = "sysops@unixpimps.net";
     defaults = {
       dnsProvider = "cloudflare";
+      dnsResolver = "1.1.1.1:53";
       dnsPropagationCheck = true;
       credentialsFile = config.sops.secrets.cloudflare_api_key.path;
     };

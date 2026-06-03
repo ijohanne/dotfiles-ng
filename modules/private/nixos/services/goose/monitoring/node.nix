@@ -67,6 +67,10 @@
           targets = [ "${network.hosts.wg-seshat.ip}:9100" ];
           labels = { instance = "seshat"; os = "linux"; };
         }
+        {
+          targets = [ "${network.hosts.wg-collector-00-muc-de.ip}:9100" ];
+          labels = { instance = "collector-00-muc-de"; os = "linux"; };
+        }
       ];
     }
     {

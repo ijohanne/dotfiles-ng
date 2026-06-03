@@ -77,6 +77,11 @@
           publicKey = "oPlSf8EHsZn/a7InzetISds/HjWBsc+0IAXn7uqJdBI=";
           allowedIPs = [ "${network.hosts.wg-app-srv-00-nur-de.ip}/32" ];
         }
+        {
+          # collector-00-muc-de (Screeny chest collector)
+          publicKey = "2MXbTccWhRsHmjScSn9wWlgTNeUHY9UxdaNhKTk4+H8=";
+          allowedIPs = [ "${network.hosts.wg-collector-00-muc-de.ip}/32" ];
+        }
       ];
     };
   };

@@ -18,6 +18,7 @@
     environment.BORG_REMOTE_PATH = "/usr/local/bin/borg1/borg1";
     repo = "zh3691@zh3691.rsync.net:backups/screeny";
     compression = "auto,zstd";
+    prune.keep.daily = 7;
     startAt = "daily";
   };
 

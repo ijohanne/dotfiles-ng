@@ -92,7 +92,7 @@ in
       "paypal@nordic-t.me" = [ "ij@nordic-t.me" ];
     };
     stateVersion = 3;
-    certificateScheme = "acme-nginx";
+    certificateScheme = "acme";
     certificateDomains = [
       "r0.est.unixpimps.net"
       "pop3.unixpimps.net"

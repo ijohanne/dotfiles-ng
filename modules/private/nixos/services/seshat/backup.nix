@@ -22,7 +22,6 @@ in
     path = [
       config.services.postgresql.package
       pkgs.coreutils
-      pkgs.gzip
     ];
 
     serviceConfig = {
@@ -35,13 +34,13 @@ in
     script = ''
       set -euo pipefail
 
-      tmp="${backupDir}/.postgresql-dump.sql.gz.$$"
-      final="${backupDir}/postgresql-dump.sql.gz"
+      tmp="${backupDir}/.postgresql-dump.sql.$$"
+      final="${backupDir}/postgresql-dump.sql"
 
       rm -f "$final"
       trap 'rm -f "$tmp"' EXIT
 
-      pg_dumpall | gzip -9 > "$tmp"
+      pg_dumpall > "$tmp"
       trap - EXIT
       mv "$tmp" "$final"
     '';
@@ -57,6 +56,7 @@ in
     environment.BORG_REMOTE_PATH = "/usr/local/bin/borg1/borg1";
     repo = "zh3691@zh3691.rsync.net:backups/seshat-postgresql";
     compression = "auto,zstd";
+    prune.keep.daily = 7;
     startAt = "daily";
   };
 
