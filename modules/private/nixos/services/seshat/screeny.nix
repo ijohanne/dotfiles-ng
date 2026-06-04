@@ -24,6 +24,10 @@
     };
 
     browser.backend = "playwright-sidecar";
+    browser.journalScan = {
+      enable = true;
+      clickDetails = true;
+    };
 
 #    browser.networkObservability.rubens.giftTrace = {
 #      enable = true;
