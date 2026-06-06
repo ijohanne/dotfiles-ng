@@ -2753,11 +2753,11 @@
         "rust-overlay": "rust-overlay_9"
       },
       "locked": {
-        "lastModified": 1780694770,
-        "narHash": "sha256-qW9E4jJ5c5xKs3qYz14VtEzQVQ29r/iLCsAVNlgk0AY=",
+        "lastModified": 1780754115,
+        "narHash": "sha256-f0nl/lECyR6pNgLFJijNNEsrugv4V2kQN1ztRfDJL90=",
         "owner": "Devops-Plaza-SL",
         "repo": "screeny",
-        "rev": "1a1b4bfea1caaaac6cfb00f770ae1ee7750714fd",
+        "rev": "85ca7c2268e3c4d84cc00df4692de14b20bd36f0",
         "type": "github"
       },
       "original": {
@@ -3533,11 +3533,11 @@
         "nixpkgs": "nixpkgs_18"
       },
       "locked": {
-        "lastModified": 1774869584,
-        "narHash": "sha256-tcUZeWWgGL8ct3P5oHiBDpZtew2i2mcppdzF3gllggc=",
+        "lastModified": 1780709928,
+        "narHash": "sha256-vLKOZpb705ds3DyxQ3U6WJxjCKtaxFkfC9KJWdpBKHA=",
         "owner": "uptimeplaza",
         "repo": "vardrun",
-        "rev": "dab970255bd531e47fa68d15de6a6a6a8338339a",
+        "rev": "45fde0a3aa2ab71cf781b0ed9094a91ec245bc3e",
         "type": "github"
       },
       "original": {
