@@ -48,9 +48,9 @@ in
           };
         }
         {
-          targets = [ "${network.hosts.wg-collector-00-muc-de.ip}:8090" ];
+          targets = [ "${network.hosts.wg-collector-01-nur-de.ip}:8090" ];
           labels = {
-            collector = "collector-00-muc-de";
+            collector = "collector-01-nur-de";
             clan = "K111-AGW";
             source = "K111-AGW-MAIN";
             source_id = "k111_agw_main";

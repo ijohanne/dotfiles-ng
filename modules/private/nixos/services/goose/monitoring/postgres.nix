@@ -25,9 +25,9 @@
           };
         }
         {
-          targets = [ "${network.hosts.wg-collector-00-muc-de.ip}:9630" ];
+          targets = [ "${network.hosts.wg-collector-01-nur-de.ip}:9630" ];
           labels = {
-            instance = "collector-00-muc-de";
+            instance = "collector-01-nur-de";
           };
         }
         {
