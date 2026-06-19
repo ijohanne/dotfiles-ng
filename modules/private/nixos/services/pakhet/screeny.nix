@@ -33,9 +33,12 @@
         questionnairesEnabled = true;
         layoutsEnabled = true;
         layoutCalculatorVersions = [ "V2" ];
-        chestCounterEnabled = false;
+        chestCounterEnabled = true;
 
-        chest.remoteCollector.enable = false;
+        chest = {
+	  adminOnly = true;
+	  remoteCollector.enable = false;
+	};
 
         telegram = {
           enable = true;
