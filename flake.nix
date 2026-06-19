@@ -74,12 +74,13 @@
     };
 
     grpc-proxier = {
-      url = "github:ijohanne/grpc-proxier/fix-hostplatform-system";
+      url = "github:ijohanne/grpc-proxier";
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 
     pdf-detective = {
-      url = "github:ijohanne/pdf-detective/fix-hostplatform-system";
+      url = "github:ijohanne/pdf-detective";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 
     claude-code-nix = {
