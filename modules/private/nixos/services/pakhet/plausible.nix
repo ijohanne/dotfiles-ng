@@ -4,11 +4,18 @@ let
   plausibleProxyVhost = {
     forceSSL = true;
     enableACME = true;
-    acmeRoot = null;
     locations."/" = {
       proxyPass = "http://127.0.0.1:8000";
       proxyWebsockets = true;
     };
+  };
+
+  plausibleDns01ProxyVhost = plausibleProxyVhost // {
+    acmeRoot = null;
+  };
+
+  plausibleHttp01ProxyVhost = plausibleProxyVhost // {
+    acmeRoot = "/var/lib/acme/acme-challenge";
   };
 in
 {
@@ -40,5 +47,14 @@ in
     "analytics.mathxp.app"
     "analytics.volahealth.com"
     "analytics.beevpn.com"
-  ] (_: plausibleProxyVhost);
+  ]
+    (_: plausibleDns01ProxyVhost)
+  // {
+    "analytics.biohackerofficial.com" = plausibleHttp01ProxyVhost;
+  };
+
+  security.acme.certs."analytics.biohackerofficial.com" = {
+    inheritDefaults = false;
+    email = config.security.acme.defaults.email;
+  };
 }
