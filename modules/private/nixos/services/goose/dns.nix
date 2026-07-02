@@ -3,14 +3,14 @@
 let
   hickory-dns = pkgs.rustPlatform.buildRustPackage rec {
     pname = "hickory-dns";
-    version = "0.26.0-beta.2";
+    version = "0.26.1";
     src = pkgs.fetchFromGitHub {
       owner = "hickory-dns";
       repo = "hickory-dns";
       rev = "v${version}";
-      hash = "sha256-7kra6MbLcv0P6iiUJ+hQ0ezqgXh/1KskCrZvFYDqiXQ=";
+      hash = "sha256-jRcq9b409O5bjta8hFLFBFC6ILf8QA2EZ8tQqk2m1Rk=";
     };
-    cargoHash = "sha256-FfckN+qhSqbc8jnL0xThdAMQEgluocSY1ksEyT8rFFY=";
+    cargoHash = "sha256-zszSkclNCLGVchWiNdtNLJeY2j5CmubjMjhwVwsvRP8=";
     patches = [ modules.public.patches.hickoryDnsQminNxdomain ];
     buildAndTestSubdir = "bin";
     buildFeatures = [ "sqlite" "resolver" "recursor" "prometheus-metrics" "dnssec-ring" ];
