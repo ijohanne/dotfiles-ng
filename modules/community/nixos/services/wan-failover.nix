@@ -52,13 +52,27 @@ let
       }
 
       backup_gateway() {
-        ip route show dev "$BACKUP_WAN" | awk '/default/{print $3; exit}'
+        { ip route show dev "$BACKUP_WAN" 2>/dev/null || true; } | awk '/default/{print $3; exit}'
+      }
+
+      iface_exists() {
+        ip link show dev "$1" >/dev/null 2>&1
       }
 
       failover_to_backup() {
+        if ! iface_exists "$BACKUP_WAN"; then
+          echo "Backup interface $BACKUP_WAN is not present; skipping failover"
+          return 0
+        fi
         backup_gw=$(backup_gateway)
+        if [[ -z "$backup_gw" ]]; then
+          echo "Backup interface $BACKUP_WAN has no default gateway; skipping failover"
+          return 0
+        fi
         ip route replace default via "$backup_gw" dev "$BACKUP_WAN" metric ${toString failoverBackupMetric}
-        ip route replace default dev "$MAIN_WAN" scope link metric ${toString failoverPrimaryMetric}
+        if iface_exists "$MAIN_WAN"; then
+          ip route replace default dev "$MAIN_WAN" scope link metric ${toString failoverPrimaryMetric}
+        fi
         echo "backup" > "$STATE_FILE"
         echo "0" > "''${STATE_FILE}.failback-count"
         ${failoverSnippet}
@@ -66,9 +80,15 @@ let
       }
 
       failback_to_primary() {
-        backup_gw=$(backup_gateway)
+        if ! iface_exists "$MAIN_WAN"; then
+          echo "Primary interface $MAIN_WAN is not present; skipping failback"
+          return 0
+        fi
         ip route replace default dev "$MAIN_WAN" scope link metric ${toString failbackPrimaryMetric}
-        ip route replace default via "$backup_gw" dev "$BACKUP_WAN" metric ${toString failbackBackupMetric}
+        backup_gw=$(backup_gateway)
+        if [[ -n "$backup_gw" ]]; then
+          ip route replace default via "$backup_gw" dev "$BACKUP_WAN" metric ${toString failbackBackupMetric}
+        fi
         echo "primary" > "$STATE_FILE"
         rm -f "''${STATE_FILE}.failback-count"
         ${failbackSnippet}
@@ -76,6 +96,10 @@ let
       }
 
       if [[ "$(current_state)" == "primary" ]]; then
+        if ! iface_exists "$MAIN_WAN"; then
+          failover_to_backup
+          exit 0
+        fi
         # shellcheck disable=SC2086
         if ! fping -I "$MAIN_WAN" "''${FPING_ARGS[@]}" $PROBE_TARGETS >/dev/null 2>&1; then
           # shellcheck disable=SC2086
@@ -84,6 +108,10 @@ let
           fi
         fi
       else
+        if ! iface_exists "$MAIN_WAN"; then
+          echo "0" > "''${STATE_FILE}.failback-count"
+          exit 0
+        fi
         # shellcheck disable=SC2086
         if fping -I "$MAIN_WAN" "''${FPING_ARGS[@]}" $PROBE_TARGETS >/dev/null 2>&1; then
           count=$(cat "''${STATE_FILE}.failback-count" 2>/dev/null || echo 0)
