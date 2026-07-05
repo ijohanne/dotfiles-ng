@@ -4,48 +4,64 @@ let
   garageS3Host = "s3.unixpimps.net";
   garageZone = "est1";
   garageCapacity = "1T";
+  garage = "${config.services.garage.package}/bin/garage";
 
   garageBootstrap = pkgs.writeShellScript "garage-bootstrap" ''
     set -euo pipefail
 
-    for _ in $(seq 1 30); do
-      if node_id="$(${config.services.garage.package}/bin/garage node id 2>/dev/null | cut -d@ -f1)" && [ -n "$node_id" ]; then
-        break
-      fi
-      sleep 1
-    done
+    wait_for_garage() {
+      last_error="$(mktemp)"
 
-    if [ -z "''${node_id:-}" ]; then
+      for _ in $(seq 1 120); do
+        if ${garage} status >/dev/null 2>"$last_error"; then
+          rm -f "$last_error"
+          return 0
+        fi
+
+        sleep 1
+      done
+
+      cat "$last_error" >&2
+      rm -f "$last_error"
+      echo "garage RPC did not become available in time" >&2
+      exit 1
+    }
+
+    wait_for_garage
+
+    node_id="$(${garage} node id | cut -d@ -f1)"
+
+    if [ -z "$node_id" ]; then
       echo "garage node id did not become available in time" >&2
       exit 1
     fi
 
-    if ${config.services.garage.package}/bin/garage status | grep -q 'NO ROLE ASSIGNED'; then
-      ${config.services.garage.package}/bin/garage layout assign -z ${garageZone} -c ${garageCapacity} "$node_id"
+    if ${garage} status | grep -q 'NO ROLE ASSIGNED'; then
+      ${garage} layout assign -z ${garageZone} -c ${garageCapacity} "$node_id"
 
-      current_version="$(${config.services.garage.package}/bin/garage layout show | sed -n 's/^Current cluster layout version: \([0-9][0-9]*\)$/\1/p')"
+      current_version="$(${garage} layout show | sed -n 's/^Current cluster layout version: \([0-9][0-9]*\)$/\1/p')"
       if [ -n "$current_version" ]; then
         next_version=$((current_version + 1))
       else
         next_version=1
       fi
 
-      ${config.services.garage.package}/bin/garage layout apply --version "$next_version"
+      ${garage} layout apply --version "$next_version"
     fi
 
-    if ! ${config.services.garage.package}/bin/garage key info "$(cat ${config.sops.secrets.garage_attic_key_id.path})" >/dev/null 2>&1; then
-      ${config.services.garage.package}/bin/garage key import \
+    if ! ${garage} key info "$(cat ${config.sops.secrets.garage_attic_key_id.path})" >/dev/null 2>&1; then
+      ${garage} key import \
         "$(cat ${config.sops.secrets.garage_attic_key_id.path})" \
         "$(cat ${config.sops.secrets.garage_attic_secret_key.path})" \
         -n attic \
         --yes
     fi
 
-    if ! ${config.services.garage.package}/bin/garage bucket info attic >/dev/null 2>&1; then
-      ${config.services.garage.package}/bin/garage bucket create attic
+    if ! ${garage} bucket info attic >/dev/null 2>&1; then
+      ${garage} bucket create attic
     fi
 
-    ${config.services.garage.package}/bin/garage bucket allow \
+    ${garage} bucket allow \
       --read \
       --write \
       --owner \
@@ -145,6 +161,8 @@ in
       Type = "oneshot";
       RemainAfterExit = true;
       ExecStart = garageBootstrap;
+      Restart = "on-failure";
+      RestartSec = "10s";
     };
   };
 }

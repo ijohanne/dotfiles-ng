@@ -28,7 +28,19 @@ let
       --configure-cache-retention '*' \
       --destroy-cache '*')
 
-    ${atticClient} login bootstrap http://127.0.0.1:8080/ "$token"
+    for _ in $(seq 1 60); do
+      if ${atticClient} login bootstrap http://127.0.0.1:8080/ "$token"; then
+        login_succeeded=1
+        break
+      fi
+
+      sleep 1
+    done
+
+    if [ -z "''${login_succeeded:-}" ]; then
+      echo "atticd API did not become available in time" >&2
+      exit 1
+    fi
 
     if ! ${atticClient} cache info bootstrap:${atticBootstrapCache} >/dev/null 2>&1; then
       ${atticClient} cache create bootstrap:${atticBootstrapCache} --public
@@ -126,8 +138,14 @@ in
   };
 
   systemd.services.atticd = {
-    after = [ "garage-bootstrap.service" ];
-    requires = [ "garage-bootstrap.service" ];
+    after = [
+      "garage.service"
+      "garage-bootstrap.service"
+    ];
+    wants = [
+      "garage.service"
+      "garage-bootstrap.service"
+    ];
   };
 
   systemd.services.attic-bootstrap = {
@@ -144,6 +162,8 @@ in
       RemainAfterExit = true;
       ExecStart = atticBootstrap;
       StateDirectory = "attic-bootstrap";
+      Restart = "on-failure";
+      RestartSec = "10s";
     };
   };
 }
