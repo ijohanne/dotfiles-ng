@@ -1,9 +1,10 @@
 { desktop ? false }:
 
-{ pkgs, lib, user, modules, inputs, ... }:
+{ pkgs, lib, user, modules, inputs, config, ... }:
 
 let
   desktopApps = modules.public.lib.desktopApps;
+  agentBrowserPackage = inputs.nixpkgs-agent-browser.legacyPackages.${pkgs.stdenv.hostPlatform.system}.agent-browser;
   openDesignPackage = inputs.open-design.packages.${pkgs.stdenv.hostPlatform.system}.daemon;
   openDesignPackageFixed =
     if pkgs.stdenv.isDarwin then
@@ -15,6 +16,23 @@ let
     else
       openDesignPackage;
   openDesignBrowser = if pkgs.stdenv.isDarwin then "/usr/bin/open" else "${pkgs.xdg-utils}/bin/xdg-open";
+  openDesignCodex = pkgs.writeShellScriptBin "codex" ''
+    exec /Applications/Codex.app/Contents/Resources/codex "$@"
+  '';
+  openDesignPath = lib.concatStringsSep ":" (
+    lib.optionals pkgs.stdenv.isDarwin [ "${openDesignCodex}/bin" ]
+    ++ [
+      "${agentBrowserPackage}/bin"
+      "${config.home.profileDirectory}/bin"
+    ]
+    ++ lib.optionals pkgs.stdenv.isDarwin [
+      "/usr/local/bin"
+      "/usr/bin"
+      "/bin"
+      "/usr/sbin"
+      "/sbin"
+    ]
+  );
   openDesign = pkgs.writeShellScriptBin "open-design" ''
     if [ "$#" -eq 0 ]; then
       exec ${openDesignBrowser} "http://127.0.0.1:''${OD_WEB_PORT:-5174}/"
@@ -34,12 +52,14 @@ in
     enable = true;
     package = openDesign;
     autoStart = true;
+    extraEnv = lib.optionalAttrs pkgs.stdenv.isDarwin { PATH = openDesignPath; };
     webFrontend.enable = true;
   };
 
   home = {
     packages = lib.optionals desktop (
-      map (app: pkgs.${app.nixPackage}) (
+      [ agentBrowserPackage ]
+      ++ map (app: pkgs.${app.nixPackage}) (
         builtins.filter (app: app ? nixPackage && (!pkgs.stdenv.isDarwin || !(app ? brewCask))) desktopApps
       )
     );
