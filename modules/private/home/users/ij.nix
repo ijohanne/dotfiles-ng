@@ -14,7 +14,12 @@ let
         })
     else
       openDesignPackage;
+  openDesignBrowser = if pkgs.stdenv.isDarwin then "/usr/bin/open" else "${pkgs.xdg-utils}/bin/xdg-open";
   openDesign = pkgs.writeShellScriptBin "open-design" ''
+    if [ "$#" -eq 0 ]; then
+      exec ${openDesignBrowser} "http://127.0.0.1:''${OD_WEB_PORT:-5174}/"
+    fi
+
     export OD_DATA_DIR="''${OD_DATA_DIR:-$HOME/.od}"
     exec ${lib.getExe openDesignPackageFixed} "$@"
   '';
