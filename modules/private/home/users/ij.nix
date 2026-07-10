@@ -14,6 +14,9 @@ let
         })
     else
       openDesignPackage;
+  openDesign = pkgs.writeShellScriptBin "open-design" ''
+    exec ${lib.getExe openDesignPackageFixed} "$@"
+  '';
 in
 {
   imports = [
@@ -23,7 +26,7 @@ in
 
   services.open-design = lib.mkIf desktop {
     enable = true;
-    package = openDesignPackageFixed;
+    package = openDesign;
     autoStart = true;
     webFrontend.enable = true;
   };
