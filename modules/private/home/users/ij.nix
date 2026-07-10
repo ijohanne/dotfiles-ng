@@ -1,14 +1,32 @@
 { desktop ? false }:
 
-{ pkgs, lib, user, modules, ... }:
+{ pkgs, lib, user, modules, inputs, ... }:
 
 let
   desktopApps = modules.public.lib.desktopApps;
+  openDesignPackage = inputs.open-design.packages.${pkgs.stdenv.hostPlatform.system}.daemon;
+  openDesignPackageFixed =
+    if pkgs.stdenv.isDarwin then
+      openDesignPackage.overrideAttrs
+        (old: {
+          # better-sqlite3's Darwin build invokes Apple's libtool through node-gyp.
+          nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.darwin.cctools ];
+        })
+    else
+      openDesignPackage;
 in
 {
   imports = [
+    inputs.open-design.homeManagerModules.default
     (import modules.public.homeManager.aspects.developerBase { inherit desktop; })
   ];
+
+  services.open-design = lib.mkIf desktop {
+    enable = true;
+    package = openDesignPackageFixed;
+    autoStart = true;
+    webFrontend.enable = true;
+  };
 
   home = {
     packages = lib.optionals desktop (
