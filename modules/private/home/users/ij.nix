@@ -15,6 +15,7 @@ let
     else
       openDesignPackage;
   openDesign = pkgs.writeShellScriptBin "open-design" ''
+    export OD_DATA_DIR="''${OD_DATA_DIR:-$HOME/.od}"
     exec ${lib.getExe openDesignPackageFixed} "$@"
   '';
 in
