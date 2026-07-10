@@ -15,9 +15,21 @@ let
         })
     else
       openDesignPackage;
-  openDesignBrowser = if pkgs.stdenv.isDarwin then "/usr/bin/open" else "${pkgs.xdg-utils}/bin/xdg-open";
+  openDesignUiOpener = if pkgs.stdenv.isDarwin then "/usr/bin/open" else "${pkgs.xdg-utils}/bin/xdg-open";
   openDesignCodex = pkgs.writeShellScriptBin "codex" ''
     exec /Applications/Codex.app/Contents/Resources/codex "$@"
+  '';
+  openDesignBrowserProfile = "${config.home.homeDirectory}/.local/state/open-design-browser";
+  openDesignBrowserService = pkgs.writeShellScript "open-design-browser" ''
+    mkdir -p "${openDesignBrowserProfile}"
+    exec "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
+      --headless=new \
+      --remote-debugging-address=127.0.0.1 \
+      --remote-debugging-port=9223 \
+      --user-data-dir="${openDesignBrowserProfile}" \
+      --no-first-run \
+      --no-default-browser-check \
+      about:blank
   '';
   openDesignPath = lib.concatStringsSep ":" (
     lib.optionals pkgs.stdenv.isDarwin [ "${openDesignCodex}/bin" ]
@@ -35,7 +47,7 @@ let
   );
   openDesign = pkgs.writeShellScriptBin "open-design" ''
     if [ "$#" -eq 0 ]; then
-      exec ${openDesignBrowser} "http://127.0.0.1:''${OD_WEB_PORT:-5174}/"
+      exec ${openDesignUiOpener} "http://127.0.0.1:''${OD_WEB_PORT:-5174}/"
     fi
 
     export OD_DATA_DIR="''${OD_DATA_DIR:-$HOME/.od}"
@@ -54,6 +66,18 @@ in
     autoStart = true;
     extraEnv = lib.optionalAttrs pkgs.stdenv.isDarwin { PATH = openDesignPath; };
     webFrontend.enable = true;
+  };
+
+  launchd.agents.open-design-browser = lib.mkIf (desktop && pkgs.stdenv.isDarwin) {
+    enable = true;
+    config = {
+      ProgramArguments = [ "${openDesignBrowserService}" ];
+      RunAtLoad = true;
+      KeepAlive = true;
+      ProcessType = "Background";
+      StandardOutPath = "${config.home.homeDirectory}/.od/open-design-browser.out.log";
+      StandardErrorPath = "${config.home.homeDirectory}/.od/open-design-browser.err.log";
+    };
   };
 
   home = {
