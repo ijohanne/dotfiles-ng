@@ -20,8 +20,11 @@ let
     exec /Applications/Codex.app/Contents/Resources/codex "$@"
   '';
   openDesignBrowserProfile = "${config.home.homeDirectory}/.local/state/open-design-browser";
+  openDesignBrowserSocketDir = "/tmp/open-design-agent-browser-${config.home.username}";
   openDesignBrowserService = pkgs.writeShellScript "open-design-browser" ''
     mkdir -p "${openDesignBrowserProfile}"
+    mkdir -p "${openDesignBrowserSocketDir}"
+    chmod 0700 "${openDesignBrowserSocketDir}"
     exec "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
       --headless=new \
       --remote-debugging-address=127.0.0.1 \
@@ -64,7 +67,11 @@ in
     enable = true;
     package = openDesign;
     autoStart = true;
-    extraEnv = lib.optionalAttrs pkgs.stdenv.isDarwin { PATH = openDesignPath; };
+    extraEnv = lib.optionalAttrs pkgs.stdenv.isDarwin {
+      PATH = openDesignPath;
+      AGENT_BROWSER_CDP = "9223";
+      AGENT_BROWSER_SOCKET_DIR = openDesignBrowserSocketDir;
+    };
     webFrontend.enable = true;
   };
 
