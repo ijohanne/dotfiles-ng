@@ -19,6 +19,13 @@ let
   openDesignCodex = pkgs.writeShellScriptBin "codex" ''
     exec /Applications/Codex.app/Contents/Resources/codex "$@"
   '';
+  openDesignNixCacheDir = "/tmp/open-design-nix-cache-${config.home.username}";
+  openDesignNix = pkgs.writeShellScriptBin "nix" ''
+    export XDG_CACHE_HOME="${openDesignNixCacheDir}"
+    mkdir -p "${openDesignNixCacheDir}"
+    chmod 0700 "${openDesignNixCacheDir}"
+    exec /nix/var/nix/profiles/default/bin/nix "$@"
+  '';
   openDesignBrowserProfile = "${config.home.homeDirectory}/.local/state/open-design-browser";
   openDesignBrowserSocketDir = "/tmp/open-design-agent-browser-${config.home.username}";
   openDesignBrowserService = pkgs.writeShellScript "open-design-browser" ''
@@ -37,6 +44,7 @@ let
   openDesignPath = lib.concatStringsSep ":" (
     lib.optionals pkgs.stdenv.isDarwin [ "${openDesignCodex}/bin" ]
     ++ [
+      "${openDesignNix}/bin"
       "${agentBrowserPackage}/bin"
       "${config.home.profileDirectory}/bin"
     ]
