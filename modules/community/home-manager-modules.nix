@@ -24,6 +24,7 @@
     leita = ./home/programs/leita;
     neovim = ./home/programs/neovim;
     opencode = ./home/programs/opencode;
+    openDesign = ./home/programs/open-design;
     procs = ./home/programs/procs;
     ssh = ./home/programs/ssh;
     starship = ./home/programs/starship;
