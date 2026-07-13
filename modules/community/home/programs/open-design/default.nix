@@ -31,6 +31,10 @@ let
   '';
 
   browser = integration.agentBrowser.managedBrowser;
+  launchAgentLabels =
+    lib.optional cfg.autoStart "io.nexu.open-design"
+    ++ lib.optional cfg.webFrontend.enable "io.nexu.open-design-web"
+    ++ lib.optional browser.enable "org.nix-community.home.open-design-browser";
   browserLauncher = pkgs.writeShellScript "open-design-browser" ''
     mkdir -p ${lib.escapeShellArg browser.profileDirectory}
     mkdir -p ${lib.escapeShellArg integration.agentBrowser.socketDirectory}
@@ -214,6 +218,35 @@ in
           StandardErrorPath = "${cfg.dataDir}/open-design-browser.err.log";
         };
       };
+    })
+
+    (lib.mkIf (pkgs.stdenv.isDarwin && launchAgentLabels != [ ]) {
+      home.activation.ensureOpenDesignLaunchAgents =
+        lib.hm.dag.entryAfter [ "setupLaunchAgents" ] ''
+          if [[ -z "''${DRY_RUN_CMD:-}" ]]; then
+            domain="gui/$(/usr/bin/id -u)"
+
+            for label in ${lib.escapeShellArgs launchAgentLabels}; do
+              if /bin/launchctl print "$domain/$label" >/dev/null 2>&1; then
+                continue
+              fi
+
+              warnEcho "Open Design launch agent '$label' was not loaded; retrying bootstrap"
+              plist=${lib.escapeShellArg "${config.home.homeDirectory}/Library/LaunchAgents"}/"$label.plist"
+              bootstrap_output=""
+
+              for attempt in 1 2 3; do
+                bootstrap_output="$(/bin/launchctl bootstrap "$domain" "$plist" 2>&1)" && break
+                /bin/sleep 1
+              done
+
+              if ! /bin/launchctl print "$domain/$label" >/dev/null 2>&1; then
+                errorEcho "Failed to recover Open Design launch agent '$domain/$label': $bootstrap_output"
+                exit 1
+              fi
+            done
+          fi
+        '';
     })
   ]);
 }

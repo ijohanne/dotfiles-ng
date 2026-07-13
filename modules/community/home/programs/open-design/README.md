@@ -42,4 +42,7 @@ the module:
 
 `localIntegration.daemonPackage` defaults to the daemon package from the supplied
 Open Design input. Override it when an upstream version changes its package output.
-The managed browser is currently Darwin-only and remains opt-in.
+The managed browser is currently Darwin-only and remains opt-in. On Darwin, the
+module also verifies its launch agents after Home Manager activation and retries a
+failed bootstrap so a launchd unload/reload race cannot silently leave Open Design
+offline.
