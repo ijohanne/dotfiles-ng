@@ -10,6 +10,24 @@ let
   integration = cfg.localIntegration;
   system = pkgs.stdenv.hostPlatform.system;
 
+  playwrightHeadlessShell = pkgs.playwright-driver.selectBrowsers {
+    withChromiumHeadlessShell = true;
+    withChromium = false;
+    withFirefox = false;
+    withWebkit = false;
+    withFfmpeg = false;
+  };
+  playwrightHeadlessShellDirectory =
+    {
+      aarch64-darwin = "chrome-headless-shell-mac-arm64";
+      x86_64-darwin = "chrome-headless-shell-mac-x64";
+    }.${system} or null;
+  playwrightHeadlessShellExecutable =
+    if playwrightHeadlessShellDirectory == null then
+      ""
+    else
+      "${playwrightHeadlessShell}/chromium_headless_shell-${toString pkgs.playwright-driver.browsersJSON."chromium-headless-shell".revision}/${playwrightHeadlessShellDirectory}/chrome-headless-shell";
+
   daemonPackage =
     if pkgs.stdenv.isDarwin && integration.fixDarwinSqliteBuild then
       integration.daemonPackage.overrideAttrs
@@ -154,9 +172,9 @@ in
 
         executable = lib.mkOption {
           type = lib.types.str;
-          default = if pkgs.stdenv.isDarwin then "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" else "";
-          defaultText = lib.literalExpression ''if pkgs.stdenv.isDarwin then "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" else ""'';
-          description = "Chrome-compatible executable launched outside the Codex workspace sandbox.";
+          default = playwrightHeadlessShellExecutable;
+          defaultText = lib.literalExpression "the Nix-packaged Playwright chrome-headless-shell on Darwin";
+          description = "Dedicated Chrome-compatible executable launched outside the Codex workspace sandbox.";
         };
 
         port = lib.mkOption {
