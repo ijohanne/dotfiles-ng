@@ -1965,6 +1965,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-x86_64-darwin": {
+      "locked": {
+        "lastModified": 1784182977,
+        "narHash": "sha256-Hy8zg2HEcsk4WqowQK3UKRXz1fdQM7Z2un3nSyLbJaQ=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "29c22b7761070f37c4c2b0dd6a8777f0bd43e268",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixpkgs-26.05-darwin",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs_10": {
       "locked": {
         "lastModified": 1766736597,
@@ -2079,11 +2095,11 @@
     },
     "nixpkgs_17": {
       "locked": {
-        "lastModified": 1773282481,
-        "narHash": "sha256-b/GV2ysM8mKHhinse2wz+uP37epUrSE+sAKXy/xvBY4=",
+        "lastModified": 1784120854,
+        "narHash": "sha256-KesHgItiZPgGX740axSiQLcIQ8D24MDqNpkKYWIek8k=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "fe416aaedd397cacb33a610b33d60ff2b431b127",
+        "rev": "753cc8a3a87467296ddd1fa93f0cc3e81120ee46",
         "type": "github"
       },
       "original": {
@@ -3667,14 +3683,15 @@
     "vardrun": {
       "inputs": {
         "flake-utils": "flake-utils_21",
-        "nixpkgs": "nixpkgs_17"
+        "nixpkgs": "nixpkgs_17",
+        "nixpkgs-x86_64-darwin": "nixpkgs-x86_64-darwin"
       },
       "locked": {
-        "lastModified": 1780709928,
-        "narHash": "sha256-vLKOZpb705ds3DyxQ3U6WJxjCKtaxFkfC9KJWdpBKHA=",
+        "lastModified": 1784316631,
+        "narHash": "sha256-Vstison7bLT5Wep8jCl3SXGO5hLDe+KliF7eqFguO68=",
         "owner": "uptimeplaza",
         "repo": "vardrun",
-        "rev": "45fde0a3aa2ab71cf781b0ed9094a91ec245bc3e",
+        "rev": "34653c08ef1e9ecf876ab54cbffaafc4b30ac314",
         "type": "github"
       },
       "original": {
