@@ -17,6 +17,12 @@
       mode = "off";
       failedRowMode = "hard_limit";
       failedRowDays = 90;
+
+      runArtifacts = {
+        mode = "hard_limit";
+        days = 4;
+        batchSize = 500;
+      };
     };
 
     listen = {
