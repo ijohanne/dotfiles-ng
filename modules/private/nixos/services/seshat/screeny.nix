@@ -13,6 +13,12 @@
     mode = "api-driven";
     apiKeyFile = config.sops.secrets.screeny_chest_counter_api_key.path;
 
+    retention = {
+      mode = "off";
+      failedRowMode = "hard_limit";
+      failedRowDays = 90;
+    };
+
     listen = {
       host = network.hosts.wg-seshat-ops.ip;
       port = 8090;
