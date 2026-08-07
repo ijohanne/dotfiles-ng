@@ -74,4 +74,7 @@ in
 
   systemd.services.vardrun-unixpimps.after = [ "geoip-updater-setup.service" ];
   systemd.services.vardrun-opsplaza.after = [ "geoip-updater-setup.service" ];
+
+  services.nginx.virtualHosts."vardrun.unixpimps.net".locations."~ ^/".recommendedProxySettings = false;
+  services.nginx.virtualHosts."vardrun.opsplaza.com".locations."~ ^/".recommendedProxySettings = false;
 }
