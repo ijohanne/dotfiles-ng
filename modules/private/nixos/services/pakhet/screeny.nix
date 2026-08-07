@@ -61,6 +61,8 @@
       backup = {
         enable = true;
         schedule = "daily";
+        retentionDays = 7;
+        enableAutoStart = false;
       };
     };
 
@@ -101,6 +103,8 @@
       backup = {
         enable = true;
         schedule = "daily";
+        retentionDays = 7;
+        enableAutoStart = false;
       };
     };
 
