@@ -2901,11 +2901,11 @@
         "rust-overlay": "rust-overlay_9"
       },
       "locked": {
-        "lastModified": 1787253526,
-        "narHash": "sha256-dsvc21ISCwJgj8T9zDmgOSfdmkRTEo/6PQOZCLmS2MQ=",
+        "lastModified": 1787264361,
+        "narHash": "sha256-YacutT4WVkwNM6vLzdqxg3FUgdB297p/X4yeGOM60yY=",
         "owner": "Devops-Plaza-SL",
         "repo": "screeny",
-        "rev": "74c9a74c441ef7de91f5262b7600323c52b443d2",
+        "rev": "5bce867506f65b12d7684728e89cb5cddf8c7013",
         "type": "github"
       },
       "original": {
