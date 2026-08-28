@@ -166,4 +166,5 @@ in
   sops.secrets.mail_hashed_password_themailer.restartUnits = [ "dovecot.service" ];
   sops.secrets.mail_hashed_password_alertmanager.restartUnits = [ "dovecot.service" ];
   sops.secrets.mail_hashed_password_k111_vanguards.restartUnits = [ "dovecot.service" ];
+  sops.secrets.mail_hashed_password_k111agw.restartUnits = [ "dovecot.service" ];
 }

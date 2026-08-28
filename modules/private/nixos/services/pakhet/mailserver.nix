@@ -78,7 +78,10 @@ in
         hashedPasswordFile = config.sops.secrets.mail_hashed_password_alertmanager.path;
       };
       "k111-vanguards@unixpimps.net" = {
-      	hashedPasswordFile = config.sops.secrets.mail_hashed_password_k111_vanguards.path;
+        hashedPasswordFile = config.sops.secrets.mail_hashed_password_k111_vanguards.path;
+      };
+      "k111agw@unixpimps.net" = {
+        hashedPasswordFile = config.sops.secrets.mail_hashed_password_k111agw.path;
       };
     };
     forwards = {
