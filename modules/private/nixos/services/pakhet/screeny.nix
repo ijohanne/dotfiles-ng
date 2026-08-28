@@ -36,7 +36,7 @@
         chestCounterEnabled = true;
 
         chest = {
-	  adminOnly = true;
+	  adminOnly = false;
 	  remoteCollector.enable = false;
 	};
 
