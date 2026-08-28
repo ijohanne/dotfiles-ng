@@ -30,6 +30,8 @@ in
 
   time.timeZone = "Europe/Madrid";
 
+  nix.settings.keep-outputs = true;
+
   environment.systemPackages = with pkgs; [
     (writeShellScriptBin "ping6" ''exec ping -6 "$@"'')
   ];
