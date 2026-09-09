@@ -2662,11 +2662,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1788945789,
-        "narHash": "sha256-PRWUrkq6ZhP6wOzQZNdN+bKwPC3RLDxWI+hqI9wKgA4=",
+        "lastModified": 1788990272,
+        "narHash": "sha256-is3o4izcBcyvHxIO/1+q0ptR95FgmR5Z/7bvbac5yzs=",
         "owner": "Devops-Plaza-SL",
         "repo": "runekist",
-        "rev": "a429385de36df0c6f69a7352f655fe9fb75a791f",
+        "rev": "4de3d5a939edb2423002b23e1f64ad017dc7a84d",
         "type": "github"
       },
       "original": {
