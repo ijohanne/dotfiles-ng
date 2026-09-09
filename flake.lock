@@ -1451,11 +1451,11 @@
     "heroicons": {
       "flake": false,
       "locked": {
-        "lastModified": 1758217845,
-        "narHash": "sha256-fySfwUujtFl/0zSM47e/XN42DBqsT3v4IojrXyu0ob0=",
+        "lastModified": 1778593875,
+        "narHash": "sha256-Dkh2CHo3ajYfBs3DZdWMRFm5Bhsl9zkoKb11VJ34ES0=",
         "owner": "tailwindlabs",
         "repo": "heroicons",
-        "rev": "bd6c5c0d5acec14d116da611b4c5044fec1bb7dc",
+        "rev": "616b7a4dbbf3d011760af8066262cd5c6b3868f3",
         "type": "github"
       },
       "original": {
@@ -2662,11 +2662,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1783030058,
-        "narHash": "sha256-DoFf5ZAqiDTjB+HFjn1H7B+NhOsO/Nx4VNFm8AYdfLU=",
+        "lastModified": 1788945789,
+        "narHash": "sha256-PRWUrkq6ZhP6wOzQZNdN+bKwPC3RLDxWI+hqI9wKgA4=",
         "owner": "Devops-Plaza-SL",
         "repo": "runekist",
-        "rev": "2f4d927f404d7f8f8473f5ac7e9f097c3e4bef08",
+        "rev": "a429385de36df0c6f69a7352f655fe9fb75a791f",
         "type": "github"
       },
       "original": {
