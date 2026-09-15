@@ -35,6 +35,11 @@
         layoutCalculatorVersions = [ "V2" ];
         chestCounterEnabled = true;
 
+        playerRanking = {
+          enable = true;
+          startAt = "2026-08-31T22:00:00Z";
+        };
+
         chest = {
 	  adminOnly = false;
 	  remoteCollector.enable = false;
