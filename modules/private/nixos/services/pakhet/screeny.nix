@@ -32,7 +32,7 @@
 
         questionnairesEnabled = true;
         layoutsEnabled = true;
-        layoutCalculatorVersions = [ "V2" ];
+        layoutCalculatorVersions = [ "V2" "V3" ];
         chestCounterEnabled = true;
 
         playerRanking = {
@@ -89,7 +89,7 @@
 
         questionnairesEnabled = true;
         layoutsEnabled = true;
-        layoutCalculatorVersions = [ "V2" ];
+        layoutCalculatorVersions = [ "V2" "V3" ];
         chestCounterEnabled = false;
 
         chest.remoteCollector.enable = false;
