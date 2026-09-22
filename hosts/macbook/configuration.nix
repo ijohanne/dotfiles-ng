@@ -54,7 +54,6 @@ in
       builtins.filter (x: x != null) (map (app: app.brewCask or null) desktopApps) ++ [ "steipete/tap/codexbar" ];
 
     masApps = {
-      "Bitwarden" = 1352778147;
       "Defguard" = 6754601166;
       "GarageBand" = 682658836;
       "Numbers" = 409203825;
