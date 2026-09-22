@@ -26,6 +26,9 @@ in
       gitea_homebrew_api_token = {
         owner = user.username;
       };
+      biohacker_mcp_token = {
+        owner = user.username;
+      };
     };
   };
 
