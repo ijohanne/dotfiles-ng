@@ -54,7 +54,14 @@ in
       builtins.filter (x: x != null) (map (app: app.brewCask or null) desktopApps) ++ [ "steipete/tap/codexbar" ];
 
     masApps = {
+      "Bitwarden" = 1352778147;
+      "Defguard" = 6754601166;
+      "GarageBand" = 682658836;
+      "Numbers" = 409203825;
+      "Proton Pass for Safari" = 6502835663;
+      "Spark Desktop" = 6445813049;
       "WhatsApp" = 310633997;
+      "WireGuard" = 1451685025;
       "Xcode" = 497799835;
     };
   };

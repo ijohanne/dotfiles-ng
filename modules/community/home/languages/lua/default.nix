@@ -1,4 +1,4 @@
-{ pkgs-unstable, ... }:
+{ config, pkgs-unstable, ... }:
 
 {
   home.packages = [
@@ -8,6 +8,8 @@
   programs.nixvim = {
     lsp.servers.lua_ls.enable = true;
 
-    treesitter.ensureInstalled = [ "lua" ];
+    plugins.treesitter.grammarPackages = [
+      config.programs.nixvim.plugins.treesitter.package.builtGrammars.lua
+    ];
   };
 }

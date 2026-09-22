@@ -1,4 +1,4 @@
-{ pkgs-unstable, ... }:
+{ config, pkgs-unstable, ... }:
 
 {
   home.packages = [
@@ -13,7 +13,10 @@
       crates-nvim
     ];
 
-    treesitter.ensureInstalled = [ "rust" "toml" ];
+    plugins.treesitter.grammarPackages = with config.programs.nixvim.plugins.treesitter.package.builtGrammars; [
+      rust
+      toml
+    ];
 
     extraConfigLua = ''
       require("crates").setup()

@@ -41,9 +41,9 @@
         };
 
         chest = {
-	  adminOnly = false;
-	  remoteCollector.enable = false;
-	};
+          adminOnly = false;
+          remoteCollector.enable = false;
+        };
 
         telegram = {
           enable = true;

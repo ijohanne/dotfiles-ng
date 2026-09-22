@@ -48,7 +48,7 @@ and mostly opt into named aspects rather than owning large piles of inline logic
 - **pakhet** — NixOS application server (x86_64-linux)
 - **bhyve-image** — Minimal bhyve VM image (x86_64-linux)
 - **bhyve-image-server** — bhyve VM image with server users and home-manager (x86_64-linux)
-- **rpi4-stable** — Raspberry Pi 4 SD card image (aarch64-linux, nixos-25.11)
+- **rpi4-stable** — Raspberry Pi 4 SD card image (aarch64-linux, nixos-26.05)
 - **rpi4-unstable** — Raspberry Pi 4 SD card image (aarch64-linux, nixos-unstable)
 
 ### Structure
@@ -568,7 +568,7 @@ sudo nixos-rebuild switch --flake github:ijohanne/dotfiles-ng#my-vm
 
 The RPi4 images are templates for bootstrapping new NixOS hosts on Raspberry Pi 4. Two variants are available:
 
-- **rpi4-stable** — Uses nixos-25.11 (recommended for production)
+- **rpi4-stable** — Uses nixos-26.05 (recommended for production)
 - **rpi4-unstable** — Uses nixos-unstable (latest features)
 
 #### Building the Image

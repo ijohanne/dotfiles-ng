@@ -1,7 +1,7 @@
-{ pkgs-unstable, pkgs, lib, user, ... }:
+{ config, pkgs-unstable, pkgs, lib, user, ... }:
 let
   isDeveloper = user.developer or false;
-  isDarwin = pkgs.stdenv.isDarwin;
+  isDarwin = pkgs.stdenv.hostPlatform.isDarwin;
 
   androidComposition = pkgs-unstable.androidenv.composeAndroidPackages {
     buildToolsVersions = [ "34.0.0" "30.0.3" ];
@@ -45,7 +45,9 @@ lib.mkIf isDeveloper {
       plenary-nvim
     ];
 
-    treesitter.ensureInstalled = [ "dart" ];
+    plugins.treesitter.grammarPackages = [
+      config.programs.nixvim.plugins.treesitter.package.builtGrammars.dart
+    ];
 
     extraConfigLua = ''
       require("flutter-tools").setup({

@@ -22,13 +22,7 @@ in
     '';
   };
 
-  services.dovecot2 = {
-    sieve.extensions = [ "fileinto" ];
-    # Replaces the fork's only change: default_vsz_limit 512M -> 2G
-    extraConfig = ''
-      default_vsz_limit = 2G
-    '';
-  };
+  services.dovecot2.settings.default_vsz_limit = "2G";
 
   services.postfix.settings.main = {
     relayhost = [ "[10.100.0.8]:2525" ];
@@ -51,7 +45,7 @@ in
     fqdn = "pakhet.est.unixpimps.net";
     domains = network.mailDomains;
     virusScanning = true;
-    loginAccounts = {
+    accounts = {
       "ij@unixpimps.net" = {
         hashedPasswordFile = config.sops.secrets.mail_hashed_password_ij.path;
         aliases = [
@@ -94,17 +88,18 @@ in
       "donation@nordic-t.me" = [ "ij@nordic-t.me" ];
       "paypal@nordic-t.me" = [ "ij@nordic-t.me" ];
     };
-    stateVersion = 3;
-    certificateScheme = "acme";
-    certificateDomains = [
-      "r0.est.unixpimps.net"
-      "pop3.unixpimps.net"
-      "imap.unixpimps.net"
-      "smtp.unixpimps.net"
-    ];
+    stateVersion = 5;
+    x509.useACMEHost = config.mailserver.fqdn;
     borgbackup = {
       enable = true;
       repoLocation = "/var/borgbackup/mail";
     };
   };
+
+  security.acme.certs."pakhet.est.unixpimps.net".extraDomainNames = [
+    "r0.est.unixpimps.net"
+    "pop3.unixpimps.net"
+    "imap.unixpimps.net"
+    "smtp.unixpimps.net"
+  ];
 }

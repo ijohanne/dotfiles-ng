@@ -13,7 +13,7 @@ in
     defaults = {
       dnsProvider = "cloudflare";
       dnsPropagationCheck = true;
-      credentialsFile = config.sops.secrets."acme/cloudflare_api_key".path;
+      environmentFile = config.sops.secrets."acme/cloudflare_api_key".path;
     };
   };
 

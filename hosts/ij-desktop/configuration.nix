@@ -17,6 +17,8 @@
   boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ];
+  # The GPG smartcard unlock flow still requires the scripted initrd.
+  boot.initrd.systemd.enable = false;
   boot.kernelModules = [ "kvm-amd" ];
   hardware.cpu.amd.updateMicrocode = true;
   powerManagement.cpuFreqGovernor = "ondemand";

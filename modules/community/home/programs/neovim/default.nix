@@ -1,4 +1,4 @@
-{ pkgs, lib, user, ... }:
+{ config, pkgs, lib, user, ... }:
 let
   isDeveloper = user.developer or false;
 
@@ -153,17 +153,25 @@ in
       enable = true;
     };
 
-    lsp = {
+    plugins.lsp = {
       enable = isDeveloper;
     };
 
-    treesitter = {
+    plugins.treesitter = {
       enable = true;
-      ensureInstalled = [ "nix" "vim" "vimdoc" "bash" "json" "toml" "markdown" ];
-      indent = true;
+      grammarPackages = with config.programs.nixvim.plugins.treesitter.package.builtGrammars; [
+        bash
+        json
+        markdown
+        nix
+        toml
+        vim
+        vimdoc
+      ];
+      indent.enable = true;
     };
 
-    gitsigns = {
+    plugins.gitsigns = {
       enable = true;
       settings = {
         current_line_blame = true;
@@ -171,11 +179,11 @@ in
       };
     };
 
-    telescope = {
+    plugins.telescope = {
       enable = true;
     };
 
-    grugFar = {
+    plugins.grug-far = {
       enable = true;
     };
 
@@ -190,7 +198,7 @@ in
 
     extraConfigLua = if isDeveloper then lspExtraConfig else nonLspExtraConfig;
 
-    cmp = {
+    plugins.cmp = {
       enable = isDeveloper;
     };
   };

@@ -31,6 +31,7 @@
     settings = {
       analytics.reporting_enabled = false;
       news.news_feed_enabled = false;
+      security.secret_key = "$__file{${pkgs.writeText "grafana-secret-key" "SW2YcwTIb9zpOOhoPsMm"}}";
       "auth.anonymous" = {
         org_role = "Editor";
         enable = true;

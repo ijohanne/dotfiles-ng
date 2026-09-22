@@ -8,7 +8,7 @@
       dnsProvider = "cloudflare";
       dnsResolver = "1.1.1.1:53";
       dnsPropagationCheck = true;
-      credentialsFile = config.sops.secrets.cloudflare_api_key.path;
+      environmentFile = config.sops.secrets.cloudflare_api_key.path;
     };
   };
 
