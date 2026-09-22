@@ -1,4 +1,4 @@
-{ config, pkgs, lib, user, ... }:
+{ config, pkgs, lib, user, inputs, ... }:
 let
   isDeveloper = user.developer or false;
 
@@ -125,6 +125,7 @@ in
   programs.nixvim = {
     enable = true;
     defaultEditor = true;
+    nixpkgs.source = inputs.nixpkgs;
 
     extraPlugins = if isDeveloper then lspPlugins else nonLspPlugins;
 
@@ -175,7 +176,6 @@ in
       enable = true;
       settings = {
         current_line_blame = true;
-        trouble = true;
       };
     };
 
