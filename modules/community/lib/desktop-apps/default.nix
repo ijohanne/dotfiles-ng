@@ -1,7 +1,10 @@
 [
   {
     nixPackage = "google-chrome";
-    brewCask = "google-chrome";
+    brewCask = {
+      name = "google-chrome";
+      greedy = true;
+    };
   }
   {
     nixPackage = "mattermost-desktop";
