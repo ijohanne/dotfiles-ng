@@ -19,6 +19,12 @@ let
   };
 in
 {
+  services.clickhouse.serverConfig = {
+    trace_log.ttl = "event_date + INTERVAL 7 DAY DELETE";
+    metric_log.ttl = "event_date + INTERVAL 7 DAY DELETE";
+    asynchronous_metric_log.ttl = "event_date + INTERVAL 7 DAY DELETE";
+  };
+
   services.plausible = {
     enable = true;
 
