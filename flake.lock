@@ -1585,11 +1585,11 @@
         "zot": "zot"
       },
       "locked": {
-        "lastModified": 1786112772,
-        "narHash": "sha256-+dslBy6nZD2DQjSfwybvCqHp4ecp7gdX3z7qT6Ovvpo=",
+        "lastModified": 1790603020,
+        "narHash": "sha256-f0RlQzTfJzZGZuKQ1A+5tVvbooYq2QKfsLfu9V9rTCk=",
         "owner": "ijohanne",
         "repo": "nur-packages",
-        "rev": "1b4d833f86c9fc53453046dd3db8f8471c466807",
+        "rev": "999d5cd2deae842b0c1f40ab5cc7f85cb3922736",
         "type": "github"
       },
       "original": {
