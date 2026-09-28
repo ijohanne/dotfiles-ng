@@ -110,7 +110,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    hrafnsyn-stable.url = "github:ijohanne/hrafnsyn/1803f4733d8afeab426275dda1a46112e1d4d55c";
+    hrafnsyn-stable.url = "github:ijohanne/hrafnsyn/b70100706181961eb781594afed29c7316176b26";
 
     ijohanne-nur = {
       url = "github:ijohanne/nur-packages";
