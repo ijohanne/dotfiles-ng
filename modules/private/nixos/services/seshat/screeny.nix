@@ -1,7 +1,7 @@
 { config, inputs, network, ... }:
 
 {
-  sops.secretsu = {
+  sops.secrets = {
     screeny_chest_counter_api_key = {
       mode = "0400";
       owner = "chest_counter_main";
