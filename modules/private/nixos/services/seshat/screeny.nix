@@ -1,10 +1,18 @@
 { config, inputs, network, ... }:
 
 {
-  sops.secrets.screeny_chest_counter_api_key = {
-    mode = "0400";
-    owner = "chest_counter_main";
-    group = "screeny";
+  sops.secretsu = {
+    screeny_chest_counter_api_key = {
+      mode = "0400";
+      owner = "chest_counter_main";
+      group = "screeny";
+    };
+    runekist-forwarding-fleet-key = {
+      mode = "0400";
+      owner = "chest_counter_main";
+      group = "screeny";
+    };
+
   };
 
   services.screeny.chestCounterCollectors.main = {
@@ -12,6 +20,12 @@
     sourceId = "runekist-api-seshat";
     mode = "api-driven";
     apiKeyFile = config.sops.secrets.screeny_chest_counter_api_key.path;
+
+    emailForwarding = {
+      baseUrl = "https://runekist.com";
+      fleetKeyFile = config.sops.secrets.runekist-forwarding-fleet-key.path;
+    };
+
 
     retention = {
       mode = "off";
