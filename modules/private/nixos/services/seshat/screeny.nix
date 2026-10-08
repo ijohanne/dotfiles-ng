@@ -49,6 +49,12 @@
       port = 8090;
     };
 
+    browser.clientMode = "both";
+    giftCollection.directOpen = {
+      enable = true;
+      firstOpen = true;
+    };
+
     browser.backend = "playwright-sidecar";
     browser.journalScan = {
       enable = true;
