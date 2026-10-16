@@ -1567,11 +1567,11 @@
         "zot": "zot"
       },
       "locked": {
-        "lastModified": 1790603020,
-        "narHash": "sha256-f0RlQzTfJzZGZuKQ1A+5tVvbooYq2QKfsLfu9V9rTCk=",
+        "lastModified": 1792150151,
+        "narHash": "sha256-py5pOLHt6UHws8VX89zLTqN7MrLIbRkquPui0OzAIZI=",
         "owner": "ijohanne",
         "repo": "nur-packages",
-        "rev": "999d5cd2deae842b0c1f40ab5cc7f85cb3922736",
+        "rev": "099e43d3f8b94da51e5401f8ff0f68a4910bfdd2",
         "type": "github"
       },
       "original": {
@@ -3659,11 +3659,11 @@
         "nixpkgs-x86_64-darwin": "nixpkgs-x86_64-darwin"
       },
       "locked": {
-        "lastModified": 1791500552,
-        "narHash": "sha256-f3QhJhPBJJb5tb0C3Msgz8p4SA8jRptSTRSnGbEmS84=",
+        "lastModified": 1792150485,
+        "narHash": "sha256-3stf97tNLl5QvfcS3+tt9+Ca5RkRLX2klj3aEXZw4GQ=",
         "owner": "uptimeplaza",
         "repo": "vardrun",
-        "rev": "21030052a2b443decaad241f0a253877f2f64d84",
+        "rev": "906be440310ecaa0cfb73905dafdea74dcd4c511",
         "type": "github"
       },
       "original": {
