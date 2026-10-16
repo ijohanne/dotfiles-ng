@@ -66,4 +66,6 @@ in
       enableACME = true;
     };
   };
+
+  services.nginx.virtualHosts."hrafnsyn.unixpimps.net".locations."~ ^/".recommendedProxySettings = false;
 }
