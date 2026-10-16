@@ -110,11 +110,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    hrafnsyn-stable.url = "github:ijohanne/hrafnsyn/b70100706181961eb781594afed29c7316176b26";
-
     ijohanne-nur = {
       url = "github:ijohanne/nur-packages";
-      inputs.hrafnsyn.follows = "hrafnsyn-stable";
     };
 
     nixos-mailserver = {
