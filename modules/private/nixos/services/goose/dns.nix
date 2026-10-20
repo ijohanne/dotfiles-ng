@@ -345,6 +345,28 @@ let
 
     ${ddnsIp6ReverseZoneToml}
 
+    # These authoritative servers mishandle NS probes used by the recursor.
+    [[zones]]
+    zone = "seg-social.es."
+    zone_type = "External"
+
+    [zones.stores]
+    type = "forward"
+
+    [[zones.stores.name_servers]]
+    ip = "1.1.1.1"
+    connections = [
+      { protocol = { type = "udp" } },
+      { protocol = { type = "tcp" } },
+    ]
+
+    [[zones.stores.name_servers]]
+    ip = "8.8.8.8"
+    connections = [
+      { protocol = { type = "udp" } },
+      { protocol = { type = "tcp" } },
+    ]
+
     [[zones]]
     zone = "."
     zone_type = "External"
