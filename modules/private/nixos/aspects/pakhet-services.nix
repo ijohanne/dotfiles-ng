@@ -4,24 +4,24 @@ let
   patchPhp = package: version: hash:
     if lib.versionAtLeast package.version version then package
     else
-      package.buildEnv {
-        inherit version hash;
-        packageOverrides = phpFinal: phpPrev: {
-          extensions = phpPrev.extensions // {
-            filter = phpPrev.extensions.filter.overrideAttrs (old: {
-              # CGI subprocesses started with -n must load Nix's shared extension.
-              postPatch = (old.postPatch or "") + ''
-                substituteInPlace \
-                  ext/filter/tests/oom_filter_default_encoded.phpt \
-                  ext/filter/tests/oom_filter_input.phpt \
-                  ext/filter/tests/oom_filter_input_array.phpt \
-                  --replace-fail "getenv('TEST_PHP_CGI_EXECUTABLE'), '-n'," \
-                    "getenv('TEST_PHP_CGI_EXECUTABLE'), '-n', '-d', 'extension=' . __DIR__ . '/../modules/filter.so',"
-              '';
-            });
-          };
-        };
-      };
+      (package.buildEnv { inherit version hash; }).withExtensions
+        ({ enabled, ... }:
+          map
+            (extension:
+              if extension.extensionName != "filter" then extension
+              else
+                extension.overrideAttrs (old: {
+                  # CGI subprocesses started with -n must load Nix's shared extension.
+                  postPatch = (old.postPatch or "") + ''
+                    substituteInPlace \
+                      ext/filter/tests/oom_filter_default_encoded.phpt \
+                      ext/filter/tests/oom_filter_input.phpt \
+                      ext/filter/tests/oom_filter_input_array.phpt \
+                      --replace-fail "getenv('TEST_PHP_CGI_EXECUTABLE'), '-n'," \
+                        "getenv('TEST_PHP_CGI_EXECUTABLE'), '-n', '-d', 'extension=' . __DIR__ . '/../modules/filter.so',"
+                  '';
+                }))
+            enabled);
 in
 {
   imports = [
