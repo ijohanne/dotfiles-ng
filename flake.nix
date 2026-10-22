@@ -1000,7 +1000,9 @@
       packages = {
         setup-template = setup-template;
         raspberry-pi-provision-image = raspberry-pi-provision-image;
-      } // pgUpgradeScripts;
+      } // pgUpgradeScripts // pkgs.lib.optionalAttrs (system == "aarch64-darwin") {
+        impeccable = pkgs.callPackage communityModules.packages.impeccable { };
+      };
 
       apps = {
         setup-template = {

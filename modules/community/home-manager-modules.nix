@@ -19,6 +19,7 @@
     ghostty = ./home/programs/ghostty;
     git = ./home/programs/git;
     htop = ./home/programs/htop;
+    impeccable = ./home/programs/impeccable;
     kitty = ./home/programs/kitty;
     lazygit = ./home/programs/lazygit;
     leita = ./home/programs/leita;

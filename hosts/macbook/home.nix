@@ -3,7 +3,14 @@
 {
   imports = [
     (import modules.private.home.users.ij { desktop = true; })
+    modules.public.homeManager.programs.impeccable
   ];
+
+  programs.impeccable = lib.mkIf (user.developer or false) {
+    enable = true;
+    codex.enable = true;
+    claudeCode.enable = true;
+  };
 
   home.file."Library/Application Support/com.mitchellh.ghostty/config".source =
     config.xdg.configFile."ghostty/config".source;
