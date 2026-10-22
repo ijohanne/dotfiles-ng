@@ -22,7 +22,7 @@ stdenvNoCC.mkDerivation rec {
 
   unpackPhase = ''
     runHook preUnpack
-    unzip -q "$src" '.agents/*' '.claude/*'
+    unzip -q "$src" '.agents/*' '.claude/*' '.codex/hooks.json'
     runHook postUnpack
   '';
 
@@ -40,9 +40,13 @@ stdenvNoCC.mkDerivation rec {
       ln -s "$out/libexec/impeccable" "$scripts/bin/darwin-arm64/impeccable"
     done
     cp -R .claude/agents "$out/share/impeccable/claude/"
+    mkdir -p "$out/share/impeccable/codex"
+    cp .codex/hooks.json "$out/share/impeccable/codex/hooks.json"
     cat > "$out/bin/impeccable" <<EOF
     #!${stdenvNoCC.shell}
-    exec "$out/share/impeccable/agents/skills/impeccable/scripts/impeccable" "\$@"
+    export IMPECCABLE_SKILL_DIR="$out/share/impeccable/agents/skills/impeccable"
+    export IMPECCABLE_SELF="$out/bin/impeccable"
+    exec "$out/libexec/impeccable" "\$@"
     EOF
     chmod +x "$out/bin/impeccable"
     runHook postInstall
@@ -52,6 +56,7 @@ stdenvNoCC.mkDerivation rec {
   installCheckPhase = ''
     runHook preInstallCheck
     test "$("$out/bin/impeccable" engine-probe)" = "impeccable-engine ${engineVersion}"
+    test "$(env -i PATH=/nonexistent "$out/bin/impeccable" engine-probe)" = "impeccable-engine ${engineVersion}"
     for provider in agents claude; do
       skill="$out/share/impeccable/$provider/skills/impeccable"
       test -s "$skill/SKILL.md"

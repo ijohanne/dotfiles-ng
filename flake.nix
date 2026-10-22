@@ -992,6 +992,10 @@
           setup-template = setup-template.overrideAttrs (_: {
             doCheck = true;
           });
+        } // pkgs.lib.optionalAttrs (system == "aarch64-darwin") {
+          impeccable-hooks = pkgs.callPackage ./modules/community/home/programs/impeccable/tests.nix {
+            inherit home-manager;
+          };
         };
     in
     {

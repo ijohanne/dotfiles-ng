@@ -9,6 +9,7 @@
   programs.impeccable = lib.mkIf (user.developer or false) {
     enable = true;
     codex.enable = true;
+    codex.hooks.enable = true;
     claudeCode.enable = true;
   };
 
