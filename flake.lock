@@ -3655,11 +3655,11 @@
         "nixpkgs-x86_64-darwin": "nixpkgs-x86_64-darwin"
       },
       "locked": {
-        "lastModified": 1792150485,
-        "narHash": "sha256-3stf97tNLl5QvfcS3+tt9+Ca5RkRLX2klj3aEXZw4GQ=",
+        "lastModified": 1793050433,
+        "narHash": "sha256-SKUqoBHwOuU7zd7p54SlO+b51UToQ5J9OfTr4nYBG7o=",
         "owner": "uptimeplaza",
         "repo": "vardrun",
-        "rev": "906be440310ecaa0cfb73905dafdea74dcd4c511",
+        "rev": "032d030f9b08d5383c8edfdc7d8982482de8fa86",
         "type": "github"
       },
       "original": {
