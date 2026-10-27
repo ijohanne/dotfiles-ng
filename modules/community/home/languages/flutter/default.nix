@@ -7,8 +7,8 @@ let
     buildToolsVersions = [ "34.0.0" "30.0.3" ];
     platformVersions = [ "34" "33" ];
     abiVersions = [ "arm64-v8a" "x86_64" ];
-    includeEmulator = true;
-    includeSystemImages = true;
+    includeEmulator = !isDarwin;
+    includeSystemImages = !isDarwin;
     systemImageTypes = [ "google_apis" ];
     includeSources = false;
     includeNDK = false;
