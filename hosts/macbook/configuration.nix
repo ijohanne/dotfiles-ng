@@ -224,6 +224,15 @@ in
     };
   };
 
+  system.activationScripts.homebrew.text = lib.mkMerge [
+    (lib.mkBefore ''
+      if [ "''${DOTFILES_SKIP_HOMEBREW:-0}" != 1 ]; then
+    '')
+    (lib.mkAfter ''
+      fi
+    '')
+  ];
+
   system.activationScripts.postActivation.text = lib.mkAfter ''
     echo ""
     echo "NOTE: If this is a fresh install, enable Proton Pass Safari extension:"
