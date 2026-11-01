@@ -6,6 +6,8 @@ OAuth access tokens. Prometheus MCP on goose introspects each token, checks its
 resource audience, expiry, subject and `prometheus.read` scope, and consumes the
 credential before querying the local Prometheus instance. It does not forward the
 user's OAuth token to Prometheus.
+Authelia's `authelia_at_` access-token prefix is enforced before introspection,
+so refresh tokens and authorization codes cannot be used as bearer credentials.
 
 ## Connect ChatGPT
 

@@ -18,6 +18,7 @@ in
     issuer = "https://auth.${network.domain}";
     introspectionUrl = "https://auth.${network.domain}/api/oidc/introspection";
     clientSecretFile = config.sops.secrets.observability_mcp_client_secret.path;
+    accessTokenPrefix = "authelia_at_";
     skillsDirectory = config.observability.skillsDirectory;
   };
   services.prometheus.scrapeConfigs = [{

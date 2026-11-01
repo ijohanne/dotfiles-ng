@@ -13,6 +13,7 @@ in
     introspectionUrl = lib.mkOption { type = lib.types.str; };
     clientId = lib.mkOption { type = lib.types.str; default = "prometheus-mcp"; };
     clientSecretFile = lib.mkOption { type = lib.types.str; };
+    accessTokenPrefix = lib.mkOption { type = lib.types.str; default = ""; };
     skillsDirectory = lib.mkOption { type = lib.types.path; };
   };
   config = lib.mkIf cfg.enable {
@@ -36,8 +37,9 @@ in
           "--oauth.resource=${cfg.resource}"
           "--oauth.introspection-url=${cfg.introspectionUrl}"
           "--oauth.client-id=${cfg.clientId}"
+          "--oauth.access-token-prefix=${cfg.accessTokenPrefix}"
           "--oauth.client-secret-file=%d/oauth-client-secret"
-        ] ++ map (tool: "--mcp.tools=${tool}") [ "core" "list_targets" "list_alerts" "list_rules" "healthy" "ready" "build_info" ]);
+        ] ++ map (tool: "--mcp.tools=${tool}") [ "list_targets" "list_alerts" "list_rules" "healthy" "ready" "build_info" ]);
         LoadCredential = "oauth-client-secret:${cfg.clientSecretFile}";
         DynamicUser = true;
         Restart = "on-failure";
