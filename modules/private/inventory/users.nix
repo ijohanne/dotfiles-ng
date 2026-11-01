@@ -15,6 +15,7 @@
     email = "martin@martin8412.dk";
     name = "Martin Karlsen Jensen";
     developer = false;
+    observability = true;
     shell = "zsh";
     sshKeys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKiCGBgFgwbHB+2m++ViEnhoFjww2Twvx8gXWcMvHvz3 martin@martin8412.dk"

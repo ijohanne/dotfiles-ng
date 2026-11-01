@@ -13,6 +13,7 @@ let
     "observability_oidc_hmac_secret"
     "observability_oidc_private_key"
     "observability_chatgpt_client_hash"
+    "observability_claude_client_hash"
     "observability_mcp_client_hash"
   ] ++ map (name: "observability_${name}_password_hash") (builtins.attrNames userConfig);
   clientBase = {
@@ -74,6 +75,18 @@ in
           revocation_endpoint_auth_method = "client_secret_post";
           scopes = clientBase.scopes ++ [ "address" "phone" "groups" ];
           redirect_uris = [ "https://chatgpt.com/connector_platform_oauth_redirect" ];
+        })
+        (clientBase // {
+          client_id = "claude-prometheus";
+          client_name = "Claude Prometheus";
+          client_secret = placeholder "observability_claude_client_hash";
+          token_endpoint_auth_method = "client_secret_post";
+          revocation_endpoint_auth_method = "client_secret_post";
+          scopes = clientBase.scopes ++ [ "address" "phone" "groups" ];
+          redirect_uris = [
+            "https://claude.ai/api/mcp/auth_callback"
+            "https://claude.com/api/mcp/auth_callback"
+          ];
         })
         (clientBase // {
           client_id = "prometheus-cli";

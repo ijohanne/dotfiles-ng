@@ -44,6 +44,35 @@ Do not use wildcard callback URLs.
 The public `prometheus-cli` client is available for other compatible clients using
 PKCE with the callback `http://127.0.0.1:18443/callback`.
 
+## Connect Claude
+
+In Claude's **Customize > Connectors**, add a custom web connector for
+`https://prometheus.est.unixpimps.net/mcp`. Choose OAuth sign-in and
+**Use your own OAuth client** (or open **Advanced settings** in older versions).
+Use client ID `claude-prometheus` and retrieve its secret in your own terminal:
+
+```fish
+nix develop --command sops --decrypt --extract '["observability_claude_client_secret"]' secrets/pakhet.yaml
+```
+
+Sign in as `mj`. Retrieve the initial password in your terminal and share it with
+Martin through your usual private channel:
+
+```fish
+nix develop --command sops --decrypt --extract '["observability_mj_password"]' secrets/pakhet.yaml
+```
+
+The registered callbacks are `https://claude.ai/api/mcp/auth_callback` and
+`https://claude.com/api/mcp/auth_callback`; both require PKCE S256. Token exchange
+and revocation use `client_secret_post`. Each person signs in with their own
+Authelia login; the OAuth client identifies Claude, not an individual user.
+The configured flow can be tested independently of Claude; completing the final
+account connection and consent happens in Martin's Claude account.
+
+Setup references: [Claude custom connector settings](https://support.claude.com/en/articles/11176164-use-connectors-to-extend-claude-s-capabilities),
+[Claude callback in Google's MCP integration guide](https://docs.cloud.google.com/mcp/configure-mcp-ai-application),
+and [callback variants](https://docs.zuora.com/en/zuora-platform/security-and-identity/oneid---identity-and-access-management/manage-oauth-2.0-clients/create-oauth-2.0-credentials-for-remote-mcp-client/redirect-uris-by-mcp-client).
+
 ## Users and credentials
 
 Users opt in with `observability = true` in
@@ -53,7 +82,7 @@ Authelia-compatible Argon2id password hash. User names, display names, email
 addresses and group membership are rendered declaratively; password reset in the
 login UI is disabled so changes cannot diverge from sops.
 
-Only `ij` is initially enabled. All enabled users can read the same Prometheus
+The `ij` and `mj` logins are enabled. All enabled users can read the same Prometheus
 dataset. Skills and dashboard visibility do not enforce per-service data access.
 
 Signing keys, encryption keys and client hashes are encrypted with sops. The MCP
