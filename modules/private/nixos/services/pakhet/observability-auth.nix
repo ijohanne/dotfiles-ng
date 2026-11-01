@@ -112,7 +112,14 @@ in
         password_reset.disable = true;
         file.path = config.sops.templates."observability-users.yml".path;
       };
-      access_control.default_policy = "deny";
+      access_control = {
+        default_policy = "deny";
+        rules = [{
+          domain = "prometheus.${network.domain}";
+          policy = "one_factor";
+          subject = "group:observability";
+        }];
+      };
       session.cookies = [{
         domain = network.domain;
         authelia_url = "https://${domain}";
