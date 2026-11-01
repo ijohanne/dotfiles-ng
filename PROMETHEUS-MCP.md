@@ -28,6 +28,10 @@ The pinned Authelia release does not implement RFC 8707 resource indicators;
 each interactive client instead has exactly one allowed audience, granted by
 `requested_audience_mode = "implicit"`. The MCP server verifies that audience
 exactly. This is independent of consent, which remains explicit.
+The ChatGPT client also allows the standard OIDC scopes advertised by Authelia,
+so automatic scope selection during linking is accepted. No phone or address
+attributes are configured for the initial user. Token revocation uses the same
+client authentication method as token exchange.
 The configured ChatGPT redirect is
 `https://chatgpt.com/connector_platform_oauth_redirect`. Discovery advertises
 whether issuer identification is supported. If ChatGPT shows a connection-specific

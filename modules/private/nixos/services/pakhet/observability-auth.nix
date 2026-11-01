@@ -71,6 +71,8 @@ in
           client_name = "ChatGPT Prometheus";
           client_secret = placeholder "observability_chatgpt_client_hash";
           token_endpoint_auth_method = "client_secret_post";
+          revocation_endpoint_auth_method = "client_secret_post";
+          scopes = clientBase.scopes ++ [ "address" "phone" "groups" ];
           redirect_uris = [ "https://chatgpt.com/connector_platform_oauth_redirect" ];
         })
         (clientBase // {
@@ -78,6 +80,7 @@ in
           client_name = "Prometheus CLI";
           public = true;
           token_endpoint_auth_method = "none";
+          revocation_endpoint_auth_method = "none";
           redirect_uris = [ "http://127.0.0.1:18443/callback" ];
         })
         {
@@ -131,7 +134,7 @@ in
         enforce_pkce = "always";
         lifespans.access_token = "15m";
         lifespans.refresh_token = "30d";
-        scopes."prometheus.read".claims = [ ];
+        scopes."prometheus.read".claims = [ "groups" ];
         authorization_policies.observability = {
           default_policy = "deny";
           rules = [{ policy = "one_factor"; subject = "group:observability"; }];
