@@ -12,6 +12,7 @@
     ./multicast-relay.nix
     ./monitoring
     ./prometheus.nix
+    ./prometheus-mcp.nix
     ./cloudflare.nix
   ];
 

@@ -22,10 +22,8 @@ in
     }
   ];
 
-  services.grafana.provision.dashboards.settings.providers = [
-    {
-      name = "hrafnsyn";
-      options.path = dashboards;
-    }
-  ];
+  observability.services.hrafnsyn = {
+    inherit dashboards;
+    jobs = [ "hrafnsyn" ];
+  };
 }

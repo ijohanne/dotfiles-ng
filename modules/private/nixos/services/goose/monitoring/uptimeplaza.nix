@@ -55,8 +55,8 @@ in
 
   services.prometheus.scrapeConfigs = map mkScrapeJob checkerTypes;
 
-  services.grafana.provision.dashboards.settings.providers = [{
-    name = "uptimeplaza";
-    options.path = dashboards;
-  }];
+  observability.services.uptimeplaza = {
+    inherit dashboards;
+    jobs = map (type: "checker-${type}") checkerTypes;
+  };
 }

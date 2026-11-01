@@ -71,10 +71,9 @@ in
     }
   ];
 
-  services.grafana.provision.dashboards.settings.providers = [
-    {
-      name = "screeny";
-      options.path = dashboards;
-    }
-  ];
+  observability.services.screeny = {
+    inherit dashboards;
+    jobs = [ "screeny" "screeny-chest-counter" ];
+    skills = [ ./skills/check-screeny ];
+  };
 }

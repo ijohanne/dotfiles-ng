@@ -64,15 +64,12 @@
           ];
         };
       };
-      dashboards.settings.providers = [
-        {
-          name = "default";
-          options.path = ./grafana-dashboards;
-        }
-      ];
     };
     declarativePlugins = with pkgs.grafanaPlugins; [ grafana-piechart-panel grafana-clock-panel ];
   };
+
+  observability.grafanaUrl = "https://grafana.${network.domain}";
+  observability.services.infrastructure.dashboards = ./grafana-dashboards;
 
   services.nginx = {
     enable = true;

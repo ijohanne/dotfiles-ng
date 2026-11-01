@@ -12,6 +12,9 @@
   };
 
   services = {
+    prometheusMcp = ./nixos/services/prometheus-mcp;
+    observabilityCatalog = ./nixos/services/observability-catalog;
+    declarativeCloudflareDns = ./nixos/services/cloudflare-dns;
     nodeExporterBase = ./nixos/services/node-exporter-base.nix;
     server = ./nixos/services/server.nix;
     smsGatewayClient = ./nixos/services/sms-gateway-client.nix;

@@ -1002,6 +1002,9 @@
       inherit formatter;
 
       packages = {
+        prometheus-mcp = pkgs.callPackage ./modules/community/packages/prometheus-mcp {
+          buildGoModule = pkgs.buildGoModule.override { go = pkgs.go_1_27; };
+        };
         setup-template = setup-template;
         raspberry-pi-provision-image = raspberry-pi-provision-image;
       } // pgUpgradeScripts // pkgs.lib.optionalAttrs (system == "aarch64-darwin") {

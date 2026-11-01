@@ -25,10 +25,8 @@ in
     }
   ];
 
-  services.grafana.provision.dashboards.settings.providers = [
-    {
-      name = "stripe-webhook-router";
-      options.path = dashboards;
-    }
-  ];
+  observability.services.stripe-webhook-router = {
+    inherit dashboards;
+    jobs = [ "stripe-webhook-router" ];
+  };
 }

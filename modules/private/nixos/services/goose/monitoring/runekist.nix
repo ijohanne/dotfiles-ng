@@ -25,10 +25,9 @@ in
     }
   ];
 
-  services.grafana.provision.dashboards.settings.providers = [
-    {
-      name = "runekist";
-      options.path = dashboards;
-    }
-  ];
+  observability.services.runekist = {
+    inherit dashboards;
+    jobs = [ "runekist" ];
+    skills = [ ./skills/check-runekist ];
+  };
 }

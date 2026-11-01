@@ -20,6 +20,7 @@ in
     ./backup.nix
     ./keycloak.nix
     ./estepona.nix
+    ./observability-auth.nix
     ./kubernetes.nix
     ./screeny.nix
     ./grpc-proxier.nix
