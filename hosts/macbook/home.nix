@@ -1,10 +1,16 @@
-{ config, pkgs, lib, user, modules, ... }:
+{ config, pkgs, lib, user, modules, inputs, osConfig, ... }:
 
 {
   imports = [
     (import modules.private.home.users.ij { desktop = true; })
     modules.public.homeManager.programs.impeccable
+    inputs.ijohanne-nur.lib.homeManagerModules.ccd-tools
   ];
+
+  programs.ccd-tools = {
+    enable = true;
+    accountsFile = osConfig.sops.secrets.ccd-accounts.path;
+  };
 
   programs.impeccable = lib.mkIf (user.developer or false) {
     enable = true;

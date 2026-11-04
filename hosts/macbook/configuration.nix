@@ -25,6 +25,10 @@ in
 
   networking.hostName = "macbook";
 
+  sops.secrets.ccd-accounts = {
+    owner = user.username;
+  };
+
   users.users.${user.username} = {
     home = "/Users/${user.username}";
     shell = pkgs.fish;
