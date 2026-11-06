@@ -28,6 +28,7 @@ in
     listenAddress = "0.0.0.0";
     autoMigrate = true;
     publicReadonly = false;
+    iosAppIds = [ "7A6Y4954GH.io.hrafnsyn.mobile" ];
 
     grpc = {
       enable = true;
