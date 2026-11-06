@@ -1510,11 +1510,11 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1793987189,
-        "narHash": "sha256-An+x+t7NoeNvCvniv7npwYttOAWYVEGREHIBU5gxU2Q=",
+        "lastModified": 1793989967,
+        "narHash": "sha256-vH8LEFsM+BBd5OcaReyugOzxpJqWyp/vapm99U2N7hg=",
         "owner": "ijohanne",
         "repo": "hrafnsyn",
-        "rev": "d578e24024215f9c12a80963cadd5742bb41ef50",
+        "rev": "8133cfc0c69ad9bf08d89c2ff57a4bb41e14b90c",
         "type": "github"
       },
       "original": {
@@ -1564,11 +1564,11 @@
         "zot": "zot"
       },
       "locked": {
-        "lastModified": 1793987270,
-        "narHash": "sha256-kWtiMpD4evdUwfd8N7VTck7VMfGx5yOUBXnJkwZGhXo=",
+        "lastModified": 1793990006,
+        "narHash": "sha256-E8SnsYF5PnB8Lkn8QrgvGolEeUb4oRBvCdnYdmVIvzk=",
         "owner": "ijohanne",
         "repo": "nur-packages",
-        "rev": "2e5b3e8acb890f6289e521b14465d0de1d7b4407",
+        "rev": "61e969b7c6af9145b50233af47e206432f8303c1",
         "type": "github"
       },
       "original": {
