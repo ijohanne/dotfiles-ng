@@ -29,6 +29,12 @@ in
     autoMigrate = true;
     publicReadonly = false;
 
+    grpc = {
+      enable = true;
+      listenAddress = "127.0.0.1";
+      port = 50051;
+    };
+
     secretKeyBaseFile = config.sops.secrets.hrafnsyn_secret_key_base.path;
 
     database = {
