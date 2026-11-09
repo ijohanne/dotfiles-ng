@@ -10,6 +10,8 @@
       url = "github:NixOS/nixpkgs/nixos-26.05";
     };
 
+    nixpkgs-kernel.url = "github:NixOS/nixpkgs/nixos-26.05";
+
     nixpkgs-agent-browser = {
       url = "github:NixOS/nixpkgs/nixos-unstable";
     };
