@@ -2,6 +2,7 @@
 
 {
   imports = [
+    ../nginx-security.nix
     ./wireguard.nix
     ./node-exporter.nix
     ./nginx.nix
