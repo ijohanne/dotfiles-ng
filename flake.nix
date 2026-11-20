@@ -71,7 +71,7 @@
     };
 
     screeny-seshat = {
-      url = "github:Devops-Plaza-SL/screeny/de1fafa7c1c2999d22724cedcb35ab3fb0ec3b05";
+      url = "github:Devops-Plaza-SL/screeny/fb134bcf45b2a36d9cf848d94c55ba2871a6e5ab";
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 
