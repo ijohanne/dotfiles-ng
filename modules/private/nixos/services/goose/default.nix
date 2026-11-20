@@ -2,6 +2,7 @@
 
 {
   imports = [
+    ../nginx-security.nix
     ./dns.nix
     ./firewall.nix
     ./avahi.nix

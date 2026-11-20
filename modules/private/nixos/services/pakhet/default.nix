@@ -9,6 +9,7 @@ let
 in
 {
   imports = [
+    ../nginx-security.nix
     ./nginx.nix
     ./garage.nix
     ./attic.nix
