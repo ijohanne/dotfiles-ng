@@ -16,7 +16,7 @@
   };
 
   services.screeny.chestCounterCollectors.main = {
-    package = inputs.screeny.packages.x86_64-linux.screeny-chest-counter;
+    package = inputs.screeny-seshat.packages.x86_64-linux.screeny-chest-counter;
     sourceId = "runekist-api-seshat";
     mode = "api-driven";
     apiKeyFile = config.sops.secrets.screeny_chest_counter_api_key.path;

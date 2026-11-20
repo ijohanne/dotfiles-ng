@@ -70,6 +70,11 @@
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 
+    screeny-seshat = {
+      url = "github:Devops-Plaza-SL/screeny/de1fafa7c1c2999d22724cedcb35ab3fb0ec3b05";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
+    };
+
     stripe-router = {
       url = "github:Devops-Plaza-SL/stripe-webhook-router";
       inputs.nixpkgs.follows = "nixpkgs-stable";
@@ -355,7 +360,7 @@
           modules = [
             disko.nixosModules.disko
             sops-nix.nixosModules.sops
-            screeny.nixosModules.default
+            inputs.screeny-seshat.nixosModules.default
             ./hosts/seshat/disko.nix
             ./hosts/seshat/configuration.nix
           ];
