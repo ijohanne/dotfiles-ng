@@ -5,7 +5,7 @@ let
 in
 {
   services.vardrun = {
-    package = inputs.vardrun.packages.x86_64-linux.default;
+    package = inputs.vardrun-server.packages.x86_64-linux.default;
 
     instances.unixpimps = {
       host = "vardrun.unixpimps.net";

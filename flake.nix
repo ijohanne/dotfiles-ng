@@ -155,6 +155,13 @@
       url = "github:uptimeplaza/vardrun";
     };
 
+    vardrun-server = {
+      url = "github:uptimeplaza/vardrun/b57daaee88022240865a404be6d5d5b3ff344072";
+      inputs.nixpkgs.follows = "vardrun/nixpkgs";
+      inputs.nixpkgs-x86_64-darwin.follows = "vardrun/nixpkgs-x86_64-darwin";
+      inputs.flake-utils.follows = "vardrun/flake-utils";
+    };
+
     leita = {
       url = "github:uptimeplaza/leita";
     };
@@ -223,7 +230,7 @@
     , themailer-wrapper
     , perlpimpnet
     , proton-port-sync
-    , vardrun
+    , vardrun-server
     , leita
     , callis
     , ...
@@ -304,7 +311,7 @@
             unixpimpsnet.nixosModules.default
             themailer-wrapper.nixosModules.default
             perlpimpnet.nixosModules.default
-            vardrun.nixosModules.default
+            vardrun-server.nixosModules.default
             ./hosts/pakhet/configuration.nix
           ];
           hmUsers = {
