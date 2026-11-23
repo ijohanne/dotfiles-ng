@@ -11,6 +11,7 @@
     };
 
     nixpkgs-kernel.url = "github:NixOS/nixpkgs/nixos-26.05";
+    nixpkgs-pakhet-clamav.url = "github:NixOS/nixpkgs/2786a2a72088ecf32aea5b3ec52099e6a7cff78f";
 
     nixpkgs-agent-browser = {
       url = "github:NixOS/nixpkgs/nixos-unstable";
